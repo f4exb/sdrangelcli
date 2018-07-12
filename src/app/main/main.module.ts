@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InfoComponent } from './info/info.component';
+import { InstanceSummaryComponent } from './instance-summary/instance-summary.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [InfoComponent]
+  declarations: [InstanceSummaryComponent]
 })
 export class MainModule { }
