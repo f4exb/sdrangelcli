@@ -13,5 +13,11 @@ export interface InstanceSummary {
         devicesetcount: number,
         devicesetfocus?: number,
         deviceSets?: [DeviceSet]
-    }
+    },
+    logging: {
+        consoleLevel: string,
+        dumpToFile: number,
+        fileLevel?: string,
+        fileName?: string
+    }    
   }
