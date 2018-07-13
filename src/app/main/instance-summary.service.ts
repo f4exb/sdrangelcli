@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 import {InstanceSummary} from './instance-summary/instance-summary';
 
@@ -15,11 +16,11 @@ export class InstanceSummaryService {
   constructor(private http: HttpClient) {
   }
 
-  getInfo(): Promise<InstanceSummary> {
-    return this.http.get<InstanceSummary>(InstanceSummaryService.URL).toPromise();
-  }
-
-  // getInfo(): Observable<InstanceSummary> {
-  //   return this.http.get<InstanceSummary>(`${URL}`);
+  // getInfo(): Promise<InstanceSummary> {
+  //   return this.http.get<InstanceSummary>(InstanceSummaryService.URL).toPromise();
   // }
+
+  getInfo(): Observable<InstanceSummary> {
+    return this.http.get<InstanceSummary>(InstanceSummaryService.URL);
+  }
 }
