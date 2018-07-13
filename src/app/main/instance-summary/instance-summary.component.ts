@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { InstanceSummary } from './instance-summary';
+import { InstanceSummaryService } from '../instance-summary.service';
 
 @Component({
   selector: 'app-info',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InstanceSummaryComponent implements OnInit {
 
-  constructor() { }
+  instanceSummary: InstanceSummary = <InstanceSummary>{};
+
+  constructor(private instanceSummaryService: InstanceSummaryService) { }
 
   ngOnInit() {
+    this.fetchInstanceSummary();
+  }
+
+  private fetchInstanceSummary() {
+    this.instanceSummaryService.getInfo().subscribe(instanceSummary => this.instanceSummary = instanceSummary);
   }
 
 }

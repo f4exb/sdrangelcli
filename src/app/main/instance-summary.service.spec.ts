@@ -61,12 +61,6 @@ describe('InstanceSummaryService', () => {
           expect(data.devicesetlist.deviceSets.length).toBe(1);
           expect(data.devicesetlist.deviceSets[0].channelcount).toBe(0);
         });
-        // service.getInfo().then(data => {
-        //   expect(data.dspRxBits).toBe(24);
-        //   expect(data.devicesetlist.devicesetcount).toBe(1);
-        //   expect(data.devicesetlist.deviceSets.length).toBe(1);
-        //   expect(data.devicesetlist.deviceSets[0].channelcount).toBe(0);
-        // });
         // We set the expectations for the HttpClient mock
         const req = httpMock.expectOne(req => req.method === 'GET' && req.url === InstanceSummaryService.URL);
         // Then we set the fake data to be returned by the mock
