@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { DeviceSet } from './deviceset';
 
 @Component({
   selector: 'app-deviceset',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./deviceset.component.css']
 })
 export class DevicesetComponent implements OnInit {
+  @Input() deviceSet : DeviceSet;
+  @Input() label : string;
 
   constructor() { }
 

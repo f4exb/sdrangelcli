@@ -1,3 +1,7 @@
-<p>
-  deviceset works!
-</p>
+<mat-card class="deviceset-card">
+  <span>{{label}}</span><br/>
+  <app-device [device]="deviceSet.samplingDevice"></app-device>
+  <div *ngIf="deviceSet.channelcount !== 0">
+    <app-channel *ngFor="let channel of deviceSet.channels" [channel]="channel"></app-channel>
+  </div>
+</mat-card>
