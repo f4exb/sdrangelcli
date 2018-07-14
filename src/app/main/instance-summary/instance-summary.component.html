@@ -1,3 +1,10 @@
-<h1>
-  {{ instanceSummary.appname }}
-</h1>
+<mat-card class="instance-summary-card">
+  <span>{{instanceSummary.appname}}</span>&nbsp;
+  <span>v{{instanceSummary.version}}</span>&nbsp;
+  <span>Qt {{instanceSummary.qtVersion}}</span>&nbsp;
+  <span>{{instanceSummary.architecture}}</span>&nbsp;
+  <span>{{instanceSummary.os}}</span>&nbsp;
+  <span>DSP Rx {{instanceSummary.dspRxBits}}b</span>&nbsp;
+  <span>Tx {{instanceSummary.dspTxBits}}b</span>&nbsp;
+  <span>PID {{instanceSummary.pid}}</span>
+</mat-card>

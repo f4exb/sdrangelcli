@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { InstanceSummaryComponent } from './instance-summary.component';
 import { InstanceSummaryService } from '../instance-summary.service';
 import { INSTANCE_SUMMARY_MOCK } from './instance-summary';
+import { MatCardModule } from '@angular/material/card';
 
 describe('InstanceSummaryComponent', () => {
   let component: InstanceSummaryComponent;
@@ -14,7 +15,10 @@ describe('InstanceSummaryComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ InstanceSummaryComponent ],
-      imports: [ HttpClientModule ],
+      imports: [ 
+        HttpClientModule, 
+        MatCardModule 
+      ],
       providers: [ InstanceSummaryService ]
     })
     .compileComponents();
