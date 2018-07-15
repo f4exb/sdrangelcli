@@ -3,7 +3,7 @@ import { HttpModule } from '@angular/http'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InstanceSummaryService } from './instance-summary.service';
-import { INSTANCE_SUMMARY_MOCK } from './instance-summary/instance-summary';
+import { INSTANCE_SUMMARY_MOCK1 } from './instance-summary/instance-summary';
 
 describe('InstanceSummaryService', () => {
   beforeEach(() => {
@@ -25,11 +25,11 @@ describe('InstanceSummaryService', () => {
           expect(data.dspRxBits).toBe(24);
           expect(data.devicesetlist.devicesetcount).toBe(1);
           expect(data.devicesetlist.deviceSets.length).toBe(1);
-          expect(data.devicesetlist.deviceSets[0].channelcount).toBe(0);
+          expect(data.devicesetlist.deviceSets[0].channelcount).toBe(2);
         });
         // We set the expectations for the HttpClient mock
         const req = httpMock.expectOne(req => req.method === 'GET' && req.url === InstanceSummaryService.URL);
         // Then we set the fake data to be returned by the mock
-        req.flush(INSTANCE_SUMMARY_MOCK);
+        req.flush(INSTANCE_SUMMARY_MOCK1);
   }));  
 });

@@ -8,11 +8,17 @@ import { DeviceSet } from './deviceset';
 })
 export class DevicesetComponent implements OnInit {
   @Input() deviceSet : DeviceSet;
-  @Input() label : string;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  getLabel() : string {
+    if (this.deviceSet.samplingDevice.tx === 0) {
+      return "Rx" + this.deviceSet.samplingDevice.index;
+    } else {
+      return "Tx" + this.deviceSet.samplingDevice.index;
+    }
+  }
 }

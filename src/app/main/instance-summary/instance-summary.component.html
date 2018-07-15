@@ -8,3 +8,6 @@
   <span>Tx {{instanceSummary.dspTxBits}}b</span>&nbsp;
   <span>PID {{instanceSummary.pid}}</span>
 </mat-card>
+<div *ngIf="instanceSummary.devicesetlist.devicesetcount !== 0">
+  <app-deviceset *ngFor="let deviceSet of instanceSummary.devicesetlist.deviceSets" [deviceSet]="deviceSet"></app-deviceset>
+</div>

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DeviceComponent } from './device.component';
 import { MatCardModule } from '@angular/material/card';
 
-import { DEVICE_MOCK } from'./device';
+import { DEVICE_MOCK1 } from'./device';
 
 describe('DeviceComponent', () => {
   let component: DeviceComponent;
@@ -22,7 +22,8 @@ describe('DeviceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DeviceComponent);
     component = fixture.componentInstance;
-    component.device = DEVICE_MOCK;
+    component.device = DEVICE_MOCK1;
+    component.device.index = 0;
     fixture.detectChanges();
   });
 
