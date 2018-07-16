@@ -12,7 +12,9 @@ export class UrlFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.reset();
+    if (!this.sdrangelURL) {
+      this.reset();
+    }
   }
 
   reset() {

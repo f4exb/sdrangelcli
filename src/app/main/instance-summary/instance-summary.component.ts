@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { InstanceSummary } from './instance-summary';
 import { InstanceSummaryService } from '../instance-summary.service';
 
@@ -9,6 +9,7 @@ import { InstanceSummaryService } from '../instance-summary.service';
 })
 export class InstanceSummaryComponent implements OnInit {
 
+  @Input() sdrangelURL: string;
   instanceSummary: InstanceSummary = <InstanceSummary>{};
 
   constructor(private instanceSummaryService: InstanceSummaryService) { }
@@ -18,7 +19,7 @@ export class InstanceSummaryComponent implements OnInit {
   }
 
   private fetchInstanceSummary() {
-    this.instanceSummaryService.getInfo().subscribe(instanceSummary => this.instanceSummary = instanceSummary);
+    this.instanceSummaryService.getInfo(this.sdrangelURL).subscribe(instanceSummary => this.instanceSummary = instanceSummary);
   }
 
 }

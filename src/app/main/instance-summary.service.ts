@@ -9,12 +9,10 @@ import {InstanceSummary} from './instance-summary/instance-summary';
 })
 export class InstanceSummaryService {
 
-  public static readonly URL = 'http://127.0.0.1:8091/sdrangel'; // make it a constant for now
-
   constructor(private http: HttpClient) {
   }
 
-  getInfo(): Observable<InstanceSummary> {
-    return this.http.get<InstanceSummary>(InstanceSummaryService.URL);
+  getInfo(url: string): Observable<InstanceSummary> {
+    return this.http.get<InstanceSummary>(url);
   }
 }
