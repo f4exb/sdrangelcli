@@ -22,6 +22,24 @@ export interface InstanceSummary {
     }    
   }
 
+  export const INSTANCE_SUMMARY_DEFAULT = {
+    appname: "Default",
+    architecture: "none",
+    devicesetlist: {
+      devicesetcount: 0
+    },
+    dspRxBits: 24,
+    dspTxBits: 16,
+    logging: {
+      consoleLevel: "debug",
+      dumpToFile: 0
+    },
+    os: "None",
+    pid: 0,
+    qtVersion: "0.0.0",
+    version: "0.0.0"    
+  }  
+
   export const INSTANCE_SUMMARY_MOCK1 = {
     appname: "SDRangel",
     architecture: "x86_64",

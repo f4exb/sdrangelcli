@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { InstanceSummary } from './instance-summary';
+import { InstanceSummary, INSTANCE_SUMMARY_DEFAULT } from './instance-summary';
 import { InstanceSummaryService } from '../instance-summary.service';
 
 @Component({
@@ -10,7 +10,9 @@ import { InstanceSummaryService } from '../instance-summary.service';
 export class InstanceSummaryComponent implements OnInit {
 
   @Input() sdrangelURL: string;
-  instanceSummary: InstanceSummary = <InstanceSummary>{};
+  instanceSummary: InstanceSummary = INSTANCE_SUMMARY_DEFAULT;
+  statusMessage: string;
+  statusError: boolean = false;
 
   constructor(private instanceSummaryService: InstanceSummaryService) { }
 
@@ -20,7 +22,17 @@ export class InstanceSummaryComponent implements OnInit {
   }
 
   private fetchInstanceSummary() {
-    this.instanceSummaryService.getInfo(this.sdrangelURL).subscribe(instanceSummary => this.instanceSummary = instanceSummary);
+    this.instanceSummaryService.getInfo(this.sdrangelURL).subscribe(
+      instanceSummary => {
+        this.instanceSummary = instanceSummary;
+        this.statusMessage = "OK";
+        this.statusError = false;
+      },
+      error => { 
+        this.statusMessage = error.message;
+        this.statusError = true;
+      }
+    );
   }
 
 }

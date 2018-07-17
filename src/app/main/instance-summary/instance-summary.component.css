@@ -13,3 +13,18 @@
     margin-bottom: 5px;
     padding: 0.2em 0.2em 0.2em 0.2em;    
 }
+
+.status-ok-card {
+    border: outset;
+    border-color: rgb(134, 255, 110);
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;    
+}
+
+.status-ko-card {
+    border: solid;
+    border-color: rgb(255, 134, 110);
+    border-width: 2px;  
+    padding: 0.2em 0.2em 0.2em 0.2em;    
+}
