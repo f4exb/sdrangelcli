@@ -1,15 +1,17 @@
-<mat-card class="url-card">
-  {{ sdrangelURL }}
-</mat-card>
 <mat-card class="instance-summary-card">
-  <span>{{instanceSummary.appname}}</span>&nbsp;
-  <span>v{{instanceSummary.version}}</span>&nbsp;
-  <span>Qt {{instanceSummary.qtVersion}}</span>&nbsp;
-  <span>{{instanceSummary.architecture}}</span>&nbsp;
-  <span>{{instanceSummary.os}}</span>&nbsp;
-  <span>DSP Rx {{instanceSummary.dspRxBits}}b</span>&nbsp;
-  <span>Tx {{instanceSummary.dspTxBits}}b</span>&nbsp;
-  <span>PID {{instanceSummary.pid}}</span>
+  <mat-card-content>
+    <button mat-button (click)="fetchInstanceSummary()">
+      Refresh
+    </button>&nbsp;
+    <span>{{instanceSummary.appname}}</span>&nbsp;
+    <span>v{{instanceSummary.version}}</span>&nbsp;
+    <span>Qt {{instanceSummary.qtVersion}}</span>&nbsp;
+    <span>{{instanceSummary.architecture}}</span>&nbsp;
+    <span>{{instanceSummary.os}}</span>&nbsp;
+    <span>DSP Rx {{instanceSummary.dspRxBits}}b</span>&nbsp;
+    <span>Tx {{instanceSummary.dspTxBits}}b</span>&nbsp;
+    <span>PID {{instanceSummary.pid}}</span>
+  </mat-card-content>
 </mat-card>
 <div *ngIf="instanceSummary.devicesetlist.devicesetcount !== 0">
   <app-deviceset *ngFor="let deviceSet of instanceSummary.devicesetlist.deviceSets" [deviceSet]="deviceSet"></app-deviceset>
