@@ -28,3 +28,10 @@
     border-width: 2px;  
     padding: 0.2em 0.2em 0.2em 0.2em;    
 }
+
+.url-card {
+    border: solid;
+    border-color: rgb(134, 134, 134);
+    border-width: 2px;  
+    padding: 0.2em 0.2em 0.2em 0.2em;    
+}
