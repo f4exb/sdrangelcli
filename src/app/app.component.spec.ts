@@ -1,6 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { UrlFormComponent } from './main/url-form/url-form.component';
 import { FormsModule } from '@angular/forms';
 import { InstanceSummaryComponent } from './main/instance-summary/instance-summary.component';
 import { MatCardModule } from '@angular/material/card';
@@ -13,7 +12,6 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        UrlFormComponent,
         InstanceSummaryComponent,
         DevicesetComponent,
         DeviceComponent,
