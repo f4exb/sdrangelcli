@@ -1,4 +1,4 @@
-<mat-card class="device-card">
+<mat-card [ngClass]="{'device-card':true, 'device-tx': device.tx !== 0, 'device-rx': device.tx === 0}">
   <span>{{device.hwType}} {{device.centerFrequency/1000}} kHz</span><br/>
   <span>{{device.bandwidth/1000}} kS/s</span>
 </mat-card>

@@ -1,7 +1,11 @@
 <mat-card class="deviceset-card">
-  <span>{{getLabel()}}</span><br/>
-  <app-device [device]="deviceSet.samplingDevice"></app-device>
-  <div *ngIf="deviceSet.channelcount !== 0">
-    <app-channel *ngFor="let channel of deviceSet.channels" [channel]="channel"></app-channel>
-  </div>
+  <mat-card-header class="deviceset-card-header">
+    {{getLabel()}}
+  </mat-card-header>
+  <mat-card-content>
+    <app-device [device]="deviceSet.samplingDevice"></app-device>
+    <div *ngIf="deviceSet.channelcount !== 0">
+      <app-channel *ngFor="let channel of deviceSet.channels" [channel]="channel"></app-channel>
+    </div>
+  </mat-card-content>
 </mat-card>

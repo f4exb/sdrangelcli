@@ -1,7 +1,17 @@
 .device-card {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
     border: outset;
     border-color: whitesmoke;
     border-width: 2px;
     margin-bottom: 5px;
     padding: 0.2em 0.2em 0.2em 0.2em;    
+}
+
+.device-tx {
+    background-color: rgb(255,200,170);
+}
+
+.device-rx {
+    background-color: rgb(170,255,200);
 }

@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card'
 
 import { AppComponent } from './app.component';
-import { UrlFormComponent } from './main/url-form/url-form.component';
 import { InstanceSummaryComponent } from './main/instance-summary/instance-summary.component';
 import { DevicesetComponent } from './deviceset/deviceset/deviceset.component';
 import { DeviceComponent } from './deviceset/device/device.component';
@@ -15,7 +14,6 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    UrlFormComponent,
     InstanceSummaryComponent,
     DevicesetComponent,
     DeviceComponent,
