@@ -1,17 +1,15 @@
 <mat-card class="instance-summary-card">
-  <mat-card-content>
-    <button mat-button class="button-card" (click)="fetchInstanceSummary()">
-      <i class="material-icons" style="font-size:16px">refresh</i>
-    </button>&nbsp;
-    <span>{{instanceSummary.appname}}</span>&nbsp;
-    <span>v{{instanceSummary.version}}</span>&nbsp;
-    <span>Qt {{instanceSummary.qtVersion}}</span>&nbsp;
-    <span>{{instanceSummary.architecture}}</span>&nbsp;
-    <span>{{instanceSummary.os}}</span>&nbsp;
-    <span>DSP Rx {{instanceSummary.dspRxBits}}b</span>&nbsp;
-    <span>Tx {{instanceSummary.dspTxBits}}b</span>&nbsp;
-    <span>PID {{instanceSummary.pid}}</span>
-  </mat-card-content>
+  <button mat-button class="button-card" (click)="fetchInstanceSummary()">
+    <img src="/assets/icons/if_refresh.svg" style="height:14px; width:14px"/>
+  </button>&nbsp;
+  <span>{{instanceSummary.appname}}</span>&nbsp;
+  <span>v{{instanceSummary.version}}</span>&nbsp;
+  <span>Qt {{instanceSummary.qtVersion}}</span>&nbsp;
+  <span>{{instanceSummary.architecture}}</span>&nbsp;
+  <span>{{instanceSummary.os}}</span>&nbsp;
+  <span>DSP Rx {{instanceSummary.dspRxBits}}b</span>&nbsp;
+  <span>Tx {{instanceSummary.dspTxBits}}b</span>&nbsp;
+  <span>PID {{instanceSummary.pid}}</span>
 </mat-card>
 <div *ngIf="instanceSummary.devicesetlist.devicesetcount !== 0">
   <app-deviceset *ngFor="let deviceSet of instanceSummary.devicesetlist.deviceSets" [deviceSet]="deviceSet"></app-deviceset>
