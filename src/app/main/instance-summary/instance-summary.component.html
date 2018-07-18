@@ -1,7 +1,7 @@
 <mat-card class="instance-summary-card">
   <mat-card-content>
-    <button mat-button (click)="fetchInstanceSummary()">
-      Refresh
+    <button mat-button class="button-card" (click)="fetchInstanceSummary()">
+      <i class="material-icons" style="font-size:16px">refresh</i>
     </button>&nbsp;
     <span>{{instanceSummary.appname}}</span>&nbsp;
     <span>v{{instanceSummary.version}}</span>&nbsp;

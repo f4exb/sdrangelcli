@@ -23,9 +23,9 @@
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
     "core-js": "^2.5.4",
+    "material-design-icons": "^3.0.1",
     "rxjs": "^6.0.0",
-    "zone.js": "^0.8.26",
-    "material-design-icons": "^3.0.1"
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular/compiler-cli": "^6.0.3",
