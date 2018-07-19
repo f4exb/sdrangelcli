@@ -7,6 +7,9 @@ import { DevicesetComponent } from './deviceset/deviceset/deviceset.component';
 import { DeviceComponent } from './deviceset/device/device.component';
 import { ChannelComponent } from './deviceset/channel/channel.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { APP_BASE_HREF } from '@angular/common';
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,8 +23,10 @@ describe('AppComponent', () => {
       imports: [
         FormsModule,
         MatCardModule,
-        HttpClientModule
-      ]
+        HttpClientModule,
+        AppRoutingModule
+      ],
+      providers: [{provide: APP_BASE_HREF, useValue: '/'}]
     }).compileComponents();
   }));
   it('should create the app', async(() => {
