@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { InstanceSummary, INSTANCE_SUMMARY_DEFAULT } from './instance-summary';
 import { InstanceSummaryService } from '../instance-summary.service';
+import { SdrangelUrlService } from '../../sdrangel-url.service';
 
 @Component({
   selector: 'app-instance-summary',
@@ -14,11 +15,15 @@ export class InstanceSummaryComponent implements OnInit {
   statusMessage: string;
   statusError: boolean = false;
 
-  constructor(private instanceSummaryService: InstanceSummaryService) { }
+  constructor(private instanceSummaryService: InstanceSummaryService, 
+    private sdrangelUrlService: SdrangelUrlService) { 
+  }
 
   ngOnInit() {
-    this.sdrangelURL = "http://127.0.0.1:8091/sdrangel";
-    this.fetchInstanceSummary();
+    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+      this.sdrangelURL = url;
+      this.fetchInstanceSummary();
+    });
   }
 
   private fetchInstanceSummary() {
