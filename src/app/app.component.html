@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <mat-card class="top-card">
   <span>{{ title }}</span>&nbsp;
-  <input type="text" [(ngModel)]="sdrangelURL" name="sdrangelURL" size="40">
+  <input type="text" [(ngModel)]="sdrangelURL" name="sdrangelURL" size="40" matTooltip="URL of the instance to connect to">
 </mat-card>
 <div>
   <app-instance-summary [sdrangelURL]="sdrangelURL"></app-instance-summary>

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card'
+import { MatTooltipModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { InstanceSummaryComponent } from './main/instance-summary/instance-summary.component';
@@ -23,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     BrowserAnimationsModule,
     MatCardModule,
+    MatTooltipModule,
     FormsModule,
     HttpClientModule
   ],
