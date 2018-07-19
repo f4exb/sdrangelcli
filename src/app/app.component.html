@@ -2,8 +2,28 @@
 <mat-card class="top-card">
   <span>{{ title }}</span>&nbsp;
   <input type="text" [(ngModel)]="sdrangelURL" name="sdrangelURL" size="40" matTooltip="URL of the instance to connect to">
+  &nbsp;
   <button mat-button class="button-card" (click)="validateURL()" matTooltip="validate URL">
-    &#x27A1;
+    <img src="/assets/icons/if_checkmark.svg" style="height:16px; width:16px"/>
+  </button>
+  &nbsp;
+  <button mat-button class="button-card"  matTooltip="Instance summary">
+    <img src="/assets/icons/home_icon.svg" style="height:16px; width:16px"/>
+  </button>
+  <button mat-button class="button-card button-green"  matTooltip="Add source device set">
+    <img src="/assets/icons/add_circle.svg" style="height:16px; width:16px;"/>
+  </button>
+  <button mat-button class="button-card button-red"  matTooltip="Add sink device set">
+    <img src="/assets/icons/add_circle.svg" style="height:16px; width:16px;"/>
+  </button>
+  <button mat-button class="button-card"  matTooltip="Remove last device set">
+      <img src="/assets/icons/minus_circle.svg" style="height:16px; width:16px;"/>
+  </button>
+  <button mat-button class="button-card"  matTooltip="Audio output settings">
+      <img src="/assets/icons/speaker_icon.svg" style="height:16px; width:16px;"/>
+  </button>
+  <button mat-button class="button-card"  matTooltip="Audio input settings">
+      <img src="/assets/icons/microphone_icon.svg" style="height:16px; width:16px;"/>
   </button>
 </mat-card>
 <router-outlet></router-outlet>

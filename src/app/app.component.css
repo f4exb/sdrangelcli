@@ -11,5 +11,12 @@
     padding-left: 0px;
     width: 22px;
     height: 22px;
-    font-size: 14px;
+}
+
+.button-green {
+    background-color: lightgreen
+}
+
+.button-red {
+    background-color: lightcoral;
 }
