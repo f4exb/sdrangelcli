@@ -22,3 +22,12 @@
     /* CSS styles go here */
     margin: 0px; /* for example to remove the margin */
 }
+
+.button-card {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    width: 22px;
+    height: 22px;
+}

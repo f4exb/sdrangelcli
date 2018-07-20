@@ -15,3 +15,22 @@
 .device-rx {
     background-color: rgb(170,255,200);
 }
+
+.device-card-header {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    border: solid;
+    border-color: gray;
+    border-width: 1px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;    
+}
+
+.button-card {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    width: 22px;
+    height: 22px;
+}
