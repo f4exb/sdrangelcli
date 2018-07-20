@@ -29,3 +29,15 @@
     position: relative;
     bottom: 3px;
 }
+
+.version {
+    background-color: lightblue;
+    font-size: 12px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 5px;
+    position: relative;
+    bottom: 2px;
+}

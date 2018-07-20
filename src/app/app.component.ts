@@ -9,6 +9,7 @@ import { SdrangelUrlService } from './sdrangel-url.service';
 export class AppComponent {
 
   title = 'SDRangelCli';
+  version = '0.0.1';
   sdrangelURL = "http://127.0.0.1:8091/sdrangel"; // the default URL
   
   constructor(private sdrangelUrlService: SdrangelUrlService) {
