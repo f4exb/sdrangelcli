@@ -10,6 +10,6 @@
     <span class="label-card">{{channel.id}} {{channel.title}}</span><br/>
   </mat-card-header>
   <mat-card-content>
-    <span>&#x394;f {{channel.deltaFrequency}} Hz</span><br/>
+    <span>{{(centerFrequency+channel.deltaFrequency)/1000}} kHz &#x394;f {{channel.deltaFrequency}} Hz</span><br/>
   </mat-card-content>
 </mat-card>

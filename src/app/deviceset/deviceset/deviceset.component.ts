@@ -21,4 +21,12 @@ export class DevicesetComponent implements OnInit {
       return "Tx" + this.deviceSet.samplingDevice.index;
     }
   }
+
+  getCenterFrequency() : number {
+    if (this.deviceSet.samplingDevice) {
+      return this.deviceSet.samplingDevice.centerFrequency;
+    } else {
+      return 0;
+    }
+  }
 }

@@ -16,7 +16,7 @@
   <mat-card-content>
     <app-device [device]="deviceSet.samplingDevice"></app-device>
     <div *ngIf="deviceSet.channelcount !== 0">
-      <app-channel *ngFor="let channel of deviceSet.channels" [channel]="channel"></app-channel>
+      <app-channel *ngFor="let channel of deviceSet.channels" [channel]="channel" [centerFrequency]="getCenterFrequency()"></app-channel>
     </div>
   </mat-card-content>
 </mat-card>

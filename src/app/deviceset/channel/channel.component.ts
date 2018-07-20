@@ -7,7 +7,8 @@ import { Channel } from './channel'
   styleUrls: ['./channel.component.css']
 })
 export class ChannelComponent implements OnInit {
-  @Input() channel : Channel;
+  @Input('channel') channel : Channel;
+  @Input('centerFrequency') centerFrequency : number;
 
   constructor() { }
 
