@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
 
 import { InstanceSummaryComponent } from './instance-summary.component';
-import { InstanceSummaryService } from '../instance-summary.service';
+import { InstanceSummaryService } from './instance-summary.service';
 import { INSTANCE_SUMMARY_MOCK1, INSTANCE_SUMMARY_MOCK_EMPTY, INSTANCE_SUMMARY_MOCK_MANY } from './instance-summary';
 import { MatCardModule } from '@angular/material/card';
 import { DevicesetComponent } from '../../deviceset/deviceset/deviceset.component';

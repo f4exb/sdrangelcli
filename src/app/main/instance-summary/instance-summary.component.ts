@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { InstanceSummary, INSTANCE_SUMMARY_DEFAULT } from './instance-summary';
-import { InstanceSummaryService } from '../instance-summary.service';
+import { InstanceSummaryService } from './instance-summary.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 
 @Component({

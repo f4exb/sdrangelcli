@@ -3,7 +3,7 @@ import { HttpModule } from '@angular/http'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InstanceSummaryService } from './instance-summary.service';
-import { INSTANCE_SUMMARY_MOCK1 } from './instance-summary/instance-summary';
+import { INSTANCE_SUMMARY_MOCK1 } from '../instance-summary/instance-summary';
 
 describe('InstanceSummaryService', () => {
   const sdrangelURL = 'http://127.0.0.1:8091/sdrangel';
