@@ -34,3 +34,11 @@
     width: 22px;
     height: 22px;
 }
+
+.button-margin {
+    margin-left: 1px;
+}
+
+.label-card {
+    margin-top: 5px;
+}

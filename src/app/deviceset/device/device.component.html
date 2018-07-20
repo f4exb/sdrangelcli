@@ -3,11 +3,11 @@
     <button mat-button class="button-card"  matTooltip="Device settings">
       <img src="/assets/icons/edit_icon.svg" style="height:16px; width:16px"/>
     </button>  
-    <button mat-button class="button-card"  matTooltip="Change device">
-        <img src="/assets/icons/double_arrow.svg" style="height:16px; width:16px"/>
+    <button mat-button class="button-card button-margin"  matTooltip="Change device">
+      <img src="/assets/icons/double_arrow.svg" style="height:16px; width:16px"/>
     </button>  
     &nbsp;  
-    <span>{{device.hwType}}</span>
+    <span class="label-card">{{device.hwType}}</span>
   </mat-card-header>
   <mat-card-content>
     <span>{{device.centerFrequency/1000}} kHz {{device.bandwidth/1000}} kS/s</span>

@@ -14,9 +14,18 @@
 }
 
 .button-green {
-    background-color: lightgreen
+    border-color: rgb(0,200,0);
 }
 
 .button-red {
-    background-color: lightcoral;
+    border-color: red;
+}
+
+.button-margin {
+    margin-left: 1px;
+}
+
+.input-card {
+    position: relative;
+    bottom: 3px;
 }
