@@ -8,6 +8,10 @@
     </button>  
     &nbsp;  
     <span class="label-card">{{device.hwType}}</span>
+    &nbsp;
+    <span *ngIf="hasSerial()" [ngClass]="{'serial':true, 'serial-tx': device.tx !== 0, 'serial-rx': device.tx === 0}">
+      {{getSerial()}}
+    </span>
   </mat-card-header>
   <mat-card-content>
     <span>{{device.centerFrequency/1000}} kHz {{device.bandwidth/1000}} kS/s</span>

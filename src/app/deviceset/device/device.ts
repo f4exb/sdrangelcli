@@ -5,6 +5,7 @@ export interface Device {
     index: number,
     nbStreams: number,
     sequence: number,
+    serial?: string,
     state: string,
     streamIndex: number,
     tx: number    

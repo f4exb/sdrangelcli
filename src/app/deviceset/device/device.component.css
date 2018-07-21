@@ -42,3 +42,22 @@
 .label-card {
     margin-top: 5px;
 }
+
+.serial {
+    font-size: 10px;
+    padding-top: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 5px;
+    position: relative;
+    top: 3px;
+    height: 12px;
+}
+
+.serial-tx {
+    background-color: rgb(225,170,140);
+}
+
+.serial-rx {
+    background-color: rgb(140,225,170);
+}
