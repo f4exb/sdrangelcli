@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Logging, LOGGING_DEFAULT } from './logging';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
+import { LoggingService } from './logging.service';
 
 export interface LogLevel {
   value: string;
@@ -25,6 +26,7 @@ export class LoggingDialogComponent implements OnInit {
   logging: Logging = LOGGING_DEFAULT;
 
   constructor(private dialogRef: MatDialogRef<LoggingDialogComponent>,
+    private loggingService: LoggingService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
@@ -34,7 +36,21 @@ export class LoggingDialogComponent implements OnInit {
   ngOnInit() {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
+      this.get();
     });
   }
 
+  get() {
+    this.loggingService.get(this.sdrangelURL + "/logging").subscribe( logging => {
+      this.logging = logging;
+    });
+  }
+
+  save() {
+    this.dialogRef.close();
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
 }
