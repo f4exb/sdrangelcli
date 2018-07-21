@@ -17,12 +17,12 @@ export class LocationDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<LocationDialogComponent>,
     private locationService: LocationService,
     private sdrangelUrlService: SdrangelUrlService,
-    @Inject(MAT_DIALOG_DATA) data) { 
+    @Inject(MAT_DIALOG_DATA) data) {
     this.title = data.title;
   }
 
   ngOnInit() {
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => { 
+    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.get();
     });
@@ -35,6 +35,7 @@ export class LocationDialogComponent implements OnInit {
   }
 
   save() {
+    this.locationService.put(this.sdrangelURL + "/location", this.location);
     this.dialogRef.close();
   }
 
