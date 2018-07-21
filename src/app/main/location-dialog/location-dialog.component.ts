@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Location, LOCATION_DEFAULT } from './location';
 import { LocationService } from './location.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
@@ -17,7 +17,7 @@ export class LocationDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<LocationDialogComponent>,
     private locationService: LocationService,
     private sdrangelUrlService: SdrangelUrlService,
-    @Inject(MAT_DIALOG_DATA) data) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.title = data.title;
   }
 
