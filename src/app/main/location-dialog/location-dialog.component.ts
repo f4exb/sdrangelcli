@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
 import { Location, LOCATION_DEFAULT } from './location';
 import { LocationService } from './location.service';
@@ -10,7 +10,7 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
   styleUrls: ['./location-dialog.component.css']
 })
 export class LocationDialogComponent implements OnInit {
-  @Input() sdrangelURL: string;
+  sdrangelURL: string;
   title: string;
   location: Location = LOCATION_DEFAULT;
 

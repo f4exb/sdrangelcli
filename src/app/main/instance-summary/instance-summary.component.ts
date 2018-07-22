@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InstanceSummary, INSTANCE_SUMMARY_DEFAULT } from './instance-summary';
 import { InstanceSummaryService } from './instance-summary.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
@@ -10,13 +10,13 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
 })
 export class InstanceSummaryComponent implements OnInit {
 
-  @Input() sdrangelURL: string;
+  sdrangelURL: string;
   instanceSummary: InstanceSummary = INSTANCE_SUMMARY_DEFAULT;
   statusMessage: string;
   statusError: boolean = false;
 
-  constructor(private instanceSummaryService: InstanceSummaryService, 
-    private sdrangelUrlService: SdrangelUrlService) { 
+  constructor(private instanceSummaryService: InstanceSummaryService,
+    private sdrangelUrlService: SdrangelUrlService) {
   }
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class InstanceSummaryComponent implements OnInit {
         this.statusMessage = "OK";
         this.statusError = false;
       },
-      error => { 
+      error => {
         this.statusMessage = error.message;
         this.statusError = true;
       }
