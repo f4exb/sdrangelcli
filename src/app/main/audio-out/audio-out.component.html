@@ -1,0 +1,10 @@
+<mat-card class="audio-out-card">
+  <mat-card-header class="audio-out-card-header">
+    Audio output devices
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="audioDevicesInfo.nbOutputDevices !== 0">
+      <app-audio-out-device *ngFor="let device of audioDevicesInfo.outputDevices"  [audioDevice]="device"></app-audio-out-device>
+    </div>
+  </mat-card-content>
+</mat-card>

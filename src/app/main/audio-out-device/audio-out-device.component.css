@@ -1,0 +1,57 @@
+.device-card {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    background-color: white;
+    border: outset;
+    border-color: whitesmoke;
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.device-card-header {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    border: solid;
+    border-color: gray;
+    border-width: 1px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.button-card {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    width: 22px;
+    height: 22px;
+}
+
+.label-card {
+    margin-top: 5px;
+}
+
+.flag {
+    font-size: 12px;
+    padding-top: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 5px;
+    position: relative;
+    top: 3px;
+    height: 12px;
+}
+
+.sys-flag {
+    background-color: deeppink;
+}
+
+.edit-flag {
+    background-color: darkcyan;
+}
+
+.udp-flag {
+    border: solid;
+    border-width: 1px;
+}

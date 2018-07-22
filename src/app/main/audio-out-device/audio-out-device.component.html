@@ -1,0 +1,28 @@
+<mat-card class="device-card">
+  <mat-card-header class="device-card-header">
+    <button mat-button class="button-card"  matTooltip="Device settings">
+      <img src="/assets/icons/edit_icon.svg" style="height:16px; width:16px"/>
+    </button>
+    <span *ngIf="isSystemDefault()">
+      &nbsp;
+      <span class="flag sys-flag" matTooltip="Is system default device">SYS</span>
+    </span>
+    <span *ngIf="isEdited()">
+      &nbsp;
+      <span  class="flag edit-flag" matTooltip="Device settings changed from default">E</span>
+    </span>
+    &nbsp;
+    <span class="label-card">{{audioDevice.name}}</span>
+  </mat-card-header>
+  <mat-card-content>
+    <span>{{audioDevice.sampleRate}} Hz UDP: {{audioDevice.udpAddress}}:{{audioDevice.udpPort}} Channels: {{getChannelMode()}}</span>
+    <span *ngIf="copyToUDP()">
+      &nbsp;
+      <span class="flag udp-flag" matTooltip="Copies audio to UDP">UDP</span>
+    </span>
+    <span *ngIf="useRTP()">
+      &nbsp;
+      <span class="flag udp-flag" matTooltip="Use RTP protocol over UDP">RTP</span>
+    </span>
+  </mat-card-content>
+</mat-card>

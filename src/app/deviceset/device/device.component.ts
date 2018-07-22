@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Device } from './device';
-import { isDefined } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-device',
@@ -9,7 +8,7 @@ import { isDefined } from '@angular/compiler/src/util';
 })
 export class DeviceComponent implements OnInit {
   @Input() device : Device;
-   
+
   constructor() { }
 
   ngOnInit() {
