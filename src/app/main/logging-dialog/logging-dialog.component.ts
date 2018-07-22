@@ -24,6 +24,7 @@ export class LoggingDialogComponent implements OnInit {
   sdrangelURL: string;
   title: string;
   logging: Logging = LOGGING_DEFAULT;
+  logToFile: boolean;
 
   constructor(private dialogRef: MatDialogRef<LoggingDialogComponent>,
     private loggingService: LoggingService,
@@ -43,10 +44,23 @@ export class LoggingDialogComponent implements OnInit {
   get() {
     this.loggingService.get(this.sdrangelURL + "/logging").subscribe( logging => {
       this.logging = logging;
+      this.logToFile = logging.dumpToFile !== 0;
     });
   }
 
+  setLogToFile() {
+    this.logging.dumpToFile = this.logToFile ? 1 : 0;
+  }
+
   save() {
+    if (this.logging.dumpToFile === 0) {
+      if (this.logging.fileLevel) {
+        delete this.logging.fileLevel;
+      }
+      if (this.logging.fileName) {
+        delete this.logging.fileName;
+      }
+    }
     this.dialogRef.close();
   }
 

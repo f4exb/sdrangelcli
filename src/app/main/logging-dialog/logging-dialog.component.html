@@ -7,6 +7,20 @@
       {{logLevel.viewValue}}
     </mat-option>
   </mat-select>
+  &nbsp;<br/>
+  <mat-checkbox color="primary" [(ngModel)]="logToFile" (change)="setLogToFile()">Log to file</mat-checkbox>
+  <div *ngIf="logToFile">
+    &nbsp;<br/>
+    <span class="label">File level:</span><br/>
+    <mat-select [(value)]="logging.fileLevel">
+      <mat-option *ngFor="let logLevel of logLevels" [value]="logLevel.value">
+        {{logLevel.viewValue}}
+      </mat-option>
+    </mat-select>
+    &nbsp;<br/>
+    <span class="label">File name:</span><br/>
+    <input type="text" [(ngModel)]="logging.fileName">
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>

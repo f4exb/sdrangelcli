@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card'
-import { MatTooltipModule, MatDialogModule, MatOptionModule, MatSelectModule } from '@angular/material';
+import { MatTooltipModule, MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { InstanceSummaryComponent } from './main/instance-summary/instance-summary.component';
@@ -34,6 +34,7 @@ import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.com
     MatDialogModule,
     MatOptionModule,
     MatSelectModule,
+    MatCheckboxModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule
