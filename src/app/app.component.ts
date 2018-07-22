@@ -4,6 +4,7 @@ import { LocationDialogComponent } from './main/location-dialog/location-dialog.
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.component';
 import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/remove-deviceset-dialog.component';
+import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-deviceset-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -67,6 +68,27 @@ export class AppComponent {
       left: '35%'
     }
     let dialogRef = this.popupDialog.open(RemoveDevicesetDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == "OK") {
+        this.validateURL(); // triggers refresh
+      }
+    });
+  }
+
+  addDevicesetDialog(isTx: boolean) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      isTx: isTx
+    };
+    dialogConfig.height = '20%';
+    dialogConfig.width = '30%';
+    dialogConfig.position = {
+      top: '0',
+      left: '35%'
+    }
+    let dialogRef = this.popupDialog.open(AddDevicesetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if (result == "OK") {
         this.validateURL(); // triggers refresh

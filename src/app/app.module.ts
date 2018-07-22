@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LocationDialogComponent } from './main/location-dialog/location-dialog.component';
 import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.component';
 import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/remove-deviceset-dialog.component';
+import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-deviceset-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/r
     LocationDialogComponent,
     LoggingDialogComponent,
     RemoveDevicesetDialogComponent,
+    AddDevicesetDialogComponent,
     DevicesetComponent,
     DeviceComponent,
     ChannelComponent
@@ -47,7 +49,8 @@ import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/r
   entryComponents: [
     LocationDialogComponent,
     LoggingDialogComponent,
-    RemoveDevicesetDialogComponent
+    RemoveDevicesetDialogComponent,
+    AddDevicesetDialogComponent
   ]
 })
 export class AppModule { }

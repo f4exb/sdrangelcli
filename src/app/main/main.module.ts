@@ -4,11 +4,12 @@ import { InstanceSummaryComponent } from './instance-summary/instance-summary.co
 import { LocationDialogComponent } from './location-dialog/location-dialog.component';
 import { LoggingDialogComponent } from './logging-dialog/logging-dialog.component';
 import { RemoveDevicesetDialogComponent } from './remove-deviceset-dialog/remove-deviceset-dialog.component';
+import { AddDevicesetDialogComponent } from './add-deviceset-dialog/add-deviceset-dialog.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [InstanceSummaryComponent, LocationDialogComponent, LoggingDialogComponent, RemoveDevicesetDialogComponent]
+  declarations: [InstanceSummaryComponent, LocationDialogComponent, LoggingDialogComponent, RemoveDevicesetDialogComponent, AddDevicesetDialogComponent]
 })
 export class MainModule { }
