@@ -61,6 +61,7 @@ export class LoggingDialogComponent implements OnInit {
         delete this.logging.fileName;
       }
     }
+    this.loggingService.put(this.sdrangelURL + "/logging", this.logging);
     this.dialogRef.close();
   }
 
