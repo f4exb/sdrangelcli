@@ -9,7 +9,7 @@ import { ChannelComponent } from './deviceset/channel/channel.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { APP_BASE_HREF } from '@angular/common';
-import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule } from '@angular/material';
+import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule } from '@angular/material';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -28,6 +28,7 @@ describe('AppComponent', () => {
         MatOptionModule,
         MatSelectModule,
         MatCheckboxModule,
+        MatSnackBarModule,
         HttpClientModule,
         AppRoutingModule
       ],

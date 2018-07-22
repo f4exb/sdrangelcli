@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card'
-import { MatTooltipModule, MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule } from '@angular/material';
+import { MatTooltipModule, MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { InstanceSummaryComponent } from './main/instance-summary/instance-summary.component';
@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { LocationDialogComponent } from './main/location-dialog/location-dialog.component';
 import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.component';
+import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/remove-deviceset-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.com
     InstanceSummaryComponent,
     LocationDialogComponent,
     LoggingDialogComponent,
+    RemoveDevicesetDialogComponent,
     DevicesetComponent,
     DeviceComponent,
     ChannelComponent
@@ -35,6 +37,7 @@ import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.com
     MatOptionModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatSnackBarModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule
@@ -43,7 +46,8 @@ import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.com
   bootstrap: [AppComponent],
   entryComponents: [
     LocationDialogComponent,
-    LoggingDialogComponent
+    LoggingDialogComponent,
+    RemoveDevicesetDialogComponent
   ]
 })
 export class AppModule { }

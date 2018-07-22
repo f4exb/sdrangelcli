@@ -3,6 +3,7 @@ import { SdrangelUrlService } from './sdrangel-url.service';
 import { LocationDialogComponent } from './main/location-dialog/location-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.component';
+import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/remove-deviceset-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,7 @@ export class AppComponent {
   sdrangelURL = "http://127.0.0.1:8091/sdrangel"; // the default URL
 
   constructor(private sdrangelUrlService: SdrangelUrlService,
-    private locationDialog: MatDialog,
-    private loggingDialog: MatDialog) {
+    private popupDialog: MatDialog) {
   }
 
   validateURL() {
@@ -37,7 +37,7 @@ export class AppComponent {
       top: '0',
       left: '35%'
     }
-    this.locationDialog.open(LocationDialogComponent, dialogConfig);
+    this.popupDialog.open(LocationDialogComponent, dialogConfig);
   }
 
   openLoggingDialog() {
@@ -53,6 +53,24 @@ export class AppComponent {
       top: '0',
       left: '35%'
     }
-    this.loggingDialog.open(LoggingDialogComponent, dialogConfig);
+    this.popupDialog.open(LoggingDialogComponent, dialogConfig);
+  }
+
+  removeLastDevicesetDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.height = '20%';
+    dialogConfig.width = '30%';
+    dialogConfig.position = {
+      top: '0',
+      left: '35%'
+    }
+    let dialogRef = this.popupDialog.open(RemoveDevicesetDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == "OK") {
+        this.validateURL(); // triggers refresh
+      }
+    });
   }
 }
