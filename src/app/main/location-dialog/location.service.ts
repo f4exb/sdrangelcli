@@ -15,23 +15,13 @@ export class LocationService {
     return this.http.get<Location>(url);
   }
 
-  put(url: string, location: Location) {
+  put(url: string, location: Location) : Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
         'Content-Type':  'application/json'
       })
     };
-    this.http.put(url, JSON.stringify(location), httpOptions).subscribe(
-      res => {
-        console.log("PUT OK", url, res);
-      },
-      err => {
-        console.log("PUT Error", url, err);
-      },
-      () => {
-        console.log("PUT completed", url);
-      }
-    );
+    return this.http.put(url, JSON.stringify(location), httpOptions);
   }
 }

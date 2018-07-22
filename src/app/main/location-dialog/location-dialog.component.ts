@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
 import { Location, LOCATION_DEFAULT } from './location';
 import { LocationService } from './location.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
@@ -17,7 +17,8 @@ export class LocationDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<LocationDialogComponent>,
     private locationService: LocationService,
     private sdrangelUrlService: SdrangelUrlService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public snackBar: MatSnackBar) {
     this.title = data.title;
   }
 
@@ -35,7 +36,14 @@ export class LocationDialogComponent implements OnInit {
   }
 
   save() {
-    this.locationService.put(this.sdrangelURL + "/location", this.location);
+    this.locationService.put(this.sdrangelURL + "/location", this.location).subscribe(
+      res => {
+        console.log("PUT OK", res);
+      },
+      err => {
+        this.snackBar.open(err.error.message, "OK", {duration: 2000});
+      }
+    );
     this.dialogRef.close();
   }
 

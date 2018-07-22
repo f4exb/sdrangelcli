@@ -18,13 +18,5 @@ export class RemoveDevicesetService {
       })
     };
     return this.http.delete(url, httpOptions);
-    // this.http.delete(url, httpOptions).subscribe(
-    //   res => {
-    //     console.log("DELETE OK", url, res);
-    //   },
-    //   err => {
-    //     console.log("DELETE Error", url, err);
-    //   }
-    // );
   }
 }

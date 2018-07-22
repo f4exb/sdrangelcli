@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Logging, LOGGING_DEFAULT } from './logging';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { LoggingService } from './logging.service';
 
@@ -29,7 +29,8 @@ export class LoggingDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<LoggingDialogComponent>,
     private loggingService: LoggingService,
     private sdrangelUrlService: SdrangelUrlService,
-    @Inject(MAT_DIALOG_DATA) public data: any)
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public snackBar: MatSnackBar)
   {
       this.title = data.title;
   }
@@ -61,7 +62,14 @@ export class LoggingDialogComponent implements OnInit {
         delete this.logging.fileName;
       }
     }
-    this.loggingService.put(this.sdrangelURL + "/logging", this.logging);
+    this.loggingService.put(this.sdrangelURL + "/logging", this.logging).subscribe (
+      res => {
+        console.log("PUT OK", res);
+      },
+      err => {
+        this.snackBar.open(err.error.message, "OK", {duration: 2000});
+      }
+    )
     this.dialogRef.close();
   }
 
