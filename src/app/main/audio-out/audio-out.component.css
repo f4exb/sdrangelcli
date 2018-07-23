@@ -17,3 +17,8 @@
     margin-bottom: 5px;
     padding: 0.2em 0.2em 0em 0.2em;
 }
+
+::ng-deep .mat-card-header-text {
+    /* CSS styles go here */
+    margin: 0px; /* for example to remove the margin */
+}

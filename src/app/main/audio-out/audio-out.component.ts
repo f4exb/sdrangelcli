@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AudioService } from '../audio/audio.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
-import { AudioDevices } from '../audio/audio';
+import { AudioDevices, AUDIO_DEVICES_DEFAULT } from '../audio/audio';
 
 @Component({
   selector: 'app-audio-out',
@@ -10,7 +10,7 @@ import { AudioDevices } from '../audio/audio';
 })
 export class AudioOutComponent implements OnInit {
   sdrangelURL : string;
-  audioDevicesInfo : AudioDevices;
+  audioDevicesInfo : AudioDevices = AUDIO_DEVICES_DEFAULT;
   statusMessage : string;
   statusError : boolean;
 

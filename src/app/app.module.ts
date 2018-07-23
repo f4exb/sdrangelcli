@@ -17,6 +17,8 @@ import { LocationDialogComponent } from './main/location-dialog/location-dialog.
 import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.component';
 import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/remove-deviceset-dialog.component';
 import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-deviceset-dialog.component';
+import { AudioOutComponent } from './main/audio-out/audio-out.component';
+import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-device.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-dev
     AddDevicesetDialogComponent,
     DevicesetComponent,
     DeviceComponent,
-    ChannelComponent
+    ChannelComponent,
+    AudioOutComponent,
+    AudioOutDeviceComponent
   ],
   imports: [
     BrowserModule,

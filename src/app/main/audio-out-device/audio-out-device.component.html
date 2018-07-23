@@ -5,11 +5,11 @@
     </button>
     <span *ngIf="isSystemDefault()">
       &nbsp;
-      <span class="flag sys-flag" matTooltip="Is system default device">SYS</span>
+      <span class="flag flag-header sys-flag" matTooltip="Is system default device">SYS</span>
     </span>
     <span *ngIf="isEdited()">
       &nbsp;
-      <span  class="flag edit-flag" matTooltip="Device settings changed from default">E</span>
+      <span  class="flag flag-header edit-flag" matTooltip="Device settings edited (not default)">E</span>
     </span>
     &nbsp;
     <span class="label-card">{{audioDevice.name}}</span>
@@ -18,11 +18,11 @@
     <span>{{audioDevice.sampleRate}} Hz UDP: {{audioDevice.udpAddress}}:{{audioDevice.udpPort}} Channels: {{getChannelMode()}}</span>
     <span *ngIf="copyToUDP()">
       &nbsp;
-      <span class="flag udp-flag" matTooltip="Copies audio to UDP">UDP</span>
+      <span class="flag flag-content udp-flag" matTooltip="Copies audio to UDP">UDP</span>
     </span>
     <span *ngIf="useRTP()">
       &nbsp;
-      <span class="flag udp-flag" matTooltip="Use RTP protocol over UDP">RTP</span>
+      <span class="flag flag-content udp-flag" matTooltip="Use RTP protocol over UDP">RTP</span>
     </span>
   </mat-card-content>
 </mat-card>

@@ -34,21 +34,28 @@
 
 .flag {
     font-size: 12px;
-    padding-top: 4px;
+    padding-top: 3px;
     padding-left: 4px;
     padding-right: 4px;
     border-radius: 5px;
     position: relative;
-    top: 3px;
     height: 12px;
 }
 
+.flag-header {
+    top: 5px;
+}
+
+.flag-content {
+    top: 0px;
+}
+
 .sys-flag {
-    background-color: deeppink;
+    background-color: rgb(255, 166, 214);
 }
 
 .edit-flag {
-    background-color: darkcyan;
+    background-color: rgb(166, 214, 214);
 }
 
 .udp-flag {
