@@ -33,6 +33,8 @@ export class AudioOutDialogComponent implements OnInit {
     public snackBar: MatSnackBar) 
   { 
     this.audioDevice = data.audioDevice;
+    this.copyToUDP = this.audioDevice.copyToUDP !== 0;
+    this.udpUsesRTP = this.audioDevice.udpUsesRTP !== 0;
   }
 
   ngOnInit() {
