@@ -19,6 +19,8 @@ import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/r
 import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-deviceset-dialog.component';
 import { AudioOutComponent } from './main/audio-out/audio-out.component';
 import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-device.component';
+import { AudioInComponent } from './main/audio-in/audio-in.component';
+import { AudioInDeviceComponent } from './main/audio-in-device/audio-in-device.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-devic
     DeviceComponent,
     ChannelComponent,
     AudioOutComponent,
-    AudioOutDeviceComponent
+    AudioOutDeviceComponent,
+    AudioInComponent,
+    AudioInDeviceComponent
   ],
   imports: [
     BrowserModule,

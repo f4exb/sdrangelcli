@@ -12,6 +12,8 @@ import { APP_BASE_HREF } from '@angular/common';
 import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule } from '@angular/material';
 import { AudioOutComponent } from './main/audio-out/audio-out.component';
 import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-device.component';
+import { AudioInComponent } from './main/audio-in/audio-in.component';
+import { AudioInDeviceComponent } from './main/audio-in-device/audio-in-device.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -23,7 +25,9 @@ describe('AppComponent', () => {
         DeviceComponent,
         ChannelComponent,
         AudioOutComponent,
-        AudioOutDeviceComponent
+        AudioOutDeviceComponent,
+        AudioInComponent,
+        AudioInDeviceComponent
       ],
       imports: [
         FormsModule,
