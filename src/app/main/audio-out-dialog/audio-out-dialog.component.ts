@@ -54,7 +54,7 @@ export class AudioOutDialogComponent implements OnInit {
   }
 
   save() {
-    this.audioService.updateAudioOupout(this.sdrangelURL + "/audio/output/parameters", this.audioDevice).subscribe(
+    this.audioService.updateAudioOutput(this.sdrangelURL + "/audio/output/parameters", this.audioDevice).subscribe(
       res => {
         console.log("Update OK", res);
       },
