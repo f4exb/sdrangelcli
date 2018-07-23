@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { AudioOutputDevice } from '../audio/audio';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { AudioService } from '../audio/audio.service';
+import { SdrangelUrlService } from '../../sdrangel-url.service';
 
 export interface ChannelMode {
   value: number;
@@ -27,14 +28,17 @@ export class AudioOutDialogComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<AudioOutDialogComponent>,
     private audioService: AudioService,
+    private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public snackBar: MatSnackBar) 
   { 
     this.audioDevice = data.audioDevice;
-    this.sdrangelURL = data.sdrangelURL;
   }
 
   ngOnInit() {
+    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+      this.sdrangelURL = url;
+    });    
   }
 
   setCopyToUDP() {

@@ -15,6 +15,17 @@ import { AudioOutDialogComponent } from './audio-out-dialog/audio-out-dialog.com
   imports: [
     CommonModule
   ],
-  declarations: [InstanceSummaryComponent, LocationDialogComponent, LoggingDialogComponent, RemoveDevicesetDialogComponent, AddDevicesetDialogComponent, AudioOutComponent, AudioOutDeviceComponent, AudioInDeviceComponent, AudioInComponent, AudioOutDialogComponent]
+  declarations: [
+    InstanceSummaryComponent, 
+    LocationDialogComponent, 
+    LoggingDialogComponent, 
+    RemoveDevicesetDialogComponent, 
+    AddDevicesetDialogComponent, 
+    AudioOutComponent, 
+    AudioOutDeviceComponent, 
+    AudioInDeviceComponent, 
+    AudioInComponent, 
+    AudioOutDialogComponent
+  ]  
 })
 export class MainModule { }

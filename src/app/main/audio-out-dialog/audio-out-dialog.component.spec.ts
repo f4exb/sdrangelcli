@@ -10,8 +10,7 @@ describe('AudioOutDialogComponent', () => {
   let component: AudioOutDialogComponent;
   let fixture: ComponentFixture<AudioOutDialogComponent>;
   const data = { 
-    audioDevice: AUDIO_OUT_DEVICE_MOCK,
-    sdrangelURL: 'http://127.0.0.1:8091/sdrangel'
+    audioDevice: AUDIO_OUT_DEVICE_MOCK
   };
 
   beforeEach(async(() => {
