@@ -18,6 +18,20 @@
     padding: 0.2em 0.2em 0em 0.2em;
 }
 
+.audio-out-title {
+    position: relative;
+    top: 4px;
+}
+
+.button-card {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    width: 22px;
+    height: 22px;
+}
+
 ::ng-deep .mat-card-header-text {
     /* CSS styles go here */
     margin: 0px; /* for example to remove the margin */
