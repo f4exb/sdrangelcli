@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>{{audioDevice.name}}</h2>
+
+<mat-dialog-content>
+  <span class="label">Sample rate (Hz)</span><br/>
+  <input type="number" [(ngModel)]="audioDevice.sampleRate" size="20"><br/>
+  &nbsp;<br/>
+  <span class="label">UDP address</span><br/>
+  <input type="text" [(ngModel)]="audioDevice.udpAddress" size="30"><br/>
+  &nbsp;<br/>
+  <span class="label">UDP port</span><br/>
+  <input type="number" [(ngModel)]="audioDevice.udpPort" size="10"><br/>
+  <span class="label">Channel mode</span><br/>
+  <mat-select [(value)]="audioDevice.udpChannelMode">
+    <mat-option *ngFor="let channelMode of channelModes" [value]="channelMode.value">
+      {{channelMode.viewValue}}
+    </mat-option>
+  </mat-select>  
+  &nbsp;<br/>
+  <mat-checkbox color="primary" [(ngModel)]="copyToUDP" (change)="setCopyToUDP()">Copy to UDP</mat-checkbox>
+  &nbsp;<br/>
+  <mat-checkbox color="primary" [(ngModel)]="udpUsesRTP" (change)="setUDPUsesRTP()">Use RTP</mat-checkbox>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Close</button>
+  <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions>
