@@ -7,11 +7,12 @@ import { RemoveDevicesetDialogComponent } from './remove-deviceset-dialog/remove
 import { AddDevicesetDialogComponent } from './add-deviceset-dialog/add-deviceset-dialog.component';
 import { AudioOutComponent } from './audio-out/audio-out.component';
 import { AudioOutDeviceComponent } from './audio-out-device/audio-out-device.component';
+import { AudioInDeviceComponent } from './audio-in-device/audio-in-device.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [InstanceSummaryComponent, LocationDialogComponent, LoggingDialogComponent, RemoveDevicesetDialogComponent, AddDevicesetDialogComponent, AudioOutComponent, AudioOutDeviceComponent]
+  declarations: [InstanceSummaryComponent, LocationDialogComponent, LoggingDialogComponent, RemoveDevicesetDialogComponent, AddDevicesetDialogComponent, AudioOutComponent, AudioOutDeviceComponent, AudioInDeviceComponent]
 })
 export class MainModule { }

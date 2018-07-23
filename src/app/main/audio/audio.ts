@@ -44,6 +44,15 @@ export const AUDIO_OUT_DEVICE_MOCK = {
     udpUsesRTP: 1
 }
 
+export const AUDIO_IN_DEVICE_MOCK = {
+    defaultUnregistered: 0,
+    index: -1,
+    isSystemDefault: 0,
+    name: "System default device",
+    sampleRate: 48000,
+    volume: 0.15000000596046448
+}
+
 export const AUDIO_DEVICES_MOCK = {
     inputDevices: [
         {

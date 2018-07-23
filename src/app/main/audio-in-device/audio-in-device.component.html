@@ -1,0 +1,20 @@
+<mat-card class="device-card">
+    <mat-card-header class="device-card-header">
+      <button mat-button class="button-card"  matTooltip="Device settings">
+        <img src="/assets/icons/edit_icon.svg" style="height:16px; width:16px"/>
+      </button>
+      <span *ngIf="isSystemDefault()">
+        &nbsp;
+        <span class="flag flag-header sys-flag" matTooltip="Is system default device">SYS</span>
+      </span>
+      <span *ngIf="isEdited()">
+        &nbsp;
+        <span  class="flag flag-header edit-flag" matTooltip="Device settings edited (not default)">E</span>
+      </span>
+      &nbsp;
+      <span class="label-card">{{audioDevice.name}}</span>
+    </mat-card-header>
+    <mat-card-content>
+      <span>{{audioDevice.sampleRate}} Hz Vol: {{audioDevice.volume.toFixed(2)}}</span>
+    </mat-card-content>
+  </mat-card>

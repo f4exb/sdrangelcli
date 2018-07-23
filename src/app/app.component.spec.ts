@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule } from '@angular/material';
+import { AudioOutComponent } from './main/audio-out/audio-out.component';
+import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-device.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -19,7 +21,9 @@ describe('AppComponent', () => {
         InstanceSummaryComponent,
         DevicesetComponent,
         DeviceComponent,
-        ChannelComponent
+        ChannelComponent,
+        AudioOutComponent,
+        AudioOutDeviceComponent
       ],
       imports: [
         FormsModule,
