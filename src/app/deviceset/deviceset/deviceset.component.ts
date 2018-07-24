@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { DeviceSet } from './deviceset';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dialog.component';
@@ -11,7 +11,9 @@ import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dia
 export class DevicesetComponent implements OnInit {
   @Input() deviceSet : DeviceSet;
 
-  constructor(private popupDialog: MatDialog) { }
+  constructor(private popupDialog: MatDialog,
+    private elementRef: ElementRef) {
+  }
 
   ngOnInit() {
   }
@@ -43,8 +45,8 @@ export class DevicesetComponent implements OnInit {
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     dialogConfig.position = {
-      top: '0',
-      left: '35%'
+      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
+      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
     }
     this.popupDialog.open(AddChannelDialogComponent, dialogConfig);
   }

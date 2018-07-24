@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { SdrangelUrlService } from './sdrangel-url.service';
 import { LocationDialogComponent } from './main/location-dialog/location-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
@@ -18,7 +18,8 @@ export class AppComponent {
   sdrangelURL = "http://127.0.0.1:8091/sdrangel"; // the default URL
 
   constructor(private sdrangelUrlService: SdrangelUrlService,
-    private popupDialog: MatDialog) {
+    private popupDialog: MatDialog,
+    private elementRef: ElementRef) {
   }
 
   validateURL() {
@@ -35,8 +36,8 @@ export class AppComponent {
     dialogConfig.height = '290px';
     dialogConfig.width = '360px';
     dialogConfig.position = {
-      top: '0',
-      left: '35%'
+      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
+      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
     }
     this.popupDialog.open(LocationDialogComponent, dialogConfig);
   }
@@ -51,8 +52,8 @@ export class AppComponent {
     dialogConfig.height = '380px';
     dialogConfig.width = '360px';
     dialogConfig.position = {
-      top: '0',
-      left: '35%'
+      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
+      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
     }
     this.popupDialog.open(LoggingDialogComponent, dialogConfig);
   }
@@ -64,8 +65,8 @@ export class AppComponent {
     dialogConfig.height = '150px';
     dialogConfig.width = '360px';
     dialogConfig.position = {
-      top: '0',
-      left: '35%'
+      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
+      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
     }
     let dialogRef = this.popupDialog.open(RemoveDevicesetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
@@ -85,8 +86,8 @@ export class AppComponent {
     dialogConfig.height = '150px';
     dialogConfig.width = '360px';
     dialogConfig.position = {
-      top: '0',
-      left: '35%'
+      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
+      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
     }
     let dialogRef = this.popupDialog.open(AddDevicesetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
