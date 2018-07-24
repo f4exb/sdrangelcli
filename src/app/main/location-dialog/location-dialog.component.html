@@ -1,14 +1,32 @@
 <h2 mat-dialog-title>{{title}}</h2>
-
+<mat-divider></mat-divider>
 <mat-dialog-content>
-  <span class="label">Latitude (positive North)</span><br/>
-  <input type="number" [(ngModel)]="location.latitude" size="20"><br/>
-  &nbsp;<br/>
-  <span class="label">Longitude (positive East)</span><br/>
-  <input type="number" [(ngModel)]="location.longitude" size="20">
+  <table>
+    <tr>
+      <td>
+        <span class="label">Latitude (positive North)</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input class="lat-lon-input" type="number" [(ngModel)]="location.latitude">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="label inner-label">Longitude (positive East)</span><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input class="lat-lon-input" type="number" [(ngModel)]="location.longitude">
+      </td>
+    </tr>
+  </table>
+  &nbsp;
 </mat-dialog-content>
-
+<mat-divider></mat-divider>
 <mat-dialog-actions>
-    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button"(click)="close()">Cancel</button>
     <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
 </mat-dialog-actions>

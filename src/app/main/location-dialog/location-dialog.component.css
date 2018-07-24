@@ -2,3 +2,21 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
 }
+
+.inner-label {
+    vertical-align: -0.6em;
+}
+
+.lat-lon-input {
+    width: 15ch;
+}
+
+::ng-deep .mat-divider {
+    /* CSS styles go here */
+    margin: 5px; /* for example to remove the margin */
+}
+
+::ng-deep .mat-dialog-title {
+    /* CSS styles go here */
+    margin: 0px; /* for example to remove the margin */
+}

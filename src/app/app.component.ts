@@ -48,7 +48,7 @@ export class AppComponent {
     dialogConfig.data = {
       title: 'Logging options'
     };
-    dialogConfig.height = '35%';
+    dialogConfig.height = '40%';
     dialogConfig.width = '30%';
     dialogConfig.position = {
       top: '0',

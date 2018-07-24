@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoggingDialogComponent } from './logging-dialog.component';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatOptionModule, MatSelectModule, MatDialogRef, MAT_DIALOG_DATA, MatCheckboxModule, MatSnackBarModule } from '@angular/material';
+import { MatDialogModule, MatOptionModule, MatSelectModule, MatDialogRef, MAT_DIALOG_DATA, MatCheckboxModule, MatSnackBarModule, MatDividerModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 
 describe('LoggingDialogComponent', () => {
@@ -20,6 +20,7 @@ describe('LoggingDialogComponent', () => {
         MatSelectModule,
         MatCheckboxModule,
         MatSnackBarModule,
+        MatDividerModule,
         HttpClientModule
       ],
       providers: [

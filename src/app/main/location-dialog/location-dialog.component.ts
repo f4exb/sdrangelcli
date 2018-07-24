@@ -32,10 +32,15 @@ export class LocationDialogComponent implements OnInit {
   get() {
     this.locationService.get(this.sdrangelURL + "/location").subscribe( location => {
       this.location = location;
+      this.location.latitude = this.formatCoordinate(this.location.latitude);
+      this.location.longitude = this.formatCoordinate(this.location.longitude);
     });
   }
 
   save() {
+    this.location.latitude = this.formatCoordinate(this.location.latitude);
+    this.location.longitude = this.formatCoordinate(this.location.longitude);
+
     this.locationService.put(this.sdrangelURL + "/location", this.location).subscribe(
       res => {
         console.log("PUT OK", res);
@@ -44,10 +49,15 @@ export class LocationDialogComponent implements OnInit {
         this.snackBar.open(err.error.message, "OK", {duration: 2000});
       }
     );
+    
     this.dialogRef.close();
   }
 
   close() {
     this.dialogRef.close();
+  }
+
+  private formatCoordinate(x : number) : number {
+    return Math.round(x*1e6)/1e6;
   }
 }

@@ -1,29 +1,59 @@
 <h2 mat-dialog-title>{{title}}</h2>
-
+<mat-divider></mat-divider>
 <mat-dialog-content class="dialog-content">
-  <span class="label">Console level</span><br/>
-  <mat-select class="logging-level-input" [(value)]="logging.consoleLevel">
-    <mat-option *ngFor="let logLevel of logLevels" [value]="logLevel.value">
-      {{logLevel.viewValue}}
-    </mat-option>
-  </mat-select><br/>
-  &nbsp;<br/>
-  <mat-checkbox color="primary" [(ngModel)]="logToFile" (change)="setLogToFile()">Log to file</mat-checkbox>
+  <table>
+    <tr>
+      <td>
+        <span class="label inner-label">Console level</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-select class="logging-level-input" [(value)]="logging.consoleLevel">
+          <mat-option *ngFor="let logLevel of logLevels" [value]="logLevel.value">
+            {{logLevel.viewValue}}
+          </mat-option>
+        </mat-select>        
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-checkbox color="primary" [(ngModel)]="logToFile" (change)="setLogToFile()">Log to file</mat-checkbox>        
+      </td>
+    </tr>
+  </table>
   <div *ngIf="logToFile">
-    &nbsp;<br/>
-    <span class="label">File level:</span><br/>
-    <mat-select class="logging-level-input" [(value)]="logging.fileLevel">
-      <mat-option *ngFor="let logLevel of logLevels" [value]="logLevel.value">
-        {{logLevel.viewValue}}
-      </mat-option>
-    </mat-select><br/>
-    &nbsp;<br/>
-    <span class="label">File name:</span><br/>
-    <input type="text" [(ngModel)]="logging.fileName">
+    <table>
+      <tr>
+        <td>
+          <span class="label inner-label">File level:</span><br/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-select class="logging-level-input" [(value)]="logging.fileLevel">
+            <mat-option *ngFor="let logLevel of logLevels" [value]="logLevel.value">
+              {{logLevel.viewValue}}
+            </mat-option>
+          </mat-select><br/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="label inner-label">File name:</span><br/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" [(ngModel)]="logging.fileName">
+        </td>
+      </tr>
+    </table>
   </div>
+  &nbsp;
 </mat-dialog-content>
-
+<mat-divider></mat-divider>
 <mat-dialog-actions>
-    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button"(click)="close()">Cancel</button>
     <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
 </mat-dialog-actions>
