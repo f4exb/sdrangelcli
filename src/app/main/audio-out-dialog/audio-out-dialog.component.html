@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>{{audioDevice.name}}</h2>
-
+<mat-divider></mat-divider>
 <mat-dialog-content class="dialog-content">
   <table>
     <tr>
@@ -24,7 +24,7 @@
     </tr>
     <tr>
       <td>
-        <span class="label inner-label">UDP address</span><br/>
+        <span class="label inner-label">UDP IPv4 address</span><br/>
       </td>
       <td>
         <span class="label inner-label">UDP port</span><br/>
@@ -48,7 +48,7 @@
     </tr>
   </table>
 </mat-dialog-content>
-
+<mat-divider></mat-divider>
 <mat-dialog-actions>
   <button class="mat-raised-button"(click)="close()">Cancel</button>
   <button class="mat-raised-button mat-primary"(click)="save()">Save</button>

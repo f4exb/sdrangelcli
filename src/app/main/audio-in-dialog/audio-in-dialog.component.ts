@@ -21,6 +21,7 @@ export class AudioInDialogComponent implements OnInit {
     public snackBar: MatSnackBar)
   {
     this.audioDevice = data.audioDevice;
+    this.audioDevice.volume = Number(this.audioDevice.volume.toFixed(2));
     this.audioDeviceRef = <AudioInputDevice> {};
     this.audioDeviceCopy(this.audioDevice, this.audioDeviceRef); // store reference state with custom copy
   }

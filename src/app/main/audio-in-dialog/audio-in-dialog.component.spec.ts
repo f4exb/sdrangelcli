@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AudioInDialogComponent } from './audio-in-dialog.component';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule, MatDialogRef, MAT_DIALOG_DATA, MatDividerModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { AUDIO_IN_DEVICE_MOCK } from '../audio/audio';
 
@@ -23,6 +23,7 @@ describe('AudioInDialogComponent', () => {
         MatSelectModule,
         MatCheckboxModule,
         MatSnackBarModule,
+        MatDividerModule,
         HttpClientModule
       ],
       providers: [

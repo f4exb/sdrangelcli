@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AudioOutDialogComponent } from './audio-out-dialog.component';
 import { AUDIO_OUT_DEVICE_MOCK } from '../audio/audio';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatSnackBarModule, MatOptionModule, MatSelectModule, MatCheckboxModule } from '@angular/material';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatSnackBarModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatDividerModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 
 describe('AudioOutDialogComponent', () => {
@@ -23,6 +23,7 @@ describe('AudioOutDialogComponent', () => {
         MatSelectModule,
         MatCheckboxModule,
         MatSnackBarModule,
+        MatDividerModule,
         HttpClientModule
       ],   
       providers: [
