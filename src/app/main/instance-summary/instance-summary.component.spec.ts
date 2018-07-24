@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DevicesetComponent } from '../../deviceset/deviceset/deviceset.component';
 import { DeviceComponent } from '../../deviceset/device/device.component';
 import { ChannelComponent } from '../../deviceset/channel/channel.component';
+import { MatDialogModule } from '@angular/material';
 
 describe('InstanceSummaryComponent one device set', () => {
   let component: InstanceSummaryComponent;
@@ -17,15 +18,16 @@ describe('InstanceSummaryComponent one device set', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         InstanceSummaryComponent,
         DevicesetComponent ,
         DeviceComponent,
         ChannelComponent
       ],
-      imports: [ 
-        HttpClientModule, 
-        MatCardModule 
+      imports: [
+        HttpClientModule,
+        MatCardModule,
+        MatDialogModule
       ],
       providers: [ InstanceSummaryService ]
     })
@@ -47,7 +49,7 @@ describe('InstanceSummaryComponent one device set', () => {
   it('should fetch data', () => {
     expect(component.instanceSummary.appname).toBe("SDRangel");
   });
-  
+
 });
 
 describe('InstanceSummaryComponent empty', () => {
@@ -57,15 +59,16 @@ describe('InstanceSummaryComponent empty', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         InstanceSummaryComponent,
         DevicesetComponent,
         DeviceComponent,
         ChannelComponent
       ],
-      imports: [ 
-        HttpClientModule, 
-        MatCardModule 
+      imports: [
+        HttpClientModule,
+        MatCardModule,
+        MatDialogModule
       ],
       providers: [ InstanceSummaryService ]
     })
@@ -87,7 +90,7 @@ describe('InstanceSummaryComponent empty', () => {
   it('should fetch data', () => {
     expect(component.instanceSummary.appname).toBe("SDRangelSrv");
   });
-  
+
 });
 
 describe('InstanceSummaryComponent many device sets', () => {
@@ -97,15 +100,16 @@ describe('InstanceSummaryComponent many device sets', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         InstanceSummaryComponent,
         DevicesetComponent,
         DeviceComponent,
         ChannelComponent
       ],
-      imports: [ 
-        HttpClientModule, 
-        MatCardModule 
+      imports: [
+        HttpClientModule,
+        MatCardModule,
+        MatDialogModule
       ],
       providers: [ InstanceSummaryService ]
     })
@@ -119,11 +123,11 @@ describe('InstanceSummaryComponent many device sets', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   it('should have 3 device sets', () => {
     expect(component.instanceSummary.devicesetlist.devicesetcount).toBe(3);
     expect(component.instanceSummary.devicesetlist.deviceSets).toBeDefined();
@@ -131,5 +135,5 @@ describe('InstanceSummaryComponent many device sets', () => {
     expect(component.instanceSummary.devicesetlist.deviceSets[1]).toBeDefined();
     expect(component.instanceSummary.devicesetlist.deviceSets[2]).toBeDefined();
   });
-  
+
 });

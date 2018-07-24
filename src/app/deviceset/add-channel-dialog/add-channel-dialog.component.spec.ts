@@ -1,14 +1,34 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddChannelDialogComponent } from './add-channel-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { MatDialogModule, MatOptionModule, MatSelectModule, MatSnackBarModule, MatDividerModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('AddChannelDialogComponent', () => {
   let component: AddChannelDialogComponent;
   let fixture: ComponentFixture<AddChannelDialogComponent>;
+  const data = {
+    deviceSetIndex: 0,
+    isTx: false
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddChannelDialogComponent ]
+      declarations: [ AddChannelDialogComponent ],
+      imports: [
+        FormsModule,
+        MatDialogModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatDividerModule,
+        HttpClientModule
+      ],
+      providers: [
+        { provide: MatDialogRef, useValue : {} },
+        { provide: MAT_DIALOG_DATA, useValue: data }
+      ]
     })
     .compileComponents();
   }));

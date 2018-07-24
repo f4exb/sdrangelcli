@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { SdrangelUrlService } from '../../sdrangel-url.service';
+import { AddChannelService } from './add-channel.service';
+
+export interface ChannelType {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-add-channel-dialog',
@@ -6,10 +14,50 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-channel-dialog.component.css']
 })
 export class AddChannelDialogComponent implements OnInit {
+  channelTypes : ChannelType[] = [];
+  selectedChannelId : string;
+  deviceSetIndex: number;
+  isTx : boolean;
+  sdrangelURL : string;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private dialogRef: MatDialogRef<AddChannelDialogComponent>,
+    private addChannelService : AddChannelService,
+    private sdrangelUrlService: SdrangelUrlService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public snackBar: MatSnackBar)
+  {
+    this.deviceSetIndex = data.deviceSetIndex;
+    this.isTx = data.isTx;
   }
 
+  ngOnInit() {
+    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+      this.sdrangelURL = url;
+      this.getAvailableChannels(this.sdrangelURL);
+    });
+  }
+
+  private getAvailableChannels(sdrangelURL: string) {
+    this.addChannelService.getAvailableChannels(sdrangelURL + "/channels", this.isTx).subscribe(
+      availableChannels => {
+        for (let availableChannel of availableChannels.channels) {
+          this.channelTypes.push({value: availableChannel.id, viewValue: availableChannel.name});
+          if (!this.selectedChannelId) {
+            this.selectedChannelId = availableChannel.id;
+          }
+        }
+      },
+      error => {
+        this.snackBar.open(error.message, "OK", {duration: 2000});
+      }
+    )
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
+
+  save() {
+    this.dialogRef.close();
+  }
 }

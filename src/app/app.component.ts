@@ -32,8 +32,8 @@ export class AppComponent {
     dialogConfig.data = {
       title: 'Station Location'
     };
-    dialogConfig.height = '30%';
-    dialogConfig.width = '30%';
+    dialogConfig.height = '290px';
+    dialogConfig.width = '360px';
     dialogConfig.position = {
       top: '0',
       left: '35%'
@@ -48,8 +48,8 @@ export class AppComponent {
     dialogConfig.data = {
       title: 'Logging options'
     };
-    dialogConfig.height = '40%';
-    dialogConfig.width = '30%';
+    dialogConfig.height = '380px';
+    dialogConfig.width = '360px';
     dialogConfig.position = {
       top: '0',
       left: '35%'
@@ -61,8 +61,8 @@ export class AppComponent {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.height = '20%';
-    dialogConfig.width = '30%';
+    dialogConfig.height = '150px';
+    dialogConfig.width = '360px';
     dialogConfig.position = {
       top: '0',
       left: '35%'
@@ -82,8 +82,8 @@ export class AppComponent {
     dialogConfig.data = {
       isTx: isTx
     };
-    dialogConfig.height = '20%';
-    dialogConfig.width = '30%';
+    dialogConfig.height = '150px';
+    dialogConfig.width = '360px';
     dialogConfig.position = {
       top: '0',
       left: '35%'

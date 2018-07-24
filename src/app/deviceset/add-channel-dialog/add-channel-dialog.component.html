@@ -1,3 +1,14 @@
-<p>
-  add-channel-dialog works!
-</p>
+<h2 mat-dialog-title>Add new channel</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+  <mat-select class="available-channels-input" [(value)]="selectedChannelId">
+    <mat-option *ngFor="let channelType of channelTypes" [value]="channelType.value">
+      {{channelType.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary"(click)="save()">OK</button>
+</mat-dialog-actions>

@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DEVICESET_MOCK_WITH_CHANNELS, DEVICESET_MOCK_WITHOUT_CHANNELS, DEVICESET_TX_MOCK } from './deviceset';
 import { DeviceComponent } from '../device/device.component';
 import { ChannelComponent } from '../channel/channel.component';
+import { MatDialogModule } from '@angular/material';
 
 describe('DevicesetComponent without channels', () => {
   let component: DevicesetComponent;
@@ -12,13 +13,14 @@ describe('DevicesetComponent without channels', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         DevicesetComponent,
         DeviceComponent,
         ChannelComponent
       ],
       imports: [
-        MatCardModule
+        MatCardModule,
+        MatDialogModule
       ]
     })
     .compileComponents();
@@ -53,13 +55,14 @@ describe('DevicesetComponent with channels', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         DevicesetComponent,
         DeviceComponent,
         ChannelComponent
       ],
       imports: [
-        MatCardModule
+        MatCardModule,
+        MatDialogModule
       ]
     })
     .compileComponents();
@@ -72,7 +75,7 @@ describe('DevicesetComponent with channels', () => {
     component.deviceSet.samplingDevice.index = 0;
     fixture.detectChanges();
   });
-  
+
   it('should create deviceset', () => {
     expect(component).toBeTruthy();
   });
@@ -91,13 +94,14 @@ describe('DevicesetComponent with Tx device', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         DevicesetComponent,
         DeviceComponent,
         ChannelComponent
       ],
       imports: [
-        MatCardModule
+        MatCardModule,
+        MatDialogModule
       ]
     })
     .compileComponents();
@@ -109,7 +113,7 @@ describe('DevicesetComponent with Tx device', () => {
     component.deviceSet = DEVICESET_TX_MOCK;
     fixture.detectChanges();
   });
-  
+
   it('should create deviceset', () => {
     expect(component).toBeTruthy();
   });
