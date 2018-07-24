@@ -1,4 +1,33 @@
+.dialog-content {
+    overflow: initial;
+}
+
 .label {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
+}
+
+.inner-label {
+    vertical-align: -0.6em;
+}
+
+.sample-rate-input {
+    width: 10ch;
+}
+
+.udp-address-input {
+    width: 20ch;
+}
+
+.udp-port-input {
+    width: 8ch;
+}
+
+.channel-mode-input {
+    width: 10ch;
+}
+
+::ng-deep .mat-checkbox-label {
+    /* CSS styles go here */
+    font-size: 14px; /* for example to remove the margin */
 }

@@ -1,24 +1,52 @@
 <h2 mat-dialog-title>{{audioDevice.name}}</h2>
 
-<mat-dialog-content>
-  <span class="label">Sample rate (Hz)</span><br/>
-  <input type="number" [(ngModel)]="audioDevice.sampleRate" size="20"><br/>
-  &nbsp;<br/>
-  <span class="label">UDP address</span><br/>
-  <input type="text" [(ngModel)]="audioDevice.udpAddress" size="30"><br/>
-  &nbsp;<br/>
-  <span class="label">UDP port</span><br/>
-  <input type="number" [(ngModel)]="audioDevice.udpPort" size="10"><br/>
-  <span class="label">Channel mode</span><br/>
-  <mat-select [(value)]="audioDevice.udpChannelMode">
-    <mat-option *ngFor="let channelMode of channelModes" [value]="channelMode.value">
-      {{channelMode.viewValue}}
-    </mat-option>
-  </mat-select>  
-  &nbsp;<br/>
-  <mat-checkbox color="primary" [(ngModel)]="copyToUDP" (change)="setCopyToUDP()">Copy to UDP</mat-checkbox>
-  &nbsp;<br/>
-  <mat-checkbox color="primary" [(ngModel)]="udpUsesRTP" (change)="setUDPUsesRTP()">Use RTP</mat-checkbox>
+<mat-dialog-content class="dialog-content">
+  <table>
+    <tr>
+      <td>
+        <span class="label">Sample rate (Hz)</span><br/>
+      </td>
+      <td>
+        <span class="label">Channel mode</span><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input class="sample-rate-input" type="number" [(ngModel)]="audioDevice.sampleRate"><br/>
+      </td>
+      <td>
+        <mat-select class="channel-mode-input" [(value)]="audioDevice.udpChannelMode">
+          <mat-option *ngFor="let channelMode of channelModes" [value]="channelMode.value">
+            {{channelMode.viewValue}}
+          </mat-option>
+        </mat-select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="label inner-label">UDP address</span><br/>
+      </td>
+      <td>
+        <span class="label inner-label">UDP port</span><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input class="udp-address-input" type="text" [(ngModel)]="audioDevice.udpAddress"><br/>
+      </td>
+      <td>
+        <input class="udp-port-input" type="number" [(ngModel)]="audioDevice.udpPort"><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-checkbox class="inner-label" color="primary" [(ngModel)]="copyToUDP" (change)="setCopyToUDP()">Copy to UDP</mat-checkbox>
+      </td>
+      <td>
+        <mat-checkbox class="inner-label" color="primary" [(ngModel)]="udpUsesRTP" (change)="setUDPUsesRTP()">Use RTP</mat-checkbox>
+      </td>
+    </tr>
+  </table>
 </mat-dialog-content>
 
 <mat-dialog-actions>
