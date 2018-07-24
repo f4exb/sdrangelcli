@@ -23,6 +23,7 @@ export class AudioOutDialogComponent implements OnInit {
   ];  
   sdrangelURL: string;
   audioDevice : AudioOutputDevice;
+  audioDeviceRef : AudioOutputDevice;
   copyToUDP: boolean;
   udpUsesRTP: boolean;
 
@@ -33,6 +34,8 @@ export class AudioOutDialogComponent implements OnInit {
     public snackBar: MatSnackBar) 
   { 
     this.audioDevice = data.audioDevice;
+    this.audioDeviceRef = <AudioOutputDevice> {};
+    this.audioDeviceCopy(this.audioDevice, this.audioDeviceRef); // store reference
     this.copyToUDP = this.audioDevice.copyToUDP !== 0;
     this.udpUsesRTP = this.audioDevice.udpUsesRTP !== 0;
   }
@@ -53,17 +56,31 @@ export class AudioOutDialogComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+    this.audioDeviceCopy(this.audioDeviceRef, this.audioDevice); // restore from reference
   }
 
   save() {
     this.audioService.updateAudioOutput(this.sdrangelURL + "/audio/output/parameters", this.audioDevice).subscribe(
       res => {
         console.log("Update OK", res);
+        this.dialogRef.close();
+        this.audioDeviceCopy(this.audioDevice, this.audioDeviceRef); // update reference
       },
       err => {
         this.snackBar.open(err.error.message, "OK", {duration: 2000});
+        this.dialogRef.close();
+        this.audioDeviceCopy(this.audioDeviceRef, this.audioDevice); // restore from reference
       }
     );    
-    this.dialogRef.close();
   }
+
+  private audioDeviceCopy(from: AudioOutputDevice, to: AudioOutputDevice) {
+    to.sampleRate = from.sampleRate;
+    to.copyToUDP = from.copyToUDP;
+    to.udpUsesRTP = from.udpUsesRTP;
+    to.udpAddress = from.udpAddress;
+    to.udpChannelMode = from.udpChannelMode;
+    to.udpPort = from.udpPort
+    to.defaultUnregistered = from.defaultUnregistered;
+  }  
 }

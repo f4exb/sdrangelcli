@@ -12,6 +12,7 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
 export class AudioInDialogComponent implements OnInit {
   sdrangelURL: string;
   audioDevice : AudioInputDevice;
+  audioDeviceRef : AudioInputDevice;
 
   constructor(private dialogRef: MatDialogRef<AudioInDialogComponent>,
     private audioService: AudioService,
@@ -20,6 +21,8 @@ export class AudioInDialogComponent implements OnInit {
     public snackBar: MatSnackBar)
   {
     this.audioDevice = data.audioDevice;
+    this.audioDeviceRef = <AudioInputDevice> {};
+    this.audioDeviceCopy(this.audioDevice, this.audioDeviceRef); // store reference state with custom copy
   }
 
   ngOnInit() {
@@ -30,17 +33,27 @@ export class AudioInDialogComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+    this.audioDeviceCopy(this.audioDeviceRef, this.audioDevice); // restore reference state with custom copy
   }
 
   save() {
     this.audioService.updateAudioInput(this.sdrangelURL + "/audio/output/parameters", this.audioDevice).subscribe(
       res => {
         console.log("Update OK", res);
+        this.dialogRef.close();
+        this.audioDeviceCopy(this.audioDevice, this.audioDeviceRef); // update reference state with custom copy
       },
       err => {
         this.snackBar.open(err.error.message, "OK", {duration: 2000});
+        this.dialogRef.close();
+        this.audioDeviceCopy(this.audioDeviceRef, this.audioDevice); // restore reference state with custom copy
       }
     );
-    this.dialogRef.close();
+  }
+
+  private audioDeviceCopy(from: AudioInputDevice, to: AudioInputDevice) {
+    to.sampleRate = from.sampleRate;
+    to.volume = from.volume;
+    to.defaultUnregistered = from.defaultUnregistered;
   }
 }
