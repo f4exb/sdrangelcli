@@ -9,11 +9,11 @@ import { AvailableChannels, NewChannel } from './channels';
 })
 export class AddChannelService {
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
   }
 
   getAvailableChannels(url: string, forTx: boolean): Observable<AvailableChannels> {
-    const newurl = url + (forTx ? "?tx=1" : "?tx=0");
+    const newurl = url + '/channels'+ (forTx ? "?tx=1" : "?tx=0");
     return this.http.get<AvailableChannels>(newurl);
   }
 
@@ -21,13 +21,13 @@ export class AddChannelService {
     let newChannel = <NewChannel>{};
     newChannel.channelType = channelId;
     newChannel.tx = isTx ? 1 : 0;
-    const newurl = url + ("?deviceSetIndex=" + deviceSetIndex);
+    const newurl = url + '/deviceset/' + deviceSetIndex + '/channel';
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
         'Content-Type':  'application/json'
       })
-    };    
+    };
     return this.http.post(newurl, JSON.stringify(newChannel), httpOptions);
   }
 }

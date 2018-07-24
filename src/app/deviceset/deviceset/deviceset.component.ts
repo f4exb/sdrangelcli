@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { DeviceSet } from './deviceset';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dialog.component';
@@ -10,6 +10,7 @@ import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dia
 })
 export class DevicesetComponent implements OnInit {
   @Input() deviceSet : DeviceSet;
+  @Output() channelAdded = new EventEmitter();
 
   constructor(private popupDialog: MatDialog,
     private elementRef: ElementRef) {
@@ -44,10 +45,17 @@ export class DevicesetComponent implements OnInit {
     };
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
+    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
-      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
-      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
+      top: dialogY + 'px',
+      left: dialogX + 'px'
     }
-    this.popupDialog.open(AddChannelDialogComponent, dialogConfig);
+    let dialogRef = this.popupDialog.open(AddChannelDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == "OK") {
+        this.channelAdded.emit(); // triggers refresh
+      }
+    });
   }
 }

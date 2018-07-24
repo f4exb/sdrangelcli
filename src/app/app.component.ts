@@ -35,9 +35,11 @@ export class AppComponent {
     };
     dialogConfig.height = '290px';
     dialogConfig.width = '360px';
+    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
-      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
-      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
+      top: dialogY + 'px',
+      left: dialogX + 'px'
     }
     this.popupDialog.open(LocationDialogComponent, dialogConfig);
   }
@@ -51,9 +53,11 @@ export class AppComponent {
     };
     dialogConfig.height = '380px';
     dialogConfig.width = '360px';
+    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
-      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
-      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
+      top: dialogY + 'px',
+      left: dialogX + 'px'
     }
     this.popupDialog.open(LoggingDialogComponent, dialogConfig);
   }
@@ -64,9 +68,11 @@ export class AppComponent {
     dialogConfig.autoFocus = true;
     dialogConfig.height = '150px';
     dialogConfig.width = '360px';
+    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
-      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
-      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
+      top: dialogY + 'px',
+      left: dialogX + 'px'
     }
     let dialogRef = this.popupDialog.open(RemoveDevicesetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
@@ -85,9 +91,11 @@ export class AppComponent {
     };
     dialogConfig.height = '150px';
     dialogConfig.width = '360px';
+    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
-      top: (this.elementRef.nativeElement.offsetTop + 30) + 'px',
-      left: (this.elementRef.nativeElement.offsetLeft + 30) + 'px'
+      top: dialogY + 'px',
+      left: dialogX + 'px'
     }
     let dialogRef = this.popupDialog.open(AddDevicesetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {

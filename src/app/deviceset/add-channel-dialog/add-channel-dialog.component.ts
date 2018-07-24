@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { AddChannelService } from './add-channel.service';
+import { ERROR_COMPONENT_TYPE } from '@angular/compiler';
 
 export interface ChannelType {
   value: string;
@@ -38,7 +39,7 @@ export class AddChannelDialogComponent implements OnInit {
   }
 
   private getAvailableChannels(sdrangelURL: string) {
-    this.addChannelService.getAvailableChannels(sdrangelURL + "/channels", this.isTx).subscribe(
+    this.addChannelService.getAvailableChannels(sdrangelURL, this.isTx).subscribe(
       availableChannels => {
         for (let availableChannel of availableChannels.channels) {
           this.channelTypes.push({value: availableChannel.id, viewValue: availableChannel.name});
@@ -54,10 +55,20 @@ export class AddChannelDialogComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close("Dismiss");
   }
 
   save() {
-    this.dialogRef.close();
+    this.addChannelService.addChannel(this.sdrangelURL, this.deviceSetIndex, this.isTx, this.selectedChannelId).subscribe(
+      res => {
+        console.log("Added OK", res);
+        this.dialogRef.close("OK");
+      },
+      error => {
+        console.log(error);
+        this.snackBar.open(error.message, "OK", {duration: 2000});
+        this.dialogRef.close("Error");
+      }
+    );
   }
 }

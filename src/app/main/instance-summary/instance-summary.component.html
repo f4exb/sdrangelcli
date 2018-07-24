@@ -12,7 +12,8 @@
   <span>PID {{instanceSummary.pid}}</span>
 </mat-card>
 <div *ngIf="instanceSummary.devicesetlist.devicesetcount !== 0">
-  <app-deviceset *ngFor="let deviceSet of instanceSummary.devicesetlist.deviceSets" [deviceSet]="deviceSet"></app-deviceset>
+  <app-deviceset *ngFor="let deviceSet of instanceSummary.devicesetlist.deviceSets" [deviceSet]="deviceSet" (channelAdded)="fetchInstanceSummary()">
+  </app-deviceset>
 </div>
 <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
   {{ statusMessage }}
