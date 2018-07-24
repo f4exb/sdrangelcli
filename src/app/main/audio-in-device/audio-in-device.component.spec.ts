@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AudioInDeviceComponent } from './audio-in-device.component';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatDialogModule } from '@angular/material';
 import { AUDIO_IN_DEVICE_MOCK } from '../audio/audio';
 
 describe('AudioInDeviceComponent', () => {
@@ -12,7 +12,8 @@ describe('AudioInDeviceComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AudioInDeviceComponent ],
       imports: [
-        MatCardModule
+        MatCardModule,
+        MatDialogModule
       ]
     })
     .compileComponents();

@@ -22,6 +22,7 @@ import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-devic
 import { AudioInComponent } from './main/audio-in/audio-in.component';
 import { AudioInDeviceComponent } from './main/audio-in-device/audio-in-device.component';
 import { AudioOutDialogComponent } from './main/audio-out-dialog/audio-out-dialog.component';
+import { AudioInDialogComponent } from './main/audio-in-dialog/audio-in-dialog.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { AudioOutDialogComponent } from './main/audio-out-dialog/audio-out-dialo
     AudioOutDeviceComponent,
     AudioOutDialogComponent,
     AudioInComponent,
-    AudioInDeviceComponent
+    AudioInDeviceComponent,
+    AudioInDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,8 @@ import { AudioOutDialogComponent } from './main/audio-out-dialog/audio-out-dialo
     LoggingDialogComponent,
     RemoveDevicesetDialogComponent,
     AddDevicesetDialogComponent,
-    AudioOutDialogComponent
+    AudioOutDialogComponent,
+    AudioInDialogComponent
   ]
 })
 export class AppModule { }

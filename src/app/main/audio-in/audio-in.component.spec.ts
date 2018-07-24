@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AudioInComponent } from './audio-in.component';
 import { AudioInDeviceComponent } from '../audio-in-device/audio-in-device.component';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatDialogModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { AUDIO_DEVICES_MOCK } from '../audio/audio';
 
@@ -18,6 +18,7 @@ describe('AudioInComponent', () => {
       ],
       imports: [
         MatCardModule,
+        MatDialogModule,
         HttpClientModule
       ]
     })

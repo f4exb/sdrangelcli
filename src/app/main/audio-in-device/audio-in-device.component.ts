@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AudioInputDevice } from '../audio/audio';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { AudioInDialogComponent } from '../audio-in-dialog/audio-in-dialog.component';
 
 @Component({
   selector: 'app-audio-in-device',
@@ -9,7 +11,7 @@ import { AudioInputDevice } from '../audio/audio';
 export class AudioInDeviceComponent implements OnInit {
   @Input() audioDevice : AudioInputDevice;
 
-  constructor() { }
+  constructor(private popupDialog: MatDialog) { }
 
   ngOnInit() {
   }
@@ -28,5 +30,21 @@ export class AudioInDeviceComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  openDeviceDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      audioDevice: this.audioDevice
+    };
+    dialogConfig.height = '35%';
+    dialogConfig.width = '30%';
+    dialogConfig.position = {
+      top: '0',
+      left: '35%'
+    }
+    this.popupDialog.open(AudioInDialogComponent, dialogConfig);
   }
 }
