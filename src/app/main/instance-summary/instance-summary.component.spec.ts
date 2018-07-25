@@ -9,7 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DevicesetComponent } from '../../deviceset/deviceset/deviceset.component';
 import { DeviceComponent } from '../../deviceset/device/device.component';
 import { ChannelComponent } from '../../deviceset/channel/channel.component';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
 describe('InstanceSummaryComponent one device set', () => {
   let component: InstanceSummaryComponent;
@@ -27,7 +27,8 @@ describe('InstanceSummaryComponent one device set', () => {
       imports: [
         HttpClientModule,
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSnackBarModule
       ],
       providers: [ InstanceSummaryService ]
     })
@@ -68,7 +69,8 @@ describe('InstanceSummaryComponent empty', () => {
       imports: [
         HttpClientModule,
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSnackBarModule
       ],
       providers: [ InstanceSummaryService ]
     })
@@ -109,7 +111,8 @@ describe('InstanceSummaryComponent many device sets', () => {
       imports: [
         HttpClientModule,
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSnackBarModule,
       ],
       providers: [ InstanceSummaryService ]
     })

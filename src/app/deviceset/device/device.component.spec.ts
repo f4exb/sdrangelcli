@@ -4,7 +4,8 @@ import { DeviceComponent } from './device.component';
 import { MatCardModule } from '@angular/material/card';
 
 import { DEVICE_MOCK1 } from'./device';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatTooltipModule, MatSnackBarModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('DeviceComponent', () => {
   let component: DeviceComponent;
@@ -15,7 +16,10 @@ describe('DeviceComponent', () => {
       declarations: [ DeviceComponent ],
       imports: [
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        MatTooltipModule,
+        MatSnackBarModule,
+        HttpClientModule
       ]
     })
     .compileComponents();

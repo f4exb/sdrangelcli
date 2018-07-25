@@ -5,7 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { DEVICESET_MOCK_WITH_CHANNELS, DEVICESET_MOCK_WITHOUT_CHANNELS, DEVICESET_TX_MOCK } from './deviceset';
 import { DeviceComponent } from '../device/device.component';
 import { ChannelComponent } from '../channel/channel.component';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('DevicesetComponent without channels', () => {
   let component: DevicesetComponent;
@@ -20,7 +21,9 @@ describe('DevicesetComponent without channels', () => {
       ],
       imports: [
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSnackBarModule,
+        HttpClientModule
       ]
     })
     .compileComponents();
@@ -62,7 +65,9 @@ describe('DevicesetComponent with channels', () => {
       ],
       imports: [
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSnackBarModule,
+        HttpClientModule
       ]
     })
     .compileComponents();
@@ -101,7 +106,9 @@ describe('DevicesetComponent with Tx device', () => {
       ],
       imports: [
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSnackBarModule,
+        HttpClientModule
       ]
     })
     .compileComponents();
