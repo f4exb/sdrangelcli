@@ -9,7 +9,7 @@ import { ChannelComponent } from './deviceset/channel/channel.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { APP_BASE_HREF } from '@angular/common';
-import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule } from '@angular/material';
+import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
 import { AudioOutComponent } from './main/audio-out/audio-out.component';
 import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-device.component';
 import { AudioInComponent } from './main/audio-in/audio-in.component';
@@ -37,6 +37,7 @@ describe('AppComponent', () => {
         MatSelectModule,
         MatCheckboxModule,
         MatSnackBarModule,
+        MatTooltipModule,
         HttpClientModule,
         AppRoutingModule
       ],

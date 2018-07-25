@@ -13,7 +13,7 @@
       <img src="/assets/icons/stop-outline.svg" style="height:12px; width:12px; padding-top: 3px"/>
     </button>
     &nbsp;
-    <i class="fa fa-circle" style="font-size:14px; padding-top: 4px" [ngStyle]="{'color': getRunStatusColor()}" matTooltip="status"></i>
+    <i class="fa fa-circle" style="font-size:14px; padding-top: 4px" [ngStyle]="{'color': getRunStatusColor()}" [matTooltip]="status()"></i>
     &nbsp;
     <span class="label-card">{{device.hwType}}</span>
     &nbsp;
