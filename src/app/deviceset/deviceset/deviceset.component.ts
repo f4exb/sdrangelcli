@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { DeviceSet } from './deviceset';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dialog.component';
@@ -11,12 +11,22 @@ import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dia
 export class DevicesetComponent implements OnInit {
   @Input() deviceSet : DeviceSet;
   @Output() devicesetChanged = new EventEmitter();
+  width: number;
+  height: number;
 
   constructor(private popupDialog: MatDialog,
-    private elementRef: ElementRef) {
+    private elementRef: ElementRef)
+  {
+    this.onResize();
   }
 
   ngOnInit() {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+     this.height = window.innerHeight;
+     this.width = window.innerWidth;
   }
 
   getLabel() : string {
@@ -47,6 +57,9 @@ export class DevicesetComponent implements OnInit {
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
     let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY+180 > this.height) {
+      dialogY -= dialogY+180 - this.height;
+    }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { Channel } from './channel'
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { RemoveChannelDialogComponent } from '../remove-channel-dialog/remove-channel-dialog.component';
@@ -13,11 +13,22 @@ export class ChannelComponent implements OnInit {
   @Input('centerFrequency') centerFrequency : number;
   @Input('devicesetIndex') devicesetIndex : number;
   @Output() channelRemoved = new EventEmitter();
+  width: number;
+  height: number;
 
   constructor(private popupDialog: MatDialog,
-    private elementRef: ElementRef) { }
+    private elementRef: ElementRef)
+  {
+    this.onResize();
+  }
 
   ngOnInit() {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+     this.height = window.innerHeight;
+     this.width = window.innerWidth;
   }
 
   openRemoveChannelDialog() {
@@ -33,6 +44,9 @@ export class ChannelComponent implements OnInit {
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
     let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY+180 > this.height) {
+      dialogY -= dialogY+180 - this.height;
+    }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
@@ -43,5 +57,5 @@ export class ChannelComponent implements OnInit {
         this.channelRemoved.emit(); // triggers refresh
       }
     });
-  }  
+  }
 }

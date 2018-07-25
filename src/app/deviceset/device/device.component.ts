@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { Device } from './device';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { ChangeDeviceDialogComponent } from '../change-device-dialog/change-device-dialog.component';
@@ -11,12 +11,22 @@ import { ChangeDeviceDialogComponent } from '../change-device-dialog/change-devi
 export class DeviceComponent implements OnInit {
   @Input() device : Device;
   @Output() deviceChanged = new EventEmitter();
+  width: number;
+  height: number;
 
   constructor(private popupDialog: MatDialog,
-    private elementRef: ElementRef) { 
+    private elementRef: ElementRef)
+  {
+    this.onResize();
   }
 
   ngOnInit() {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+     this.height = window.innerHeight;
+     this.width = window.innerWidth;
   }
 
   hasSerial() : boolean {
@@ -47,6 +57,9 @@ export class DeviceComponent implements OnInit {
     dialogConfig.width = '400px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
     let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY+180 > this.height) {
+      dialogY -= dialogY+200 - this.height;
+    }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
@@ -57,5 +70,5 @@ export class DeviceComponent implements OnInit {
         this.deviceChanged.emit(); // triggers refresh
       }
     });
-  }  
+  }
 }
