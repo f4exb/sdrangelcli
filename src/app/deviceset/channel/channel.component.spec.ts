@@ -3,6 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { ChannelComponent } from './channel.component';
 import { CHANNEL0_MOCK } from './channel';
+import { MatDialogModule } from '@angular/material';
 
 describe('ChannelComponent', () => {
   let component: ChannelComponent;
@@ -11,7 +12,10 @@ describe('ChannelComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ChannelComponent ],
-      imports: [ MatCardModule ]
+      imports: [ 
+        MatCardModule,
+        MatDialogModule 
+      ]
     })
     .compileComponents();
   }));

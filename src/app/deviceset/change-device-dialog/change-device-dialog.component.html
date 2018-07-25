@@ -1,3 +1,17 @@
-<p>
-  change-device-dialog works!
-</p>
+<h2 mat-dialog-title>Change device</h2>
+<mat-divider></mat-divider>
+<span class="note">Note1: please stop the device before change</span><br/>
+<span class="note">Note2: changing a device by itself is equivalent to a device reset</span>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+  <mat-select class="available-devices-input" [(value)]="selectedDeviceTypeIndex">
+    <mat-option *ngFor="let deviceType of deviceTypes" [value]="deviceType.value">
+      {{deviceType.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary"(click)="save()">OK</button>
+</mat-dialog-actions>

@@ -1,12 +1,6 @@
-.available-devices-input {
-    width: 35ch;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.note {
+.label-card {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 ::ng-deep .mat-divider {

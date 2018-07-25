@@ -5,11 +5,12 @@ import { DeviceComponent } from './device/device.component';
 import { ChannelComponent } from './channel/channel.component';
 import { AddChannelDialogComponent } from './add-channel-dialog/add-channel-dialog.component';
 import { ChangeDeviceDialogComponent } from './change-device-dialog/change-device-dialog.component';
+import { RemoveChannelDialogComponent } from './remove-channel-dialog/remove-channel-dialog.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [DevicesetComponent, DeviceComponent, ChannelComponent, AddChannelDialogComponent, ChangeDeviceDialogComponent]
+  declarations: [DevicesetComponent, DeviceComponent, ChannelComponent, AddChannelDialogComponent, ChangeDeviceDialogComponent, RemoveChannelDialogComponent]
 })
 export class DevicesetModule { }

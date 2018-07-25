@@ -4,6 +4,7 @@ import { DeviceComponent } from './device.component';
 import { MatCardModule } from '@angular/material/card';
 
 import { DEVICE_MOCK1 } from'./device';
+import { MatDialogModule } from '@angular/material';
 
 describe('DeviceComponent', () => {
   let component: DeviceComponent;
@@ -13,7 +14,8 @@ describe('DeviceComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DeviceComponent ],
       imports: [
-        MatCardModule
+        MatCardModule,
+        MatDialogModule
       ]
     })
     .compileComponents();

@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Device } from './device';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { ChangeDeviceDialogComponent } from '../change-device-dialog/change-device-dialog.component';
 
 @Component({
   selector: 'app-device',
@@ -8,8 +10,11 @@ import { Device } from './device';
 })
 export class DeviceComponent implements OnInit {
   @Input() device : Device;
+  @Output() deviceChanged = new EventEmitter();
 
-  constructor() { }
+  constructor(private popupDialog: MatDialog,
+    private elementRef: ElementRef) { 
+  }
 
   ngOnInit() {
   }
@@ -29,4 +34,28 @@ export class DeviceComponent implements OnInit {
       return "";
     }
   }
+
+  openChangeDeviceDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      deviceSetIndex: this.device.index,
+      isTx: this.device.tx !== 0
+    };
+    dialogConfig.height = '200px';
+    dialogConfig.width = '400px';
+    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    dialogConfig.position = {
+      top: dialogY + 'px',
+      left: dialogX + 'px'
+    }
+    let dialogRef = this.popupDialog.open(ChangeDeviceDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == "OK") {
+        this.deviceChanged.emit(); // triggers refresh
+      }
+    });
+  }  
 }

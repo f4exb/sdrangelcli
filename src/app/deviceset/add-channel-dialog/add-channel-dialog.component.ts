@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { AddChannelService } from './add-channel.service';
-import { ERROR_COMPONENT_TYPE } from '@angular/compiler';
 
 export interface ChannelType {
   value: string;

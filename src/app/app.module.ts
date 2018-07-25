@@ -24,6 +24,8 @@ import { AudioInDeviceComponent } from './main/audio-in-device/audio-in-device.c
 import { AudioOutDialogComponent } from './main/audio-out-dialog/audio-out-dialog.component';
 import { AudioInDialogComponent } from './main/audio-in-dialog/audio-in-dialog.component';
 import { AddChannelDialogComponent } from './deviceset/add-channel-dialog/add-channel-dialog.component';
+import { ChangeDeviceDialogComponent } from './deviceset/change-device-dialog/change-device-dialog.component';
+import { RemoveChannelDialogComponent } from './deviceset/remove-channel-dialog/remove-channel-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { AddChannelDialogComponent } from './deviceset/add-channel-dialog/add-ch
     AudioInComponent,
     AudioInDeviceComponent,
     AudioInDialogComponent,
-    AddChannelDialogComponent
+    AddChannelDialogComponent,
+    ChangeDeviceDialogComponent,
+    RemoveChannelDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +72,9 @@ import { AddChannelDialogComponent } from './deviceset/add-channel-dialog/add-ch
     AddDevicesetDialogComponent,
     AudioOutDialogComponent,
     AudioInDialogComponent,
-    AddChannelDialogComponent
+    AddChannelDialogComponent,
+    ChangeDeviceDialogComponent,
+    RemoveChannelDialogComponent
   ]
 })
 export class AppModule { }

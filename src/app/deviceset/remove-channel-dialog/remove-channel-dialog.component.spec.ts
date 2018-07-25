@@ -1,21 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChangeDeviceDialogComponent } from './change-device-dialog.component';
+import { RemoveChannelDialogComponent } from './remove-channel-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatOptionModule, MatSelectModule, MatSnackBarModule, MatDividerModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
+import { CHANNEL1_MOCK } from '../channel/channel';
 
-describe('ChangeDeviceDialogComponent', () => {
-  let component: ChangeDeviceDialogComponent;
-  let fixture: ComponentFixture<ChangeDeviceDialogComponent>;
+describe('RemoveChannelDialogComponent', () => {
+  let component: RemoveChannelDialogComponent;
+  let fixture: ComponentFixture<RemoveChannelDialogComponent>;
   const data = {
     deviceSetIndex: 0,
-    isTx: false
-  }
+    centerFrequency: 0,
+    channel: CHANNEL1_MOCK
+  }  
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChangeDeviceDialogComponent ],
+      declarations: [ RemoveChannelDialogComponent ],
       imports: [
         FormsModule,
         MatDialogModule,
@@ -34,7 +36,7 @@ describe('ChangeDeviceDialogComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChangeDeviceDialogComponent);
+    fixture = TestBed.createComponent(RemoveChannelDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

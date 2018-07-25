@@ -12,7 +12,14 @@ export interface AvailableDevice {
 
 export interface AvailableDevices {
     devicecount: number,
-    devices: AvailableDevice
+    devices: AvailableDevice[]
+}
+
+export interface NewDevice {
+  hwType: string,
+  serial?: string,
+  sequence?: number,
+  tx: number
 }
 
 export const AVAILABLE_DEVICES_MOCK = {

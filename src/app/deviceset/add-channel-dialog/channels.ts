@@ -76,5 +76,5 @@ export const AVAILABLE_CHANNELS_MOCK = {
         tx: 0,
         version: "4.0.0"
       }
-    ]    
+    ]
 }

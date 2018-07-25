@@ -10,7 +10,7 @@ import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dia
 })
 export class DevicesetComponent implements OnInit {
   @Input() deviceSet : DeviceSet;
-  @Output() channelAdded = new EventEmitter();
+  @Output() devicesetChanged = new EventEmitter();
 
   constructor(private popupDialog: MatDialog,
     private elementRef: ElementRef) {
@@ -54,8 +54,16 @@ export class DevicesetComponent implements OnInit {
     let dialogRef = this.popupDialog.open(AddChannelDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if (result == "OK") {
-        this.channelAdded.emit(); // triggers refresh
+        this.devicesetChanged.emit(); // triggers refresh
       }
     });
+  }
+
+  deviceChanged() {
+    this.devicesetChanged.emit(); // triggers refresh
+  }
+
+  channelRemoved() {
+    this.devicesetChanged.emit(); // triggers refresh
   }
 }
