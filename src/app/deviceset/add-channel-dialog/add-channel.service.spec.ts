@@ -6,7 +6,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { AVAILABLE_CHANNELS_MOCK } from './channels';
 
 describe('AddChannelService', () => {
-  const sdrangelURL = 'http://127.0.0.1:8091/sdrangel/channels';
+  const sdrangelURL = 'http://127.0.0.1:8091/sdrangel';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,8 +28,8 @@ describe('AddChannelService', () => {
           expect(data.channels[0].id).toBe("AMDemod");
         });
         // We set the expectations for the HttpClient mock
-        const req = httpMock.expectOne(req => req.method === 'GET' && req.url === (sdrangelURL+ "?tx=0"));
+        const req = httpMock.expectOne(req => req.method === 'GET' && req.url === (sdrangelURL+ "/channels?tx=0"));
         // Then we set the fake data to be returned by the mock
         req.flush(AVAILABLE_CHANNELS_MOCK);
-  }));  
+  }));
 });
