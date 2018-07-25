@@ -54,6 +54,10 @@ export class DeviceComponent implements OnInit {
     }
   }
 
+  status() : string {
+    return this.device.state;
+  }
+
   getRunStatusColor() : string {
     if (this.device.state === "idle") {
       return "rgb(100,100,255)";
