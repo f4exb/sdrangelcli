@@ -23,7 +23,7 @@ export interface PresetGroupSelect {
 export class LoadPresetDialogComponent implements OnInit {
   sdrangelURL : string;
   presets: Presets;
-  presetGroups: PresetGroupSelect[];
+  presetGroups: PresetGroupSelect[] = [];
   devicesetIndex: number;
   selectedPreset: PresetLoad;
 
@@ -34,12 +34,12 @@ export class LoadPresetDialogComponent implements OnInit {
     public snackBar: MatSnackBar)
   {
     this.devicesetIndex = data.devicesetIndex;
-    this.fetchPresetInformation();
   }
 
   ngOnInit() {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
+      this.fetchPresetInformation();
     });
   }
 
@@ -54,7 +54,7 @@ export class LoadPresetDialogComponent implements OnInit {
           });
           for (let preset of presetGroup.presets) {
             this.presetGroups[this.presetGroups.length-1].presets.push({
-              viewValue: preset.centerFrequency + " " + preset.type + " " + preset.name,
+              viewValue: (preset.centerFrequency/1000) + " " + preset.type + " " + preset.name,
               value: {
                 deviceSetIndex: this.devicesetIndex,
                 preset: {
@@ -81,16 +81,26 @@ export class LoadPresetDialogComponent implements OnInit {
       },
       err => {
         this.snackBar.open(err.error.message, "OK", {duration: 2000});
-        this.dialogRef.close();
+        this.dialogRef.close("Error");
       }
     )
   }
 
   close() {
-
+    this.dialogRef.close("Dismiss");
   }
 
   load() {
-
+    this.presetService.loadPreset(this.sdrangelURL, this.selectedPreset).subscribe(
+      res => {
+        console.log("Loaded OK", res);
+        this.dialogRef.close("OK");
+      },
+      error => {
+        console.log(error);
+        this.snackBar.open(error.message, "OK", {duration: 2000});
+        this.dialogRef.close("Error");
+      }
+    );
   }
 }

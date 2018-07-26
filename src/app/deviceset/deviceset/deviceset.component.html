@@ -6,7 +6,7 @@
       <img src="/assets/icons/add_circle.svg" style="height:16px; width:16px"/>
     </button>
     &nbsp;
-    <button mat-button class="button-card"  matTooltip="Load from preset">
+    <button mat-button class="button-card"  matTooltip="Load from preset" (click)="openLoadPresetDialog()">
       <img src="/assets/icons/open_icon.svg" style="height:16px; width:16px"/>
     </button>
     <button mat-button class="button-card button-margin"  matTooltip="Save to preset">
@@ -16,8 +16,8 @@
   <mat-card-content>
     <app-device [device]="deviceSet.samplingDevice" (deviceChanged)="deviceChanged()"></app-device>
     <div *ngIf="deviceSet.channelcount !== 0">
-      <app-channel *ngFor="let channel of deviceSet.channels" 
-        [channel]="channel" 
+      <app-channel *ngFor="let channel of deviceSet.channels"
+        [channel]="channel"
         [centerFrequency]="getCenterFrequency()"
         [devicesetIndex]="deviceSet.samplingDevice.index"
         (channelRemoved)="channelRemoved()">

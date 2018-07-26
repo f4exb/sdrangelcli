@@ -2,6 +2,12 @@
     overflow: initial;
 }
 
+.presets-input {
+    width: 35ch;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 ::ng-deep .mat-checkbox-label {
     /* CSS styles go here */
     font-size: 14px; /* for example to remove the margin */

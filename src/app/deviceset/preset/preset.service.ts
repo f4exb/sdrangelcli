@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Presets, PresetLoad } from './preset';
 import { Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,6 @@ export class PresetService {
         'Content-Type':  'application/json'
       })
     };
-    return this.http.patch(url, JSON.stringify(preset), httpOptions);
+    return this.http.patch(url + '/preset', JSON.stringify(preset), httpOptions).pipe(delay(500));;
   }
 }
