@@ -14,6 +14,9 @@ import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-devic
 import { AudioInComponent } from './main/audio-in/audio-in.component';
 import { AudioInDeviceComponent } from './main/audio-in-device/audio-in-device.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { PresetsComponent } from './main/presets/presets.component';
+import { PresetGroupComponent } from './main/preset-group/preset-group.component';
+import { PresetComponent } from './main/preset/preset.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -27,7 +30,10 @@ describe('AppComponent', () => {
         AudioOutComponent,
         AudioOutDeviceComponent,
         AudioInComponent,
-        AudioInDeviceComponent
+        AudioInDeviceComponent,
+        PresetsComponent,
+        PresetGroupComponent,
+        PresetComponent
       ],
       imports: [
         FormsModule,
