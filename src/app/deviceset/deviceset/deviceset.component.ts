@@ -4,6 +4,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dialog.component';
 import { LoadPresetDialogComponent } from '../load-preset-dialog/load-preset-dialog.component';
 import { SavePresetDialogComponent } from '../save-preset-dialog/save-preset-dialog.component';
+import { NewPresetDialogComponent } from '../new-preset-dialog/new-preset-dialog.component';
 
 @Component({
   selector: 'app-deviceset',
@@ -119,6 +120,32 @@ export class DevicesetComponent implements OnInit {
       left: dialogX + 'px'
     }
     let dialogRef = this.popupDialog.open(SavePresetDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == "OK") {
+        this.devicesetChanged.emit(); // triggers refresh
+      }
+    });
+  }
+
+  openNewPresetDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      devicesetIndex: this.deviceSet.samplingDevice.index
+    };
+    dialogConfig.height = '260px';
+    dialogConfig.width = '360px';
+    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY+260 > this.height) {
+      dialogY -= dialogY+260 - this.height;
+    }
+    dialogConfig.position = {
+      top: dialogY + 'px',
+      left: dialogX + 'px'
+    }
+    let dialogRef = this.popupDialog.open(NewPresetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if (result == "OK") {
         this.devicesetChanged.emit(); // triggers refresh

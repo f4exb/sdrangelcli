@@ -22,7 +22,6 @@ export interface PresetGroupSelect {
 })
 export class LoadPresetDialogComponent implements OnInit {
   sdrangelURL : string;
-  presets: Presets;
   presetGroups: PresetGroupSelect[] = [];
   devicesetIndex: number;
   selectedPreset: PresetLoad;
@@ -46,7 +45,6 @@ export class LoadPresetDialogComponent implements OnInit {
   private fetchPresetInformation() {
     this.presetService.getInfo(this.sdrangelURL).subscribe(
       presets => {
-        this.presets = presets;
         for (let presetGroup of presets.groups) {
           this.presetGroups.push({
             name: presetGroup.groupName,
