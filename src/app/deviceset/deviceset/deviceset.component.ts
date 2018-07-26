@@ -106,4 +106,8 @@ export class DevicesetComponent implements OnInit {
   channelRemoved() {
     this.devicesetChanged.emit(); // triggers refresh
   }
+
+  refresh() {
+    this.devicesetChanged.emit(); // triggers refresh
+  }
 }

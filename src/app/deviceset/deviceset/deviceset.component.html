@@ -2,6 +2,10 @@
   <mat-card-header class="deviceset-card-header">
     <span class="label-card">{{getLabel()}}</span>
     &nbsp;
+    <button mat-button class="button-card" (click)="refresh()" matTooltip="Refresh">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>
+    &nbsp;
     <button mat-button class="button-card"  matTooltip="Add channel" (click)="openAddChannelDialog()">
       <img src="/assets/icons/add_circle.svg" style="height:16px; width:16px"/>
     </button>
