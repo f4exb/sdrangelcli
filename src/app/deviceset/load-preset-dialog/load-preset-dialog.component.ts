@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { PresetService } from '../preset/preset.service';
+import { PresetService } from '../../main/preset/preset.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
-import { PresetLoad, Presets } from '../preset/preset';
+import { PresetLoad, Presets } from '../../main/preset/preset'
 
 export interface PresetSelect {
   value: PresetLoad,
