@@ -41,6 +41,28 @@ export const PRESET_MOCK = {
   type: "R"
 }
 
+export const PRESET_GROUP_MOCK = {
+  groupName: "10m",
+  nbPresets: 3,
+  presets: [
+    {
+      centerFrequency: 28480000,
+      name: "SSB",
+      type: "R"
+    },
+    {
+      centerFrequency: 29200000,
+      name: "FM and Digi",
+      type: "R"
+    },
+    {
+      centerFrequency: 29610000,
+      name: "FM",
+      type: "R"
+    }
+  ]
+}
+
 export const PRESETS_MOCK = {
     nbGroups: 3,
     groups: [

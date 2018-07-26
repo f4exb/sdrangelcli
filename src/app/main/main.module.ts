@@ -12,6 +12,7 @@ import { AudioInComponent } from './audio-in/audio-in.component';
 import { AudioOutDialogComponent } from './audio-out-dialog/audio-out-dialog.component';
 import { AudioInDialogComponent } from './audio-in-dialog/audio-in-dialog.component';
 import { PresetComponent } from './preset/preset.component';
+import { PresetGroupComponent } from './preset-group/preset-group.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { PresetComponent } from './preset/preset.component';
     AudioInComponent,
     AudioOutDialogComponent,
     AudioInDialogComponent,
-    PresetComponent
+    PresetComponent,
+    PresetGroupComponent
   ]
 })
 export class MainModule { }
