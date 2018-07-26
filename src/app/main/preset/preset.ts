@@ -35,6 +35,11 @@ export interface PresetLoad {
   }
 }
 
+export const PRESETS_DEFAULT = {
+  nbGroups: 0,
+  groups: []
+}
+
 export const PRESET_MOCK = {
   centerFrequency: 28480000,
   name: "SSB",
