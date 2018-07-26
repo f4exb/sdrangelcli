@@ -2,7 +2,7 @@
   <mat-card-header class="audio-in-card-header">
     <button mat-button class="button-card" (click)="fetchAudioInformation()" matTooltip="Refresh">
       <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
-    </button>&nbsp;    
+    </button>&nbsp;
     <span class="audio-in-title">Audio input devices</span>
   </mat-card-header>
   <mat-card-content>
@@ -10,4 +10,7 @@
       <app-audio-in-device *ngFor="let device of audioDevicesInfo.inputDevices"  [audioDevice]="device"></app-audio-in-device>
     </div>
   </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
 </mat-card>
