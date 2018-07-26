@@ -15,15 +15,31 @@ export interface Presets {
     groups: PresetGroup[]
 }
 
-export interface PresetLoad {
-    deviceSetIndex: number,
-    preset: {
-      groupName: string,
-      centerFrequency: number,
-      name: string,
-      type: string
-    }
+export interface PresetExport {
+  filePath: string,
+  preset: {
+    groupName: string,
+    centerFrequency: number,
+    name: string,
+    type: string
   }
+}
+
+export interface PresetLoad {
+  deviceSetIndex: number,
+  preset: {
+    groupName: string,
+    centerFrequency: number,
+    name: string,
+    type: string
+  }
+}
+
+export const PRESET_MOCK = {
+  centerFrequency: 28480000,
+  name: "SSB",
+  type: "R"
+}
 
 export const PRESETS_MOCK = {
     nbGroups: 3,

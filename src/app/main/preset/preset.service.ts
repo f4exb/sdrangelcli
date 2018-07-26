@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Presets, PresetLoad } from './preset';
+import { Presets, PresetLoad, PresetExport } from './preset';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -43,5 +43,15 @@ export class PresetService {
       })
     };
     return this.http.post(url + '/preset', JSON.stringify(preset), httpOptions);
+  }
+
+  exportPreset(url: string, preset: PresetExport) : Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'accept':  'application/json',
+        'Content-Type':  'application/json'
+      })
+    };
+    return this.http.post(url + '/preset/file', JSON.stringify(preset), httpOptions);
   }
 }

@@ -11,6 +11,7 @@ import { AudioInDeviceComponent } from './audio-in-device/audio-in-device.compon
 import { AudioInComponent } from './audio-in/audio-in.component';
 import { AudioOutDialogComponent } from './audio-out-dialog/audio-out-dialog.component';
 import { AudioInDialogComponent } from './audio-in-dialog/audio-in-dialog.component';
+import { PresetComponent } from './preset/preset.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { AudioInDialogComponent } from './audio-in-dialog/audio-in-dialog.compon
     AudioInDeviceComponent,
     AudioInComponent,
     AudioOutDialogComponent,
-    AudioInDialogComponent
+    AudioInDialogComponent,
+    PresetComponent
   ]
 })
 export class MainModule { }
