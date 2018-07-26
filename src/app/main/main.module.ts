@@ -11,23 +11,23 @@ import { AudioInDeviceComponent } from './audio-in-device/audio-in-device.compon
 import { AudioInComponent } from './audio-in/audio-in.component';
 import { AudioOutDialogComponent } from './audio-out-dialog/audio-out-dialog.component';
 import { AudioInDialogComponent } from './audio-in-dialog/audio-in-dialog.component';
-import { LoadPresetDialogComponent } from './load-preset-dialog/load-preset-dialog.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
-    InstanceSummaryComponent, 
-    LocationDialogComponent, 
-    LoggingDialogComponent, 
-    RemoveDevicesetDialogComponent, 
-    AddDevicesetDialogComponent, 
-    AudioOutComponent, 
-    AudioOutDeviceComponent, 
-    AudioInDeviceComponent, 
-    AudioInComponent, 
-    AudioOutDialogComponent, AudioInDialogComponent, LoadPresetDialogComponent
-  ]  
+    InstanceSummaryComponent,
+    LocationDialogComponent,
+    LoggingDialogComponent,
+    RemoveDevicesetDialogComponent,
+    AddDevicesetDialogComponent,
+    AudioOutComponent,
+    AudioOutDeviceComponent,
+    AudioInDeviceComponent,
+    AudioInComponent,
+    AudioOutDialogComponent,
+    AudioInDialogComponent
+  ]
 })
 export class MainModule { }
