@@ -1,5 +1,4 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpModule } from '@angular/http'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { InstanceSummaryService } from './instance-summary.service';
@@ -10,7 +9,7 @@ describe('InstanceSummaryService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModule, HttpClientTestingModule],
+      imports: [HttpClientTestingModule],
       providers: [InstanceSummaryService]
     });
   });

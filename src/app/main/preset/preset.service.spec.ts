@@ -1,7 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { PresetService } from './preset.service';
-import { HttpModule } from '@angular/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { PRESETS_MOCK } from './preset';
 
@@ -10,7 +9,7 @@ describe('PresetService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModule, HttpClientTestingModule],
+      imports: [HttpClientTestingModule],
       providers: [PresetService]
     });
   });

@@ -6,7 +6,6 @@ import { MatCardModule } from '@angular/material/card';
 import { DevicesetComponent } from './deviceset/deviceset/deviceset.component';
 import { DeviceComponent } from './deviceset/device/device.component';
 import { ChannelComponent } from './deviceset/channel/channel.component';
-import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
@@ -14,6 +13,7 @@ import { AudioOutComponent } from './main/audio-out/audio-out.component';
 import { AudioOutDeviceComponent } from './main/audio-out-device/audio-out-device.component';
 import { AudioInComponent } from './main/audio-in/audio-in.component';
 import { AudioInDeviceComponent } from './main/audio-in-device/audio-in-device.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -38,7 +38,7 @@ describe('AppComponent', () => {
         MatCheckboxModule,
         MatSnackBarModule,
         MatTooltipModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         AppRoutingModule
       ],
       providers: [{provide: APP_BASE_HREF, useValue: '/'}]

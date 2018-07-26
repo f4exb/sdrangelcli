@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
 
 import { InstanceSummaryComponent } from './instance-summary.component';
@@ -10,6 +9,7 @@ import { DevicesetComponent } from '../../deviceset/deviceset/deviceset.componen
 import { DeviceComponent } from '../../deviceset/device/device.component';
 import { ChannelComponent } from '../../deviceset/channel/channel.component';
 import { MatDialogModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('InstanceSummaryComponent one device set', () => {
   let component: InstanceSummaryComponent;
@@ -25,7 +25,7 @@ describe('InstanceSummaryComponent one device set', () => {
         ChannelComponent
       ],
       imports: [
-        HttpClientModule,
+        HttpClientTestingModule,
         MatCardModule,
         MatDialogModule,
         MatSnackBarModule,
@@ -68,7 +68,7 @@ describe('InstanceSummaryComponent empty', () => {
         ChannelComponent
       ],
       imports: [
-        HttpClientModule,
+        HttpClientTestingModule,
         MatCardModule,
         MatDialogModule,
         MatSnackBarModule,
@@ -111,7 +111,7 @@ describe('InstanceSummaryComponent many device sets', () => {
         ChannelComponent
       ],
       imports: [
-        HttpClientModule,
+        HttpClientTestingModule,
         MatCardModule,
         MatDialogModule,
         MatSnackBarModule,

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddDevicesetDialogComponent } from './add-deviceset-dialog.component';
 import { MatDialogModule, MatSnackBarModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AddDevicesetDialogComponent', () => {
   let component: AddDevicesetDialogComponent;
@@ -15,7 +15,7 @@ describe('AddDevicesetDialogComponent', () => {
       imports: [
         MatDialogModule,
         MatSnackBarModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       providers: [
         { provide: MatDialogRef, useValue : {} },

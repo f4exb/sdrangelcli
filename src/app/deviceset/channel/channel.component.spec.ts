@@ -5,7 +5,7 @@ import { ChannelComponent } from './channel.component';
 import { CHANNEL0_MOCK } from './channel';
 import { MatDialogModule } from '@angular/material';
 
-xdescribe('ChannelComponent', () => {
+describe('ChannelComponent', () => {
   let component: ChannelComponent;
   let fixture: ComponentFixture<ChannelComponent>;
 
@@ -24,6 +24,7 @@ xdescribe('ChannelComponent', () => {
     fixture = TestBed.createComponent(ChannelComponent);
     component = fixture.componentInstance;
     component.channel = CHANNEL0_MOCK;
+    component.centerFrequency = 435000000;
     fixture.detectChanges();
   });
 

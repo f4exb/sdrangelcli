@@ -1,7 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { ChangeDeviceService } from './change-device.service';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AVAILABLE_DEVICES_MOCK } from './devices';
 
@@ -11,7 +10,7 @@ describe('ChangeDeviceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ChangeDeviceService],
-      imports: [ HttpClientModule, HttpClientTestingModule ]
+      imports: [ HttpClientTestingModule ]
     });
   });
 
@@ -31,5 +30,5 @@ describe('ChangeDeviceService', () => {
         const req = httpMock.expectOne(req => req.method === 'GET' && req.url === (sdrangelURL+ "/devices?tx=0"));
         // Then we set the fake data to be returned by the mock
         req.flush(AVAILABLE_DEVICES_MOCK);
-  }));  
+  }));
 });

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddChannelDialogComponent } from './add-channel-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatOptionModule, MatSelectModule, MatSnackBarModule, MatDividerModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AddChannelDialogComponent', () => {
   let component: AddChannelDialogComponent;
@@ -23,7 +23,7 @@ describe('AddChannelDialogComponent', () => {
         MatSelectModule,
         MatSnackBarModule,
         MatDividerModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       providers: [
         { provide: MatDialogRef, useValue : {} },

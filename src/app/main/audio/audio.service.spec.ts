@@ -1,7 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { AudioService } from './audio.service';
-import { HttpModule } from '@angular/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AUDIO_DEVICES_MOCK } from './audio';
 
@@ -10,7 +9,7 @@ describe('AudioService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModule, HttpClientTestingModule],
+      imports: [HttpClientTestingModule],
       providers: [AudioService]
     });
   });

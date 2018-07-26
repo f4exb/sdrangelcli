@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocationDialogComponent } from './location-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBarModule, MatDividerModule } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LocationDialogComponent', () => {
   let component: LocationDialogComponent;
@@ -18,7 +18,7 @@ describe('LocationDialogComponent', () => {
         MatDialogModule,
         MatSnackBarModule,
         MatDividerModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       providers: [
         { provide: MatDialogRef, useValue : {} },

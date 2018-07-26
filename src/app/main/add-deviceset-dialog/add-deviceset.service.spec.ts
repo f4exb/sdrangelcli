@@ -1,13 +1,13 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { AddDevicesetService } from './add-deviceset.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AddDevicesetService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AddDevicesetService],
-      imports: [ HttpClientModule ]
+      imports: [ HttpClientTestingModule ]
     });
   });
 

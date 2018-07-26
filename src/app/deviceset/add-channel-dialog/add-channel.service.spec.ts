@@ -1,7 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { AddChannelService } from './add-channel.service';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AVAILABLE_CHANNELS_MOCK } from './channels';
 
@@ -11,7 +10,7 @@ describe('AddChannelService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AddChannelService],
-      imports: [ HttpClientModule, HttpClientTestingModule ]
+      imports: [ HttpClientTestingModule ]
     });
   });
 

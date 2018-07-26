@@ -4,12 +4,12 @@ import { AudioOutDialogComponent } from './audio-out-dialog.component';
 import { AUDIO_OUT_DEVICE_MOCK } from '../audio/audio';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatSnackBarModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatDividerModule } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AudioOutDialogComponent', () => {
   let component: AudioOutDialogComponent;
   let fixture: ComponentFixture<AudioOutDialogComponent>;
-  const data = { 
+  const data = {
     audioDevice: AUDIO_OUT_DEVICE_MOCK
   };
 
@@ -24,12 +24,12 @@ describe('AudioOutDialogComponent', () => {
         MatCheckboxModule,
         MatSnackBarModule,
         MatDividerModule,
-        HttpClientModule
-      ],   
+        HttpClientTestingModule
+      ],
       providers: [
         { provide: MatDialogRef, useValue : {} },
         { provide: MAT_DIALOG_DATA, useValue: data }
-      ]         
+      ]
     })
     .compileComponents();
   }));

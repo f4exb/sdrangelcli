@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NewPresetDialogComponent } from './new-preset-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatOptionModule, MatSelectModule, MatSnackBarModule, MatDividerModule, MatDialogRef, MAT_DIALOG_DATA, MatCheckboxModule } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('NewPresetDialogComponent', () => {
   let component: NewPresetDialogComponent;
@@ -23,7 +23,7 @@ describe('NewPresetDialogComponent', () => {
         MatSnackBarModule,
         MatDividerModule,
         MatCheckboxModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       providers: [
         { provide: MatDialogRef, useValue : {} },
