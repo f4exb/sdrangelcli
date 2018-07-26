@@ -7,6 +7,7 @@ import { AddChannelDialogComponent } from './add-channel-dialog/add-channel-dial
 import { ChangeDeviceDialogComponent } from './change-device-dialog/change-device-dialog.component';
 import { RemoveChannelDialogComponent } from './remove-channel-dialog/remove-channel-dialog.component';
 import { LoadPresetDialogComponent } from './load-preset-dialog/load-preset-dialog.component';
+import { SavePresetDialogComponent } from './save-preset-dialog/save-preset-dialog.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { LoadPresetDialogComponent } from './load-preset-dialog/load-preset-dial
     AddChannelDialogComponent,
     ChangeDeviceDialogComponent,
     RemoveChannelDialogComponent,
-    LoadPresetDialogComponent
+    LoadPresetDialogComponent,
+    SavePresetDialogComponent
   ]
 })
 export class DevicesetModule { }

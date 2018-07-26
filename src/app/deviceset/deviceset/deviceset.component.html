@@ -16,6 +16,9 @@
     <button mat-button class="button-card button-margin"  matTooltip="Save to preset">
         <img src="/assets/icons/save_icon.svg" style="height:16px; width:16px"/>
     </button>
+    <button mat-button class="button-card button-margin"  matTooltip="Create new preset">
+        <img src="/assets/icons/add-new-file.svg" style="height:16px; width:16px"/>
+    </button>
   </mat-card-header>
   <mat-card-content>
     <app-device [device]="deviceSet.samplingDevice" (deviceChanged)="deviceChanged()"></app-device>

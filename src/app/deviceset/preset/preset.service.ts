@@ -22,6 +22,26 @@ export class PresetService {
         'Content-Type':  'application/json'
       })
     };
-    return this.http.patch(url + '/preset', JSON.stringify(preset), httpOptions).pipe(delay(500));;
+    return this.http.patch(url + '/preset', JSON.stringify(preset), httpOptions).pipe(delay(500));
+  }
+
+  savePreset(url: string, preset: PresetLoad) : Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'accept':  'application/json',
+        'Content-Type':  'application/json'
+      })
+    };
+    return this.http.put(url + '/preset', JSON.stringify(preset), httpOptions);
+  }
+
+  newPreset(url: string, preset: PresetLoad) : Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'accept':  'application/json',
+        'Content-Type':  'application/json'
+      })
+    };
+    return this.http.post(url + '/preset', JSON.stringify(preset), httpOptions);
   }
 }
