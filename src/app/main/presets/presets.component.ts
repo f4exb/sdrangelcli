@@ -26,7 +26,7 @@ export class PresetsComponent implements OnInit {
   }
 
   private fetchPresetsInformation() {
-    this.presetService.getInfo(this.sdrangelURL + "/presets").subscribe(
+    this.presetService.getInfo(this.sdrangelURL).subscribe(
       presets => {
         this.presets = presets;
         this.statusMessage = "OK";

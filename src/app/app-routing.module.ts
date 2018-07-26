@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { InstanceSummaryComponent} from './main/instance-summary/instance-summary.component';
 import { AudioOutComponent } from './main/audio-out/audio-out.component';
 import { AudioInComponent } from './main/audio-in/audio-in.component';
+import { PresetsComponent } from './main/presets/presets.component';
 
 const routes: Routes = [
     {
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
         path: 'audio/in',
         component: AudioInComponent
+    },
+    {
+        path: 'presets',
+        component: PresetsComponent
     },
   ];
 

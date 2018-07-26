@@ -10,7 +10,7 @@
 .presets-card-header {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
-    background-color: rgb(245, 235, 202);
+    background-color: whitesmoke;
     border: none;
     border-color: whitesmoke;
     border-width: 2px;
@@ -30,6 +30,21 @@
     padding-left: 0px;
     width: 22px;
     height: 22px;
+}
+
+.status-ok-card {
+    border: outset;
+    border-color: rgb(134, 255, 110);
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.status-ko-card {
+    border: solid;
+    border-color: rgb(255, 134, 110);
+    border-width: 2px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
 }
 
 ::ng-deep .mat-card-header-text {
