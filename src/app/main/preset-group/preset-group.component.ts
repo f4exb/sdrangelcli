@@ -22,4 +22,8 @@ export class PresetGroupComponent implements OnInit {
   presetRemoved() {
     this.presetGroupChanged.emit(); // triggers refresh
   }
+
+  refresh() {
+    this.presetGroupChanged.emit(); // triggers refresh
+  }
 }

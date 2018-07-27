@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Presets, PresetLoad, PresetExport } from './preset';
+import { Presets, PresetLoad, PresetExport, PresetDelete } from './preset';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -43,6 +43,17 @@ export class PresetService {
       })
     };
     return this.http.post(url + '/preset', JSON.stringify(preset), httpOptions);
+  }
+
+  removePreset(url: string, preset: PresetDelete) : Observable<any> {
+    const httpOptions = {
+      body:  JSON.stringify(preset),
+      headers: new HttpHeaders({
+        'accept':  'application/json',
+        'Content-Type':  'application/json'
+      })
+    };
+    return this.http.delete(url + '/preset', httpOptions);
   }
 
   exportPreset(url: string, preset: PresetExport) : Observable<any> {

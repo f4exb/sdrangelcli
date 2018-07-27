@@ -35,6 +35,13 @@ export interface PresetLoad {
   }
 }
 
+export interface PresetDelete {
+  groupName: string,
+  centerFrequency: number,
+  name: string,
+  type: string
+}
+
 export const PRESETS_DEFAULT = {
   nbGroups: 0,
   groups: []

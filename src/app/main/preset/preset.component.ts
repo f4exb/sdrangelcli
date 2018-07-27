@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { Preset } from './preset';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { RemovePresetDialogComponent } from '../remove-preset-dialog/remove-preset-dialog.component';
 
 @Component({
   selector: 'app-preset',
@@ -10,14 +12,50 @@ export class PresetComponent implements OnInit {
   @Input('preset') preset : Preset;
   @Input('groupName') groupName : string;
   @Output() presetRemoved = new EventEmitter();
+  sdrangelURL: string;
+  width: number;
+  height: number;
 
-  constructor() { }
+  constructor(private popupDialog: MatDialog,
+    private elementRef: ElementRef)
+  {
+    this.onResize();
+  }
 
   ngOnInit() {
   }
 
-  openRemovePresetDialog() {
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+     this.height = window.innerHeight;
+     this.width = window.innerWidth;
+  }
 
+  openRemovePresetDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      groupName: this.groupName,
+      preset: this.preset
+    };
+    dialogConfig.height = '180px';
+    dialogConfig.width = '360px';
+    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY+180 > this.height) {
+      dialogY -= dialogY+180 - this.height;
+    }
+    dialogConfig.position = {
+      top: dialogY + 'px',
+      left: dialogX + 'px'
+    }
+    let dialogRef = this.popupDialog.open(RemovePresetDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == "OK") {
+        this.presetRemoved.emit(); // triggers refresh
+      }
+    });
   }
 
   openExportPresetDialog() {

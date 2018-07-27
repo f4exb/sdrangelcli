@@ -32,6 +32,7 @@ import { NewPresetDialogComponent } from './deviceset/new-preset-dialog/new-pres
 import { PresetsComponent } from './main/presets/presets.component';
 import { PresetGroupComponent } from './main/preset-group/preset-group.component';
 import { PresetComponent } from './main/preset/preset.component';
+import { RemovePresetDialogComponent } from './main/remove-preset-dialog/remove-preset-dialog.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { PresetComponent } from './main/preset/preset.component';
     NewPresetDialogComponent,
     PresetsComponent,
     PresetGroupComponent,
-    PresetComponent
+    PresetComponent,
+    RemovePresetDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,8 @@ import { PresetComponent } from './main/preset/preset.component';
     RemoveChannelDialogComponent,
     LoadPresetDialogComponent,
     SavePresetDialogComponent,
-    NewPresetDialogComponent
+    NewPresetDialogComponent,
+    RemovePresetDialogComponent
   ]
 })
 export class AppModule { }
