@@ -64,10 +64,12 @@ export class PresetComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      groupName: this.groupName,
-      centerFrequency: this.preset.centerFrequency,
-      name: this.preset.name,
-      type: this.preset.type
+      preset: {
+        groupName: this.groupName,
+        centerFrequency: this.preset.centerFrequency,
+        name: this.preset.name,
+        type: this.preset.type
+      }
     };
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
@@ -80,6 +82,11 @@ export class PresetComponent implements OnInit {
       top: dialogY + 'px',
       left: dialogX + 'px'
     }
-    this.popupDialog.open(ExportPresetDialogComponent, dialogConfig);
+    let dialogRef = this.popupDialog.open(ExportPresetDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == "OK") {
+        this.presetRemoved.emit(); // triggers refresh
+      }
+    });
   }
 }
