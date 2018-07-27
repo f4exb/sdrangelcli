@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Import preset</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+  <table>
+    <tr>
+      <td>
+        <span class="label-card">Remote file path</span><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input class="file-path-input" type="text" [(ngModel)]="remoteFilePath"><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="label-card inner-label">Give preset a name</span><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input class="preset-name-input" type="text" [(ngModel)]="presetName"><br/>
+      </td>
+    </tr>
+  </table>
+  &nbsp;
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary"(click)="import()">OK</button>
+</mat-dialog-actions>

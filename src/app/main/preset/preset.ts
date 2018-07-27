@@ -42,6 +42,12 @@ export interface PresetDelete {
   type: string
 }
 
+export interface PresetImport {
+  groupName: string,
+  description: string,
+  filePath: string
+}
+
 export const PRESETS_DEFAULT = {
   nbGroups: 0,
   groups: []

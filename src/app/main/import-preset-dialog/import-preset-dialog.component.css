@@ -1,0 +1,30 @@
+.dialog-content {
+    overflow: initial;
+}
+
+.label-card {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.inner-label {
+    vertical-align: -0.6em;
+}
+
+.file-path-input {
+    width: 40ch;
+}
+
+.preset-name-input {
+    width: 40ch;
+}
+
+::ng-deep .mat-divider {
+    /* CSS styles go here */
+    margin: 5px; /* for example to remove the margin */
+}
+
+::ng-deep .mat-dialog-title {
+    /* CSS styles go here */
+    margin: 0px; /* for example to remove the margin */
+}
