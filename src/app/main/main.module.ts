@@ -16,6 +16,7 @@ import { PresetGroupComponent } from './preset-group/preset-group.component';
 import { PresetsComponent } from './presets/presets.component';
 import { RemovePresetDialogComponent } from './remove-preset-dialog/remove-preset-dialog.component';
 import { ImportPresetDialogComponent } from './import-preset-dialog/import-preset-dialog.component';
+import { ExportPresetDialogComponent } from './export-preset-dialog/export-preset-dialog.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { ImportPresetDialogComponent } from './import-preset-dialog/import-prese
     PresetGroupComponent,
     PresetsComponent,
     RemovePresetDialogComponent,
-    ImportPresetDialogComponent
+    ImportPresetDialogComponent,
+    ExportPresetDialogComponent
   ]
 })
 export class MainModule { }

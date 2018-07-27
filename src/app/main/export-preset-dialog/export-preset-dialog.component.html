@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Export preset</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+   <input class="file-path-input" type="text" [(ngModel)]="remoteFilePath"><br/>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary"(click)="export()">OK</button>
+</mat-dialog-actions>
