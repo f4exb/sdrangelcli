@@ -17,6 +17,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PresetsComponent } from './main/presets/presets.component';
 import { PresetGroupComponent } from './main/preset-group/preset-group.component';
 import { PresetComponent } from './main/preset/preset.component';
+import { DeviceDetailsComponent } from './device-details/device-details.component';
+import { AirspyhfComponent } from './device-details/airspyhf/airspyhf.component';
+import { DeviceNotSupportedComponent } from './device-details/device-not-supported/device-not-supported.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -33,7 +36,10 @@ describe('AppComponent', () => {
         AudioInDeviceComponent,
         PresetsComponent,
         PresetGroupComponent,
-        PresetComponent
+        PresetComponent,
+        DeviceDetailsComponent,
+        AirspyhfComponent,
+        DeviceNotSupportedComponent
       ],
       imports: [
         FormsModule,
