@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SdrangelUrlService } from '../sdrangel-url.service';
 import { DeviceDetailsService } from './device-details.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-device-details',
@@ -10,7 +11,7 @@ import { DeviceDetailsService } from './device-details.service';
 })
 export class DeviceDetailsComponent implements OnInit {
   deviceIndex: number;
-  private sub: any;
+  private sub: Subscription;
   sdrangelURL : string;
 
   constructor(private router: Router,
@@ -18,7 +19,7 @@ export class DeviceDetailsComponent implements OnInit {
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,)
   {
-
+    this.sub = null;
   }
 
   ngOnInit() {
@@ -32,7 +33,7 @@ export class DeviceDetailsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    (this.sub) && this.sub.unsubscribe();
   }
 
   private getDeviceSettings() {

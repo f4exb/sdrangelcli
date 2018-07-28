@@ -4,7 +4,7 @@ import { DeviceDetailsComponent } from './device-details.component';
 import { AirspyhfComponent } from './airspyhf/airspyhf.component';
 import { DeviceNotSupportedComponent } from './device-not-supported/device-not-supported.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: DeviceDetailsComponent,
