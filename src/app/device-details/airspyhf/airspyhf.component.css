@@ -1,0 +1,61 @@
+.device-card {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    border: outset;
+    border-color: whitesmoke;
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.device-card-header {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    border: solid;
+    border-color: gray;
+    border-width: 1px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.device-header-rx {
+    background-color: rgb(170,255,200);
+}
+
+.frequency-input {
+    width: 8ch;
+}
+
+.xfrequency-input {
+    width: 12ch;
+}
+
+.sample-rate-input {
+    width: 6ch;
+}
+
+.log2-input {
+    width: 4ch;
+}
+
+.record-file-input {
+    width: 29ch;
+}
+
+td {
+    background-color: rgb(230, 230, 210);
+}
+
+::ng-deep .mat-card {
+    /* CSS styles go here */
+    padding: 0px; /* for example to remove the margin */
+}
+
+::ng-deep  .mat-checkbox-inner-container {
+    height: 14px!important;
+    width: 14px!important;
+}
+
+::ng-deep  .mat-checkbox-label {
+    line-height: 16px!important;
+}

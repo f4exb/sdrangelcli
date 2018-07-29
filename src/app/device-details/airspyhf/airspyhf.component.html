@@ -1,3 +1,75 @@
-<p>
-  airspyhf works at {{settings.centerFrequency/1000}} kHz
-</p>
+<mat-card class="deviceset-card">
+  <mat-card-header class="device-card-header device-header-rx">
+    <span>AirspyHF</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <tr>
+        <td>
+          LO
+          <input type="number" class="frequency-input" [(ngModel)]="loPPM" (change)="setLoPPMTenths()">
+          ppm
+        </td>
+        <td>
+          Band
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+            [(value)]="settings.bandIndex"
+            (selectionChange)="setBandIndex()"
+          >
+            <mat-option *ngFor="let band of bands" [value]="band.value">
+              {{band.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Freq
+          <input type="number" class="frequency-input" [(ngModel)]="centerFreqKhz" (change)="setCenterFrequency()">
+          kHz
+        </td>
+        <td>
+          SR
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+            [(value)]="settings.devSampleRateIndex"
+            (selectionChange)="setSampleRateIndex()"
+          >
+            <mat-option *ngFor="let sampleRate of sampleRates" [value]="sampleRate.value">
+              {{sampleRate.viewValue}}
+            </mat-option>
+          </mat-select>
+          kS/s
+        </td>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+            [(value)]="settings.log2Decim"
+            (selectionChange)="setLog2Decim()"
+          >
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()">Trans</mat-checkbox>
+        </td>
+        <td colspan="2">
+          Freq:
+          <input type="number" class="xfrequency-input" [(ngModel)]="settings.transverterDeltaFrequency" (change)="setTransverterFrequency()">
+          Hz
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          Remote record file
+          <input type="text" class="record-file-input" [(ngModel)]="settings.fileRecordName" (change)="setFileRecordName()">
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
