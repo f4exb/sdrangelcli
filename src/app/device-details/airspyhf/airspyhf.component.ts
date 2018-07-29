@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { AirspyHFSettings, AIRSPYHF_SETTINGS_DEFAULT } from './airspyhf';
+import { DeviceSettings } from '../device-details';
 
 export interface SampleRate {
   value: number;
@@ -25,6 +26,8 @@ export interface Band {
   styleUrls: ['./airspyhf.component.css']
 })
 export class AirspyhfComponent implements OnInit {
+  statusMessage: string;
+  statusError: boolean = false;
   sampleRates: SampleRate[] = [
     {value: 0, viewValue: 768}
   ];
@@ -68,18 +71,44 @@ export class AirspyhfComponent implements OnInit {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if (deviceSettings.deviceHwType == "AirspyHF") {
+          this.statusMessage = "OK";
+          this.statusError = false;
           this.settings = deviceSettings.airspyHFSettings;
           this.centerFreqKhz = this.settings.centerFrequency/1000;
           this.loPPM = this.settings.LOppmTenths/10;
           this.transverter = this.settings.transverterMode !== 0;
+        } else {
+          this.statusMessage = "Not an AirspyHF device";
+          this.statusError = true;
         }
+      }
+    )
+  }
+
+  private setDeviceSettings(airspyhfSettings : AirspyHFSettings) {
+    const settings : DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = "AirspyHF";
+    settings.tx = 0,
+    settings.airspyHFSettings = airspyhfSettings;
+    this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
+      res => {
+        console.log("Set settings OK", res);
+        this.statusMessage = "OK";
+        this.statusError = false;
+        this.getDeviceSettings();
+      },
+      error => {
+        this.statusMessage = error.message;
+        this.statusError = true;
       }
     )
   }
 
   setCenterFrequency() {
     this.settingsMod.centerFrequency = this.centerFreqKhz * 1000;
-    console.log(this.settingsMod);
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.centerFrequency = this.centerFreqKhz * 1000;
+    this.setDeviceSettings(newSettings);
   }
 
   setLoPPMTenths() {
