@@ -104,40 +104,55 @@ export class AirspyhfComponent implements OnInit {
     )
   }
 
+  getSampleRate() : number {
+    return 768000/(1<<this.settings.log2Decim);
+  }
+
   setCenterFrequency() {
-    this.settingsMod.centerFrequency = this.centerFreqKhz * 1000;
     const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
     newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
   setLoPPMTenths() {
-    this.settingsMod.LOppmTenths = this.loPPM * 10;
-    console.log(this.settingsMod);
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.LOppmTenths = this.loPPM * 10;
+    this.setDeviceSettings(newSettings);
   }
 
   setSampleRateIndex() {
-    this.settingsMod.devSampleRateIndex = this.settings.devSampleRateIndex;
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.devSampleRateIndex = this.settings.devSampleRateIndex;
+    this.setDeviceSettings(newSettings);
   }
 
   setLog2Decim() {
-    this.settingsMod.log2Decim = this.settings.log2Decim;
-    console.log(this.settingsMod);
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.log2Decim = this.settings.log2Decim;
+    this.setDeviceSettings(newSettings);
   }
 
   setTransverterMode() {
-    this.settingsMod.transverterMode = this.transverter ? 1 : 0;
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.transverterMode = this.transverter ? 1 : 0;
+    this.setDeviceSettings(newSettings);
   }
 
   setTransverterFrequency() {
-    this.settingsMod.transverterDeltaFrequency = this.settings.transverterDeltaFrequency;
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.transverterDeltaFrequency = this.settings.transverterDeltaFrequency;
+    this.setDeviceSettings(newSettings);
   }
 
   setBandIndex() {
-    this.settingsMod.bandIndex = this.settings.bandIndex;
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.bandIndex = this.settings.bandIndex;
+    this.setDeviceSettings(newSettings);
   }
 
   setFileRecordName() {
-    this.settingsMod.fileRecordName = this.settings.fileRecordName;
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.fileRecordName = this.settings.fileRecordName;
+    this.setDeviceSettings(newSettings);
   }
 }

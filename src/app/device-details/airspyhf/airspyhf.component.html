@@ -1,6 +1,9 @@
 <mat-card class="deviceset-card">
   <mat-card-header class="device-card-header device-header-rx">
-    <span>AirspyHF</span>
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="device-label">AirspyHF {{getSampleRate()/1000}} kS/s</span>
   </mat-card-header>
   <mat-card-content>
     <table>
@@ -70,8 +73,9 @@
           <input type="text" class="record-file-input" [(ngModel)]="settings.fileRecordName" (change)="setFileRecordName()">
         </td>
       </tr>
+      <tr style="height: 3px;">
+      </tr>
     </table>
-    &nbsp;
   </mat-card-content>
 </mat-card>
 <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
