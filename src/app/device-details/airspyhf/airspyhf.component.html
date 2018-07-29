@@ -10,7 +10,12 @@
       <tr>
         <td>
           LO
-          <input type="number" class="frequency-input" [(ngModel)]="loPPM" (change)="setLoPPMTenths()">
+          <input type="number" class="frequency-input"
+            [(ngModel)]="loPPM"
+            (change)="setLoPPMTenths()"
+            matTooltip="LO correction"
+            step=0.1
+          >
           ppm
         </td>
         <td>
@@ -18,6 +23,7 @@
           <mat-select style="width:10ch; background-color: white; margin: 1px;"
             [(value)]="settings.bandIndex"
             (selectionChange)="setBandIndex()"
+            matTooltip="Frequency band"
           >
             <mat-option *ngFor="let band of bands" [value]="band.value">
               {{band.viewValue}}
@@ -30,7 +36,7 @@
       <tr>
         <td>
           Freq
-          <input type="number" class="frequency-input" [(ngModel)]="centerFreqKhz" (change)="setCenterFrequency()">
+          <input type="number" class="frequency-input" [(ngModel)]="centerFreqKhz" (change)="setCenterFrequency()" matTooltip="Center frequency">
           kHz
         </td>
         <td>
@@ -38,6 +44,7 @@
           <mat-select style="width:8ch; background-color: white; margin: 1px;"
             [(value)]="settings.devSampleRateIndex"
             (selectionChange)="setSampleRateIndex()"
+            matTooltip="Sample rate"
           >
             <mat-option *ngFor="let sampleRate of sampleRates" [value]="sampleRate.value">
               {{sampleRate.viewValue}}
@@ -50,6 +57,7 @@
           <mat-select style="width:6ch; background-color: white; margin: 1px;"
             [(value)]="settings.log2Decim"
             (selectionChange)="setLog2Decim()"
+            matTooltip="Decimation factor"
           >
             <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
               {{log2Decim.viewValue}}
@@ -59,18 +67,28 @@
       </tr>
       <tr>
         <td>
-          <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()">Trans</mat-checkbox>
+          <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
+            Trans
+          </mat-checkbox>
         </td>
         <td colspan="2">
           Freq:
-          <input type="number" class="xfrequency-input" [(ngModel)]="settings.transverterDeltaFrequency" (change)="setTransverterFrequency()">
+          <input type="number" class="xfrequency-input"
+            [(ngModel)]="settings.transverterDeltaFrequency"
+            (change)="setTransverterFrequency()"
+            matTooltip="Transverter frequency shift"
+          >
           Hz
         </td>
       </tr>
       <tr>
         <td colspan="3">
           Remote record file
-          <input type="text" class="record-file-input" [(ngModel)]="settings.fileRecordName" (change)="setFileRecordName()">
+          <input type="text" class="record-file-input"
+            [(ngModel)]="settings.fileRecordName"
+            (change)="setFileRecordName()"
+            matTooltip="Name of record file"
+          >
         </td>
       </tr>
       <tr style="height: 3px;">

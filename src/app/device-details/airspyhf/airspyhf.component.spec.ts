@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AirspyhfComponent } from './airspyhf.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule } from '@angular/material';
+import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
 describe('AirspyhfComponent', () => {
@@ -22,6 +22,7 @@ describe('AirspyhfComponent', () => {
         MatSelectModule,
         MatOptionModule,
         MatCheckboxModule,
+        MatTooltipModule,
         HttpClientTestingModule
       ],
       providers: [

@@ -4,7 +4,7 @@ import { DeviceDetailsComponent } from './device-details.component';
 import { AirspyhfComponent } from './airspyhf/airspyhf.component';
 import { DeviceNotSupportedComponent } from './device-not-supported/device-not-supported.component';
 import { DeviceDetailsRoutingModule } from './device-details-routing.module';
-import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule } from '@angular/material';
+import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
     MatSelectModule,
     MatOptionModule,
     MatCheckboxModule,
+    MatTooltipModule,
     DeviceDetailsRoutingModule
   ],
   declarations: [
