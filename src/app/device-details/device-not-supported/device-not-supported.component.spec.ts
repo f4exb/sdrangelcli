@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DeviceNotSupportedComponent } from './device-not-supported.component';
+import { MatCardModule } from '@angular/material';
 
 describe('DeviceNotSupportedComponent', () => {
   let component: DeviceNotSupportedComponent;
@@ -8,7 +9,8 @@ describe('DeviceNotSupportedComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeviceNotSupportedComponent ]
+      declarations: [ DeviceNotSupportedComponent ],
+      imports: [ MatCardModule ]
     })
     .compileComponents();
   }));

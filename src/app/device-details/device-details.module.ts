@@ -6,6 +6,7 @@ import { DeviceNotSupportedComponent } from './device-not-supported/device-not-s
 import { DeviceDetailsRoutingModule } from './device-details-routing.module';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { RtlsdrComponent } from './rtlsdr/rtlsdr.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     DeviceDetailsComponent,
     AirspyhfComponent,
-    DeviceNotSupportedComponent
+    DeviceNotSupportedComponent,
+    RtlsdrComponent
   ]
 })
 export class DeviceDetailsModule { }

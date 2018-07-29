@@ -1,0 +1,150 @@
+<mat-card class="deviceset-card">
+    <mat-card-header class="device-card-header device-header-rx">
+      <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+        <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <span class="device-label">RTLSDR {{getSampleRate()/1000}} kS/s</span>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- Line 1  LO correction, DC correction, IQ correction -->
+        <tr>
+          <td>
+            LO
+            <input type="number" class="loppm-input"
+              [(ngModel)]="settings.loPpmCorrection"
+              (change)="setLoPPM()"
+              matTooltip="LO correction"
+            >
+            ppm
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+              DC block
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
+              IQ corr
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- Line 2 Center frequency, gain, AGC -->
+        <tr>
+          <td>
+            Freq
+            <input type="number" class="frequency-input"
+              [(ngModel)]="centerFreqKhz"
+              (change)="setCenterFrequency()"
+              matTooltip="Center frequency"
+            >
+            kHz
+          </td>
+          <td>
+            Gain
+            <input type="number" class="gain-input"
+              [(ngModel)]="settings.gain"
+              (change)="setGain()"
+              matTooltip="Gain"
+              step=0.1
+            >
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="agc" (change)="setAGC()" matTooltip="Automatic Gain Control">
+              AGC
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- Line 3 Sample rate, Decimation, Fc position -->
+        <tr>
+          <td>
+            SR
+            <input type="number" class="sample-rate-input"
+              [(ngModel)]="settings.devSampleRate"
+              (change)="setSampleRate()"
+              matTooltip="Sample rate"
+            >
+            S/s
+          </td>
+          <td>
+            Decim
+            <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor"
+            >
+              <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+                {{log2Decim.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            Fc pos
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.fcPos"
+              (selectionChange)="setFcPos()"
+              matTooltip="Center frequency position"
+            >
+              <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
+                {{fcPos.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <!-- Line 4 RF bandwidh, low sample rate, no mod mode -->
+        <tr>
+          <td>
+            RFBW
+            <input type="number" class="rfbandwidth-input"
+              [(ngModel)]="settings.rfBandwidth"
+              (change)="setRFBandwidth()"
+              matTooltip="RF Bandwidth"
+            >
+            kHz
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="lowSampleRate" (change)="setLowSampleRate()" matTooltip="Low sample rate">
+              Low SR
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="noModMode" (change)="setModMode()" matTooltip="No mod mode">
+              No mod
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- Line 5 transverter mode, transverter frequency -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
+              Transverter
+            </mat-checkbox>
+          </td>
+          <td colspan="2">
+            Freq:
+            <input type="number" class="xfrequency-input"
+              [(ngModel)]="settings.transverterDeltaFrequency"
+              (change)="setTransverterFrequency()"
+              matTooltip="Transverter frequency shift"
+            >
+            Hz
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            Remote record file
+            <input type="text" class="record-file-input"
+              [(ngModel)]="settings.fileRecordName"
+              (change)="setFileRecordName()"
+              matTooltip="Name of record file"
+            >
+          </td>
+        </tr>
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+    {{ statusMessage }}
+  </mat-card>

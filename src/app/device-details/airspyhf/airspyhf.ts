@@ -6,7 +6,7 @@ export interface AirspyHFSettings {
     transverterMode?: number,
     transverterDeltaFrequency?: number,
     bandIndex?: number,
-    fileRecordName: string
+    fileRecordName?: string
 }
 
 export const AIRSPYHF_SETTINGS_DEFAULT = {
