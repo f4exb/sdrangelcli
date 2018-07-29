@@ -10,6 +10,7 @@ import { DeviceComponent } from '../../deviceset/device/device.component';
 import { ChannelComponent } from '../../deviceset/channel/channel.component';
 import { MatDialogModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Router } from '@angular/router';
 
 describe('InstanceSummaryComponent one device set', () => {
   let component: InstanceSummaryComponent;
@@ -31,7 +32,10 @@ describe('InstanceSummaryComponent one device set', () => {
         MatSnackBarModule,
         MatTooltipModule
       ],
-      providers: [ InstanceSummaryService ]
+      providers: [
+        InstanceSummaryService,
+        {provide: Router, useValue: {}}
+      ]
     })
     .compileComponents();
   }));
@@ -74,7 +78,10 @@ describe('InstanceSummaryComponent empty', () => {
         MatSnackBarModule,
         MatTooltipModule
       ],
-      providers: [ InstanceSummaryService ]
+      providers: [
+        InstanceSummaryService,
+        {provide: Router, useValue: {}}
+      ]
     })
     .compileComponents();
   }));
@@ -117,7 +124,10 @@ describe('InstanceSummaryComponent many device sets', () => {
         MatSnackBarModule,
         MatTooltipModule
       ],
-      providers: [ InstanceSummaryService ]
+      providers: [
+        InstanceSummaryService,
+        {provide: Router, useValue: {}}
+      ]
     })
     .compileComponents();
   }));

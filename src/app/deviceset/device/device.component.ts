@@ -4,6 +4,7 @@ import { MatDialogConfig, MatDialog, MatSnackBar } from '@angular/material';
 import { ChangeDeviceDialogComponent } from '../change-device-dialog/change-device-dialog.component';
 import { DeviceService } from './device.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-device',
@@ -21,7 +22,8 @@ export class DeviceComponent implements OnInit {
     private elementRef: ElementRef,
     private deviceService: DeviceService,
     private sdrangelUrlService: SdrangelUrlService,
-    public snackBar: MatSnackBar)
+    public snackBar: MatSnackBar,
+    private router: Router)
   {
     this.onResize();
   }
@@ -68,6 +70,10 @@ export class DeviceComponent implements OnInit {
     } else {
       return "grey";
     }
+  }
+
+  editDevice() {
+    this.router.navigate(['../device/'+this.device.index]);
   }
 
   openChangeDeviceDialog() {

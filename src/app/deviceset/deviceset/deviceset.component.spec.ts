@@ -7,6 +7,7 @@ import { DeviceComponent } from '../device/device.component';
 import { ChannelComponent } from '../channel/channel.component';
 import { MatDialogModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Router } from '@angular/router';
 
 describe('DevicesetComponent without channels', () => {
   let component: DevicesetComponent;
@@ -25,6 +26,9 @@ describe('DevicesetComponent without channels', () => {
         MatSnackBarModule,
         MatTooltipModule,
         HttpClientTestingModule
+      ],
+      providers: [
+        {provide: Router, useValue: {}}
       ]
     })
     .compileComponents();
@@ -70,6 +74,9 @@ describe('DevicesetComponent with channels', () => {
         MatSnackBarModule,
         MatTooltipModule,
         HttpClientTestingModule
+      ],
+      providers: [
+        {provide: Router, useValue: {}}
       ]
     })
     .compileComponents();
@@ -112,6 +119,9 @@ describe('DevicesetComponent with Tx device', () => {
         MatSnackBarModule,
         MatTooltipModule,
         HttpClientTestingModule
+      ],
+      providers: [
+        {provide: Router, useValue: {}}
       ]
     })
     .compileComponents();

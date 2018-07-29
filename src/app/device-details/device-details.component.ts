@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class DeviceDetailsComponent implements OnInit {
   deviceIndex: number;
+  isTx: boolean;
   private sub: Subscription;
   sdrangelURL : string;
 
@@ -39,6 +40,7 @@ export class DeviceDetailsComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
+        this.isTx = deviceSettings.tx !== 0;
         if (deviceSettings.deviceHwType == "AirspyHF") {
           this.router.navigate(['airspyhf'], { relativeTo: this.route});
         } else {
@@ -46,5 +48,9 @@ export class DeviceDetailsComponent implements OnInit {
         }
       }
     )
+  }
+
+  getDevicesetLabel() : string {
+    return (this.isTx ? "Tx" : "Rx") + this.deviceIndex;
   }
 }
