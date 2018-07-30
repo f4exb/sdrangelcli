@@ -1,3 +1,8 @@
-<p>
-  channel-details works!
-</p>
+<mat-card class="deviceset-card">
+  <mat-card-header class="deviceset-card-header">
+    <span class="label-card">{{getDevicesetLabel()}} channel {{channelIndex}} details</span>
+  </mat-card-header>
+  <mat-card-content>
+    <router-outlet></router-outlet>
+  </mat-card-content>
+</mat-card>

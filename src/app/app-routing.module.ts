@@ -41,7 +41,11 @@ const routes: Routes = [
     {
         path: 'device/:dix',
         loadChildren: './device-details/device-details.module#DeviceDetailsModule'
-    }
+    },
+    {
+        path: 'device/:dix/channel/:cix',
+        loadChildren: './channel-details/channel-details.module#ChannelDetailsModule'
+    },
   ];
 
   @NgModule({
