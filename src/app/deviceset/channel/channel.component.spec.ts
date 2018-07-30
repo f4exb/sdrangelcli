@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ChannelComponent } from './channel.component';
 import { CHANNEL0_MOCK } from './channel';
 import { MatDialogModule } from '@angular/material';
+import { RouterModule, Router } from '@angular/router';
 
 describe('ChannelComponent', () => {
   let component: ChannelComponent;
@@ -14,7 +15,11 @@ describe('ChannelComponent', () => {
       declarations: [ ChannelComponent ],
       imports: [
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        RouterModule
+      ],
+      providers: [
+        {provide: Router, useValue: {}}
       ]
     })
     .compileComponents();

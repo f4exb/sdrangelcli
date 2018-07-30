@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListene
 import { Channel } from './channel'
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { RemoveChannelDialogComponent } from '../remove-channel-dialog/remove-channel-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-channel',
@@ -17,7 +18,8 @@ export class ChannelComponent implements OnInit {
   height: number;
 
   constructor(private popupDialog: MatDialog,
-    private elementRef: ElementRef)
+    private elementRef: ElementRef,
+    private router: Router)
   {
     this.onResize();
   }
@@ -29,6 +31,10 @@ export class ChannelComponent implements OnInit {
   onResize(event?) {
      this.height = window.innerHeight;
      this.width = window.innerWidth;
+  }
+
+  editChannel() {
+    this.router.navigate(['../device/'+this.devicesetIndex+'/channel/'+this.channel.index]);
   }
 
   openRemoveChannelDialog() {
