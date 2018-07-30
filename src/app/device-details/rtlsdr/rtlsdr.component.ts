@@ -135,6 +135,7 @@ export class RtlsdrComponent implements OnInit {
   }
 
   setCenterFrequency() {
+    this.validateCenterFrequencyKhz();
     const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
     newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
@@ -195,6 +196,8 @@ export class RtlsdrComponent implements OnInit {
   setModMode() {
     const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
     newSettings.noModMode = this.noModMode ? 1 : 0;
+    this.validateCenterFrequencyKhz();
+    newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
@@ -214,6 +217,17 @@ export class RtlsdrComponent implements OnInit {
       this.rfBandwidthKhz = 350;
     } else if (this.rfBandwidthKhz > 8000) {
       this.rfBandwidthKhz = 8000;
+    }
+  }
+
+  private validateCenterFrequencyKhz() {
+    let min, max : number;
+    min = this.noModMode ? 0 : 24000;
+    max = this.lowSampleRate ? 275000 : 1900000;
+    if (this.centerFreqKhz < min) {
+      this.centerFreqKhz = min;
+    } else if (this.centerFreqKhz > max) {
+      this.centerFreqKhz = max;
     }
   }
 }
