@@ -107,6 +107,7 @@ export class AirspyhfComponent implements OnInit {
   }
 
   setCenterFrequency() {
+    this.validateCenterFrequencyKhz();
     const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
     newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
@@ -145,6 +146,8 @@ export class AirspyhfComponent implements OnInit {
   setBandIndex() {
     const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
     newSettings.bandIndex = this.settings.bandIndex;
+    this.validateCenterFrequencyKhz();
+    newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
@@ -152,5 +155,21 @@ export class AirspyhfComponent implements OnInit {
     const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
     newSettings.fileRecordName = this.settings.fileRecordName;
     this.setDeviceSettings(newSettings);
+  }
+
+  private validateCenterFrequencyKhz() {
+    let min, max : number;
+    if (this.settings.bandIndex === 0) {
+      min = 9;
+      max = 31000;
+    } else {
+      min = 60000;
+      max = 260000;
+    }
+    if (this.centerFreqKhz < min) {
+      this.centerFreqKhz = min;
+    } else if (this.centerFreqKhz > max) {
+      this.centerFreqKhz = max;
+    }
   }
 }
