@@ -147,6 +147,7 @@ export class RtlsdrComponent implements OnInit {
   }
 
   setRFBandwidth() {
+    this.validateRFBandwidth();
     const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
     newSettings.rfBandwidth = this.rfBandwidthKhz * 1000;
     this.setDeviceSettings(newSettings);
@@ -191,6 +192,12 @@ export class RtlsdrComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setModMode() {
+    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
+    newSettings.noModMode = this.noModMode ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
   private validateSampleRate() {
     let min, max : number;
     min = this.lowSampleRate ? 230000 : 950000;
@@ -202,10 +209,11 @@ export class RtlsdrComponent implements OnInit {
     }
   }
 
-  setModMode() {
-    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
-    newSettings.noModMode = this.noModMode ? 1 : 0;
-    this.setDeviceSettings(newSettings);
+  private validateRFBandwidth() {
+    if (this.rfBandwidthKhz < 350) {
+      this.rfBandwidthKhz = 350;
+    } else if (this.rfBandwidthKhz > 8000) {
+      this.rfBandwidthKhz = 8000;
+    }
   }
-
 }
