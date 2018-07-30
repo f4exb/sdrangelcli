@@ -1,0 +1,24 @@
+.channel-card {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    border: outset;
+    border-color: whitesmoke;
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.channel-card-header {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    border: solid;
+    border-color: gray;
+    border-width: 1px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+::ng-deep .mat-card {
+    /* CSS styles go here */
+    padding: 0px; /* for example to remove the margin */
+}

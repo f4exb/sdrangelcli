@@ -1,17 +1,17 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { DeviceDetailsService } from './device-details.service';
+import { ChannelDetailsService } from './channel-details.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('DeviceDetailsService', () => {
+describe('ChannelDetailsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DeviceDetailsService],
+      providers: [ChannelDetailsService],
       imports: [ HttpClientTestingModule ]
     });
   });
 
-  it('should be created', inject([DeviceDetailsService], (service: DeviceDetailsService) => {
+  it('should be created', inject([ChannelDetailsService], (service: ChannelDetailsService) => {
     expect(service).toBeTruthy();
   }));
 });
