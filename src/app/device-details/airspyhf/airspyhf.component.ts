@@ -4,6 +4,7 @@ import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { AirspyHFSettings, AIRSPYHF_SETTINGS_DEFAULT } from './airspyhf';
 import { DeviceSettings } from '../device-details';
+import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 
 export interface SampleRate {
   value: number,
@@ -53,7 +54,8 @@ export class AirspyhfComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
-    private sdrangelUrlService: SdrangelUrlService)
+    private sdrangelUrlService: SdrangelUrlService,
+    private deviceStoreService: DeviceStoreService)
   {
   }
 
@@ -75,12 +77,21 @@ export class AirspyhfComponent implements OnInit {
           this.centerFreqKhz = this.settings.centerFrequency/1000;
           this.loPPM = this.settings.LOppmTenths/10;
           this.transverter = this.settings.transverterMode !== 0;
+          this.feedDeviceStore()
         } else {
           this.statusMessage = "Not an AirspyHF device";
           this.statusError = true;
         }
       }
     )
+  }
+
+  private feedDeviceStore() {
+    const deviceStorage = <DeviceStorage>{
+      centerFrequency: this.settings.centerFrequency,
+      basebandRate: 768000/(1<<this.settings.log2Decim)
+    }
+    this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
   private setDeviceSettings(airspyhfSettings : AirspyHFSettings) {

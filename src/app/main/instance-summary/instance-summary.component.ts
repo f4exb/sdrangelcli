@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { InstanceSummary, INSTANCE_SUMMARY_DEFAULT } from './instance-summary';
 import { InstanceSummaryService } from './instance-summary.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
+import { DeviceStoreService } from '../../device-store.service';
+import { DevicesetComponent } from '../../deviceset/deviceset/deviceset.component';
 
 @Component({
   selector: 'app-instance-summary',
@@ -16,7 +18,8 @@ export class InstanceSummaryComponent implements OnInit {
   statusError: boolean = false;
 
   constructor(private instanceSummaryService: InstanceSummaryService,
-    private sdrangelUrlService: SdrangelUrlService) {
+    private sdrangelUrlService: SdrangelUrlService,
+    private deviceStoreService: DeviceStoreService) {
   }
 
   ngOnInit() {
@@ -30,6 +33,7 @@ export class InstanceSummaryComponent implements OnInit {
     this.instanceSummaryService.getInfo(this.sdrangelURL).subscribe(
       instanceSummary => {
         this.instanceSummary = instanceSummary;
+        this.feedDeviceStore();
         this.statusMessage = "OK";
         this.statusError = false;
       },
@@ -38,6 +42,16 @@ export class InstanceSummaryComponent implements OnInit {
         this.statusError = true;
       }
     );
+  }
+
+  private feedDeviceStore() {
+    if (this.instanceSummary.devicesetlist.devicesetcount > 0) {
+      this.instanceSummary.devicesetlist.deviceSets.forEach((deviceSet, deviceIndex) => {
+        this.deviceStoreService.change(deviceIndex, {
+          centerFrequency: deviceSet.samplingDevice.centerFrequency,
+          basebandRate: deviceSet.samplingDevice.bandwidth});
+      })
+    }
   }
 
 }

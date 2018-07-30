@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceSettings } from '../device-details';
+import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 
 
 export interface Log2Decim {
@@ -52,7 +53,8 @@ export class RtlsdrComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
-    private sdrangelUrlService: SdrangelUrlService)
+    private sdrangelUrlService: SdrangelUrlService,
+    private deviceStoreService: DeviceStoreService)
   {
   }
 
@@ -79,12 +81,21 @@ export class RtlsdrComponent implements OnInit {
           this.agc = this.settings.agc !== 0;
           this.lowSampleRate = this.settings.lowSampleRate !== 0;
           this.noModMode = this.settings.noModMode !== 0;
+          this.feedDeviceStore();
         } else {
           this.statusMessage = "Not a RTLSDR device";
           this.statusError = true;
         }
       }
     )
+  }
+
+  private feedDeviceStore() {
+    const deviceStorage = <DeviceStorage>{
+      centerFrequency: this.settings.centerFrequency,
+      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2Decim)
+    }
+    this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
   private setDeviceSettings(rtlsdrSettings : RTLSDRSettings) {
