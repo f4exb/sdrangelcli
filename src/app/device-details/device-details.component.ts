@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SdrangelUrlService } from '../sdrangel-url.service';
-import { DeviceDetailsService } from './device-details.service';
 import { Subscription } from 'rxjs';
+import { DevicesetService } from '../deviceset/deviceset/deviceset.service';
 
 @Component({
   selector: 'app-device-details',
@@ -17,7 +17,7 @@ export class DeviceDetailsComponent implements OnInit {
 
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private devicedetailsService: DeviceDetailsService,
+    private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,)
   {
     this.sub = null;
@@ -38,12 +38,12 @@ export class DeviceDetailsComponent implements OnInit {
   }
 
   private getDeviceSettings() {
-    this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
-      deviceSettings => {
-        this.isTx = deviceSettings.tx !== 0;
-        if (deviceSettings.deviceHwType == "AirspyHF") {
+    this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
+      deviceSet => {
+        this.isTx = deviceSet.samplingDevice.tx !== 0;
+        if (deviceSet.samplingDevice.hwType == "AirspyHF") {
           this.router.navigate(['airspyhf'], { relativeTo: this.route});
-        } else if (deviceSettings.deviceHwType == "RTLSDR") {
+        } else if (deviceSet.samplingDevice.hwType == "RTLSDR") {
           this.router.navigate(['rtlsdr'], { relativeTo: this.route});
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});

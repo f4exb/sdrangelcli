@@ -30,6 +30,10 @@ export class AmDemodComponent implements OnInit {
     this.deviceIndex = +this.route.snapshot.parent.params['dix']
     this.channelIndex = +this.route.snapshot.parent.params['cix']
     console.log(this.deviceIndex, this.channelIndex);
+    this.getDeviceStorage();
+  }
+
+  private getDeviceStorage() {
     this.deviceStoreSubscription = this.deviceStoreService.get(this.deviceIndex).subscribe(
       deviceStorage => {
         this.deviceCenterFrequency = deviceStorage.centerFrequency;
