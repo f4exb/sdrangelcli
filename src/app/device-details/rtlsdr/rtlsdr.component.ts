@@ -36,12 +36,13 @@ export class RtlsdrComponent implements OnInit {
   fcPositions: FcPos[] = [
     {value: 0, viewValue: "Inf"},
     {value: 1, viewValue: "Sup"},
-    {value: 0, viewValue: "Cen"},
+    {value: 2, viewValue: "Cen"},
   ];
   deviceIndex : number;
   sdrangelURL : string;
   settings: RTLSDRSettings = RTLSDR_SETTINGS_DEFAULT;
   centerFreqKhz: number;
+  rfBandwidthKhz: number;
   dcBlock: boolean;
   iqCorrection: boolean;
   transverter: boolean;
@@ -71,7 +72,13 @@ export class RtlsdrComponent implements OnInit {
           this.statusError = false;
           this.settings = deviceSettings.rtlSdrSettings;
           this.centerFreqKhz = this.settings.centerFrequency/1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
           this.transverter = this.settings.transverterMode !== 0;
+          this.dcBlock = this.settings.dcBlock !== 0;
+          this.iqCorrection = this.settings.iqImbalance !== 0;
+          this.agc = this.settings.agc !== 0;
+          this.lowSampleRate = this.settings.lowSampleRate !== 0;
+          this.noModMode = this.settings.noModMode !== 0;
         } else {
           this.statusMessage = "Not a RTLSDR device";
           this.statusError = true;
@@ -139,6 +146,12 @@ export class RtlsdrComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setRFBandwidth() {
+    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
+    newSettings.rfBandwidth = this.rfBandwidthKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
   setLog2Decim() {
     const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
     newSettings.log2Decim = this.settings.log2Decim;
@@ -166,7 +179,27 @@ export class RtlsdrComponent implements OnInit {
   setLowSampleRate() {
     const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
     newSettings.lowSampleRate = this.lowSampleRate ? 1 : 0;
+    this.validateSampleRate();
+    newSettings.devSampleRate = this.settings.devSampleRate;
     this.setDeviceSettings(newSettings);
+  }
+
+  setSampleRate() {
+    this.validateSampleRate();
+    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
+    newSettings.devSampleRate = this.settings.devSampleRate;
+    this.setDeviceSettings(newSettings);
+  }
+
+  private validateSampleRate() {
+    let min, max : number;
+    min = this.lowSampleRate ? 230000 : 950000;
+    max = this.lowSampleRate ? 300000 : 2400000;
+    if (this.settings.devSampleRate < min) {
+      this.settings.devSampleRate = min;
+    } else if (this.settings.devSampleRate > max) {
+      this.settings.devSampleRate = max;
+    }
   }
 
   setModMode() {

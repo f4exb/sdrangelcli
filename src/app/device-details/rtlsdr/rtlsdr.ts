@@ -1,19 +1,19 @@
 export interface RTLSDRSettings {
-    agc: number,
-    centerFrequency: number,
-    dcBlock: number,
-    devSampleRate: number,
-    fcPos: number,
-    gain: number,
-    iqImbalance: number,
-    loPpmCorrection: number,
-    log2Decim: number,
-    lowSampleRate: number,
-    noModMode: number,
-    rfBandwidth: number,
-    transverterDeltaFrequency: number,
-    transverterMode: number,
-    fileRecordName: string
+    agc?: number,
+    centerFrequency?: number,
+    dcBlock?: number,
+    devSampleRate?: number,
+    fcPos?: number,
+    gain?: number,
+    iqImbalance?: number,
+    loPpmCorrection?: number,
+    log2Decim?: number,
+    lowSampleRate?: number,
+    noModMode?: number,
+    rfBandwidth?: number,
+    transverterDeltaFrequency?: number,
+    transverterMode?: number,
+    fileRecordName?: string
 }
 
 export const RTLSDR_SETTINGS_DEFAULT = {
