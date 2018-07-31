@@ -1,3 +1,12 @@
-<p>
-  am-demod works!
-</p>
+<div>
+  <span>
+    F: 
+    <app-frequency-dial 
+      [frequency]="channelCenterFrequency" 
+      [min]="channelMinFrequency" 
+      [max]="channelMaxFrequency"
+      (frequencyChanged)="onFrequencyUpdate($event)">
+
+    </app-frequency-dial>
+  </span>
+</div>

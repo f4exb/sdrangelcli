@@ -6,6 +6,7 @@ import { ChannelDetailsComponent } from './channel-details.component';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { ChannelDetailsRoutingModule } from './channel-details-routing.module';
+import { CommonComponentsModule } from '../common-components/common-components.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ChannelDetailsRoutingModule } from './channel-details-routing.module';
     MatOptionModule,
     MatCheckboxModule,
     MatTooltipModule,
-    ChannelDetailsRoutingModule    
+    ChannelDetailsRoutingModule,
+    CommonComponentsModule   
   ],
   declarations: [
     ChannelNotSupportedComponent, 
