@@ -6,6 +6,7 @@ import { DeviceStoreService } from '../../device-store.service';
 import { Subscription } from 'rxjs';
 import { AMDemodSettings } from './am-demod';
 import { ChannelSettings } from '../channel-details';
+import { Utils } from '../../common-components/utils';
 
 @Component({
   selector: 'app-am-demod',
@@ -26,6 +27,7 @@ export class AmDemodComponent implements OnInit {
   channelMaxFrequencyKhz: number;
   statusMessage: string;
   statusError: boolean = false;
+  rgbTitle: number[] = [0, 0, 0];
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -61,6 +63,7 @@ export class AmDemodComponent implements OnInit {
           this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
           this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
           this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
+          this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
         } else {
           this.statusMessage = "Not an AMDemod channel";
           this.statusError = true;
@@ -106,5 +109,9 @@ export class AmDemodComponent implements OnInit {
     const newSettings: AMDemodSettings = <AMDemodSettings>{};
     newSettings.inputFrequencyOffset = this.channelCenterFrequencyKhz * 1000 - this.deviceCenterFrequency;
     this.setDeviceSettings(newSettings);
+  }
+
+  getRGBTitle() : string {
+    return "rgb(" + this.rgbTitle[0].toString() + "," + this.rgbTitle[1].toString() + "," + this.rgbTitle[2].toString() + ")";
   }
 }
