@@ -1,12 +1,27 @@
-<div>
-  <span>
-    F: 
-    <app-frequency-dial 
-      [frequency]="channelCenterFrequency" 
-      [min]="channelMinFrequency" 
-      [max]="channelMaxFrequency"
-      (frequencyChanged)="onFrequencyUpdate($event)">
-
-    </app-frequency-dial>
-  </span>
-</div>
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-rx">
+    <button mat-button class="button-card" matTooltip="Refresh">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="channel-label">AMDemod</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <tr>
+        <td>
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+      </tr>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

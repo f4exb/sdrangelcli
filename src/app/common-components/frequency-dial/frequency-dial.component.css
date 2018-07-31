@@ -1,4 +1,22 @@
 .frequency-input {
     width: 12ch;
     margin: 1px;
+    position: relative;
+    bottom: 2px;
+}
+
+.frequency-step-input {
+    width: 7ch;
+    background-color: white;
+}
+
+.button-card {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    top: 1px;
 }
