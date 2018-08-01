@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { ChannelDetailsRoutingModule } from './channel-details-routing.module';
 import { CommonComponentsModule } from '../common-components/common-components.module';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   imports: [
@@ -18,11 +19,12 @@ import { CommonComponentsModule } from '../common-components/common-components.m
     MatCheckboxModule,
     MatTooltipModule,
     ChannelDetailsRoutingModule,
-    CommonComponentsModule   
+    CommonComponentsModule,
+    ColorPickerModule
   ],
   declarations: [
-    ChannelNotSupportedComponent, 
-    AmDemodComponent, 
+    ChannelNotSupportedComponent,
+    AmDemodComponent,
     ChannelDetailsComponent
   ]
 })

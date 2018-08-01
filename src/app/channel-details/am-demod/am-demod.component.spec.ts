@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonComponentsModule } from '../../common-components/common-components.module';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 describe('AmDemodComponent', () => {
   let component: AmDemodComponent;
@@ -23,8 +24,9 @@ describe('AmDemodComponent', () => {
         MatCheckboxModule,
         MatTooltipModule,
         HttpClientTestingModule,
-        CommonComponentsModule
-      ],      
+        CommonComponentsModule,
+        ColorPickerModule
+      ],
       providers: [
         {provide: ActivatedRoute, useValue: { snapshot: {parent: {params: {dix: 0, cix: 0}}}}}
       ]

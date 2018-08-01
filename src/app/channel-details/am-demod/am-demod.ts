@@ -7,7 +7,7 @@ export interface AMDemodSettings {
     rgbColor: number,
     squelch: number,
     title: string,
-    volume: 2    
+    volume: number
 }
 
 export const AMDEMOD_SETTINGS_DEFAULT = {

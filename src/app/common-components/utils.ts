@@ -11,4 +11,22 @@ export class Utils {
 
         return result;
     }
+
+    static rgbToInt(rgbStr: string) : number {
+        let rgb = rgbStr.replace(/[^\d,]/g, '').split(',');
+        return (parseInt(rgb[0])<<16) + (parseInt(rgb[1])<<8) + (parseInt(rgb[2]));
+    }
+
+    static rgbIntToHex(value: number) : string {
+        return "#" + ((1 << 24) + value).toString(16);
+    }
+
+    static HexToIntRGB(hex: string) : number {
+        var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+            return r + r + g + g + b + b;
+        });
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return ((parseInt(result[1], 16))<<16) + ((parseInt(result[2], 16))<<8) + ((parseInt(result[3], 16)));
+    }
 }
