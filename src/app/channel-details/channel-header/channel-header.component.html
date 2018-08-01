@@ -1,0 +1,18 @@
+<span>
+  <span class="channel-label" matTooltip="Channel type and baseband rate">
+    {{channelType}} {{basebandRate/1000}} kS/s
+  </span>
+  <input class="color-picker" matTooltip="Marker color"
+         [style.background]="colorStr"
+         [cpOutputFormat]="'rgba'"
+         [(colorPicker)]="colorStr"
+         [cpOKButton]="true"
+         [cpOKButtonClass]= "'mat-raised-button mat-primary btn-xs'"
+         [cpSaveClickOutside]="false"
+         [cpCancelButton]="true"
+         [cpCancelButtonClass]= "'mat-raised-button btn-xs'"
+         (colorPickerSelect)= "setColor()"/>
+  <input class="title-input" type="text" matTooltip="Title"
+         [(ngModel)]="title"
+         (change)="setTitle()"/>
+</span>

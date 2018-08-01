@@ -3,20 +3,13 @@
     <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
       <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
     </button>&nbsp;
-    <span class="channel-label">AMDemod</span>
-    <input class = "color-picker" matTooltip="Marker color"
-           [style.background]="rgbTitleStr"
-           [cpOutputFormat]="'rgba'"
-           [(colorPicker)]="rgbTitleStr"
-           [cpOKButton]="true"
-           [cpOKButtonClass]= "'mat-raised-button mat-primary btn-xs'"
-           [cpSaveClickOutside]="false"
-           [cpCancelButton]="true"
-           [cpCancelButtonClass]= "'mat-raised-button btn-xs'"
-           (colorPickerSelect)= "setTitleColor()"/>
-    <input class="title-input" type="text" matTooltip="Title"
-           [(ngModel)]="settings.title"
-           (change)="setTitle()"/>
+    <app-channel-header class="channel-header-comp" channelType="AMDemod"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="setTitle()"
+        (colorChanged)="setTitleColor()" >
+    </app-channel-header>
   </mat-card-header>
   <mat-card-content>
     <table>
@@ -41,7 +34,7 @@
             <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
               {{audioDevice.value}} {{audioDevice.viewValue}}
             </mat-option>
-          </mat-select>          
+          </mat-select>
         </td>
       </tr>
       <tr style="height: 3px;">

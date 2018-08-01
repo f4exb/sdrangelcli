@@ -12,28 +12,8 @@
     background-color: rgb(170,255,200);
 }
 
-.channel-label {
-    margin-top: 5px;
-}
-
-.color-picker {
-    width: 20px;
-    position: relative;
-    margin-left: 8px;
-    border: solid;
-    border-width: 1px;
-    border-color: lightgrey;
-}
-
-.title-input {
-    width: 40ch;
-    margin-left: 8px;
-    border: solid;
-    border-width: 1px;
-    border-color: lightgrey;
-    background-color: rgba(160, 160, 160, 0.2);
-    font-size: 14px;
-    padding-left: 5px;
+.channel-header-comp {
+    margin-top: 1px;
 }
 
 .button-card {
@@ -43,15 +23,6 @@
     padding-left: 0px;
     width: 22px;
     height: 22px;
-}
-
-.frequency-input {
-    width: 8ch;
-    margin: 1px;
-}
-
-.xfrequency-input {
-    width: 12ch;
 }
 
 td {

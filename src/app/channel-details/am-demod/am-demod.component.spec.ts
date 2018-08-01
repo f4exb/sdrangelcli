@@ -7,6 +7,7 @@ import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, Mat
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonComponentsModule } from '../../common-components/common-components.module';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { ChannelHeaderComponent } from '../channel-header/channel-header.component';
 
 describe('AmDemodComponent', () => {
   let component: AmDemodComponent;
@@ -14,7 +15,10 @@ describe('AmDemodComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AmDemodComponent ],
+      declarations: [
+        AmDemodComponent,
+        ChannelHeaderComponent
+      ],
       imports: [
         RouterModule,
         FormsModule,
