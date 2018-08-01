@@ -7,8 +7,8 @@
         [basebandRate]="deviceBasebandRate"
         [title]="settings.title"
         [color]="rgbTitleStr"
-        (titleChanged)="setTitle()"
-        (colorChanged)="setTitleColor()" >
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
     </app-channel-header>
   </mat-card-header>
   <mat-card-content>

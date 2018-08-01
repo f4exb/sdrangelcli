@@ -143,10 +143,20 @@ export class AmDemodComponent implements OnInit {
     return "rgb(" + this.rgbTitle[0].toString() + "," + this.rgbTitle[1].toString() + "," + this.rgbTitle[2].toString() + ")";
   }
 
+  onTitleColorChanged(colorStr: string) {
+    this.rgbTitleStr = colorStr;
+    this.setTitleColor();
+  }
+
   setTitleColor() {
     const newSettings: AMDemodSettings = <AMDemodSettings>{};
     newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
     this.setDeviceSettings(newSettings);
+  }
+
+  onTitleChanged(title: string) {
+    this.settings.title = title;
+    this.setTitle();
   }
 
   setTitle() {
