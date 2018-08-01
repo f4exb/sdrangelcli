@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { AMDemodSettings, AMDEMOD_SETTINGS_DEFAULT } from './am-demod';
 import { ChannelSettings } from '../channel-details';
 import { Utils } from '../../common-components/utils';
+import { AudioStoreService } from '../../main/audio/audio-store.service';
 
 @Component({
   selector: 'app-am-demod',
@@ -33,7 +34,8 @@ export class AmDemodComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
+    private deviceStoreService: DeviceStoreService,
+    private audioStoreService: AudioStoreService)
   {
     this.deviceStoreSubscription = null;
   }
@@ -46,6 +48,7 @@ export class AmDemodComponent implements OnInit {
       this.sdrangelURL = url;
     });
     this.getChannelSettings();
+    this.getAudioDevicesInfo();
   }
 
   ngOnDestroy() {
@@ -81,6 +84,12 @@ export class AmDemodComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       }
     )
+  }
+
+  private getAudioDevicesInfo() {
+    if (!this.audioStoreService.isInitialized()) {
+      this.audioStoreService.initialize();
+    }
   }
 
   private setDeviceSettings(amDemodSettings : AMDemodSettings) {
