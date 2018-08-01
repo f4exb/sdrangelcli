@@ -30,6 +30,20 @@
           </app-frequency-dial>
         </td>
       </tr>
+      <tr>
+        <td>
+          Audio:
+          <mat-select style="width:40ch; background-color: white; margin: 1px;"
+            [(value)]="settings.audioDeviceName"
+            (selectionChange)="setAudioDevice()"
+            matTooltip="Audio output device and sample rate (Hz)"
+          >
+            <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+              {{audioDevice.value}} {{audioDevice.viewValue}}
+            </mat-option>
+          </mat-select>          
+        </td>
+      </tr>
       <tr style="height: 3px;">
       </tr>
     </table>

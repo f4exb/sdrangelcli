@@ -9,6 +9,11 @@ import { ChannelSettings } from '../channel-details';
 import { Utils } from '../../common-components/utils';
 import { AudioStoreService } from '../../main/audio/audio-store.service';
 
+export interface AudioDeviceInfo {
+  value: string,
+  viewValue: number
+}
+
 @Component({
   selector: 'app-am-demod',
   templateUrl: './am-demod.component.html',
@@ -30,6 +35,7 @@ export class AmDemodComponent implements OnInit {
   statusError: boolean = false;
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr: string = 'rgb(0,0,0)'
+  audioDevices: AudioDeviceInfo[] = [];
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -90,6 +96,17 @@ export class AmDemodComponent implements OnInit {
     if (!this.audioStoreService.isInitialized()) {
       this.audioStoreService.initialize();
     }
+    this.audioStoreService.getOutput().subscribe(
+      audioData => {
+        this.audioDevices = [];
+        for (let [key, value] of Object.entries(audioData)) {
+          this.audioDevices.push({value: key, viewValue: value["audioRate"]});
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   private setDeviceSettings(amDemodSettings : AMDemodSettings) {
@@ -138,4 +155,9 @@ export class AmDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setAudioDevice() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
 }
