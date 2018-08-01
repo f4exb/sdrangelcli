@@ -2,20 +2,22 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { AudioService } from './audio.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
+import { AudioOutputDevice, AudioInputDevice } from './audio';
 
 export interface AudioStorage {
   audioRate: number;
 }
 
 interface AudioStore {
-  [deviceName: string]: BehaviorSubject<AudioStorage>
+  [deviceName: string]: AudioStorage
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AudioStoreService {
-  private audioStore = <AudioStore>{}
+  private audioOutStore = new BehaviorSubject(<AudioStore>{});
+  private audioInStore = new BehaviorSubject(<AudioStore>{});
   private initialized : boolean;
   sdrangelURL : string;
 
@@ -36,9 +38,10 @@ export class AudioStoreService {
       this.audioService.getInfo(this.sdrangelURL + "/audio").subscribe(
         audioDevicesInfo => {
           if (audioDevicesInfo.nbOutputDevices > 0) {
-            for (let audioOutDevice of audioDevicesInfo.outputDevices) {
-              this.change(audioOutDevice.name, {audioRate: audioOutDevice.sampleRate});
-            }
+            this.changeOutput(audioDevicesInfo.outputDevices);
+          }
+          if (audioDevicesInfo.nbInputDevices > 0) {
+            this.changeInput(audioDevicesInfo.inputDevices);
           }
           this.initialized = true;
         },
@@ -46,19 +49,27 @@ export class AudioStoreService {
     }
   }
 
-  change(deviceName: string, deviceStorage: AudioStorage) {
-    if (deviceName in this.audioStore) {
-      this.audioStore[deviceName].next(deviceStorage);
-    } else {
-      this.audioStore[deviceName] = new BehaviorSubject(deviceStorage);
+  changeOutput(audioOutputDevices : AudioOutputDevice[]) {
+    let audioStoreData = <AudioStore>{};
+    for (let audioOutputDevice of audioOutputDevices) {
+      audioStoreData[audioOutputDevice.name] = {audioRate: audioOutputDevice.sampleRate};
     }
+    this.audioOutStore.next(Object.assign({}, audioStoreData));
   }
 
-  get(deviceName: string) : Observable<AudioStorage> {
-    if (deviceName in this.audioStore) {
-      return this.audioStore[deviceName].asObservable();
-    } else {
-      return throwError("No device with this name");
+  changeInput(audioInputDevices : AudioInputDevice[]) {
+    let audioStoreData = <AudioStore>{};
+    for (let audioInputDevice of audioInputDevices) {
+      audioStoreData[audioInputDevice.name] = {audioRate: audioInputDevice.sampleRate};
     }
+    this.audioInStore.next(Object.assign({}, audioStoreData));
+  }
+
+  getOutput() : Observable<AudioStore> {
+    return this.audioOutStore.asObservable();
+  }
+
+  getInput() : Observable<AudioStore> {
+    return this.audioInStore.asObservable();
   }
 }
