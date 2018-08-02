@@ -25,6 +25,22 @@
     height: 22px;
 }
 
+.volume-input {
+    width: 6ch;
+}
+
+.squelch-input {
+    width: 6ch;
+}
+
+.rfbw-input {
+    width: 6ch;
+}
+
+.delta-frequency {
+    width: 20ch;
+}
+
 td {
     background-color: rgb(230, 230, 210);
 }

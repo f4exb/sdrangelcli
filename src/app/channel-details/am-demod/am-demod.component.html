@@ -14,7 +14,7 @@
   <mat-card-content>
     <table>
       <tr>
-        <td>
+        <td colspan="3">
           <app-frequency-dial
           [frequency]="channelCenterFrequencyKhz"
           [min]="channelMinFrequencyKhz"
@@ -22,9 +22,12 @@
           (frequencyChanged)="onFrequencyUpdate($event)">
           </app-frequency-dial>
         </td>
+        <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
       </tr>
       <tr>
-        <td>
+        <td colspan="3">
           Audio:
           <mat-select style="width:40ch; background-color: white; margin: 1px;"
             [(value)]="settings.audioDeviceName"
@@ -35,6 +38,45 @@
               {{audioDevice.value}} {{audioDevice.viewValue}}
             </mat-option>
           </mat-select>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
+            Mute
+          </mat-checkbox>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Vol
+          <input type="number" class="volume-input"
+              [(ngModel)]="settings.volume"
+              (change)="setVolume()"
+              matTooltip="Audio volume"
+              min=0 max=10
+              step="0.1">
+        </td>
+        <td>
+            Squelch
+            <input type="number" class="squelch-input"
+                [(ngModel)]="settings.squelch"
+                (change)="setSquelch()"
+                matTooltip="Squelch level (dB)"
+                min=-100 max=0>
+            dB
+        </td>
+        <td>
+            RFBW
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="rfBandwidthKhz"
+                (change)="setRFBandwidth()"
+                matTooltip="RF Bandwidth"
+                min=1 max=40 step=0.1>
+            kHz
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="bandpassFilter" (change)="setBandpassFilter()" matTooltip="Bandpass filter">
+            BP filter
+          </mat-checkbox>
         </td>
       </tr>
       <tr style="height: 3px;">

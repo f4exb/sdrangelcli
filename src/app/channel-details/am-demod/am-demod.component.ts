@@ -31,6 +31,9 @@ export class AmDemodComponent implements OnInit {
   channelCenterFrequencyKhz: number;
   channelMinFrequencyKhz: number;
   channelMaxFrequencyKhz: number;
+  rfBandwidthKhz: number;
+  bandpassFilter: boolean;
+  audioMute: boolean;
   statusMessage: string;
   statusError: boolean = false;
   rgbTitle: number[] = [0, 0, 0];
@@ -73,8 +76,12 @@ export class AmDemodComponent implements OnInit {
           this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
           this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
           this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = this.getRGBTitleStr();
+          this.settings.volume = +this.settings.volume.toFixed(1);
+          this.bandpassFilter = this.settings.bandpassEnable !== 0;
+          this.audioMute = this.settings.audioMute !== 0;
         } else {
           this.statusMessage = "Not an AMDemod channel";
           this.statusError = true;
@@ -139,6 +146,10 @@ export class AmDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  getDeltaFrequency() : number {
+    return this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  }
+
   getRGBTitleStr() : string {
     return "rgb(" + this.rgbTitle[0].toString() + "," + this.rgbTitle[1].toString() + "," + this.rgbTitle[2].toString() + ")";
   }
@@ -168,6 +179,36 @@ export class AmDemodComponent implements OnInit {
   setAudioDevice() {
     const newSettings: AMDemodSettings = <AMDemodSettings>{};
     newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setVolume() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.volume = this.settings.volume;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelch() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.squelch = this.settings.squelch;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setRFBandwidth() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.rfBandwidth = this.rfBandwidthKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setBandpassFilter() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.bandpassEnable = this.bandpassFilter ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioMute() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.audioMute = this.audioMute ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 }
