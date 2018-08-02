@@ -21,3 +21,10 @@ export const AMDEMOD_SETTINGS_DEFAULT = {
     title: "AM Demodulator",
     volume: 2
 }
+
+export interface AMDemodReport {
+    audioSampleRate: number,
+    channelPowerDB: number,
+    channelSampleRate: number,
+    squelch: number // boolean
+}

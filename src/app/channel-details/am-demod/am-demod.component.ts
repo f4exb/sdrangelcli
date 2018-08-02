@@ -3,11 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { AMDemodSettings, AMDEMOD_SETTINGS_DEFAULT } from './am-demod';
 import { ChannelSettings } from '../channel-details';
 import { Utils } from '../../common-components/utils';
 import { AudioStoreService } from '../../main/audio/audio-store.service';
+import { interval } from 'rxjs';
 
 export interface AudioDeviceInfo {
   value: string,
@@ -27,6 +28,7 @@ export class AmDemodComponent implements OnInit {
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   deviceStoreSubscription : Subscription;
+  channelReportSubscription: Subscription;
   channelDeltaFrequency: number;
   channelCenterFrequencyKhz: number;
   channelMinFrequencyKhz: number;
@@ -47,6 +49,7 @@ export class AmDemodComponent implements OnInit {
     private audioStoreService: AudioStoreService)
   {
     this.deviceStoreSubscription = null;
+    this.channelReportSubscription = null;
   }
 
   ngOnInit() {
@@ -62,6 +65,7 @@ export class AmDemodComponent implements OnInit {
 
   ngOnDestroy() {
     (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
+    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
   }
 
 
@@ -210,5 +214,16 @@ export class AmDemodComponent implements OnInit {
     const newSettings: AMDemodSettings = <AMDemodSettings>{};
     newSettings.audioMute = this.audioMute ? 1 : 0;
     this.setDeviceSettings(newSettings);
+  }
+
+  enableReporting(enable: boolean) {
+    if (enable) {
+      this.channelReportSubscription = interval(1000).subscribe(
+        _ => { console.log("kiki");}
+      )
+    } else {
+      this.channelReportSubscription.unsubscribe();
+      this.channelReportSubscription = null;
+    }
   }
 }

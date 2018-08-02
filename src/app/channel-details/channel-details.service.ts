@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ChannelSettings } from './channel-details';
+import { ChannelSettings, ChannelReport } from './channel-details';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -26,4 +26,10 @@ export class ChannelDetailsService {
     };
     return this.http.patch(newurl, JSON.stringify(settings), httpOptions).pipe(delay(500));
   }
+
+  getReport(url: string, devicesetIndex: number, channelIndex: number): Observable<ChannelReport> {
+    const newurl = url + '/deviceset/' + devicesetIndex + '/channel/' + channelIndex + '/report';
+    return this.http.get<ChannelReport>(newurl);
+  }
+
 }
