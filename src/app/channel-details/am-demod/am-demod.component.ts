@@ -15,6 +15,11 @@ export interface AudioDeviceInfo {
   viewValue: number
 }
 
+export interface AMSynchronousOperation {
+  value: number,
+  viewValue: string
+}
+
 @Component({
   selector: 'app-am-demod',
   templateUrl: './am-demod.component.html',
@@ -41,6 +46,12 @@ export class AmDemodComponent implements OnInit {
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr: string = 'rgb(0,0,0)'
   audioDevices: AudioDeviceInfo[] = [];
+  amSyncchronousOperations: AMSynchronousOperation[] = [
+    {value: 0, viewValue: "DSB"},
+    {value: 1, viewValue: "USB"},
+    {value: 2, viewValue: "LSB"}
+  ];
+  pll: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -86,6 +97,7 @@ export class AmDemodComponent implements OnInit {
           this.settings.volume = +this.settings.volume.toFixed(1);
           this.bandpassFilter = this.settings.bandpassEnable !== 0;
           this.audioMute = this.settings.audioMute !== 0;
+          this.pll = this.settings.pll !== 0;
         } else {
           this.statusMessage = "Not an AMDemod channel";
           this.statusError = true;
@@ -213,6 +225,18 @@ export class AmDemodComponent implements OnInit {
   setAudioMute() {
     const newSettings: AMDemodSettings = <AMDemodSettings>{};
     newSettings.audioMute = this.audioMute ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setPLL() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.pll = this.pll ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSynchronousAMOperation() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.syncAMOperation = this.settings.syncAMOperation;
     this.setDeviceSettings(newSettings);
   }
 

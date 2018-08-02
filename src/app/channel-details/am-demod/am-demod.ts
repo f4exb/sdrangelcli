@@ -7,7 +7,9 @@ export interface AMDemodSettings {
     rgbColor: number,
     squelch: number,
     title: string,
-    volume: number
+    volume: number,
+    pll: number,
+    syncAMOperation: number
 }
 
 export const AMDEMOD_SETTINGS_DEFAULT = {
@@ -19,7 +21,9 @@ export const AMDEMOD_SETTINGS_DEFAULT = {
     rgbColor: -256,
     squelch: -40,
     title: "AM Demodulator",
-    volume: 2
+    volume: 2,
+    pll: 0,
+    syncAMOperation: 0
 }
 
 export interface AMDemodReport {

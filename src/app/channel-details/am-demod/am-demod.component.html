@@ -14,6 +14,26 @@
   <mat-card-content>
     <table>
       <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="pll" (change)="setPLL()" matTooltip="PLL for synchronous AM">
+            SAM PLL
+          </mat-checkbox>
+        </td>
+        <td>
+          SAM Op
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+              [(value)]="settings.syncAMOperation"
+              (selectionChange)="setSynchronousAMOperation()"
+              matTooltip="Synchronous AM operation">
+          <mat-option *ngFor="let syncAMOperation of amSyncchronousOperations" [value]="syncAMOperation.value">
+            {{syncAMOperation.viewValue}}
+          </mat-option>
+        </mat-select>
+        </td>
+        <td colspan="2">
+        </td>
+      </tr>
+      <tr>
         <td colspan="3">
           <app-frequency-dial
           [frequency]="channelCenterFrequencyKhz"
@@ -30,10 +50,9 @@
         <td colspan="3">
           Audio:
           <mat-select style="width:40ch; background-color: white; margin: 1px;"
-            [(value)]="settings.audioDeviceName"
-            (selectionChange)="setAudioDevice()"
-            matTooltip="Audio output device and sample rate (Hz)"
-          >
+              [(value)]="settings.audioDeviceName"
+              (selectionChange)="setAudioDevice()"
+              matTooltip="Audio output device and sample rate (Hz)">
             <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
               {{audioDevice.value}} {{audioDevice.viewValue}}
             </mat-option>
