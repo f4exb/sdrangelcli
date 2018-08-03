@@ -4,7 +4,7 @@ import { ChannelDetailsService } from '../channel-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
 import { Subscription, Observable } from 'rxjs';
-import { AMDemodSettings, AMDEMOD_SETTINGS_DEFAULT } from './am-demod';
+import { AMDemodSettings, AMDEMOD_SETTINGS_DEFAULT, AMDemodReport, AMDEMOD_REPORT_DEFAULT } from './am-demod';
 import { ChannelSettings } from '../channel-details';
 import { Utils } from '../../common-components/utils';
 import { AudioStoreService } from '../../main/audio/audio-store.service';
@@ -52,6 +52,8 @@ export class AmDemodComponent implements OnInit {
     {value: 2, viewValue: "LSB"}
   ];
   pll: boolean;
+  monitor: boolean;
+  amDemodreport: AMDemodReport = AMDEMOD_REPORT_DEFAULT;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -61,6 +63,7 @@ export class AmDemodComponent implements OnInit {
   {
     this.deviceStoreSubscription = null;
     this.channelReportSubscription = null;
+    this.monitor = false;
   }
 
   ngOnInit() {
@@ -243,11 +246,25 @@ export class AmDemodComponent implements OnInit {
   enableReporting(enable: boolean) {
     if (enable) {
       this.channelReportSubscription = interval(1000).subscribe(
-        _ => { console.log("kiki");}
+        _ => {
+          this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
+            channelReport => {
+              if (channelReport.channelType === "AMDemod") {
+                this.amDemodreport = channelReport.AMDemodReport;
+                //console.log(this.amDemodreport.channelPowerDB);
+              }
+            }
+          )
+        }
       )
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
     }
+  }
+
+  toggleMonitor() {
+    this.monitor = !this.monitor;
+    this.enableReporting(this.monitor);
   }
 }

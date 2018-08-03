@@ -25,6 +25,20 @@
     height: 22px;
 }
 
+.button-on {
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    background-color: rgb(0, 255, 0, 1.0);
+}
+
+.button-off {
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    background-color: rgb(0, 0, 0, 0);
+}
+
 .volume-input {
     width: 6ch;
 }

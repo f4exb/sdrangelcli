@@ -3,6 +3,12 @@
     <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
       <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
     </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
     <app-channel-header class="channel-header-comp" channelType="AMDemod"
         [basebandRate]="deviceBasebandRate"
         [title]="settings.title"
@@ -13,6 +19,9 @@
   </mat-card-header>
   <mat-card-content>
     <table>
+      <tr *ngIf="monitor">
+        <td colspan="4">{{amDemodreport.channelPowerDB}} dB</td>
+      </tr>
       <tr>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="pll" (change)="setPLL()" matTooltip="PLL for synchronous AM">

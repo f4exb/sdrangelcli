@@ -32,3 +32,11 @@ export interface AMDemodReport {
     channelSampleRate: number,
     squelch: number // boolean
 }
+
+export const AMDEMOD_REPORT_DEFAULT = {
+    audioSampleRate: 48000,
+    channelPowerDB: -100,
+    channelSampleRate: 96000,
+    squelch: 0 // boolean
+
+}
