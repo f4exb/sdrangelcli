@@ -29,4 +29,8 @@ export class Utils {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return ((parseInt(result[1], 16))<<16) + ((parseInt(result[2], 16))<<8) + ((parseInt(result[3], 16)));
     }
+
+    static getRGBStr(rgb: number[]) : string {
+        return "rgb(" + rgb[0].toString() + "," + rgb[1].toString() + "," + rgb[2].toString() + ")";
+    }
 }

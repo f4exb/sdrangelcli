@@ -10,6 +10,7 @@ import { CommonComponentsModule } from '../common-components/common-components.m
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ChannelHeaderComponent } from './channel-header/channel-header.component';
 import { ChannelMonitorComponent } from './channel-monitor/channel-monitor.component';
+import { NfmDemodComponent } from './nfm-demod/nfm-demod.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { ChannelMonitorComponent } from './channel-monitor/channel-monitor.compo
     AmDemodComponent,
     ChannelDetailsComponent,
     ChannelHeaderComponent,
-    ChannelMonitorComponent
+    ChannelMonitorComponent,
+    NfmDemodComponent
   ]
 })
 export class ChannelDetailsModule { }

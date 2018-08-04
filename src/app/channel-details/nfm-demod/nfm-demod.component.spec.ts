@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AmDemodComponent } from './am-demod.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { NfmDemodComponent } from './nfm-demod.component';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule, MatProgressBarModule } from '@angular/material';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -10,14 +10,14 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { ChannelHeaderComponent } from '../channel-header/channel-header.component';
 import { ChannelMonitorComponent } from '../channel-monitor/channel-monitor.component';
 
-describe('AmDemodComponent', () => {
-  let component: AmDemodComponent;
-  let fixture: ComponentFixture<AmDemodComponent>;
+describe('NfmDemodComponent', () => {
+  let component: NfmDemodComponent;
+  let fixture: ComponentFixture<NfmDemodComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AmDemodComponent,
+        NfmDemodComponent,
         ChannelHeaderComponent,
         ChannelMonitorComponent
       ],
@@ -42,7 +42,7 @@ describe('AmDemodComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AmDemodComponent);
+    fixture = TestBed.createComponent(NfmDemodComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
