@@ -54,6 +54,7 @@ export class AmDemodComponent implements OnInit {
   pll: boolean;
   monitor: boolean;
   amDemodreport: AMDemodReport = AMDEMOD_REPORT_DEFAULT;
+  channelPowerPercent : number = 0;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -245,13 +246,14 @@ export class AmDemodComponent implements OnInit {
 
   enableReporting(enable: boolean) {
     if (enable) {
-      this.channelReportSubscription = interval(1000).subscribe(
+      this.channelReportSubscription = interval(950).subscribe(
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
               if (channelReport.channelType === "AMDemod") {
                 this.amDemodreport = channelReport.AMDemodReport;
-                //console.log(this.amDemodreport.channelPowerDB);
+                this.channelPowerPercent = (this.amDemodreport.channelPowerDB+120)*(100/120);
+                console.log(this.amDemodreport.channelPowerDB);
               }
             }
           )
@@ -266,5 +268,21 @@ export class AmDemodComponent implements OnInit {
   toggleMonitor() {
     this.monitor = !this.monitor;
     this.enableReporting(this.monitor);
+  }
+
+  getSquelchStatusColor() : string {
+    if (this.amDemodreport.squelch !== 0) {
+      return "rgb(50,180,50)";
+    } else {
+      return "grey";
+    }
+  }
+
+  getSquelchStatusText() : string {
+    if (this.amDemodreport.squelch !== 0) {
+      return "Squelch open";
+    } else {
+      return "Squelch closed";
+    }
   }
 }
