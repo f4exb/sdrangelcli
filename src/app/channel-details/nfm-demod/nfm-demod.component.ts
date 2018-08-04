@@ -304,7 +304,7 @@ export class NfmDemodComponent implements OnInit {
 
   enableReporting(enable: boolean) {
     if (enable) {
-      this.channelReportSubscription = interval(953).subscribe(
+      this.channelReportSubscription = interval(1000).subscribe(
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
