@@ -14,25 +14,25 @@ export class ChannelDetailsComponent implements OnInit {
   channelIndex: number;
   isTx: boolean;
   private sub: Subscription;
-  sdrangelURL : string;  
+  sdrangelURL : string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
-    private sdrangelUrlService: SdrangelUrlService) 
+    private sdrangelUrlService: SdrangelUrlService)
   {
-    this.sub = null; 
+    this.sub = null;
   }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.deviceIndex = +params['dix']; // (+) converts string 'dix' to a number
       this.channelIndex = +params['cix']; // (+) converts string 'cix' to a number
-    });    
+    });
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getChannelSettings();
-    });    
+    });
   }
 
   ngOnDestroy() {
@@ -45,14 +45,16 @@ export class ChannelDetailsComponent implements OnInit {
         this.isTx = channelSettings.tx !== 0;
         if (channelSettings.channelType == "AMDemod") {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType == "NFMDemod") {
+          this.router.navigate(['nfmdemod'], { relativeTo: this.route});
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});
         }
       }
     )
-  }  
+  }
 
   getDevicesetLabel() : string {
     return (this.isTx ? "Tx" : "Rx") + this.deviceIndex;
-  }  
+  }
 }
