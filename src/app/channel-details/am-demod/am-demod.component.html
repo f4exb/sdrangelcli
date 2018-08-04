@@ -19,6 +19,7 @@
   </mat-card-header>
   <mat-card-content>
     <table>
+      <!-- Row 1: channel monitor (optional) -->
       <tr *ngIf="monitor">
         <td colspan="4">
           <app-channel-monitor [value]=this.amDemodreport.channelPowerDB
@@ -28,26 +29,7 @@
           </app-channel-monitor>
         </td>
       </tr>
-      <tr>
-        <td>
-          <mat-checkbox color="primary" [(ngModel)]="pll" (change)="setPLL()" matTooltip="PLL for synchronous AM">
-            SAM PLL
-          </mat-checkbox>
-        </td>
-        <td>
-          SAM Op
-          <mat-select style="width:7ch; background-color: white; margin: 1px;"
-              [(value)]="settings.syncAMOperation"
-              (selectionChange)="setSynchronousAMOperation()"
-              matTooltip="Synchronous AM operation">
-          <mat-option *ngFor="let syncAMOperation of amSyncchronousOperations" [value]="syncAMOperation.value">
-            {{syncAMOperation.viewValue}}
-          </mat-option>
-        </mat-select>
-        </td>
-        <td colspan="2">
-        </td>
-      </tr>
+      <!-- Row 2: Frequency dial -->
       <tr>
         <td colspan="3">
           <app-frequency-dial
@@ -61,24 +43,7 @@
             &#x394;f {{getDeltaFrequency()}} kHz
         </td>
       </tr>
-      <tr>
-        <td colspan="3">
-          Audio:
-          <mat-select style="width:40ch; background-color: white; margin: 1px;"
-              [(value)]="settings.audioDeviceName"
-              (selectionChange)="setAudioDevice()"
-              matTooltip="Audio output device and sample rate (Hz)">
-            <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
-              {{audioDevice.value}} {{audioDevice.viewValue}}
-            </mat-option>
-          </mat-select>
-        </td>
-        <td>
-          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
-            Mute
-          </mat-checkbox>
-        </td>
-      </tr>
+      <!-- Row 3: Volume, squelch, filters -->
       <tr>
         <td>
           Vol
@@ -113,6 +78,47 @@
           </mat-checkbox>
         </td>
       </tr>
+      <!-- Row 4: SAM options -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="pll" (change)="setPLL()" matTooltip="PLL for synchronous AM">
+            SAM PLL
+          </mat-checkbox>
+        </td>
+        <td>
+          SAM Op
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+              [(value)]="settings.syncAMOperation"
+              (selectionChange)="setSynchronousAMOperation()"
+              matTooltip="Synchronous AM operation">
+          <mat-option *ngFor="let syncAMOperation of amSyncchronousOperations" [value]="syncAMOperation.value">
+            {{syncAMOperation.viewValue}}
+          </mat-option>
+        </mat-select>
+        </td>
+        <td colspan="2">
+        </td>
+      </tr>
+      <!-- Row 5: audio options -->
+      <tr>
+        <td colspan="3">
+          Audio:
+          <mat-select style="width:40ch; background-color: white; margin: 1px;"
+              [(value)]="settings.audioDeviceName"
+              (selectionChange)="setAudioDevice()"
+              matTooltip="Audio output device and sample rate (Hz)">
+            <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+              {{audioDevice.value}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
+            Mute
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!-- Row 6: empty footer -->
       <tr style="height: 3px;">
       </tr>
     </table>
