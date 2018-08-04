@@ -91,10 +91,10 @@
               [(value)]="settings.syncAMOperation"
               (selectionChange)="setSynchronousAMOperation()"
               matTooltip="Synchronous AM operation">
-          <mat-option *ngFor="let syncAMOperation of amSyncchronousOperations" [value]="syncAMOperation.value">
-            {{syncAMOperation.viewValue}}
-          </mat-option>
-        </mat-select>
+            <mat-option *ngFor="let syncAMOperation of amSyncchronousOperations" [value]="syncAMOperation.value">
+              {{syncAMOperation.viewValue}}
+            </mat-option>
+          </mat-select>
         </td>
         <td colspan="2">
         </td>

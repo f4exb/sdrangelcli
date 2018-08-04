@@ -43,6 +43,113 @@
               &#x394;f {{getDeltaFrequency()}} kHz
           </td>
         </tr>
+        <!-- Row 2: Volume, RF bandwidth, AF bandwidth -->
+        <tr>
+          <td>
+            Vol
+            <input type="number" class="volume-input"
+              [(ngModel)]="settings.volume"
+              (change)="setVolume()"
+              matTooltip="Audio volume"
+              min=0 max=10
+              step="0.1">
+          </td>
+          <td>
+            RF BW
+            <mat-select style="width:7ch; background-color: white; margin: 1px;"
+              [(value)]="settings.rfBandwidth"
+              (selectionChange)="setRFBandwidth()"
+              matTooltip="Channel bandwidth">
+              <mat-option *ngFor="let rfBandwidth of rfBandwidths" [value]="rfBandwidth.value">
+                {{rfBandwidth.viewValue}}
+              </mat-option>
+            </mat-select>
+            kHz
+          </td>
+          <td>
+            AF BW
+            <input type="number" class="afbw-input"
+              [(ngModel)]="afBandwidthKhz"
+              (change)="setAFBandwidth()"
+              matTooltip="Audio bandwidth"
+              min=1 max=20>
+            kHz
+          </td>
+          <td></td>
+        </tr>
+        <!-- Row 3: squelch, squelch gate, squelch delta -->
+        <tr>
+          <td>
+            Squelch
+            <input type="number" class="squelch-input"
+              [(ngModel)]="squelchDb"
+              (change)="setSquelch()"
+              matTooltip="Squelch level (dB)"
+              min=-100 max=0>
+            dB
+          </td>
+          <td>
+            Gate
+            <input type="number" class="squelch-input"
+              [(ngModel)]="squelchGate"
+              (change)="setSquelchGate()"
+              matTooltip="Squelch gate (ms)"
+              min=0 max=500 step=10>
+            ms
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="deltaSquelch" (change)="setDeltaSquelch()" matTooltip="Delta squelch">
+              Delta
+            </mat-checkbox>
+          </td>
+          <td></td>
+        </tr>
+        <!-- Row 4: ctcss, ctcss value, ctcss monitor -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="ctcss" (change)="setCTCSS()" matTooltip="CTCSS on/off">
+              CTCSS
+            </mat-checkbox>
+          </td>
+          <td>
+            CTCSS
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.ctcssIndex"
+                (selectionChange)="setCTCSSIndex()"
+                matTooltip="CTCSS value">
+              <mat-option *ngFor="let ctcssValue of ctcssValues" [value]="ctcssValue.value">
+                {{ctcssValue.viewValue}}
+              </mat-option>
+            </mat-select>
+            Hz
+          </td>
+          <td>
+            <span *ngIf="monitor">Tone {{nfmDemodreport.ctcssTone}} Hz</span>
+          </td>
+          <td></td>
+        </tr>
+        <!-- Row 5: audio options -->
+        <tr>
+          <td colspan="3">
+            Audio:
+            <mat-select style="width:40ch; background-color: white; margin: 1px;"
+                [(value)]="settings.audioDeviceName"
+                (selectionChange)="setAudioDevice()"
+                matTooltip="Audio output device and sample rate (Hz)">
+              <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+                {{audioDevice.value}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
+              Mute
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- Row 6: empty footer -->
+        <tr style="height: 3px;">
+        </tr>
       </table>
     </mat-card-content>
 </mat-card>

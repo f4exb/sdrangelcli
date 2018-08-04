@@ -15,7 +15,12 @@ export interface AudioDeviceInfo {
   viewValue: number
 }
 
-export interface CTCSSValues {
+export interface CTCSSValue {
+  value: number,
+  viewValue: string
+}
+
+export interface RFBandwidth {
   value: number,
   viewValue: number
 }
@@ -45,42 +50,59 @@ export class NfmDemodComponent implements OnInit {
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr: string = 'rgb(0,0,0)'
   audioDevices: AudioDeviceInfo[] = [];
-  ctcssValues: CTCSSValues[] = [ // The 32 EIA standard tones
-    {value: 0, viewValue: 67.0},
-    {value: 1, viewValue: 71.9},
-    {value: 2, viewValue: 74.4},
-    {value: 3, viewValue: 77.0},
-    {value: 4, viewValue: 79.7},
-    {value: 5, viewValue: 82.5},
-    {value: 6, viewValue: 85.4},
-    {value: 7, viewValue: 88.5},
-    {value: 8, viewValue: 91.5},
-    {value: 9, viewValue: 94.8},
-    {value: 10, viewValue: 97.4},
-    {value: 11, viewValue: 100.0},
-    {value: 12, viewValue: 103.5},
-    {value: 13, viewValue: 107.2},
-    {value: 14, viewValue: 110.9},
-    {value: 15, viewValue: 114.8},
-    {value: 16, viewValue: 118.8},
-    {value: 17, viewValue: 123.0},
-    {value: 18, viewValue: 127.3},
-    {value: 19, viewValue: 131.8},
-    {value: 20, viewValue: 136.5},
-    {value: 21, viewValue: 141.3},
-    {value: 22, viewValue: 146.2},
-    {value: 23, viewValue: 151.4},
-    {value: 24, viewValue: 156.7},
-    {value: 25, viewValue: 162.2},
-    {value: 26, viewValue: 167.9},
-    {value: 27, viewValue: 173.8},
-    {value: 28, viewValue: 179.9},
-    {value: 29, viewValue: 186.2},
-    {value: 30, viewValue: 192.8},
-    {value: 31, viewValue: 203.5},
+  ctcssValues: CTCSSValue[] = [ // The 32 EIA standard tones
+    {value: 0, viewValue: "--"},
+    {value: 1, viewValue: "67.0"},
+    {value: 2, viewValue: "71.9"},
+    {value: 3, viewValue: "74.4"},
+    {value: 4, viewValue: "77.0"},
+    {value: 5, viewValue: "79.7"},
+    {value: 6, viewValue: "82.5"},
+    {value: 7, viewValue: "85.4"},
+    {value: 8, viewValue: "88.5"},
+    {value: 9, viewValue: "91.5"},
+    {value: 10, viewValue: "94.8"},
+    {value: 11, viewValue: "97.4"},
+    {value: 12, viewValue: "100.0"},
+    {value: 13, viewValue: "103.5"},
+    {value: 14, viewValue: "107.2"},
+    {value: 15, viewValue: "110.9"},
+    {value: 16, viewValue: "114.8"},
+    {value: 17, viewValue: "118.8"},
+    {value: 18, viewValue: "123.0"},
+    {value: 19, viewValue: "127.3"},
+    {value: 20, viewValue: "131.8"},
+    {value: 21, viewValue: "136.5"},
+    {value: 22, viewValue: "141.3"},
+    {value: 23, viewValue: "146.2"},
+    {value: 24, viewValue: "151.4"},
+    {value: 25, viewValue: "156.7"},
+    {value: 26, viewValue: "162.2"},
+    {value: 27, viewValue: "167.9"},
+    {value: 28, viewValue: "173.8"},
+    {value: 29, viewValue: "179.9"},
+    {value: 30, viewValue: "186.2"},
+    {value: 31, viewValue: "192.8"},
+    {value: 32, viewValue: "203.5"},
+  ];
+  rfBandwidths: RFBandwidth[] = [
+    {value: 5000, viewValue: 5},
+    {value: 6250, viewValue: 6.25},
+    {value: 8330, viewValue: 8.33},
+    {value: 10000, viewValue: 10},
+    {value: 12500, viewValue: 12.5},
+    {value: 15000, viewValue: 15},
+    {value: 20000, viewValue: 20},
+    {value: 25000, viewValue: 25},
+    {value: 40000, viewValue: 40},
   ];
   monitor: boolean;
   nfmDemodreport: NFMDemodReport = NFMDEMOD_REPORT_DEFAULT;
+  afBandwidthKhz: number;
+  squelchDb: number;
+  squelchGate: number;
+  deltaSquelch: boolean;
+  ctcss: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -125,6 +147,11 @@ export class NfmDemodComponent implements OnInit {
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.settings.volume = +this.settings.volume.toFixed(1);
           this.audioMute = this.settings.audioMute !== 0;
+          this.afBandwidthKhz = this.settings.afBandwidth/1000;
+          this.squelchDb = this.settings.squelch / 10;
+          this.squelchGate = this.settings.squelchGate * 10;
+          this.deltaSquelch = this.settings.deltaSquelch !== 0;
+          this.ctcss = this.settings.ctcssOn !== 0;
         } else {
           this.statusMessage = "Not an NFMDemod channel";
           this.statusError = true;
@@ -230,6 +257,48 @@ export class NfmDemodComponent implements OnInit {
   setAudioMute() {
     const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
     newSettings.audioMute = this.audioMute ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setRFBandwidth() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.rfBandwidth = this.settings.rfBandwidth;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAFBandwidth() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.afBandwidth = this.afBandwidthKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelch() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.squelch = this.squelchDb * 10;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelchGate() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.squelchGate = this.squelchGate / 10;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setDeltaSquelch() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.deltaSquelch = this.deltaSquelch ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setCTCSS() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.ctcssOn = this.ctcss ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setCTCSSIndex() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.ctcssIndex = this.settings.ctcssIndex;
     this.setDeviceSettings(newSettings);
   }
 
