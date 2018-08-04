@@ -47,6 +47,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "NFMDemod") {
           this.router.navigate(['nfmdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType == "SSBDemod") {
+          this.router.navigate(['ssbdemod'], { relativeTo: this.route});
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});
         }

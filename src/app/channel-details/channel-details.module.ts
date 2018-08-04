@@ -11,6 +11,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { ChannelHeaderComponent } from './channel-header/channel-header.component';
 import { ChannelMonitorComponent } from './channel-monitor/channel-monitor.component';
 import { NfmDemodComponent } from './nfm-demod/nfm-demod.component';
+import { SsbDemodComponent } from './ssb-demod/ssb-demod.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { NfmDemodComponent } from './nfm-demod/nfm-demod.component';
     ChannelDetailsComponent,
     ChannelHeaderComponent,
     ChannelMonitorComponent,
-    NfmDemodComponent
+    NfmDemodComponent,
+    SsbDemodComponent
   ]
 })
 export class ChannelDetailsModule { }

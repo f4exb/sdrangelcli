@@ -1,0 +1,51 @@
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-rx">
+      <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+        <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <button mat-button mat-raised-button
+          [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+          matTooltip="Monitor on/off"
+          (click)="toggleMonitor()">
+        <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      </button>&nbsp;
+      <app-channel-header class="channel-header-comp" channelType="SSBDemod"
+          [basebandRate]="deviceBasebandRate"
+          [title]="settings.title"
+          [color]="rgbTitleStr"
+          (titleChanged)="onTitleChanged($event)"
+          (colorChanged)="onTitleColorChanged($event)" >
+      </app-channel-header>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- Row 1: channel monitor (optional) -->
+        <tr *ngIf="monitor">
+          <td colspan="4">
+            <app-channel-monitor [value]=this.ssbDemodreport.channelPowerDB
+              [min]="-120"
+              [max]="0"
+              [squelch]="this.ssbDemodreport.squelch !== 0">
+            </app-channel-monitor>
+          </td>
+        </tr>
+        <!-- Row 2: Frequency dial -->
+        <tr>
+          <td colspan="3">
+            <app-frequency-dial
+            [frequency]="channelCenterFrequencyKhz"
+            [min]="channelMinFrequencyKhz"
+            [max]="channelMaxFrequencyKhz"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+          </td>
+          <td style="width:15ch">
+              &#x394;f {{getDeltaFrequency()}} kHz
+          </td>
+        </tr>
+        <!-- Row 6: empty footer -->
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+    </mat-card-content>
+</mat-card>
