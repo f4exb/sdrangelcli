@@ -54,7 +54,6 @@ export class AmDemodComponent implements OnInit {
   pll: boolean;
   monitor: boolean;
   amDemodreport: AMDemodReport = AMDEMOD_REPORT_DEFAULT;
-  channelPowerPercent : number = 0;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -252,8 +251,6 @@ export class AmDemodComponent implements OnInit {
             channelReport => {
               if (channelReport.channelType === "AMDemod") {
                 this.amDemodreport = channelReport.AMDemodReport;
-                this.channelPowerPercent = (this.amDemodreport.channelPowerDB+120)*(100/120);
-                console.log(this.amDemodreport.channelPowerDB);
               }
             }
           )

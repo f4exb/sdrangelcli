@@ -9,6 +9,7 @@ import { ChannelDetailsRoutingModule } from './channel-details-routing.module';
 import { CommonComponentsModule } from '../common-components/common-components.module';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ChannelHeaderComponent } from './channel-header/channel-header.component';
+import { ChannelMonitorComponent } from './channel-monitor/channel-monitor.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { ChannelHeaderComponent } from './channel-header/channel-header.componen
     ChannelNotSupportedComponent,
     AmDemodComponent,
     ChannelDetailsComponent,
-    ChannelHeaderComponent
+    ChannelHeaderComponent,
+    ChannelMonitorComponent
   ]
 })
 export class ChannelDetailsModule { }

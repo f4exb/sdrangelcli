@@ -21,15 +21,11 @@
     <table>
       <tr *ngIf="monitor">
         <td colspan="4">
-          <div style="width: 10ch; height: 1.2em; margin-top: 6px;">
-            <mat-progress-bar mode="determinate" [value]="channelPowerPercent" class="power-bar" matTooltip="Channel power"></mat-progress-bar>
-            <div style="position:relative; top: -1em; left: 41ch;">
-              {{amDemodreport.channelPowerDB.toFixed(1)}} dB
-            </div>
-            <div style="position:relative; top: -2.1em; left: 50ch;">
-              <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getSquelchStatusColor()}" [matTooltip]="getSquelchStatusText()"></i>
-            </div>
-          </div>
+          <app-channel-monitor [value]=this.amDemodreport.channelPowerDB
+            [min]="-120"
+            [max]="0"
+            [squelch]="this.amDemodreport.squelch !== 0">
+          </app-channel-monitor>
         </td>
       </tr>
       <tr>
