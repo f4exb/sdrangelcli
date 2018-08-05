@@ -10,12 +10,12 @@ import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
 
-export interface AudioDeviceInfo {
+interface AudioDeviceInfo {
   value: string,
   viewValue: number
 }
 
-export interface Log2 {
+interface Log2 {
   value: number,
   viewValue: number
 }

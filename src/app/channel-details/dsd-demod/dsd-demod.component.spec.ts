@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BfmDemodComponent } from './bfm-demod.component';
+import { DsdDemodComponent } from './dsd-demod.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule, MatProgressBarModule } from '@angular/material';
@@ -10,39 +10,39 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { ChannelHeaderComponent } from '../channel-header/channel-header.component';
 import { ChannelMonitorComponent } from '../channel-monitor/channel-monitor.component';
 
-describe('BfmDemodComponent', () => {
-  let component: BfmDemodComponent;
-  let fixture: ComponentFixture<BfmDemodComponent>;
+describe('DsdDemodComponent', () => {
+  let component: DsdDemodComponent;
+  let fixture: ComponentFixture<DsdDemodComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        BfmDemodComponent,
+        DsdDemodComponent,
         ChannelHeaderComponent,
         ChannelMonitorComponent
       ],
-    imports: [
-      RouterModule,
-      FormsModule,
-      MatCardModule,
-      MatSelectModule,
-      MatOptionModule,
-      MatCheckboxModule,
-      MatTooltipModule,
-      MatProgressBarModule,
-      HttpClientTestingModule,
-      CommonComponentsModule,
-      ColorPickerModule
-    ],
-    providers: [
-      {provide: ActivatedRoute, useValue: { snapshot: {parent: {params: {dix: 0, cix: 0}}}}}
-    ]
+      imports: [
+        RouterModule,
+        FormsModule,
+        MatCardModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatCheckboxModule,
+        MatTooltipModule,
+        MatProgressBarModule,
+        HttpClientTestingModule,
+        CommonComponentsModule,
+        ColorPickerModule
+      ],
+      providers: [
+        {provide: ActivatedRoute, useValue: { snapshot: {parent: {params: {dix: 0, cix: 0}}}}}
+      ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BfmDemodComponent);
+    fixture = TestBed.createComponent(DsdDemodComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

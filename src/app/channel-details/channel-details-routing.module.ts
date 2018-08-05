@@ -6,6 +6,7 @@ import { ChannelNotSupportedComponent } from './channel-not-supported/channel-no
 import { NfmDemodComponent } from './nfm-demod/nfm-demod.component';
 import { SsbDemodComponent } from './ssb-demod/ssb-demod.component';
 import { BfmDemodComponent } from './bfm-demod/bfm-demod.component';
+import { DsdDemodComponent } from './dsd-demod/dsd-demod.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,10 @@ export const routes: Routes = [
       {
         path: 'bfmdemod',
         component: BfmDemodComponent
+      },
+      {
+        path: 'dsddemod',
+        component: DsdDemodComponent
       },
       {
         path: 'nfmdemod',
