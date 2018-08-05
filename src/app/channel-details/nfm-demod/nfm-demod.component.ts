@@ -155,7 +155,7 @@ export class NfmDemodComponent implements OnInit {
           this.deltaSquelch = this.settings.deltaSquelch !== 0;
           this.ctcss = this.settings.ctcssOn !== 0;
         } else {
-          this.statusMessage = "Not an NFMDemod channel";
+          this.statusMessage = "Not a NFMDemod channel";
           this.statusError = true;
         }
       }

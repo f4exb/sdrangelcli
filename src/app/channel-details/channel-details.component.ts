@@ -45,6 +45,8 @@ export class ChannelDetailsComponent implements OnInit {
         this.isTx = channelSettings.tx !== 0;
         if (channelSettings.channelType == "AMDemod") {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType == "BFMDemod") {
+          this.router.navigate(['bfmdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "NFMDemod") {
           this.router.navigate(['nfmdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "SSBDemod") {

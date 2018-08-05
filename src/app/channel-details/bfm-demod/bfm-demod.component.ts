@@ -5,12 +5,18 @@ import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
 import { AudioStoreService } from '../../main/audio/audio-store.service';
-import { Subscription } from 'rxjs';
-import { BFMDemodSettings, BFMDEMOD_SETTINGS_DEFAULT } from './bfm-demod';
+import { Subscription, interval } from 'rxjs';
+import { BFMDemodSettings, BFMDEMOD_SETTINGS_DEFAULT, BFMDemodReport, BFMDEMOD_REPORT_DEFAULT } from './bfm-demod';
 import { Utils } from '../../common-components/utils';
+import { ChannelSettings } from '../channel-details';
 
-export interface AudioDeviceInfo {
+interface AudioDeviceInfo {
   value: string,
+  viewValue: number
+}
+
+interface RFBandwidth {
+  value: number,
   viewValue: number
 }
 
@@ -39,6 +45,21 @@ export class BfmDemodComponent implements OnInit {
   rfBandwidthKhz: number;
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr: string = 'rgb(0,0,0)';
+  bfmDemodReport: BFMDemodReport = BFMDEMOD_REPORT_DEFAULT;
+  audioStereo: boolean;
+  rds: boolean;
+  rfBandwidths: RFBandwidth[] = [
+    {value: 80000, viewValue: 80},
+    {value: 100000, viewValue: 100},
+    {value: 120000, viewValue: 120},
+    {value: 140000, viewValue: 140},
+    {value: 160000, viewValue: 160},
+    {value: 180000, viewValue: 180},
+    {value: 200000, viewValue: 200},
+    {value: 220000, viewValue: 220},
+    {value: 250000, viewValue: 250},
+  ];
+  afBandwidthKhz: number;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -114,7 +135,7 @@ export class BfmDemodComponent implements OnInit {
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "SSBDemod") {
+        if (channelSettings.channelType == "BFMDemod") {
           this.statusMessage = "OK";
           this.statusError = false;
           this.settings = channelSettings.BFMDemodSettings;
@@ -126,11 +147,152 @@ export class BfmDemodComponent implements OnInit {
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.settings.volume = +this.settings.volume.toFixed(1);
+          this.audioStereo = this.settings.audioStereo !== 0;
+          this.rds = this.settings.rdsActive !== 0;
+          this.afBandwidthKhz = this.settings.afBandwidth / 1000;
         } else {
-          this.statusMessage = "Not an NFMDemod channel";
+          this.statusMessage = "Not a BFMDemod channel";
           this.statusError = true;
         }
       }
     )
+  }
+
+  private setDeviceSettings(bfmDemodSettings : BFMDemodSettings) {
+    const settings : ChannelSettings = <ChannelSettings>{};
+    settings.channelType = "BFMDemod";
+    settings.tx = 0,
+    settings.BFMDemodSettings = bfmDemodSettings;
+    this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
+      res => {
+        console.log("Set settings OK", res);
+        this.statusMessage = "OK";
+        this.statusError = false;
+        this.getChannelSettings();
+      },
+      error => {
+        this.statusMessage = error.message;
+        this.statusError = true;
+      }
+    )
+  }
+
+  enableReporting(enable: boolean) {
+    if (enable) {
+      this.channelReportSubscription = interval(1000).subscribe(
+        _ => {
+          this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
+            channelReport => {
+              if (channelReport.channelType === "BFMDemod") {
+                this.bfmDemodReport = channelReport.BFMDemodReport;
+              }
+            }
+          )
+        }
+      )
+    } else {
+      this.channelReportSubscription.unsubscribe();
+      this.channelReportSubscription = null;
+    }
+  }
+
+  toggleMonitor() {
+    this.monitor = !this.monitor;
+    this.enableReporting(this.monitor);
+  }
+
+  getPilotStatusColor() : string {
+    if (this.bfmDemodReport.pilotLocked) {
+      return "rgb(50,180,50)";
+    } else {
+      return "grey";
+    }
+  }
+
+  getPilotStatusText() : string {
+    if (this.bfmDemodReport.pilotPowerDB) {
+      return "Pilot locked";
+    } else {
+      return "Pilot unlocked";
+    }
+  }
+
+  onTitleColorChanged(colorStr: string) {
+    this.rgbTitleStr = colorStr;
+    this.setTitleColor();
+  }
+
+  setTitleColor() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
+    this.setDeviceSettings(newSettings);
+  }
+
+  onTitleChanged(title: string) {
+    this.settings.title = title;
+    this.setTitle();
+  }
+
+  setTitle() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.title = this.settings.title;
+    this.setDeviceSettings(newSettings);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.channelCenterFrequencyKhz = frequency;
+    this.setCenterFrequency();
+  }
+
+  setCenterFrequency() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.inputFrequencyOffset = this.channelCenterFrequencyKhz * 1000 - this.deviceCenterFrequency;
+    this.setDeviceSettings(newSettings);
+  }
+
+  getDeltaFrequency() : number {
+    return this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  }
+
+  setAudioDevice() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioStereo() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.audioStereo = this.audioStereo ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setRDS() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.rdsActive = this.rds ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setRFBandwidth() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.rfBandwidth = this.settings.rfBandwidth;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAFBandwidth() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.afBandwidth = this.afBandwidthKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setVolume() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.volume = this.settings.volume;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelch() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.squelch = this.settings.squelch;
+    this.setDeviceSettings(newSettings);
   }
 }

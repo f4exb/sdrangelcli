@@ -162,7 +162,7 @@ export class SsbDemodComponent implements OnInit {
           this.binaural = this.settings.audioBinaural !== 0;
           this.lrFlip = this.settings.audioFlipChannels !== 0;
         } else {
-          this.statusMessage = "Not an NFMDemod channel";
+          this.statusMessage = "Not a SSBDemod channel";
           this.statusError = true;
         }
       }
@@ -249,6 +249,7 @@ export class SsbDemodComponent implements OnInit {
     this.rgbTitleStr = colorStr;
     this.setTitleColor();
   }
+
   setTitleColor() {
     const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
     newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);

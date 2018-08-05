@@ -18,6 +18,116 @@
     </app-channel-header>
   </mat-card-header>
   <mat-card-content>
-
+    <table>
+      <!-- Row 1: channel monitor (optional) -->
+      <tr *ngIf="monitor">
+        <td colspan="4">
+          <app-channel-monitor [value]=bfmDemodReport.channelPowerDB
+            [min]="-100"
+            [max]="0"
+            [squelch]="bfmDemodReport.squelch !== 0">
+          </app-channel-monitor>
+        </td>
+      </tr>
+      <!-- Row 2: Stereo, pilot monitor (optional) -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioStereo" (change)="setAudioStereo()" matTooltip="Stereo on/off">
+            Stereo
+          </mat-checkbox>
+        </td>
+        <td>
+          <div *ngIf="monitor && audioStereo">
+            Pilot
+            <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getPilotStatusColor()}" [matTooltip]="getPilotStatusText()"></i>
+            &nbsp;
+            <span matTooltip="Pilot power">{{bfmDemodReport.pilotPowerDB.toFixed(1)}} dB</span>
+          </div>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="rds" (change)="setRDS()" matTooltip="RDS on/off">
+            RDS
+          </mat-checkbox>
+        </td>
+        <td></td>
+      </tr>
+      <!-- Row 2: Frequency dial -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+      </tr>
+      <!-- Row 3: RF bandwidth, AF Bandwidth, volume, squelch -->
+      <tr>
+        <td>
+          RF BW
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+              [(value)]="settings.rfBandwidth"
+              (selectionChange)="setRFBandwidth()"
+              matTooltip="RF bandwidth">
+            <mat-option *ngFor="let rfBandwidth of rfBandwidths" [value]="rfBandwidth.value">
+              {{rfBandwidth.viewValue}}
+            </mat-option>
+          </mat-select>
+          kHz
+        </td>
+        <td>
+          AF BW
+          <input type="number" class="volume-input"
+            [(ngModel)]="afBandwidthKhz"
+            (change)="setAFBandwidth()"
+            matTooltip="AF bandwidth"
+            min=1 max=20>
+          KHz
+        </td>
+        <td>
+          Vol
+            <input type="number" class="volume-input"
+            [(ngModel)]="settings.volume"
+            (change)="setVolume()"
+            matTooltip="Audio volume"
+            min=0 max=10
+            step="0.1">
+        </td>
+        <td>
+          Sq
+            <input type="number" class="volume-input"
+            [(ngModel)]="settings.squelch"
+            (change)="setSquelch()"
+            matTooltip="Squelch power threshold"
+            min=-100 max=0>
+          dB
+        </td>
+      </tr>
+      <!-- Row 6: audio options -->
+      <tr>
+        <td colspan="3">
+          Audio:
+          <mat-select style="width:40ch; background-color: white; margin: 1px;"
+              [(value)]="settings.audioDeviceName"
+              (selectionChange)="setAudioDevice()"
+              matTooltip="Audio output device">
+            <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+              {{audioDevice.value}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td></td>
+      </tr>
+      <!-- Row 7: empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
   </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
 </mat-card>
