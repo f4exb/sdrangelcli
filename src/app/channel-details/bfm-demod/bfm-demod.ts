@@ -48,6 +48,29 @@ export interface BFMDemodReportRDS {
     time: string
 }
 
+export const BFMDEMOD_RDS_REPORT_DEFAULT = {
+    altFrequencies: [
+        {
+          frequency: 91.30000305175781
+        },
+        {
+          frequency: 91.5
+        }
+      ],
+      decodStatus: 56,
+      demodStatus: 96,
+      monoStereo: "Stereo",
+      musicSpeech: "Music",
+      piCoverage: "Regional 1",
+      piType: "None",
+      pid: "F441",
+      progServiceName: "CANNES R",
+      radioText: "                                                                ",
+      rdsDemodAccumDB: -12.640591621398926,
+      rdsDemodFrequency: 1187.5,
+      time: "2018-08-05 18:11 (+2.0h)"
+}
+
 export interface BFMDemodReport {
     audioSampleRate: number,
     channelPowerDB: number,

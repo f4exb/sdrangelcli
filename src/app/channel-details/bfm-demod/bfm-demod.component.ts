@@ -6,7 +6,7 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
 import { AudioStoreService } from '../../main/audio/audio-store.service';
 import { Subscription, interval } from 'rxjs';
-import { BFMDemodSettings, BFMDEMOD_SETTINGS_DEFAULT, BFMDemodReport, BFMDEMOD_REPORT_DEFAULT } from './bfm-demod';
+import { BFMDemodSettings, BFMDEMOD_SETTINGS_DEFAULT, BFMDemodReport, BFMDEMOD_REPORT_DEFAULT, BFMDEMOD_RDS_REPORT_DEFAULT } from './bfm-demod';
 import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 
@@ -74,6 +74,7 @@ export class BfmDemodComponent implements OnInit {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
     });
+    this.bfmDemodReport["rdsReport"] = BFMDEMOD_RDS_REPORT_DEFAULT;
   }
 
   ngOnInit() {

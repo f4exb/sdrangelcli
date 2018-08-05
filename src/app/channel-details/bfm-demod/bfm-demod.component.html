@@ -126,6 +126,55 @@
       <tr style="height: 3px;">
       </tr>
     </table>
+    <table *ngIf="monitor && rds">
+      <tr>
+        <td colspan="4" style="width: 64ch; height: 1.1em;">
+          {{bfmDemodReport.rdsReport.radioText}}
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 10ch;">
+          {{bfmDemodReport.rdsReport.progServiceName}}
+        </td>
+        <td>
+          {{bfmDemodReport.rdsReport.monoStereo}}
+        </td>
+        <td>
+          {{bfmDemodReport.rdsReport.musicSpeech}}
+        </td>
+        <td>
+          {{bfmDemodReport.rdsReport.piCoverage}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          PID {{bfmDemodReport.rdsReport.pid}}
+        </td>
+        <td>
+          PI {{bfmDemodReport.rdsReport.piType}}
+        </td>
+        <td colspan="2">
+          {{bfmDemodReport.rdsReport.time}}
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 11ch;">
+          Decod {{bfmDemodReport.rdsReport.decodStatus}} %
+        </td>
+        <td style="width: 11ch;">
+          Demod {{bfmDemodReport.rdsReport.demodStatus}} %
+        </td>
+        <td>
+          RDS Pwr {{bfmDemodReport.rdsReport.rdsDemodAccumDB.toFixed(1)}} dB
+        </td>
+        <td>
+          RDS Freq {{bfmDemodReport.rdsReport.rdsDemodFrequency.toFixed(1)}} Hz
+        </td>
+       </tr>
+      <!-- empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
   </mat-card-content>
 </mat-card>
 <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
