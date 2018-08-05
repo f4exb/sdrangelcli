@@ -43,6 +43,70 @@
               &#x394;f {{getDeltaFrequency()}} kHz
           </td>
         </tr>
+        <!-- Row 3: volume, span, rf bandwidth, low cutoff -->
+        <tr>
+          <td>
+             <input type="number" class="volume-input"
+              [(ngModel)]="settings.volume"
+              (change)="setVolume()"
+              matTooltip="Audio volume"
+              min=0 max=10
+              step="0.1">
+          </td>
+          <td>
+            &#xf7;
+            <mat-select style="width:6ch; background-color: white; margin: 1px;"
+                [(value)]="settings.spanLog2"
+                (selectionChange)="setSpan()"
+                matTooltip="Channel decimation">
+              <mat-option *ngFor="let spanLog2 of spanLog2s" [value]="spanLog2.value">
+                {{spanLog2.viewValue}}
+              </mat-option>
+            </mat-select>
+            <span matTooltip="Channel bandwidth">
+              {{getChannelBaseband()}} kHz
+            </span>
+          </td>
+          <td>
+            Hi
+            <input type="number" class="volume-input"
+              [(ngModel)]="hiCutKhz"
+              (change)="setHiCut()"
+              matTooltip="Bandpass high end"
+              min=minHiCutKhz max=maxHiCutKhz
+              step="0.1">
+            kHz
+          </td>
+          <td>
+            Low
+            <input type="number" class="volume-input"
+              [(ngModel)]="loCutKhz"
+              (change)="setLoCut()"
+              matTooltip="Bandpass low end"
+              min=minLoCutKhz max=maxLoCutKhz
+              step="0.1">
+            kHz
+          </td>
+        </tr>
+        <!-- Row 5: audio options -->
+        <tr>
+          <td colspan="3">
+            Audio:
+            <mat-select style="width:40ch; background-color: white; margin: 1px;"
+                [(value)]="settings.audioDeviceName"
+                (selectionChange)="setAudioDevice()"
+                matTooltip="Audio output device and sample rate (Hz)">
+              <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+                {{audioDevice.value}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
+              Mute
+            </mat-checkbox>
+          </td>
+        </tr>
         <!-- Row 6: empty footer -->
         <tr style="height: 3px;">
         </tr>

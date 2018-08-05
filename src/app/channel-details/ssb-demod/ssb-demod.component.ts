@@ -5,13 +5,22 @@ import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
-import { AudioStoreService } from '../../main/audio/audio-store.service';
+import { AudioStoreService, AudioStorage } from '../../main/audio/audio-store.service';
 import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 
 export interface AudioDeviceInfo {
   value: string,
   viewValue: number
+}
+
+export interface SpanLog2 {
+  value: number,
+  viewValue: number
+}
+
+interface AudioSampleRates {
+  [deviceName: string]: number
 }
 
 @Component({
@@ -40,8 +49,22 @@ export class SsbDemodComponent implements OnInit {
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr: string = 'rgb(0,0,0)'
   audioDevices: AudioDeviceInfo[] = [];
+  audioSampleRates: AudioSampleRates = <AudioSampleRates>{};
   monitor: boolean;
   ssbDemodreport: SSBDemodReport = SSBDEMOD_REPORT_DEFAULT;
+  spanLog2s: SpanLog2[] = [
+    {value: 1, viewValue: 2},
+    {value: 2, viewValue: 4},
+    {value: 3, viewValue: 8},
+    {value: 4, viewValue: 16},
+    {value: 5, viewValue: 32},
+  ];
+  hiCutKhz: number;
+  loCutKhz: number;
+  minHiCutKhz: number;
+  maxHiCutKhz: number;
+  minLoCutKhz: number;
+  maxLoCutKhz: number;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -61,8 +84,8 @@ export class SsbDemodComponent implements OnInit {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
     });
-    this.getChannelSettings();
     this.getAudioDevicesInfo();
+    this.getChannelSettings();
   }
 
   ngOnDestroy() {
@@ -82,7 +105,7 @@ export class SsbDemodComponent implements OnInit {
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "NFMDemod") {
+        if (channelSettings.channelType == "SSBDemod") {
           this.statusMessage = "OK";
           this.statusError = false;
           this.settings = channelSettings.SSBDemodSettings;
@@ -95,6 +118,10 @@ export class SsbDemodComponent implements OnInit {
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.settings.volume = +this.settings.volume.toFixed(1);
           this.audioMute = this.settings.audioMute !== 0;
+          this.hiCutKhz = this.settings.rfBandwidth / 1000;
+          this.loCutKhz = this.settings.lowCutoff / 1000;
+          this.setHiCutMinMax();
+          this.setLoCutMinMax();
         } else {
           this.statusMessage = "Not an NFMDemod channel";
           this.statusError = true;
@@ -112,6 +139,7 @@ export class SsbDemodComponent implements OnInit {
         this.audioDevices = [];
         for (let [key, value] of Object.entries(audioData)) {
           this.audioDevices.push({value: key, viewValue: value["audioRate"]});
+          this.audioSampleRates[key] = value["audioRate"];
         }
       },
       error => {
@@ -185,6 +213,95 @@ export class SsbDemodComponent implements OnInit {
   setTitle() {
     const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
     newSettings.title = this.settings.title;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioDevice() {
+    this.setHiCutMinMax();
+    this.setLoCutMinMax();
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.audioDeviceName = this.settings.audioDeviceName;
+    newSettings.rfBandwidth = this.hiCutKhz * 1000;
+    newSettings.lowCutoff = this.loCutKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioMute() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.audioMute = this.audioMute ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setVolume() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.volume = this.settings.volume;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSpan() {
+    this.setHiCutMinMax();
+    this.setLoCutMinMax();
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.spanLog2 = this.settings.spanLog2;
+    newSettings.rfBandwidth = this.hiCutKhz * 1000;
+    newSettings.lowCutoff = this.loCutKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  private getAudioSampleRate() : number {
+    if (this.settings.audioDeviceName in this.audioSampleRates) {
+      return this.audioSampleRates[this.settings.audioDeviceName];
+    } else {
+      return 48000;
+    }
+  }
+
+  getChannelBaseband() : number {
+    return (this.getAudioSampleRate() / 1000) / (1<<this.settings.spanLog2);
+  }
+
+  private setHiCutMinMax() {
+    let audioSampleRate = this.getAudioSampleRate();
+    this.maxHiCutKhz = (audioSampleRate / (1<<this.settings.spanLog2))/1000;
+    if (this.settings.dsb === 0) {
+      this.minHiCutKhz = -this.maxHiCutKhz;
+    } else {
+      this.minHiCutKhz = 0;
+    }
+    if (this.hiCutKhz < 0) {
+      if (this.hiCutKhz < this.minHiCutKhz) {
+        this.hiCutKhz = this.minHiCutKhz;
+      }
+    } else {
+      if (this.hiCutKhz > this.maxHiCutKhz) {
+        this.hiCutKhz = this.maxHiCutKhz;
+      }
+    }
+  }
+
+  private setLoCutMinMax() {
+    this.maxLoCutKhz = (this.hiCutKhz < 0 ? 0 : this.hiCutKhz);
+    this.minLoCutKhz = (this.hiCutKhz < 0 ? this.hiCutKhz : 0);
+    if (this.loCutKhz < 0) {
+      if (this.loCutKhz < this.minLoCutKhz) {
+        this.loCutKhz = this.minLoCutKhz;
+      }
+    } else {
+      if (this.loCutKhz > this.maxLoCutKhz) {
+        this.loCutKhz = this.maxLoCutKhz;
+      }
+    }
+  }
+
+  setHiCut() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.rfBandwidth = this.hiCutKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLoCut() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.lowCutoff = this.loCutKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 }
