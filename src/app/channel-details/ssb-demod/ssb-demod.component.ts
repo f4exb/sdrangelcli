@@ -14,7 +14,7 @@ export interface AudioDeviceInfo {
   viewValue: number
 }
 
-export interface SpanLog2 {
+export interface Log2 {
   value: number,
   viewValue: number
 }
@@ -52,7 +52,7 @@ export class SsbDemodComponent implements OnInit {
   audioSampleRates: AudioSampleRates = <AudioSampleRates>{};
   monitor: boolean;
   ssbDemodreport: SSBDemodReport = SSBDEMOD_REPORT_DEFAULT;
-  spanLog2s: SpanLog2[] = [
+  spanLog2s: Log2[] = [
     {value: 1, viewValue: 2},
     {value: 2, viewValue: 4},
     {value: 3, viewValue: 8},
@@ -65,6 +65,21 @@ export class SsbDemodComponent implements OnInit {
   maxHiCutKhz: number;
   minLoCutKhz: number;
   maxLoCutKhz: number;
+  agc: boolean;
+  agcTimeLog2s: Log2[] = [
+    {value: 4, viewValue: 16},
+    {value: 5, viewValue: 32},
+    {value: 6, viewValue: 64},
+    {value: 7, viewValue: 128},
+    {value: 8, viewValue: 256},
+    {value: 9, viewValue: 512},
+    {value: 10, viewValue: 1024},
+    {value: 11, viewValue: 2048},
+  ];
+  agcClamping: boolean;
+  dsb: boolean;
+  binaural: boolean;
+  lrFlip: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -122,6 +137,11 @@ export class SsbDemodComponent implements OnInit {
           this.loCutKhz = this.settings.lowCutoff / 1000;
           this.setHiCutMinMax();
           this.setLoCutMinMax();
+          this.agc = this.settings.agc !== 0;
+          this.agcClamping = this.settings.agcClamping !== 0;
+          this.dsb = this.settings.dsb !== 0;
+          this.binaural = this.settings.audioBinaural !== 0;
+          this.lrFlip = this.settings.audioFlipChannels !== 0;
         } else {
           this.statusMessage = "Not an NFMDemod channel";
           this.statusError = true;
@@ -189,6 +209,17 @@ export class SsbDemodComponent implements OnInit {
   toggleMonitor() {
     this.monitor = !this.monitor;
     this.enableReporting(this.monitor);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.channelCenterFrequencyKhz = frequency;
+    this.setCenterFrequency();
+  }
+
+  setCenterFrequency() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.inputFrequencyOffset = this.channelCenterFrequencyKhz * 1000 - this.deviceCenterFrequency;
+    this.setDeviceSettings(newSettings);
   }
 
   getDeltaFrequency() : number {
@@ -304,4 +335,53 @@ export class SsbDemodComponent implements OnInit {
     newSettings.lowCutoff = this.loCutKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
+
+  setAGC() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.agc = this.agc ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAGCThreshold() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.agcPowerThreshold = this.settings.agcPowerThreshold;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAGCTime() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.agcTimeLog2 = this.settings.agcTimeLog2;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAGCThresholdGate() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.agcThresholdGate = this.settings.agcThresholdGate;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAGCClamping() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.agcClamping = this.agcClamping ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setDSB() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.dsb = this.dsb ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setBinaural() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.audioBinaural = this.binaural ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFlipAudioChannels() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.audioFlipChannels = this.lrFlip ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
 }

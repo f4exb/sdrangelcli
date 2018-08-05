@@ -46,6 +46,7 @@
         <!-- Row 3: volume, span, rf bandwidth, low cutoff -->
         <tr>
           <td>
+             Vol
              <input type="number" class="volume-input"
               [(ngModel)]="settings.volume"
               (change)="setVolume()"
@@ -72,7 +73,7 @@
             <input type="number" class="volume-input"
               [(ngModel)]="hiCutKhz"
               (change)="setHiCut()"
-              matTooltip="Bandpass high end"
+              matTooltip="Bandpass far end"
               min=minHiCutKhz max=maxHiCutKhz
               step="0.1">
             kHz
@@ -82,13 +83,74 @@
             <input type="number" class="volume-input"
               [(ngModel)]="loCutKhz"
               (change)="setLoCut()"
-              matTooltip="Bandpass low end"
+              matTooltip="Bandpass close end"
               min=minLoCutKhz max=maxLoCutKhz
               step="0.1">
             kHz
           </td>
         </tr>
-        <!-- Row 5: audio options -->
+        <!-- Row 4: agc, threshold, time constant, gate  -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="agc" (change)="setAGC()" matTooltip="AGC on/off">
+              AGC
+            </mat-checkbox>
+          </td>
+          <td>
+              Squelch
+              <input type="number" class="volume-input"
+                [(ngModel)]="settings.agcPowerThreshold"
+                (change)="setAGCThreshold()"
+                matTooltip="AGC squelch power threshold"
+                min=-120 max=0>
+              dB
+          </td>
+          <td>
+              Time
+              <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.agcTimeLog2"
+                (selectionChange)="setAGCTime()"
+                matTooltip="AGC time constant">
+              <mat-option *ngFor="let agcTimeLog2 of agcTimeLog2s" [value]="agcTimeLog2.value">
+                {{agcTimeLog2.viewValue}}
+              </mat-option>
+              ms
+            </mat-select>
+          </td>
+          <td>
+            Gate
+            <input type="number" class="volume-input"
+              [(ngModel)]="settings.agcThresholdGate"
+              (change)="setAGCThresholdGate()"
+              matTooltip="AGC threshold gate"
+              min=0 max=20>
+            ms
+          </td>
+        </tr>
+        <!-- Row 5: agc clamp, dsb, binaural, flip channels  -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="agcClamping" (change)="setAGCClamping()" matTooltip="AGC clamping on/off">
+              Clamping
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="dsb" (change)="setDSB()" matTooltip="DSB on/off">
+              DSB
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="binaural" (change)="setBinaural()" matTooltip="Audio binaural on/off">
+              Binaural
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="lrFlip" (change)="setFlipAudioChannels()" matTooltip="Audio flip L/R">
+              LR flip
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- Row 6: audio options -->
         <tr>
           <td colspan="3">
             Audio:
@@ -107,7 +169,7 @@
             </mat-checkbox>
           </td>
         </tr>
-        <!-- Row 6: empty footer -->
+        <!-- Row 7: empty footer -->
         <tr style="height: 3px;">
         </tr>
       </table>
