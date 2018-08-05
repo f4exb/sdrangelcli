@@ -9,6 +9,7 @@ import { ChannelSettings } from '../channel-details';
 import { Utils } from '../../common-components/utils';
 import { AudioStoreService } from '../../main/audio/audio-store.service';
 import { interval } from 'rxjs';
+import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
 
 export interface AudioDeviceInfo {
   value: string,
@@ -57,6 +58,7 @@ export class AmDemodComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
+    private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService,
     private audioStoreService: AudioStoreService)
@@ -64,15 +66,15 @@ export class AmDemodComponent implements OnInit {
     this.deviceStoreSubscription = null;
     this.channelReportSubscription = null;
     this.monitor = false;
+    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+      this.sdrangelURL = url;
+    });
   }
 
   ngOnInit() {
     this.deviceIndex = +this.route.snapshot.parent.params['dix']
     this.channelIndex = +this.route.snapshot.parent.params['cix']
     this.getDeviceStorage();
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
     this.getChannelSettings();
     this.getAudioDevicesInfo();
   }
@@ -114,6 +116,23 @@ export class AmDemodComponent implements OnInit {
       deviceStorage => {
         this.deviceCenterFrequency = deviceStorage.centerFrequency;
         this.deviceBasebandRate = deviceStorage.basebandRate;
+      },
+      error => {
+        if (error == "No device at this index") {
+          this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
+            deviceset => {
+              this.deviceStoreService.change(
+                this.deviceIndex,
+                {
+                  basebandRate: deviceset.samplingDevice.bandwidth,
+                  centerFrequency: deviceset.samplingDevice.centerFrequency
+                }
+              )
+              this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
+              this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
+            }
+          )
+        }
       }
     )
   }
