@@ -45,6 +45,8 @@ export class DeviceDetailsComponent implements OnInit {
           this.router.navigate(['airspyhf'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType == "RTLSDR") {
           this.router.navigate(['rtlsdr'], { relativeTo: this.route});
+        } else if (deviceSet.samplingDevice.hwType == "TestSource") {
+          this.router.navigate(['testsource'], { relativeTo: this.route});
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});
         }

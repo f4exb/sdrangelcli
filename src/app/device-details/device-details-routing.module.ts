@@ -4,6 +4,7 @@ import { DeviceDetailsComponent } from './device-details.component';
 import { AirspyhfComponent } from './airspyhf/airspyhf.component';
 import { DeviceNotSupportedComponent } from './device-not-supported/device-not-supported.component';
 import { RtlsdrComponent } from './rtlsdr/rtlsdr.component';
+import { TestsourceComponent } from './testsource/testsource.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,10 @@ export const routes: Routes = [
       {
         path: 'rtlsdr',
         component: RtlsdrComponent
+      },
+      {
+        path: 'testsource',
+        component: TestsourceComponent
       },
       {
         path: 'notsupported',
