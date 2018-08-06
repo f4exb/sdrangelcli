@@ -20,6 +20,11 @@ interface Log2 {
   viewValue: number
 }
 
+interface BaudRate {
+  value: number,
+  viewValue: number
+}
+
 @Component({
   selector: 'app-dsd-demod',
   templateUrl: './dsd-demod.component.html',
@@ -46,6 +51,19 @@ export class DsdDemodComponent implements OnInit {
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr: string = 'rgb(0,0,0)';
   dsdDemodReport: DSDDemodReport = DSDDEMOD_REPORT_DEFAULT;
+  squelchGateMs: number;
+  hpFilter: boolean;
+  audioMute: boolean;
+  baudRates: BaudRate[] = [
+    {value: 2400, viewValue: 2.4},
+    {value: 4800, viewValue: 4.8},
+  ];
+  cosFiltering: boolean;
+  symbolPLL: boolean;
+  slot1: boolean;
+  slot2: boolean;
+  tdmaStereo: boolean;
+  fmDevKhz: number;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -133,6 +151,15 @@ export class DsdDemodComponent implements OnInit {
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.settings.volume = +this.settings.volume.toFixed(1);
+          this.squelchGateMs = this.settings.squelchGate * 10;
+          this.hpFilter = this.settings.highPassFilter !== 0;
+          this.audioMute = this.settings.audioMute !== 0;
+          this.cosFiltering = this.settings.enableCosineFiltering !== 0;
+          this.symbolPLL = this.settings.pllLock !== 0;
+          this.slot1 = this.settings.slot1On !== 0;
+          this.slot2 = this.settings.slot2On !== 0;
+          this.tdmaStereo = this.settings.tdmaStereo !== 0;
+          this.fmDevKhz = this.settings.fmDeviation / 1000;
         } else {
           this.statusMessage = "Not a DSDDemod channel";
           this.statusError = true;
@@ -206,4 +233,96 @@ export class DsdDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  onFrequencyUpdate(frequency: number) {
+    this.channelCenterFrequencyKhz = frequency;
+    this.setCenterFrequency();
+  }
+
+  setCenterFrequency() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.inputFrequencyOffset = this.channelCenterFrequencyKhz * 1000 - this.deviceCenterFrequency;
+    this.setDeviceSettings(newSettings);
+  }
+
+  getDeltaFrequency() : number {
+    return this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  }
+
+  setRFBandwidth() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.rfBandwidth = this.rfBandwidthKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelch() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.squelch = this.settings.squelch;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelchGate() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.squelchGate = this.squelchGateMs / 10;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setVolume() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.volume = this.settings.volume;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setHPFilter() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.highPassFilter = this.hpFilter ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioMute() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.audioMute = this.audioMute ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setCosFiltering() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.enableCosineFiltering = this.cosFiltering ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSymbolPLL() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.pllLock = this.symbolPLL ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSlot1() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.slot1On = this.slot1 ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSlot2() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.slot2On = this.slot2 ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setTDMAStereo() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.tdmaStereo = this.tdmaStereo ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFMDev() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.fmDeviation = this.fmDevKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setDemodGain() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.demodGain = this.settings.demodGain;
+    this.setDeviceSettings(newSettings);
+  }
 }

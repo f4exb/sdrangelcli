@@ -55,6 +55,10 @@ td {
     background-color: rgb(230, 230, 210);
 }
 
+td.green {
+    background-color: rgb(0, 255, 0, 1.0);
+}
+
 .status-ok-card {
     border: outset;
     border-color: rgb(134, 255, 110);
