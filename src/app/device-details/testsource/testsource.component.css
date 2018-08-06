@@ -44,6 +44,11 @@
     width: 12ch;
 }
 
+.amplitude-input {
+    width: 8ch;
+    margin: 1px;
+}
+
 .sample-rate-input {
     width: 9ch;
     margin: 1px;

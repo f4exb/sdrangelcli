@@ -158,6 +158,22 @@ export class TestsourceComponent implements OnInit {
     }
   }
 
+  getAmplitudeDb(): number {
+    if (this.settings.amplitudeBits === 0) {
+      return -120;
+    } else {
+      let amplitude: number;
+      if (this.settings.sampleSizeIndex == 0) { // 8 bits
+        amplitude = this.settings.amplitudeBits / ((1<<8) - 1);
+      } else if (this.settings.sampleSizeIndex == 1) { // 12 bits
+        amplitude = this.settings.amplitudeBits / ((1<<12) - 1);
+      } else { // 16 bits
+        amplitude = this.settings.amplitudeBits / ((1<<16) - 1);
+      }      
+      return 10*Math.log10(amplitude*amplitude);
+    }
+  }
+
   setAutoCorrOptions() {
     const newSettings: TestSourceSettings = <TestSourceSettings>{};
     newSettings.autoCorrOptions = this.settings.autoCorrOptions;

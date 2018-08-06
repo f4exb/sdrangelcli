@@ -36,13 +36,12 @@
           Hz
         </td>
         <td>
-          Amp
-          <input type="number" class="frequency-shift-input"
+          <input type="number" class="amplitude-input"
             [(ngModel)]="settings.amplitudeBits"
             (change)="setAmplitudeBits()"
             min=0 [max]="getMaxAmplitudeBits()"
             matTooltip="Amplitude bits">
-          b
+          b {{getAmplitudeDb().toFixed(1)}}dB
         </td>
       </tr>
       <!-- Auto corr, Decim, Fp, Sample size -->
