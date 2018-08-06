@@ -26,6 +26,11 @@ interface SampleSize {
   viewValue: number
 }
 
+interface Modulation {
+  value: number,
+  viewValue: string
+}
+
 @Component({
   selector: 'app-testsource',
   templateUrl: './testsource.component.html',
@@ -58,10 +63,21 @@ export class TestsourceComponent implements OnInit {
     {value: 1, viewValue: 12},
     {value: 2, viewValue: 16},
   ];
+  modulations: Modulation[] = [
+    {value: 0, viewValue: "None"},
+    {value: 1, viewValue: "AM"},
+    {value: 2, viewValue: "FM"},
+  ]
   deviceIndex : number;
   sdrangelURL : string;  
   settings: TestSourceSettings = TESTSOURCE_SETTINGS_DEFAULT;
   centerFreqKhz: number;
+  toneFreqKhz: number;
+  fmDeviationKhz: number;
+  dcBiasPercent : number;
+  iBiasPercent : number;
+  qBiasPercent : number;
+  phaseImbalancePercent : number;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -86,6 +102,12 @@ export class TestsourceComponent implements OnInit {
           this.statusError = false;
           this.settings = deviceSettings.testSourceSettings;
           this.centerFreqKhz = this.settings.centerFrequency/1000;
+          this.toneFreqKhz = this.settings.modulationTone/100;
+          this.fmDeviationKhz = this.settings.fmDeviation/10;
+          this.dcBiasPercent = +(this.settings.dcFactor*100).toFixed(0);
+          this.iBiasPercent = +(this.settings.iFactor*100).toFixed(0);
+          this.qBiasPercent = +(this.settings.qFactor*100).toFixed(0);
+          this.phaseImbalancePercent = +(this.settings.phaseImbalance*100).toFixed(0);
           this.feedDeviceStore();
         } else {
           this.statusMessage = "Not a TestSource device";
@@ -126,6 +148,16 @@ export class TestsourceComponent implements OnInit {
     return this.settings.sampleRate/(1<<this.settings.log2Decim);
   }
 
+  getMaxAmplitudeBits(): number {
+    if (this.settings.sampleSizeIndex == 0) { // 8 bits
+      return (1<<8) - 1;
+    } else if (this.settings.sampleSizeIndex == 1) { // 12 bits
+      return (1<<12) - 1;
+    } else { // 16 bits
+      return (1<<16) - 1;
+    }
+  }
+
   setAutoCorrOptions() {
     const newSettings: TestSourceSettings = <TestSourceSettings>{};
     newSettings.autoCorrOptions = this.settings.autoCorrOptions;
@@ -150,4 +182,75 @@ export class TestsourceComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setCenterFrequency() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.centerFrequency = this.centerFreqKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSampleRate() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.sampleRate = this.settings.sampleRate;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFrequencyShift() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.frequencyShift = this.settings.frequencyShift;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setModulation() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.modulation = this.settings.modulation;
+    this.setDeviceSettings(newSettings);
+  }
+  
+  setToneFrequency() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.modulationTone = this.toneFreqKhz * 100;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAMModulation() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.amModulation = this.settings.amModulation;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFMDeviation() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.fmDeviation = this.fmDeviationKhz * 10;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAmplitudeBits() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.amplitudeBits = this.settings.amplitudeBits;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setDCBias() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.dcFactor = this.dcBiasPercent / 100;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setIBias() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.iFactor = this.iBiasPercent / 100;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setQBias() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.qFactor = this.qBiasPercent / 100;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setPhaseImbalance() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.phaseImbalance = this.phaseImbalancePercent / 100;
+    this.setDeviceSettings(newSettings);
+  }
 }

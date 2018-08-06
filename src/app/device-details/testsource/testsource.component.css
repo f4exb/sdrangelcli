@@ -36,7 +36,7 @@
 }
 
 .frequency-input {
-    width: 8ch;
+    width: 10ch;
     margin: 1px;
 }
 
@@ -46,6 +46,32 @@
 
 .sample-rate-input {
     width: 9ch;
+    margin: 1px;
+}
+
+.frequency-shift-input {
+    width: 10ch;
+    margin: 1px;
+}
+
+.tone-frequency-input {
+    width: 9ch;
+    margin: 1px;
+}
+
+.am-modulation-input {
+    width: 9ch;
+    margin: 1px;
+}
+
+.fm-deviation-input {
+    width: 9ch;
+    margin: 1px;
+}
+
+.bias-input {
+    width: 8ch;
+    margin: 1px;
 }
 
 .log2-input {

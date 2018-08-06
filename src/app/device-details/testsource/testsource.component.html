@@ -7,6 +7,44 @@
   </mat-card-header>
   <mat-card-content>
     <table>
+      <!-- Frequency, Sample rate, Shift, Amplitude -->
+      <tr>
+        <td>
+            Freq
+            <input type="number" class="frequency-input"
+              [(ngModel)]="centerFreqKhz"
+              (change)="setCenterFrequency()"
+              matTooltip="Center frequency">
+            kHz
+        </td>
+        <td>
+          SR
+          <input type="number" class="sample-rate-input"
+            [(ngModel)]="settings.sampleRate"
+            (change)="setSampleRate()"
+            min=48000 max=9999999
+            matTooltip="Sample rate">
+          S/s
+        </td>
+        <td>
+          Shift
+          <input type="number" class="frequency-shift-input"
+            [(ngModel)]="settings.frequencyShift"
+            (change)="setFrequencyShift()"
+            min=-9999999 max=9999999
+            matTooltip="Frequency shift">
+          Hz
+        </td>
+        <td>
+          Amp
+          <input type="number" class="frequency-shift-input"
+            [(ngModel)]="settings.amplitudeBits"
+            (change)="setAmplitudeBits()"
+            min=0 [max]="getMaxAmplitudeBits()"
+            matTooltip="Amplitude bits">
+          b
+        </td>
+      </tr>
       <!-- Auto corr, Decim, Fp, Sample size -->
       <tr>
         <td>
@@ -54,6 +92,86 @@
           </mat-select>
           bits
         </td>
+      </tr>
+      <!-- modulation, tone frequency, AM %, FM deviation -->
+      <tr>
+        <td>
+          Modulation
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.modulation"
+              (selectionChange)="setModulation()"
+              matTooltip="Modulation">
+            <mat-option *ngFor="let modulation of modulations" [value]="modulation.value">
+              {{modulation.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Tone
+          <input type="number" class="tone-frequency-input"
+            [(ngModel)]="toneFreqKhz"
+            (change)="setToneFrequency()"
+            min=0.01 max=9.99 step=0.01
+            matTooltip="Tone frequency">
+          kHz
+        </td>
+        <td>
+          AM
+          <input type="number" class="am-modulation-input"
+            [(ngModel)]="settings.amModulation"
+            (change)="setAMModulation()"
+            min=0 max=100
+            matTooltip="AM modulation depth">
+          %
+        </td>
+        <td>
+          FM
+          <input type="number" class="fm-deviation-input"
+            [(ngModel)]="fmDeviationKhz"
+            (change)="setFMDeviation()"
+            min=0 max=99.9 step=0.1
+            matTooltip="FM deviation">
+          kHz
+        </td>
+      </tr>
+      <!-- DC bias, I bias, Q bias, Phase imbalance-->
+      <tr>
+        <td>
+          DC bias
+          <input type="number" class="bias-input"
+            [(ngModel)]="dcBiasPercent"
+            (change)="setDCBias()"
+            min=-99 max=99
+            matTooltip="DC bias">
+          %
+        </td>    
+        <td>
+          I bias
+          <input type="number" class="bias-input"
+            [(ngModel)]="iBiasPercent"
+            (change)="setIBias()"
+            min=-99 max=99
+            matTooltip="I bias">
+          %
+        </td>    
+        <td>
+          Q bias
+          <input type="number" class="bias-input"
+            [(ngModel)]="qBiasPercent"
+            (change)="setQBias()"
+            min=-99 max=99
+            matTooltip="Q bias">
+          %
+        </td>    
+        <td>
+          Phase
+          <input type="number" class="bias-input"
+            [(ngModel)]="phaseImbalancePercent"
+            (change)="setPhaseImbalance()"
+            min=-99 max=99
+            matTooltip="Phase imbalance">
+          %
+        </td>    
       </tr>
       <tr style="height: 3px;">
       </tr>
