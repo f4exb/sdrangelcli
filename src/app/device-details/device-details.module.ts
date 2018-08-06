@@ -8,6 +8,7 @@ import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, Mat
 import { FormsModule } from '@angular/forms';
 import { RtlsdrComponent } from './rtlsdr/rtlsdr.component';
 import { TestsourceComponent } from './testsource/testsource.component';
+import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { TestsourceComponent } from './testsource/testsource.component';
     AirspyhfComponent,
     DeviceNotSupportedComponent,
     RtlsdrComponent,
-    TestsourceComponent
+    TestsourceComponent,
+    HackrfInputComponent
   ]
 })
 export class DeviceDetailsModule { }

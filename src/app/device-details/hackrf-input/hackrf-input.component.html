@@ -1,0 +1,122 @@
+<mat-card class="deviceset-card">
+  <mat-card-header class="device-card-header device-header-rx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="device-label">HackRF input {{getSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!--- LO correction, DC, IQ -->
+      <tr>
+        <td>
+          LO
+          <input type="number" class="loppm-input"
+            [(ngModel)]="loPPM"
+            (change)="setLoPPM()"
+            matTooltip="LO correction"
+            min=-30 max=30 step=0.1>
+          ppm
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+            DC block
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
+            IQ correction
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- frequency, RFBW, BiasT -->
+      <tr>
+        <td>
+          Freq
+          <input type="number" class="frequency-input"
+            [(ngModel)]="centerFreqKhz"
+            (change)="setCenterFrequency()"
+            matTooltip="Center frequency">
+          kHz
+        </td>
+        <td>
+          RFBW
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+              [(value)]="settings.bandwidth"
+              (selectionChange)="setRFBandwidth()"
+              matTooltip="RF Bandwidth">
+            <mat-option *ngFor="let rfBandwidth of rfBandwidths" [value]="rfBandwidth.value">
+              {{rfBandwidth.viewValue}}
+            </mat-option>
+          </mat-select>
+          MHz
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="biasT" (change)="setBiasT()" matTooltip="Bias tee">
+            Bias tee
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- Sample rate, Decimation, Fc pos -->
+      <tr>
+        <td>
+          SR
+          <input type="number" class="sample-rate-input"
+            [(ngModel)]="settings.devSampleRate"
+            (change)="setSampleRate()"
+            matTooltip="Sample rate"
+            min=2600000 max=20000000>
+          S/s
+        </td>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Fc pos
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.fcPos"
+              (selectionChange)="setFcPos()"
+              matTooltip="Center frequency position">
+            <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
+              {{fcPos.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!--- RF amp, LNA, VGA -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="rfAmp" (change)="setRFAmp()" matTooltip="RF amplifier (extra LNA)">
+            RF amp
+          </mat-checkbox>
+        </td>
+        <td>
+          LNA
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.lnaGain"
+            (change)="setLNAGain()"
+            matTooltip="LNA gain"
+            min=0 max=40>
+          dB
+        </td>
+        <td>
+          VGA
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.vgaGain"
+            (change)="setVGAGain()"
+            matTooltip="VGA gain"
+            min=0 max=62>
+          dB
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>

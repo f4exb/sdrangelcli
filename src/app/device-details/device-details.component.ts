@@ -43,6 +43,10 @@ export class DeviceDetailsComponent implements OnInit {
         this.isTx = deviceSet.samplingDevice.tx !== 0;
         if (deviceSet.samplingDevice.hwType == "AirspyHF") {
           this.router.navigate(['airspyhf'], { relativeTo: this.route});
+        } else if (deviceSet.samplingDevice.hwType == "HackRF") {
+          if (deviceSet.samplingDevice.tx === 0) {
+            this.router.navigate(['hackrfin'], { relativeTo: this.route});
+          }
         } else if (deviceSet.samplingDevice.hwType == "RTLSDR") {
           this.router.navigate(['rtlsdr'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType == "TestSource") {

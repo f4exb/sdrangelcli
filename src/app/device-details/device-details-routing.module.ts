@@ -5,6 +5,7 @@ import { AirspyhfComponent } from './airspyhf/airspyhf.component';
 import { DeviceNotSupportedComponent } from './device-not-supported/device-not-supported.component';
 import { RtlsdrComponent } from './rtlsdr/rtlsdr.component';
 import { TestsourceComponent } from './testsource/testsource.component';
+import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,10 @@ export const routes: Routes = [
       {
         path: 'airspyhf',
         component: AirspyhfComponent
+      },
+      {
+        path: 'hackrfin',
+        component: HackrfInputComponent
       },
       {
         path: 'rtlsdr',
