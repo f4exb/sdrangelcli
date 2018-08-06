@@ -325,4 +325,11 @@ export class DsdDemodComponent implements OnInit {
     newSettings.demodGain = this.settings.demodGain;
     this.setDeviceSettings(newSettings);
   }
+
+  setAudioDevice() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
+
 }

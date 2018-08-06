@@ -84,18 +84,13 @@
             (change)="setVolume()"
             matTooltip="Audio volume"
             min=0 max=10 step=0.1>
-          ms
         </td>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="hpFilter" (change)="setHPFilter()" matTooltip="Audio high pass filter">
             HP filter
           </mat-checkbox>
         </td>
-        <td>
-          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
-            Mute
-          </mat-checkbox>
-        </td>
+        <td></td>
         <td></td>
       </tr>
       <!-- Row 4: baud rate, cos filtering, PLL-->
@@ -119,12 +114,12 @@
         </td>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="symbolPLL" (change)="setSymbolPLL()" matTooltip="Symbol PLL">
-            PLL
+            Symbol PLL
           </mat-checkbox>
         </td>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="tdmaStereo" (change)="setTDMAStereo()" matTooltip="Set TDMA stereo">
-            Stereo
+            TDMA stereo
           </mat-checkbox>
         </td>
       </tr>
@@ -149,12 +144,31 @@
         </td>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="slot1" (change)="setSlot1()" matTooltip="Set TDMA slot1">
-            Slot1
+            TDMA Slot 1
           </mat-checkbox>
         </td>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="slot2" (change)="setSlot2()" matTooltip="Set TDMA slot2">
-            Slot1
+            TDMA Slot 2
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!-- Row 6: audio options -->
+      <tr>
+        <td colspan="3">
+          Audio:
+          <mat-select style="width:40ch; background-color: white; margin: 1px;"
+              [(value)]="settings.audioDeviceName"
+              (selectionChange)="setAudioDevice()"
+              matTooltip="Audio output device">
+            <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+              {{audioDevice.value}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
+            Mute
           </mat-checkbox>
         </td>
       </tr>
@@ -187,13 +201,13 @@
           0 cross {{dsdDemodReport.zeroCrossingPosition}} S
         </td>
         <td [class.green]="dsdDemodReport.slot1On !== 0">
-          Slot 1
+          TDMA Slot 1
         </td>
         <td [class.green]="dsdDemodReport.slot2On !== 0">
-          Slot 2
+          TDMA Slot 2
         </td>
         <td [class.green]="dsdDemodReport.pllLocked !== 0">
-          PLL
+          Symbol PLL
         </td>
       </tr>
     </table>
