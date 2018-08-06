@@ -41,7 +41,7 @@
             (change)="setAmplitudeBits()"
             min=0 [max]="getMaxAmplitudeBits()"
             matTooltip="Amplitude bits">
-          b {{getAmplitudeDb().toFixed(1)}}dB
+          b&nbsp;&nbsp;{{getAmplitudeDb().toFixed(1)}}dB
         </td>
       </tr>
       <!-- Auto corr, Decim, Fp, Sample size -->
@@ -143,7 +143,7 @@
             min=-99 max=99
             matTooltip="DC bias">
           %
-        </td>    
+        </td>
         <td>
           I bias
           <input type="number" class="bias-input"
@@ -152,7 +152,7 @@
             min=-99 max=99
             matTooltip="I bias">
           %
-        </td>    
+        </td>
         <td>
           Q bias
           <input type="number" class="bias-input"
@@ -161,7 +161,7 @@
             min=-99 max=99
             matTooltip="Q bias">
           %
-        </td>    
+        </td>
         <td>
           Phase
           <input type="number" class="bias-input"
@@ -170,7 +170,7 @@
             min=-99 max=99
             matTooltip="Phase imbalance">
           %
-        </td>    
+        </td>
       </tr>
       <tr style="height: 3px;">
       </tr>
