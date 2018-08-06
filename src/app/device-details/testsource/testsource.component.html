@@ -5,4 +5,61 @@
     </button>&nbsp;
     <span class="device-label">Test Source {{getSampleRate()/1000}} kS/s</span>
   </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Auto corr, Decim, Fp, Sample size -->
+      <tr>
+        <td>
+          Auto
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+              [(value)]="settings.autoCorrOptions"
+              (selectionChange)="setAutoCorrOptions()"
+              matTooltip="Auto correction options">
+            <mat-option *ngFor="let autoCorrOptions of autoCorrOptionsList" [value]="autoCorrOptions.value">
+              {{autoCorrOptions.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Fc pos
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.fcPos"
+              (selectionChange)="setFcPos()"
+              matTooltip="Center frequency position">
+            <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
+              {{fcPos.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Sample
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.sampleSizeIndex"
+              (selectionChange)="setSampleSize()"
+              matTooltip="Sample size">
+            <mat-option *ngFor="let sampleSize of sampleSizes" [value]="sampleSize.value">
+              {{sampleSize.viewValue}}
+            </mat-option>
+          </mat-select>
+          bits
+        </td>
+      </tr>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
 </mat-card>

@@ -16,6 +16,16 @@ interface FcPos {
   viewValue: string
 }
 
+interface AutoCorrOptions {
+  value: number,
+  viewValue: string
+}
+
+interface SampleSize {
+  value: number,
+  viewValue: number
+}
+
 @Component({
   selector: 'app-testsource',
   templateUrl: './testsource.component.html',
@@ -37,6 +47,16 @@ export class TestsourceComponent implements OnInit {
     {value: 0, viewValue: "Inf"},
     {value: 1, viewValue: "Sup"},
     {value: 2, viewValue: "Cen"},
+  ];
+  autoCorrOptionsList: AutoCorrOptions[] = [
+    {value: 0, viewValue: "None"},
+    {value: 1, viewValue: "DC"},
+    {value: 2, viewValue: "DC+IQ"},
+  ]
+  sampleSizes: SampleSize[] = [
+    {value: 0, viewValue: 8},
+    {value: 1, viewValue: 12},
+    {value: 2, viewValue: 16},
   ];
   deviceIndex : number;
   sdrangelURL : string;  
@@ -105,4 +125,29 @@ export class TestsourceComponent implements OnInit {
   getSampleRate() : number {
     return this.settings.sampleRate/(1<<this.settings.log2Decim);
   }
+
+  setAutoCorrOptions() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.autoCorrOptions = this.settings.autoCorrOptions;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLog2Decim() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.log2Decim = this.settings.log2Decim;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFcPos() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.fcPos = this.settings.fcPos;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSampleSize() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.sampleSizeIndex = this.settings.sampleSizeIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
 }
