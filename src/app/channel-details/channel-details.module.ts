@@ -15,6 +15,8 @@ import { SsbDemodComponent } from './ssb-demod/ssb-demod.component';
 import { BfmDemodComponent } from './bfm-demod/bfm-demod.component';
 import { DsdDemodComponent } from './dsd-demod/dsd-demod.component';
 import { WfmDemodComponent } from './wfm-demod/wfm-demod.component';
+import { AmModComponent } from './am-mod/am-mod.component';
+import { CwKeyerComponent } from './cw-keyer/cw-keyer.component';
 
 @NgModule({
   imports: [
@@ -40,7 +42,9 @@ import { WfmDemodComponent } from './wfm-demod/wfm-demod.component';
     SsbDemodComponent,
     BfmDemodComponent,
     DsdDemodComponent,
-    WfmDemodComponent
+    WfmDemodComponent,
+    AmModComponent,
+    CwKeyerComponent
   ]
 })
 export class ChannelDetailsModule { }

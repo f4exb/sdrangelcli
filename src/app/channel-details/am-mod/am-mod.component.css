@@ -1,4 +1,4 @@
-.device-card-header {
+.channel-card-header {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     border: solid;
@@ -8,16 +8,12 @@
     padding: 0.2em 0.2em 0.2em 0.2em;
 }
 
-.device-header-rx {
-    background-color: rgb(170,255,200);
-}
-
-.device-header-tx {
+.channel-header-tx {
     background-color: rgb(255,200,170);
 }
 
-.device-label {
-    margin-top: 5px;
+.channel-header-comp {
+    margin-top: 1px;
 }
 
 .button-card {
@@ -29,29 +25,29 @@
     height: 22px;
 }
 
-.frequency-input {
-    width: 8ch;
-    margin: 1px;
+.button-on {
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    background-color: rgb(0, 255, 0, 1.0);
 }
 
-.xfrequency-input {
-    width: 12ch;
+.button-off {
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    background-color: rgb(0, 0, 0, 0);
 }
 
-.sample-rate-input {
-    width: 10ch;
+.volume-input {
+    width: 6ch;
 }
 
-.log2-input {
-    width: 4ch;
+.squelch-input {
+    width: 6ch;
 }
 
-.record-file-input {
-    width: 29ch;
-    margin: 1px;
-}
-
-.gain-input {
+.rfbw-input {
     width: 6ch;
 }
 

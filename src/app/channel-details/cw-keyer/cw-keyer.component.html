@@ -1,0 +1,36 @@
+<table>
+  <tr>
+    <td>
+      Mode
+      <mat-select class="cw-mode-input"
+          [(value)]="settings.mode"
+          (selectionChange)="setSettings()"
+          matTooltip="CW mode">
+        <mat-option *ngFor="let cwMode of cwModes" [value]="cwMode.value">
+          {{cwMode.viewValue}}
+        </mat-option>
+      </mat-select>
+    </td>
+    <td>
+      <mat-checkbox color="primary" [(ngModel)]="settings.loop" (change)="setSettings()" matTooltip="Looping">
+        Loop
+      </mat-checkbox>
+    </td>
+    <td>
+      WPM
+      <input type="number" class="wpm-input"
+        [(ngModel)]="settings.wpm"
+        (change)="setSettings()"
+        matTooltip="CW speed"
+        min=1 max=26>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      Text
+      <input class="cw-text-input" type="text" matTooltip="CW text"
+        [(ngModel)]="settings.text"
+        (change)="setSettings()">
+    </td>
+  </tr>
+</table>
