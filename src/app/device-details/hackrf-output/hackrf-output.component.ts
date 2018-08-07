@@ -1,19 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { HackRFInputSettings, HACKRF_INPUT_SETTINGS_DEFAULT } from './hackrf-input';
+import { HackRFOutputSettings, HACKRF_OUTPUT_SETTINGS_DEFAULT } from './hackrf-output';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { DeviceSettings } from '../device-details';
 
-interface Log2Decim {
+interface Log2Interp {
   value: number,
   viewValue: number
-}
-
-interface FcPos {
-  value: number,
-  viewValue: string
 }
 
 interface RFBandwidth {
@@ -22,14 +17,14 @@ interface RFBandwidth {
 }
 
 @Component({
-  selector: 'app-hackrf-input',
-  templateUrl: './hackrf-input.component.html',
-  styleUrls: ['./hackrf-input.component.css']
+  selector: 'app-hackrf-output',
+  templateUrl: './hackrf-output.component.html',
+  styleUrls: ['./hackrf-output.component.css']
 })
-export class HackrfInputComponent implements OnInit {
+export class HackrfOutputComponent implements OnInit {
   statusMessage: string;
   statusError: boolean = false;
-  log2Decims: Log2Decim[] = [
+  log2Interps: Log2Interp[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
     {value: 2, viewValue: 4},
@@ -37,11 +32,6 @@ export class HackrfInputComponent implements OnInit {
     {value: 4, viewValue: 16},
     {value: 5, viewValue: 32},
     {value: 6, viewValue: 64},
-  ];
-  fcPositions: FcPos[] = [
-    {value: 0, viewValue: "Inf"},
-    {value: 1, viewValue: "Sup"},
-    {value: 2, viewValue: "Cen"},
   ];
   rfBandwidths: RFBandwidth[] = [
     {value: 1750000, viewValue: 1.75},
@@ -63,10 +53,8 @@ export class HackrfInputComponent implements OnInit {
   ]
   deviceIndex : number;
   sdrangelURL : string;
-  settings: HackRFInputSettings = HACKRF_INPUT_SETTINGS_DEFAULT;
+  settings: HackRFOutputSettings = HACKRF_OUTPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
-  dcBlock: boolean;
-  iqCorrection: boolean;
   loPPM: number;
   biasT: boolean;
   rfAmp: boolean;
@@ -75,8 +63,7 @@ export class HackrfInputComponent implements OnInit {
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService)
-  {
-  }
+  { }
 
   ngOnInit() {
     this.deviceIndex = +this.route.snapshot.parent.params['dix']
@@ -89,19 +76,17 @@ export class HackrfInputComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType == "HackRF") && (deviceSettings.tx === 0)) {
+        if ((deviceSettings.deviceHwType == "HackRF") && (deviceSettings.tx !== 0)) {
           this.statusMessage = "OK";
           this.statusError = false;
-          this.settings = deviceSettings.hackRFInputSettings;
+          this.settings = deviceSettings.hackRFOutputSettings;
           this.centerFreqKhz = this.settings.centerFrequency/1000;
-          this.dcBlock = this.settings.dcBlock !== 0;
-          this.iqCorrection = this.settings.iqCorrection !== 0;
           this.loPPM = this.settings.LOppmTenths / 10;
           this.biasT = this.settings.biasT !== 0;
           this.rfAmp = this.settings.lnaExt !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a HackRF input device";
+          this.statusMessage = "Not a HackRF output device";
           this.statusError = true;
         }
       }
@@ -111,16 +96,16 @@ export class HackrfInputComponent implements OnInit {
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2Decim)
+      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2Interp)
     }
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(hackrfSettings : HackRFInputSettings) {
+  private setDeviceSettings(hackrfSettings : HackRFOutputSettings) {
     const settings : DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = "HackRF";
-    settings.tx = 0,
-    settings.hackRFInputSettings = hackrfSettings;
+    settings.tx = 1,
+    settings.hackRFOutputSettings = hackrfSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
         console.log("Set settings OK", res);
@@ -136,78 +121,55 @@ export class HackrfInputComponent implements OnInit {
   }
 
   getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2Decim);
+    return this.settings.devSampleRate/(1<<this.settings.log2Interp);
   }
 
   setLoPPM() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
     newSettings.LOppmTenths = this.loPPM * 10;
     this.setDeviceSettings(newSettings);
   }
 
-  setDCBlock() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
-    newSettings.dcBlock = this.dcBlock ? 1 : 0;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setIQCorrection() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
-    newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
-    this.setDeviceSettings(newSettings);
-  }
-
   setCenterFrequency() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
     newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
   setRFBandwidth() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
     newSettings.bandwidth = this.settings.bandwidth;
     this.setDeviceSettings(newSettings);
   }
 
   setBiasT() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
     newSettings.biasT = this.biasT ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setSampleRate() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
     newSettings.devSampleRate = this.settings.devSampleRate;
     this.setDeviceSettings(newSettings);
   }
 
-  setLog2Decim() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
-    newSettings.log2Decim = this.settings.log2Decim;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setFcPos() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
-    newSettings.fcPos = this.settings.fcPos;
+  setLog2Interp() {
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
+    newSettings.log2Interp = this.settings.log2Interp;
     this.setDeviceSettings(newSettings);
   }
 
   setRFAmp() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
     newSettings.lnaExt = this.rfAmp ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
-  setLNAGain() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
-    newSettings.lnaGain = this.settings.lnaGain;
-    this.setDeviceSettings(newSettings);
-  }
-
   setVGAGain() {
-    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
     newSettings.vgaGain = this.settings.vgaGain;
     this.setDeviceSettings(newSettings);
   }
+
 }

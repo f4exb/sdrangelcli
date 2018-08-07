@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { RtlsdrComponent } from './rtlsdr/rtlsdr.component';
 import { TestsourceComponent } from './testsource/testsource.component';
 import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
+import { HackrfOutputComponent } from './hackrf-output/hackrf-output.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
     DeviceNotSupportedComponent,
     RtlsdrComponent,
     TestsourceComponent,
-    HackrfInputComponent
+    HackrfInputComponent,
+    HackrfOutputComponent
   ]
 })
 export class DeviceDetailsModule { }

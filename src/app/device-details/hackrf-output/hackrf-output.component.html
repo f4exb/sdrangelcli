@@ -1,0 +1,96 @@
+<mat-card class="deviceset-card">
+  <mat-card-header class="device-card-header device-header-tx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="device-label">HackRF output {{getSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!--- LO correction, Bias-T, RF amp -->
+      <tr>
+        <td>
+          LO
+          <input type="number" class="loppm-input"
+            [(ngModel)]="loPPM"
+            (change)="setLoPPM()"
+            matTooltip="LO correction"
+            min=-30 max=30 step=0.1>
+          ppm
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="biasT" (change)="setBiasT()" matTooltip="Bias tee">
+            Bias tee
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="rfAmp" (change)="setRFAmp()" matTooltip="RF amplifier (extra LNA)">
+            RF amp
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- frequency, RFBW, VGA -->
+      <tr>
+        <td>
+          Freq
+          <input type="number" class="frequency-input"
+            [(ngModel)]="centerFreqKhz"
+            (change)="setCenterFrequency()"
+            matTooltip="Center frequency">
+          kHz
+        </td>
+        <td>
+          RFBW
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+              [(value)]="settings.bandwidth"
+              (selectionChange)="setRFBandwidth()"
+              matTooltip="RF Bandwidth">
+            <mat-option *ngFor="let rfBandwidth of rfBandwidths" [value]="rfBandwidth.value">
+              {{rfBandwidth.viewValue}}
+            </mat-option>
+          </mat-select>
+          MHz
+        </td>
+        <td>
+          VGA
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.vgaGain"
+            (change)="setVGAGain()"
+            matTooltip="VGA gain"
+            min=0 max=47>
+          dB
+        </td>
+      </tr>
+      <!--- Sample rate, Interpolation -->
+      <tr>
+        <td>
+          SR
+          <input type="number" class="sample-rate-input"
+            [(ngModel)]="settings.devSampleRate"
+            (change)="setSampleRate()"
+            matTooltip="Sample rate"
+            min=1000000 max=20000000>
+          S/s
+        </td>
+        <td>
+          Interp
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Interp"
+              (selectionChange)="setLog2Interp()"
+              matTooltip="Interpolation factor">
+            <mat-option *ngFor="let log2Interp of log2Interps" [value]="log2Interp.value">
+              {{log2Interp.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+        </td>
+      </tr>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

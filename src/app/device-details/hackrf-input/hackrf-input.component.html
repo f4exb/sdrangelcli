@@ -117,6 +117,11 @@
           dB
         </td>
       </tr>
+      <tr style="height: 3px;">
+      </tr>
     </table>
   </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
 </mat-card>

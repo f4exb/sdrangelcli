@@ -6,6 +6,7 @@ import { DeviceNotSupportedComponent } from './device-not-supported/device-not-s
 import { RtlsdrComponent } from './rtlsdr/rtlsdr.component';
 import { TestsourceComponent } from './testsource/testsource.component';
 import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
+import { HackrfOutputComponent } from './hackrf-output/hackrf-output.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,10 @@ export const routes: Routes = [
       {
         path: 'hackrfin',
         component: HackrfInputComponent
+      },
+      {
+        path: 'hackrfout',
+        component: HackrfOutputComponent
       },
       {
         path: 'rtlsdr',

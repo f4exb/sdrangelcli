@@ -14,7 +14,7 @@ export interface HackRFInputSettings {
     vgaGain: number
 }
 
-export const HACKRF_INPUT_SETTINGS = {
+export const HACKRF_INPUT_SETTINGS_DEFAULT = {
     LOppmTenths: 0,
     bandwidth: 1750000,
     biasT: 0,
