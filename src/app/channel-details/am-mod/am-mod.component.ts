@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AMModSettings, AMMOD_SETTINGS_DEFAULT } from './am-mod';
-import { Subscription } from 'rxjs';
+import { AMModSettings, AMMOD_SETTINGS_DEFAULT, AMModReport, AMMOD_REPORT_DEFAULT } from './am-mod';
+import { Subscription, interval } from 'rxjs';
 import { CWKeyerSettings } from '../cw-keyer/cw-keyer';
 import { ChannelSettings } from '../channel-details';
 import { ActivatedRoute } from '@angular/router';
@@ -51,6 +51,8 @@ export class AmModComponent implements OnInit {
   audioDevices: AudioDeviceInfo[] = [];
   monitor: boolean;
   channelMute: boolean;
+  toneFrequencyKhz: number;
+  report: AMModReport = AMMOD_REPORT_DEFAULT;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -96,6 +98,8 @@ export class AmModComponent implements OnInit {
           this.rgbTitleStr = this.getRGBTitleStr();
           this.settings.volumeFactor = +this.settings.volumeFactor.toFixed(1);
           this.channelMute = this.settings.channelMute !== 0;
+          this.modulationPercent = +this.settings.modFactor.toFixed(2)*100;
+          this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
         } else {
           this.statusMessage = "Not an AMMod channel";
           this.statusError = true;
@@ -173,6 +177,81 @@ export class AmModComponent implements OnInit {
   onCWSettingsUpdate(cwSettings: CWKeyerSettings) {
     const newSettings: AMModSettings = <AMModSettings>{};
     newSettings.cwKeyer = cwSettings;
+    this.setDeviceSettings(newSettings);
+  }
+
+  enableReporting(enable: boolean) {
+    if (enable) {
+      this.channelReportSubscription = interval(1000).subscribe(
+        _ => {
+          this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
+            channelReport => {
+              if (channelReport.channelType === "AMMod") {
+                this.report = channelReport.AMModReport;
+              }
+            }
+          )
+        }
+      )
+    } else {
+      this.channelReportSubscription.unsubscribe();
+      this.channelReportSubscription = null;
+    }
+  }
+
+  toggleMonitor() {
+    this.monitor = !this.monitor;
+    this.enableReporting(this.monitor);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.channelCenterFrequencyKhz = frequency;
+    this.setCenterFrequency();
+  }
+
+  setCenterFrequency() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.inputFrequencyOffset = this.channelCenterFrequencyKhz * 1000 - this.deviceCenterFrequency;
+    this.setDeviceSettings(newSettings);
+  }
+
+  getDeltaFrequency() : number {
+    return this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  }
+
+  setRFBandwidth() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.rfBandwidth = this.rfBandwidthKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setModulationPercent(){
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.modFactor = this.modulationPercent / 100;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setVolume(){
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.volumeFactor = this.settings.volumeFactor;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setModulationSource() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.modAFInput = this.settings.modAFInput;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setToneFrequency() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.toneFrequency = this.toneFrequencyKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setChannelMute() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.channelMute = this.channelMute ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 }

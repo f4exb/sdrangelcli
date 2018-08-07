@@ -51,6 +51,11 @@
     width: 6ch;
 }
 
+.source-input {
+    width: 10ch;
+    background-color: white;
+}
+
 td {
     background-color: rgb(230, 230, 210);
 }

@@ -17,16 +17,44 @@ export class CwKeyerComponent implements OnInit {
   cwModes: CWMode[] = [
     { value: 0, viewValue: "None" },
     { value: 1, viewValue: "Text" },
-    { value: 1, viewValue: "Dots" },
-    { value: 1, viewValue: "Dashes" },
+    { value: 2, viewValue: "Dots" },
+    { value: 3, viewValue: "Dashes" },
   ];
+  loop: boolean;
 
-  constructor() { }
+  constructor()
+  {
+    this.loop = this.settings.loop !== 0;
+  }
 
   ngOnInit() {
   }
 
   setSettings() {
     this.settingsChanged.emit(this.settings);
+  }
+
+  setMode() {
+    let newSettings: CWKeyerSettings = <CWKeyerSettings>{}
+    newSettings.mode = this.settings.mode;
+    this.settingsChanged.emit(newSettings);
+  }
+
+  setLoop() {
+    let newSettings: CWKeyerSettings = <CWKeyerSettings>{}
+    newSettings.loop = this.loop ? 1 : 0;
+    this.settingsChanged.emit(newSettings);
+  }
+
+  setWPM() {
+    let newSettings: CWKeyerSettings = <CWKeyerSettings>{}
+    newSettings.wpm = this.settings.wpm;
+    this.settingsChanged.emit(newSettings);
+  }
+
+  setText() {
+    let newSettings: CWKeyerSettings = <CWKeyerSettings>{}
+    newSettings.text = this.settings.text;
+    this.settingsChanged.emit(newSettings);
   }
 }

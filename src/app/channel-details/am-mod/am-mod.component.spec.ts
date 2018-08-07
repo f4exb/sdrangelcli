@@ -9,6 +9,7 @@ import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, Mat
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonComponentsModule } from '../../common-components/common-components.module';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { CwKeyerComponent } from '../cw-keyer/cw-keyer.component';
 
 describe('AmModComponent', () => {
   let component: AmModComponent;
@@ -19,7 +20,8 @@ describe('AmModComponent', () => {
       declarations: [
         AmModComponent,
         ChannelHeaderComponent,
-        ChannelMonitorComponent
+        ChannelMonitorComponent,
+        CwKeyerComponent
       ],
       imports: [
         RouterModule,

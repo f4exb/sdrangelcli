@@ -1,10 +1,15 @@
 <table>
   <tr>
+    <td colspan="3">
+      CW settings
+    </td>
+  </tr>
+  <tr>
     <td>
       Mode
       <mat-select class="cw-mode-input"
           [(value)]="settings.mode"
-          (selectionChange)="setSettings()"
+          (selectionChange)="setMode()"
           matTooltip="CW mode">
         <mat-option *ngFor="let cwMode of cwModes" [value]="cwMode.value">
           {{cwMode.viewValue}}
@@ -12,7 +17,7 @@
       </mat-select>
     </td>
     <td>
-      <mat-checkbox color="primary" [(ngModel)]="settings.loop" (change)="setSettings()" matTooltip="Looping">
+      <mat-checkbox color="primary" [(ngModel)]="loop" (change)="setLoop()" matTooltip="Looping">
         Loop
       </mat-checkbox>
     </td>
