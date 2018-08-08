@@ -17,7 +17,7 @@
       </mat-select>
     </td>
     <td>
-      <mat-checkbox color="primary" [(ngModel)]="loop" (change)="setLoop()" matTooltip="Looping">
+      <mat-checkbox color="primary" [checked]="getLoop()" (change)="setLoop($event)" matTooltip="Looping">
         Loop
       </mat-checkbox>
     </td>

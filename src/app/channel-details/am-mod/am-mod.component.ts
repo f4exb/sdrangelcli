@@ -219,6 +219,28 @@ export class AmModComponent implements OnInit {
     return this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
   }
 
+  onTitleColorChanged(colorStr: string) {
+    this.rgbTitleStr = colorStr;
+    this.setTitleColor();
+  }
+
+  setTitleColor() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
+    this.setDeviceSettings(newSettings);
+  }
+
+  onTitleChanged(title: string) {
+    this.settings.title = title;
+    this.setTitle();
+  }
+
+  setTitle() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.title = this.settings.title;
+    this.setDeviceSettings(newSettings);
+  }
+
   setRFBandwidth() {
     const newSettings: AMModSettings = <AMModSettings>{};
     newSettings.rfBandwidth = this.rfBandwidthKhz * 1000;

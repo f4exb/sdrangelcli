@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CWKeyerSettings, CWKEYER_SETTINGS_DEFAULT } from './cw-keyer';
+import { MatCheckboxChange } from '@angular/material';
 
 interface CWMode {
   value: number,
@@ -28,6 +29,7 @@ export class CwKeyerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loop = this.settings.loop !== 0;
   }
 
   setSettings() {
@@ -40,9 +42,13 @@ export class CwKeyerComponent implements OnInit {
     this.settingsChanged.emit(newSettings);
   }
 
-  setLoop() {
+  getLoop() : boolean {
+    return this.settings.loop !== 0;
+  }
+
+  setLoop(change: MatCheckboxChange) {
     let newSettings: CWKeyerSettings = <CWKeyerSettings>{}
-    newSettings.loop = this.loop ? 1 : 0;
+    newSettings.loop = change.checked ? 1 : 0;
     this.settingsChanged.emit(newSettings);
   }
 
