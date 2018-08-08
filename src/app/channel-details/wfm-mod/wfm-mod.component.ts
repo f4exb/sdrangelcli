@@ -109,7 +109,7 @@ export class WfmModComponent implements OnInit {
         if (channelSettings.channelType == "WFMMod") {
           this.statusMessage = "OK";
           this.statusError = false;
-          this.settings = channelSettings.NFMModSettings;
+          this.settings = channelSettings.WFMModSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
           this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
           this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
@@ -204,7 +204,7 @@ export class WfmModComponent implements OnInit {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
               if (channelReport.channelType === "WFMMod") {
-                this.report = channelReport.NFMModReport;
+                this.report = channelReport.WFMModReport;
               }
             }
           )
