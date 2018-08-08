@@ -108,14 +108,14 @@
           <td>
               Time
               <mat-select style="width:8ch; background-color: white; margin: 1px;"
-                [(value)]="settings.agcTimeLog2"
-                (selectionChange)="setAGCTime()"
-                matTooltip="AGC time constant">
-              <mat-option *ngFor="let agcTimeLog2 of agcTimeLog2s" [value]="agcTimeLog2.value">
-                {{agcTimeLog2.viewValue}}
-              </mat-option>
+                  [(value)]="settings.agcTimeLog2"
+                  (selectionChange)="setAGCTime()"
+                  matTooltip="AGC time constant">
+                <mat-option *ngFor="let agcTimeLog2 of agcTimeLog2s" [value]="agcTimeLog2.value">
+                  {{agcTimeLog2.viewValue}}
+                </mat-option>
+              </mat-select>
               ms
-            </mat-select>
           </td>
           <td>
             Gate
