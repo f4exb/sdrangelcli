@@ -9,7 +9,7 @@
         (click)="toggleMonitor()">
       <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
     </button>&nbsp;
-    <app-channel-header class="channel-header-comp" channelType="AMMod"
+    <app-channel-header class="channel-header-comp" channelType="NFMMod"
         [basebandRate]="deviceBasebandRate"
         [title]="settings.title"
         [color]="rgbTitleStr"
@@ -43,25 +43,28 @@
           &#x394;f {{getDeltaFrequency()}} kHz
         </td>
       </tr>
-      <!-- Row 3: RF bandwidth, Mod%, volume -->
+      <!-- Row 3: RF bandwidth, FM deviation, volume -->
       <tr>
         <td>
           RFBW
-          <input type="number" class="rfbw-input"
-              [(ngModel)]="rfBandwidthKhz"
-              (change)="setRFBandwidth()"
-              matTooltip="RF Bandwidth"
-              min=1 max=40 step=0.1>
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+            [(value)]="settings.rfBandwidth"
+            (selectionChange)="setRFBandwidth()"
+            matTooltip="Channel bandwidth">
+            <mat-option *ngFor="let rfBandwidth of rfBandwidths" [value]="rfBandwidth.value">
+              {{rfBandwidth.viewValue}}
+            </mat-option>
+          </mat-select>
           kHz
         </td>
         <td>
-          Mod
+          FMDev
           <input type="number" class="rfbw-input"
-              [(ngModel)]="modulationPercent"
-              (change)="setModulationPercent()"
-              matTooltip="Modulation percentage"
-              min=0 max=100>
-          %
+              [(ngModel)]="fmDeviationKhz"
+              (change)="setFMDeviation()"
+              matTooltip="FM deviation"
+              min=0 max=25 step=0.1>
+          kHz
         </td>
         <td>
           Vol
@@ -100,6 +103,27 @@
             Mute
           </mat-checkbox>
         </td>
+      </tr>
+      <!-- row 5: CTCSS active, CTCSS index -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="ctcss" (change)="setCTCSS()" matTooltip="CTCSS on/off">
+            CTCSS
+          </mat-checkbox>
+        </td>
+        <td>
+          CTCSS
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.ctcssIndex"
+              (selectionChange)="setCTCSSIndex()"
+              matTooltip="CTCSS value">
+            <mat-option *ngFor="let ctcssValue of ctcssValues" [value]="ctcssValue.value">
+              {{ctcssValue.viewValue}}
+            </mat-option>
+          </mat-select>
+          Hz
+        </td>
+        <td></td>
       </tr>
       <!-- Row 6: empty footer -->
       <tr style="height: 3px;">

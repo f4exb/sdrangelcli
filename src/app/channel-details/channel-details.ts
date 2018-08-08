@@ -5,6 +5,7 @@ import { BFMDemodSettings, BFMDemodReport } from "./bfm-demod/bfm-demod";
 import { DSDDemodSettings, DSDDemodReport } from "./dsd-demod/dsd-demod";
 import { WFMDemodReport, WFMDemodSettings } from "./wfm-demod/wfm-demod";
 import { AMModSettings, AMModReport } from "./am-mod/am-mod";
+import { NFMModReport, NFMModSettings } from "./nfm-mod/nfm-mod";
 
 export interface ChannelSettings {
     channelType: string,
@@ -15,7 +16,8 @@ export interface ChannelSettings {
     SSBDemodSettings?: SSBDemodSettings,
     DSDDemodSettings?: DSDDemodSettings,
     WFMDemodSettings?: WFMDemodSettings,
-    AMModSettings?: AMModSettings
+    AMModSettings?: AMModSettings,
+    NFMModSettings?: NFMModSettings
 }
 
 export interface ChannelReport {
@@ -26,6 +28,7 @@ export interface ChannelReport {
     DSDDemodReport?: DSDDemodReport,
     WFMDemodReport?: WFMDemodReport,
     AMModReport?: AMModReport,
+    NFMModReport?: NFMModReport,
     channelType: string,
     tx: number
 }
