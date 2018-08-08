@@ -59,6 +59,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['ammod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "NFMMod") {
           this.router.navigate(['nfmmod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType == "SSBMod") {
+          this.router.navigate(['ssbmod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "WFMMod") {
           this.router.navigate(['wfmmod'], { relativeTo: this.route});
         } else {

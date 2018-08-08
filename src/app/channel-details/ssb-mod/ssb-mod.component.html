@@ -1,0 +1,220 @@
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-tx">
+    <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <app-channel-header class="channel-header-comp" channelType="SSBMod"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
+    </app-channel-header>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Row 1: channel monitor (optional) -->
+      <tr *ngIf="monitor">
+        <td colspan="4">
+          <app-channel-monitor [value]=this.report.channelPowerDB
+            [min]="-120"
+            [max]="0"
+            [squelch]="this.report.squelch !== 0">
+          </app-channel-monitor>
+        </td>
+      </tr>
+      <!-- Row 2: Frequency dial -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+      </tr>
+      <!-- Row 3: volume, span, rf bandwidth, low cutoff -->
+      <tr>
+        <td>
+            Vol
+            <input type="number" class="volume-input"
+            [(ngModel)]="settings.volumeFactor"
+            (change)="setVolume()"
+            matTooltip="Audio volume"
+            min=0 max=10
+            step="0.1">
+        </td>
+        <td>
+          &#xf7;
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.spanLog2"
+              (selectionChange)="setSpan()"
+              matTooltip="Channel decimation">
+            <mat-option *ngFor="let spanLog2 of spanLog2s" [value]="spanLog2.value">
+              {{spanLog2.viewValue}}
+            </mat-option>
+          </mat-select>
+          <span matTooltip="Channel bandwidth">
+            {{getChannelBaseband()}} kHz
+          </span>
+        </td>
+        <td>
+          Hi
+          <input type="number" class="volume-input"
+            [(ngModel)]="hiCutKhz"
+            (change)="setHiCut()"
+            matTooltip="Bandpass far end"
+            min=minHiCutKhz max=maxHiCutKhz
+            step="0.1">
+          kHz
+        </td>
+        <td>
+          Low
+          <input type="number" class="volume-input"
+            [(ngModel)]="loCutKhz"
+            (change)="setLoCut()"
+            matTooltip="Bandpass close end"
+            min=minLoCutKhz max=maxLoCutKhz
+            step="0.1">
+          kHz
+        </td>
+      </tr>
+      <!-- Row 5: USB, dsb, binaural, flip channels  -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="usb" (change)="setUSB()" matTooltip="USB/LSB">
+            USB
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dsb" (change)="setDSB()" matTooltip="DSB on/off">
+            DSB
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="binaural" (change)="setBinaural()" matTooltip="Audio binaural on/off">
+            Binaural
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="lrFlip" (change)="setFlipAudioChannels()" matTooltip="Audio flip L/R">
+            LR flip
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!-- Row 5: Mute, AGC, AGC Order, AttacK  -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Channel mute">
+            Mute
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="agc" (change)="setAGC()" matTooltip="AGC on/off">
+            AGC
+          </mat-checkbox>
+        </td>
+        <td>
+          Order
+          <input type="number" class="volume-input"
+            [(ngModel)]="settings.agcOrder"
+            (change)="setAGCOrder()"
+            matTooltip="AGC volume order in fraction of maximum amplitude"
+            min=0 max=1
+            step="0.01">
+        </td>
+        <td>
+          Att
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+              [(value)]="agcTimeMs"
+              (selectionChange)="setAGCTime()"
+              matTooltip="Compressor time constant (attack) in ms">
+            <mat-option *ngFor="let agcTimeMs of agcTimeMss" [value]="agcTimeMs.value">
+              {{agcTimeMs.viewValue}}
+            </mat-option>
+          </mat-select>
+          ms
+        </td>
+      </tr>
+      <!-- Row 5: Squalch, Threhold, Gate, Delay, xxx  -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="agcThreshold" (change)="setSquelch()" matTooltip="Squelch on/off">
+            Squelch
+          </mat-checkbox>
+        </td>
+        <td>
+          Thr
+          <input type="number" class="volume-input"
+            [(ngModel)]="settings.agcThreshold"
+            (change)="setSquelchThreshold()"
+            matTooltip="Audio squelch threshold"
+            min=-100 max=0>
+          dB
+        </td>
+        <td>
+          Gate
+          <input type="number" class="volume-input"
+            [(ngModel)]="squelchGateMs"
+            (change)="setSquelchGate()"
+            matTooltip="Audio squelch gate"
+            min=0 max=99>
+          ms
+        </td>
+        <td>
+          Delay
+          <input type="number" class="volume-input"
+            [(ngModel)]="squelchDelayMs"
+            (change)="setSquelchDelay()"
+            matTooltip="Audio squelch delay (release)"
+            min=0 max=990 step=10>
+          ms
+        </td>
+      </tr>
+      <!-- -->
+      <tr>
+        <td colspan="2">
+          Source
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+              [(value)]="settings.modAFInput"
+              (selectionChange)="setModulationSource()"
+              matTooltip="Input source">
+            <mat-option *ngFor="let afInput of afInputs" [value]="afInput.value">
+              {{afInput.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Tone
+          <input type="number" class="rfbw-input"
+              [(ngModel)]="toneFrequencyKhz"
+              (change)="setToneFrequency()"
+              matTooltip="Modulation tone frequency"
+              min=0.1 max=2.5 step=0.01>
+          kHz
+        </td>
+        <td></td>
+      </tr>
+      <!-- Row 6: empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+    <app-cw-keyer [settings]="settings.cwKeyer" (settingsChanged)="onCWSettingsUpdate($event)">
+    </app-cw-keyer>
+    <!-- empty footer -->
+    <table>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
