@@ -1,0 +1,136 @@
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-tx">
+    <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <app-channel-header class="channel-header-comp" channelType="WFMMod"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
+    </app-channel-header>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Row 1: channel monitor (optional) -->
+      <tr *ngIf="monitor">
+        <td colspan="3">
+          <app-channel-monitor [value]=this.report.channelPowerDB
+            [min]="-120"
+            [max]="0"
+            [squelch]="!this.channelMute">
+          </app-channel-monitor>
+        </td>
+      </tr>
+      <!-- Row 2: Frequency dial -->
+      <tr>
+        <td colspan="2">
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td style="width:15ch">
+          &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+      </tr>
+      <!-- Row 3: RF bandwidth, FM deviation, volume -->
+      <tr>
+        <td>
+          RFBW
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+            [(value)]="settings.rfBandwidth"
+            (selectionChange)="setRFBandwidth()"
+            matTooltip="Channel bandwidth">
+            <mat-option *ngFor="let rfBandwidth of rfBandwidths" [value]="rfBandwidth.value">
+              {{rfBandwidth.viewValue}}
+            </mat-option>
+          </mat-select>
+          kHz
+        </td>
+        <td>
+          FMDev
+          <input type="number" class="rfbw-input"
+              [(ngModel)]="fmDeviationKhz"
+              (change)="setFMDeviation()"
+              matTooltip="FM deviation"
+              min=0 max=100>
+          kHz
+        </td>
+        <td>
+          Vol
+          <input type="number" class="volume-input"
+              [(ngModel)]="settings.volumeFactor"
+              (change)="setVolume()"
+              matTooltip="Audio input volume"
+              min=0 max=2
+              step="0.1">
+        </td>
+      </tr>
+      <!-- row 4: AF input, Tone frequency, channel mute-->
+      <tr>
+        <td>
+          Source
+          <mat-select class="source-input"
+              [(value)]="settings.modAFInput"
+              (selectionChange)="setModulationSource()"
+              matTooltip="Input source">
+            <mat-option *ngFor="let afInput of afInputs" [value]="afInput.value">
+              {{afInput.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Tone
+          <input type="number" class="rfbw-input"
+              [(ngModel)]="toneFrequencyKhz"
+              (change)="setToneFrequency()"
+              matTooltip="Modulation tone frequency"
+              min=0.1 max=2.5 step=0.01>
+          kHz
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="channelMute" (change)="setChannelMute()" matTooltip="Channel mute">
+            Mute
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!-- row 5: Audio bandwidth -->
+      <tr>
+        <td>
+          AFBW
+          <input type="number" class="rfbw-input"
+              [(ngModel)]="afBandwidthKhz"
+              (change)="setAFBandwidth()"
+              matTooltip="AF Bandwidth"
+              min=1 max=20>
+          kHz
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- Row 6: empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+    <app-cw-keyer [settings]="settings.cwKeyer" (settingsChanged)="onCWSettingsUpdate($event)">
+    </app-cw-keyer>
+    <!-- empty footer -->
+    <table>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

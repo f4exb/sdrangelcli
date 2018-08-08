@@ -10,6 +10,7 @@ import { DsdDemodComponent } from './dsd-demod/dsd-demod.component';
 import { WfmDemodComponent } from './wfm-demod/wfm-demod.component';
 import { AmModComponent } from './am-mod/am-mod.component';
 import { NfmModComponent } from './nfm-mod/nfm-mod.component';
+import { WfmModComponent } from './wfm-mod/wfm-mod.component';
 
 export const routes: Routes = [
   {
@@ -47,6 +48,10 @@ export const routes: Routes = [
       {
         path: 'nfmmod',
         component: NfmModComponent
+      },
+      {
+        path: 'wfmmod',
+        component: WfmModComponent
       },
       {
         path: 'notsupported',
