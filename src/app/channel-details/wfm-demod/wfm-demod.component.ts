@@ -70,8 +70,8 @@ export class WfmDemodComponent implements OnInit {
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService,
-    private audioStoreService: AudioStoreService) 
-  { 
+    private audioStoreService: AudioStoreService)
+  {
     this.deviceStoreSubscription = null;
     this.channelReportSubscription = null;
     this.monitor = false;
@@ -118,7 +118,7 @@ export class WfmDemodComponent implements OnInit {
       }
     )
   }
-  
+
   private getAudioDevicesInfo() {
     if (!this.audioStoreService.isInitialized()) {
       this.audioStoreService.initialize();
@@ -135,7 +135,7 @@ export class WfmDemodComponent implements OnInit {
       }
     )
   }
-  
+
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
@@ -178,7 +178,7 @@ export class WfmDemodComponent implements OnInit {
         this.statusError = true;
       }
     )
-  }  
+  }
 
   enableReporting(enable: boolean) {
     if (enable) {
@@ -238,7 +238,8 @@ export class WfmDemodComponent implements OnInit {
   }
 
   getDeltaFrequency() : number {
-    return this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+    return +frequency.toFixed(3);
   }
 
   setAudioDevice() {

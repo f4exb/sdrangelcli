@@ -185,7 +185,8 @@ export class AmDemodComponent implements OnInit {
   }
 
   getDeltaFrequency() : number {
-    return this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+    return +frequency.toFixed(3)
   }
 
   getRGBTitleStr() : string {

@@ -236,7 +236,8 @@ export class NfmDemodComponent implements OnInit {
   }
 
   getDeltaFrequency() : number {
-    return this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+    return +frequency.toFixed(3);
   }
 
   onTitleColorChanged(colorStr: string) {
