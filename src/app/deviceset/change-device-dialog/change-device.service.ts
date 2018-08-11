@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AvailableDevices, NewDevice } from './devices';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,6 @@ export class ChangeDeviceService {
         'Content-Type':  'application/json'
       })
     };
-    return this.http.put(newurl, JSON.stringify(newDevice), httpOptions);
-  }  
+    return this.http.put(newurl, JSON.stringify(newDevice), httpOptions).pipe(delay(3000));
+  }
 }
