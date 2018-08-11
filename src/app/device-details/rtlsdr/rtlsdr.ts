@@ -33,3 +33,11 @@ export const RTLSDR_SETTINGS_DEFAULT = {
     transverterMode: 0,
     fileRecordName: 'none'
 }
+
+export interface RTLSDRGain {
+    gainCB: number
+}
+
+export interface RTLSDRReport {
+    gains: RTLSDRGain[]
+}

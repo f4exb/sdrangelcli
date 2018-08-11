@@ -42,12 +42,15 @@
           </td>
           <td>
             Gain
-            <input type="number" class="gain-input"
-              [(ngModel)]="settings.gain"
-              (change)="setGain()"
-              matTooltip="Gain"
-              step=0.1
-            >
+            <mat-select style="width:7ch; background-color: white; margin: 1px;"
+                [(value)]="settings.gain"
+                (selectionChange)="setGain()"
+                matTooltip="Gain">
+              <mat-option *ngFor="let gain of gains" [value]="gain.value">
+                {{gain.viewValue}}
+              </mat-option>
+            </mat-select>
+            dB
           </td>
           <td>
             <mat-checkbox color="primary" [(ngModel)]="agc" (change)="setAGC()" matTooltip="Automatic Gain Control">
@@ -62,17 +65,15 @@
             <input type="number" class="sample-rate-input"
               [(ngModel)]="settings.devSampleRate"
               (change)="setSampleRate()"
-              matTooltip="Sample rate"
-            >
+              matTooltip="Sample rate">
             S/s
           </td>
           <td>
             Decim
             <mat-select style="width:6ch; background-color: white; margin: 1px;"
-              [(value)]="settings.log2Decim"
-              (selectionChange)="setLog2Decim()"
-              matTooltip="Decimation factor"
-            >
+                [(value)]="settings.log2Decim"
+                (selectionChange)="setLog2Decim()"
+                matTooltip="Decimation factor">
               <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
                 {{log2Decim.viewValue}}
               </mat-option>

@@ -13,3 +13,9 @@ export interface DeviceSettings {
     rtlSdrSettings?: RTLSDRSettings,
     testSourceSettings?: TestSourceSettings
 }
+
+export interface DeviceReport {
+    deviceHwType: string,
+    tx: number,
+    rtlSdrReport?: any
+}

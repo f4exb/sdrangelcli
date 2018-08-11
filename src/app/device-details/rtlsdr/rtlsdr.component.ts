@@ -17,6 +17,11 @@ export interface FcPos {
   viewValue: string
 }
 
+export interface Gain {
+  value: number,
+  viewValue: number
+}
+
 @Component({
   selector: 'app-rtlsdr',
   templateUrl: './rtlsdr.component.html',
@@ -38,6 +43,37 @@ export class RtlsdrComponent implements OnInit {
     {value: 0, viewValue: "Inf"},
     {value: 1, viewValue: "Sup"},
     {value: 2, viewValue: "Cen"},
+  ];
+  gains: Gain[] = [
+    // {value: 0, viewValue: 0},
+    // {value: 9, viewValue: 0.9},
+    // {value: 14, viewValue: 1.4},
+    // {value: 27, viewValue: 2.7},
+    // {value: 37, viewValue: 3.7},
+    // {value: 77, viewValue: 7.7},
+    // {value: 87, viewValue: 8.7},
+    // {value: 125, viewValue: 12.5},
+    // {value: 144, viewValue: 14.4},
+    // {value: 157, viewValue: 15.7},
+    // {value: 166, viewValue: 16.6},
+    // {value: 197, viewValue: 19.7},
+    // {value: 207, viewValue: 20.7},
+    // { value: 229, viewValue: 22.9},
+    // { value: 254, viewValue: 25.4},
+    // { value: 280, viewValue: 28},
+    // { value: 297, viewValue: 29.7},
+    // { value: 328, viewValue: 32.8},
+    // { value: 338, viewValue: 33.8},
+    // { value: 364, viewValue: 36.4},
+    // { value: 372, viewValue: 37.2},
+    // { value: 386, viewValue: 38.6},
+    // { value: 402, viewValue: 40.2},
+    // { value: 421, viewValue: 42.1},
+    // { value: 434, viewValue: 43.4},
+    // { value: 439, viewValue: 43.9},
+    // { value: 445, viewValue: 44.5},
+    // { value: 480, viewValue: 48},
+    // { value: 496, viewValue: 49.6}
   ];
   deviceIndex : number;
   sdrangelURL : string;
@@ -63,13 +99,14 @@ export class RtlsdrComponent implements OnInit {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
+      this.getDeviceReport();
     });
   }
 
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType == "RTLSDR") {
+        if (deviceSettings.deviceHwType === "RTLSDR") {
           this.statusMessage = "OK";
           this.statusError = false;
           this.settings = deviceSettings.rtlSdrSettings;
@@ -82,6 +119,26 @@ export class RtlsdrComponent implements OnInit {
           this.lowSampleRate = this.settings.lowSampleRate !== 0;
           this.noModMode = this.settings.noModMode !== 0;
           this.feedDeviceStore();
+        } else {
+          this.statusMessage = "Not a RTLSDR device";
+          this.statusError = true;
+        }
+      }
+    )
+  }
+
+  private getDeviceReport() {
+    this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
+      deviceSettings => {
+        if (deviceSettings.deviceHwType === "RTLSDR") {
+          this.statusMessage = "OK";
+          this.statusError = false;
+          let reportedGains = deviceSettings.rtlSdrReport["gains"];
+          this.gains = [];
+          reportedGains.forEach(element => {
+            let reportedGain = element["gainCB"];
+            this.gains.push({value: reportedGain, viewValue: reportedGain/10});
+          });
         } else {
           this.statusMessage = "Not a RTLSDR device";
           this.statusError = true;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DeviceSettings } from './device-details';
+import { DeviceSettings, DeviceReport } from './device-details';
 import { delay } from 'rxjs/operators';
 
 @Injectable({
@@ -25,5 +25,10 @@ export class DeviceDetailsService {
       })
     };
     return this.http.patch(newurl, JSON.stringify(settings), httpOptions).pipe(delay(500));
+  }
+
+  getReport(url: string, devicesetIndex: number): Observable<DeviceReport> {
+    const newurl = url + '/deviceset/' + devicesetIndex + '/device/report';
+    return this.http.get<DeviceReport>(newurl);
   }
 }
