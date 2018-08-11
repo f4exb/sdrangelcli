@@ -84,7 +84,7 @@ export class DeviceComponent implements OnInit {
       deviceSetIndex: this.device.index,
       isTx: this.device.tx !== 0
     };
-    dialogConfig.height = '200px';
+    dialogConfig.height = '230px';
     dialogConfig.width = '400px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
     let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
