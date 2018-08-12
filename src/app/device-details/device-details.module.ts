@@ -10,6 +10,7 @@ import { RtlsdrComponent } from './rtlsdr/rtlsdr.component';
 import { TestsourceComponent } from './testsource/testsource.component';
 import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
 import { HackrfOutputComponent } from './hackrf-output/hackrf-output.component';
+import { LimesdrInputComponent } from './limesdr-input/limesdr-input.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { HackrfOutputComponent } from './hackrf-output/hackrf-output.component';
     RtlsdrComponent,
     TestsourceComponent,
     HackrfInputComponent,
-    HackrfOutputComponent
+    HackrfOutputComponent,
+    LimesdrInputComponent
   ]
 })
 export class DeviceDetailsModule { }

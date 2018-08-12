@@ -7,6 +7,7 @@ import { RtlsdrComponent } from './rtlsdr/rtlsdr.component';
 import { TestsourceComponent } from './testsource/testsource.component';
 import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
 import { HackrfOutputComponent } from './hackrf-output/hackrf-output.component';
+import { LimesdrInputComponent } from './limesdr-input/limesdr-input.component';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,10 @@ export const routes: Routes = [
       {
         path: 'hackrfout',
         component: HackrfOutputComponent
+      },
+      {
+        path: 'limesdrin',
+        component: LimesdrInputComponent
       },
       {
         path: 'rtlsdr',

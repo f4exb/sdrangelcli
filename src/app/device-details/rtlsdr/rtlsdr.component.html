@@ -82,10 +82,9 @@
           <td>
             Fc pos
             <mat-select style="width:8ch; background-color: white; margin: 1px;"
-              [(value)]="settings.fcPos"
-              (selectionChange)="setFcPos()"
-              matTooltip="Center frequency position"
-            >
+                [(value)]="settings.fcPos"
+                (selectionChange)="setFcPos()"
+                matTooltip="Center frequency position">
               <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
                 {{fcPos.viewValue}}
               </mat-option>
