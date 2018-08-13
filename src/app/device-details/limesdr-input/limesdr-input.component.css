@@ -52,6 +52,10 @@
     width: 12ch;
 }
 
+.nco-frequency-input {
+    width: 8ch;
+}
+
 .sample-rate-input {
     width: 10ch;
 }

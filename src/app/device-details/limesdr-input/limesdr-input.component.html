@@ -20,7 +20,7 @@
             [frequency]="centerFreqKhz"
             min=30000
             max=3800000
-            tooltip="Center (LO) frequency"
+            tooltip="Center frequency"
             [steps]="frequencySteps"
             (frequencyChanged)="onFrequencyUpdate($event)">
             </app-frequency-dial>
@@ -33,12 +33,17 @@
             NCO
           </mat-checkbox>
         </td>
-        <td colspan="2">
+        <td style="width:16ch">
           Freq
-          <input type="number" class="frequency-input"
+          <input type="number" class="nco-frequency-input"
             [(ngModel)]="ncoFreqKhz"
             (change)="setNCOFrequency()"
             matTooltip="NCO frequency">
+          kHz
+        </td>
+        <td>
+          LO
+          <span>{{loFreqKhz}}</span>
           kHz
         </td>
       </tr>
