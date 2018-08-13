@@ -7,6 +7,19 @@
   </mat-card-header>
   <mat-card-content>
     <table>
+      <!-- frequency -->
+      <tr>
+        <td colspan="3">
+            <app-frequency-dial
+            [frequency]="centerFreqKhz"
+            min=10000
+            max=7000000
+            tooltip="Center frequency"
+            [steps]="frequencySteps"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+        </td>
+      </tr>
       <!--- LO correction, Bias-T, RF amp -->
       <tr>
         <td>
@@ -29,16 +42,8 @@
           </mat-checkbox>
         </td>
       </tr>
-      <!--- frequency, RFBW, VGA -->
+      <!--- RFBW, VGA -->
       <tr>
-        <td>
-          Freq
-          <input type="number" class="frequency-input"
-            [(ngModel)]="centerFreqKhz"
-            (change)="setCenterFrequency()"
-            matTooltip="Center frequency">
-          kHz
-        </td>
         <td>
           RFBW
           <mat-select style="width:7ch; background-color: white; margin: 1px;"
@@ -60,6 +65,7 @@
             min=0 max=47>
           dB
         </td>
+        <td></td>
       </tr>
       <!--- Sample rate, Interpolation -->
       <tr>

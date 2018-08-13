@@ -7,6 +7,19 @@
     </mat-card-header>
     <mat-card-content>
       <table>
+        <!-- Center frequency -->
+        <tr>
+          <td colspan="3">
+            <app-frequency-dial
+            [frequency]="centerFreqKhz"
+            [min]="noModMode ? 0 : 24000"
+            [max]="lowSampleRate ? 275000 : 1900000"
+            tooltip="Center frequency"
+            [steps]="frequencySteps"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+          </td>
+        </tr>
         <!-- Line 1  LO correction, DC correction, IQ correction -->
         <tr>
           <td>
@@ -29,17 +42,8 @@
             </mat-checkbox>
           </td>
         </tr>
-        <!-- Line 2 Center frequency, gain, AGC -->
+        <!-- Line 2 gain, AGC -->
         <tr>
-          <td>
-            Freq
-            <input type="number" class="frequency-input"
-              [(ngModel)]="centerFreqKhz"
-              (change)="setCenterFrequency()"
-              matTooltip="Center frequency"
-            >
-            kHz
-          </td>
           <td>
             Gain
             <mat-select style="width:7ch; background-color: white; margin: 1px;"
@@ -57,6 +61,7 @@
               AGC
             </mat-checkbox>
           </td>
+          <td></td>
         </tr>
         <!-- Line 3 Sample rate, Decimation, Fc position -->
         <tr>

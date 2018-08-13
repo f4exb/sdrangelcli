@@ -5,6 +5,7 @@ import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceSettings } from '../device-details';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
+import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 
 export interface Log2Decim {
@@ -46,6 +47,7 @@ export class RtlsdrComponent implements OnInit {
   ];
   gains: Gain[] = [
   ];
+  frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex : number;
   sdrangelURL : string;
   settings: RTLSDRSettings = RTLSDR_SETTINGS_DEFAULT;
@@ -171,6 +173,11 @@ export class RtlsdrComponent implements OnInit {
     const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
     newSettings.agc = this.agc ? 1 : 0;
     this.setDeviceSettings(newSettings);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.centerFreqKhz = frequency;
+    this.setCenterFrequency();
   }
 
   setCenterFrequency() {

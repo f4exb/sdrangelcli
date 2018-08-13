@@ -61,7 +61,7 @@ export class HackrfInputComponent implements OnInit {
     {value: 20000000, viewValue: 20},
     {value: 24000000, viewValue: 24},
     {value: 28000000, viewValue: 28},
-  ]
+  ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex : number;
   sdrangelURL : string;
