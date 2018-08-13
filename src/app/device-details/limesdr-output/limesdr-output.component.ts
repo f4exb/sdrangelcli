@@ -52,6 +52,7 @@ export class LimesdrOutputComponent implements OnInit {
   report: LimeSDROutputReport = LIMESDR_OUTPUT_REPORT_DEFAULT;
   settings: LimeSDROutputSettings = LIMESDR_OUTPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
+  loFreqKhz : number;
   ncoFreqKhz: number;
   lpfBWkHz: number;
   lpfFIRBWkHz: number;
@@ -93,14 +94,15 @@ export class LimesdrOutputComponent implements OnInit {
           this.statusMessage = "OK";
           this.statusError = false;
           this.settings = deviceSettings.limeSdrOutputSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
           this.ncoFreqKhz = this.settings.ncoFrequency/1000;
+          this.ncoEnable = this.settings.ncoEnable !== 0;
+          this.loFreqKhz = this.settings.centerFrequency/1000;
+          this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
           this.lpfBWkHz = this.settings.lpfBW/1000;
           this.lpfFIRBWkHz = this.settings.lpfFIRBW/1000;
           this.extClockFreqKhz = this.settings.extClockFreq/1000;
           this.extClock = this.settings.extClock !== 0;
           this.lpfFIREnable = this.settings.lpfFIREnable !== 0;
-          this.ncoEnable = this.settings.ncoEnable !== 0;
           this.transverterMode = this.settings.transverterMode !== 0;
           this.feedDeviceStore();
         } else {
@@ -172,6 +174,7 @@ export class LimesdrOutputComponent implements OnInit {
 
   setNCOEnable() {
     const newSettings: LimeSDROutputSettings = <LimeSDROutputSettings>{};
+    this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
     newSettings.ncoEnable = this.ncoEnable ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
@@ -183,13 +186,15 @@ export class LimesdrOutputComponent implements OnInit {
 
   setCenterFrequency() {
     const newSettings: LimeSDROutputSettings = <LimeSDROutputSettings>{};
-    newSettings.centerFrequency = this.centerFreqKhz * 1000;
+    this.loFreqKhz = this.centerFreqKhz - (this.ncoEnable ? this.ncoFreqKhz : 0);
+    newSettings.centerFrequency = this.loFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
   setNCOFrequency() {
     this.validateNCOFrequency();
     const newSettings: LimeSDROutputSettings = <LimeSDROutputSettings>{};
+    this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
     newSettings.ncoFrequency = this.ncoFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }

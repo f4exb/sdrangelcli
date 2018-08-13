@@ -15,31 +15,15 @@
     <table>
       <!-- center frequency -->
       <tr>
-        <td colspan="3">
-            <app-frequency-dial
-            [frequency]="centerFreqKhz"
-            min=30000
-            max=3800000
-            tooltip="Center (LO) frequency"
-            [steps]="frequencySteps"
-            (frequencyChanged)="onFrequencyUpdate($event)">
-            </app-frequency-dial>
-        </td>
-      </tr>
-      <!-- NCO enable, NCO frequency, Antenna select -->
-      <tr>
-        <td>
-          <mat-checkbox color="primary" [(ngModel)]="ncoEnable" (change)="setNCOEnable()" matTooltip="NCO enable">
-            NCO
-          </mat-checkbox>
-        </td>
-        <td>
-          Freq
-          <input type="number" class="frequency-input"
-            [(ngModel)]="ncoFreqKhz"
-            (change)="setNCOFrequency()"
-            matTooltip="NCO frequency">
-          kHz
+        <td colspan="2">
+          <app-frequency-dial
+          [frequency]="centerFreqKhz"
+          min=30000
+          max=3800000
+          tooltip="Center (LO) frequency"
+          [steps]="frequencySteps"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
         </td>
         <td>
           Ant
@@ -51,6 +35,25 @@
               {{antennaPath.viewValue}}
             </mat-option>
           </mat-select>
+        </td>
+      </tr>
+      <!-- NCO enable, NCO frequency, Antenna select -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="ncoEnable" (change)="setNCOEnable()" matTooltip="NCO enable">
+            NCO
+          </mat-checkbox>
+        </td>
+        <td style="width:16ch">
+          Freq
+          <input type="number" class="nco-frequency-input"
+            [(ngModel)]="ncoFreqKhz"
+            (change)="setNCOFrequency()"
+            matTooltip="NCO frequency">
+          kHz
+        </td>
+        <td>
+          <span>LO {{loFreqKhz}} kHz</span>
         </td>
       </tr>
       <!-- SR, Hard interpolation, Soft interpolation -->
@@ -105,7 +108,7 @@
             FIR
           </mat-checkbox>
         </td>
-        <td>
+        <td style="width:20ch">
           LP FIR
           <input type="number" class="lp-filter-input"
             [(ngModel)]="lpfFIRBWkHz"
