@@ -7,7 +7,6 @@ import { DeviceSettings } from '../device-details';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
-
 export interface Log2Decim {
   value: number,
   viewValue: number

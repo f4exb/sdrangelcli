@@ -12,6 +12,7 @@ import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
 import { HackrfOutputComponent } from './hackrf-output/hackrf-output.component';
 import { LimesdrInputComponent } from './limesdr-input/limesdr-input.component';
 import { CommonComponentsModule } from '../common-components/common-components.module';
+import { LimesdrOutputComponent } from './limesdr-output/limesdr-output.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { CommonComponentsModule } from '../common-components/common-components.m
     TestsourceComponent,
     HackrfInputComponent,
     HackrfOutputComponent,
-    LimesdrInputComponent
+    LimesdrInputComponent,
+    LimesdrOutputComponent
   ]
 })
 export class DeviceDetailsModule { }

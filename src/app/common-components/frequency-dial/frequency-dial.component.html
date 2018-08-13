@@ -3,9 +3,8 @@
   <input type="number" class="frequency-input"
     [(ngModel)]="frequency"
     (change)="validate()"
-    [matTooltip]="tooltip"
-    [step]="frequencyStep"
-  >
+    matTooltip="{{tooltip}}"
+    [step]="frequencyStep">
   kHz
   <button class="button-card"  matTooltip="Align to step" (click)="alignToStep()">
     <img src="/assets/icons/download-arrow.svg" style="height:14px; width:14px; padding-top: 2px"/>

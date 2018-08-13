@@ -20,6 +20,7 @@ import { PresetComponent } from './main/preset/preset.component';
 import { DeviceDetailsComponent } from './device-details/device-details.component';
 import { AirspyhfComponent } from './device-details/airspyhf/airspyhf.component';
 import { DeviceNotSupportedComponent } from './device-details/device-not-supported/device-not-supported.component';
+import { CommonComponentsModule } from './common-components/common-components.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -51,7 +52,8 @@ describe('AppComponent', () => {
         MatSnackBarModule,
         MatTooltipModule,
         HttpClientTestingModule,
-        AppRoutingModule
+        AppRoutingModule,
+        CommonComponentsModule
       ],
       providers: [{provide: APP_BASE_HREF, useValue: '/'}]
     }).compileComponents();

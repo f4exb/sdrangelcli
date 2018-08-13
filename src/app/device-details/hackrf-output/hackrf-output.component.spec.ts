@@ -5,6 +5,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CommonComponentsModule } from '../../common-components/common-components.module';
 
 describe('HackrfOutputComponent', () => {
   let component: HackrfOutputComponent;
@@ -21,7 +22,8 @@ describe('HackrfOutputComponent', () => {
         MatOptionModule,
         MatCheckboxModule,
         MatTooltipModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        CommonComponentsModule
       ],
       providers: [
         {provide: ActivatedRoute, useValue: { snapshot: {parent: {params: {dix: 0}}}}}

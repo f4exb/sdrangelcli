@@ -1,21 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LimesdrInputComponent } from './limesdr-input.component';
+import { LimesdrOutputComponent } from './limesdr-output.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonComponentsModule } from '../../common-components/common-components.module';
 
-describe('LimesdrInputComponent', () => {
-  let component: LimesdrInputComponent;
-  let fixture: ComponentFixture<LimesdrInputComponent>;
+describe('LimesdrOutputComponent', () => {
+  let component: LimesdrOutputComponent;
+  let fixture: ComponentFixture<LimesdrOutputComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        LimesdrInputComponent
-      ],
+      declarations: [ LimesdrOutputComponent ],
       imports: [
         RouterModule,
         FormsModule,
@@ -35,7 +33,7 @@ describe('LimesdrInputComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LimesdrInputComponent);
+    fixture = TestBed.createComponent(LimesdrOutputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

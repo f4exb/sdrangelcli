@@ -5,6 +5,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { CommonComponentsModule } from '../../common-components/common-components.module';
 
 describe('AirspyhfComponent', () => {
   let component: AirspyhfComponent;
@@ -23,7 +24,8 @@ describe('AirspyhfComponent', () => {
         MatOptionModule,
         MatCheckboxModule,
         MatTooltipModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        CommonComponentsModule
       ],
       providers: [
         {provide: ActivatedRoute, useValue: { snapshot: {parent: {params: {dix: 0}}}}}

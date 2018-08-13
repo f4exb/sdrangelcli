@@ -1,5 +1,5 @@
 <mat-card class="deviceset-card">
-  <mat-card-header class="device-card-header device-header-rx">
+  <mat-card-header class="device-card-header device-header-tx">
     <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
       <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
     </button>&nbsp;
@@ -9,7 +9,7 @@
         (click)="toggleMonitor()">
       <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
     </button>&nbsp;
-    <span class="device-label">LimeSDR input {{getSampleRate()/1000}} kS/s ADC {{getADCSampleRate()/1000}} kS/s</span>
+    <span class="device-label">LimeSDR output {{getSampleRate()/1000}} kS/s DAC {{getDACSampleRate()/1000}} kS/s</span>
   </mat-card-header>
   <mat-card-content>
     <table>
@@ -26,14 +26,14 @@
             </app-frequency-dial>
         </td>
       </tr>
-      <!-- NCO enable, NCO frequency -->
+      <!-- NCO enable, NCO frequency, Antenna select -->
       <tr>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="ncoEnable" (change)="setNCOEnable()" matTooltip="NCO enable">
             NCO
           </mat-checkbox>
         </td>
-        <td colspan="2">
+        <td>
           Freq
           <input type="number" class="frequency-input"
             [(ngModel)]="ncoFreqKhz"
@@ -41,21 +41,8 @@
             matTooltip="NCO frequency">
           kHz
         </td>
-      </tr>
-      <!-- DC, IQ, Antenna select -->
-      <tr>
         <td>
-          <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
-            DC block
-          </mat-checkbox>
-        </td>
-        <td style="width: 15ch">
-          <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
-            IQ correction
-          </mat-checkbox>
-        </td>
-        <td>
-          Antenna
+          Ant
           <mat-select style="width:8ch; background-color: white; margin: 1px;"
               [(value)]="settings.antennaPath"
               (selectionChange)="setAntennaPath()"
@@ -66,7 +53,7 @@
           </mat-select>
         </td>
       </tr>
-      <!-- SR, Hard decimation, Soft decimation -->
+      <!-- SR, Hard interpolation, Soft interpolation -->
       <tr>
         <td>
           SR
@@ -79,24 +66,24 @@
           S/s
         </td>
         <td>
-          Hard &#x21E9;
+          Hard &#x21D1;
           <mat-select style="width:8ch; background-color: white; margin: 1px;"
-              [(value)]="settings.log2HardDecim"
-              (selectionChange)="setLog2HardDecim()"
-              matTooltip="Hardware decimation factor">
-            <mat-option *ngFor="let hardDecim of hardDecims" [value]="hardDecim.value">
-              {{hardDecim.viewValue}}
+              [(value)]="settings.log2HardInterp"
+              (selectionChange)="setLog2HardInterp()"
+              matTooltip="Hardware interpolation factor">
+            <mat-option *ngFor="let hardInterp of hardInterps" [value]="hardInterp.value">
+              {{hardInterp.viewValue}}
             </mat-option>
           </mat-select>
         </td>
         <td>
-          Soft &#x21E9;
+          Soft &#x21D1;
           <mat-select style="width:8ch; background-color: white; margin: 1px;"
-              [(value)]="settings.log2SoftDecim"
-              (selectionChange)="setLog2SoftDecim()"
-              matTooltip="Software decimation factor">
-            <mat-option *ngFor="let softDecim of softDecims" [value]="softDecim.value">
-              {{softDecim.viewValue}}
+              [(value)]="settings.log2SoftInterp"
+              (selectionChange)="setLog2SoftInterp()"
+              matTooltip="Software interpolation factor">
+            <mat-option *ngFor="let softInterp of softInterps" [value]="softInterp.value">
+              {{softInterp.viewValue}}
             </mat-option>
           </mat-select>
         </td>
@@ -109,7 +96,7 @@
             [(ngModel)]="lpfBWkHz"
             (change)="setLPFilter()"
             matTooltip="Analog low pass filter bandwidth"
-            min=1401,
+            min=5001,
             max=130000>
           kHz
         </td>
@@ -124,87 +111,34 @@
             [(ngModel)]="lpfFIRBWkHz"
             (change)="setLPFIRFilter()"
             matTooltip="FIR low pass filter bandwidth"
-            min=1401,
-            max=130000>
+            min=1,
+            max=56000>
           kHz
         </td>
       </tr>
-      <!-- Gain mode, global gain -->
+      <!-- Gain, Transverter, Transverter frequency-->
       <tr>
         <td>
           Gain
-          <mat-select style="width:10ch; background-color: white; margin: 1px;"
-              [(value)]="settings.gainMode"
-              (selectionChange)="setGainMode()"
-              matTooltip="Gain mode">
-            <mat-option *ngFor="let gainMode of gainModes" [value]="gainMode.value">
-              {{gainMode.viewValue}}
-            </mat-option>
-          </mat-select>
-        </td>
-        <td>
-          Global
           <input type="number" class="log2-input"
             [(ngModel)]="settings.gain"
             (change)="setGain()"
-            [disabled]="settings.gainMode === 1"
-            matTooltip="Global gain"
+            matTooltip="Gain"
             min=0,
             max=70>
           dB
         </td>
-        <td></td>
-      </tr>
-      <!-- Manual LNA, TIA and PGA -->
-      <tr>
-        <td>
-          LNA
-          <input type="number" class="log2-input"
-            [(ngModel)]="settings.lnaGain"
-            (change)="setLNAGain()"
-            [disabled]="settings.gainMode === 0"
-            matTooltip="LNA gain"
-            min=1,
-            max=30>
-          dB
-        </td>
-        <td>
-          TIA
-          <input type="number" class="log2-input"
-            [(ngModel)]="settings.tiaGain"
-            (change)="setTIAGain()"
-            [disabled]="settings.gainMode === 0"
-            matTooltip="TIA gain"
-            min=1,
-            max=3>
-          dB
-        </td>
-        <td>
-          PGA
-          <input type="number" class="log2-input"
-            [(ngModel)]="settings.pgaGain"
-            (change)="setPGAGain()"
-            [disabled]="settings.gainMode === 0"
-            matTooltip="PGA gain"
-            min=0,
-            max=32>
-          dB
-        </td>
-      </tr>
-      <!-- Transverter mode, transverter frequency -->
-      <tr>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
             Transverter
           </mat-checkbox>
         </td>
-        <td colspan="2">
-          Freq:
+        <td>
+          Freq
           <input type="number" class="xfrequency-input"
             [(ngModel)]="settings.transverterDeltaFrequency"
             (change)="setTransverterFrequency()"
-            matTooltip="Transverter frequency shift"
-          >
+            matTooltip="Transverter frequency shift">
           Hz
         </td>
       </tr>
@@ -237,7 +171,7 @@
           <span matTooltip="FIFO size">{{report ? (report.fifoSize/1000000).toFixed(3) : 0}}</span>
           MB
         </td>
-        <td [class.yellow]="getFIFOFillPercentage() > 50">
+        <td [class.yellow]="getFIFOFillPercentage() < 50">
           Fill
           <span matTooltip="Percentage of FIFO filled">{{getFIFOFillPercentage().toFixed(0)}}</span>
           %
@@ -249,10 +183,7 @@
         </td>
       </tr>
       <tr style="height: 3px;">
-        </tr>
-      </table>
+      </tr>
+    </table>
   </mat-card-content>
-</mat-card>
-<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
-  {{ statusMessage }}
 </mat-card>
