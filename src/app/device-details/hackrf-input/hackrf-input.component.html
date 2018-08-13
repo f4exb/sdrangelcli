@@ -7,6 +7,19 @@
   </mat-card-header>
   <mat-card-content>
     <table>
+      <!-- Frequency -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="centerFreqKhz"
+          min=10000
+          max=7000000
+          tooltip="Center frequency"
+          [steps]="frequencySteps"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+      </tr>
       <!--- LO correction, DC, IQ -->
       <tr>
         <td>
@@ -29,16 +42,8 @@
           </mat-checkbox>
         </td>
       </tr>
-      <!--- frequency, RFBW, BiasT -->
+      <!--- RFBW, BiasT -->
       <tr>
-        <td>
-          Freq
-          <input type="number" class="frequency-input"
-            [(ngModel)]="centerFreqKhz"
-            (change)="setCenterFrequency()"
-            matTooltip="Center frequency">
-          kHz
-        </td>
         <td>
           RFBW
           <mat-select style="width:7ch; background-color: white; margin: 1px;"
@@ -56,6 +61,7 @@
             Bias tee
           </mat-checkbox>
         </td>
+        <td></td>
       </tr>
       <!--- Sample rate, Decimation, Fc pos -->
       <tr>
@@ -64,8 +70,7 @@
           <input type="number" class="sample-rate-input"
             [(ngModel)]="settings.devSampleRate"
             (change)="setSampleRate()"
-            matTooltip="Sample rate"
-            min=2600000 max=20000000>
+            matTooltip="Sample rate">
           S/s
         </td>
         <td>

@@ -5,6 +5,7 @@ import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { DeviceSettings } from '../device-details';
+import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 interface Log2Decim {
   value: number,
@@ -61,6 +62,7 @@ export class HackrfInputComponent implements OnInit {
     {value: 24000000, viewValue: 24},
     {value: 28000000, viewValue: 28},
   ]
+  frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex : number;
   sdrangelURL : string;
   settings: HackRFInputSettings = HACKRF_INPUT_SETTINGS_DEFAULT;
@@ -155,6 +157,11 @@ export class HackrfInputComponent implements OnInit {
     const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
     newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
     this.setDeviceSettings(newSettings);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.centerFreqKhz = frequency;
+    this.setCenterFrequency();
   }
 
   setCenterFrequency() {
