@@ -6,6 +6,7 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { Subscription, interval } from 'rxjs';
 import { DeviceSettings } from '../device-details';
+import { FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 interface Log2Decim {
   value: number,
@@ -21,7 +22,6 @@ interface GainMode {
   value: number,
   viewValue: string
 }
-
 
 @Component({
   selector: 'app-limesdr-input',
@@ -58,6 +58,7 @@ export class LimesdrInputComponent implements OnInit {
     {value: 4, viewValue: 16},
     {value: 5, viewValue: 32},
   ]
+  frequencySteps = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex : number;
   sdrangelURL : string;
   report: LimeSDRInputReport = LIMESDR_INPUT_REPORT_DEFAULT;
@@ -201,6 +202,11 @@ export class LimesdrInputComponent implements OnInit {
     const newSettings: LimeSDRInputSettings = <LimeSDRInputSettings>{};
     newSettings.ncoEnable = this.ncoEnable ? 1 : 0;
     this.setDeviceSettings(newSettings);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.centerFreqKhz = frequency;
+    this.setCenterFrequency();
   }
 
   setCenterFrequency() {

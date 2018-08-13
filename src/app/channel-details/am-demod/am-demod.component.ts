@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AMDemodSettings, AMDEMOD_SETTINGS_DEFAULT, AMDemodReport, AMDEMOD_REPORT_DEFAULT } from './am-demod';
 import { ChannelSettings } from '../channel-details';
 import { Utils } from '../../common-components/utils';

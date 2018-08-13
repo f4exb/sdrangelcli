@@ -11,6 +11,7 @@ import { TestsourceComponent } from './testsource/testsource.component';
 import { HackrfInputComponent } from './hackrf-input/hackrf-input.component';
 import { HackrfOutputComponent } from './hackrf-output/hackrf-output.component';
 import { LimesdrInputComponent } from './limesdr-input/limesdr-input.component';
+import { CommonComponentsModule } from '../common-components/common-components.module';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { LimesdrInputComponent } from './limesdr-input/limesdr-input.component';
     MatOptionModule,
     MatCheckboxModule,
     MatTooltipModule,
+    CommonComponentsModule,
     DeviceDetailsRoutingModule
   ],
   declarations: [

@@ -13,24 +13,27 @@
   </mat-card-header>
   <mat-card-content>
     <table>
-      <!-- center frequency, NCO enable, NCO frequency -->
+      <!-- center frequency -->
       <tr>
-        <td>
-          Freq
-          <input type="number" class="frequency-input"
-            [(ngModel)]="centerFreqKhz"
-            (change)="setCenterFrequency()"
-            matTooltip="Center frequency"
-            min=30000,
-            max=3800000>
-          kHz
+        <td colspan="3">
+            <app-frequency-dial
+            [frequency]="centerFreqKhz"
+            min=30000
+            max=3800000
+            tooltip="Center (LO) frequency"
+            [steps]="frequencySteps"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
         </td>
+      </tr>
+      <!-- NCO enable, NCO frequency -->
+      <tr>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="ncoEnable" (change)="setNCOEnable()" matTooltip="NCO enable">
             NCO
           </mat-checkbox>
         </td>
-        <td>
+        <td colspan="2">
           Freq
           <input type="number" class="frequency-input"
             [(ngModel)]="ncoFreqKhz"

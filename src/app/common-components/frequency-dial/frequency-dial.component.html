@@ -3,7 +3,7 @@
   <input type="number" class="frequency-input"
     [(ngModel)]="frequency"
     (change)="validate()"
-    matTooltip="Frequency"
+    [matTooltip]="tooltip"
     [step]="frequencyStep"
   >
   kHz
@@ -11,7 +11,7 @@
     <img src="/assets/icons/download-arrow.svg" style="height:14px; width:14px; padding-top: 2px"/>
   </button>
   Step
-  <mat-select class="frequency-step-input" [(value)]="frequencyStep" matTooltip="Dial step">
+  <mat-select class="frequency-step-input" [(value)]="frequencyStep" matTooltip="Dial step" style="width:8ch">
     <mat-option *ngFor="let frequencyStep of frequencySteps" [value]="frequencyStep.value">
       {{frequencyStep.viewValue}}
     </mat-option>
