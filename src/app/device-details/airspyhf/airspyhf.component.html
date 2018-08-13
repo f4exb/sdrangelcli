@@ -7,6 +7,20 @@
   </mat-card-header>
   <mat-card-content>
     <table>
+      <!-- frequency -->
+      <tr>
+        <td colspan="3">
+            <app-frequency-dial
+            [frequency]="centerFreqKhz"
+            [min]="settings.bandIndex === 0 ? 9 : 60000"
+            [max]="settings.bandIndex === 0 ? 30000 : 260000"
+            tooltip="Center frequency"
+            [steps]="frequencySteps"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+        </td>
+      </tr>
+      <!-- LO ppm, Frequency band-->
       <tr>
         <td>
           LO
@@ -14,17 +28,15 @@
             [(ngModel)]="loPPM"
             (change)="setLoPPMTenths()"
             matTooltip="LO correction"
-            step=0.1
-          >
+            step=0.1>
           ppm
         </td>
         <td>
           Band
           <mat-select style="width:10ch; background-color: white; margin: 1px;"
-            [(value)]="settings.bandIndex"
-            (selectionChange)="setBandIndex()"
-            matTooltip="Frequency band"
-          >
+              [(value)]="settings.bandIndex"
+              (selectionChange)="setBandIndex()"
+              matTooltip="Frequency band">
             <mat-option *ngFor="let band of bands" [value]="band.value">
               {{band.viewValue}}
             </mat-option>
@@ -33,19 +45,14 @@
         <td>
         </td>
       </tr>
+      <!-- Sample rate, Decimation -->
       <tr>
-        <td>
-          Freq
-          <input type="number" class="frequency-input" [(ngModel)]="centerFreqKhz" (change)="setCenterFrequency()" matTooltip="Center frequency">
-          kHz
-        </td>
         <td>
           SR
           <mat-select style="width:8ch; background-color: white; margin: 1px;"
-            [(value)]="settings.devSampleRateIndex"
-            (selectionChange)="setSampleRateIndex()"
-            matTooltip="Sample rate"
-          >
+              [(value)]="settings.devSampleRateIndex"
+              (selectionChange)="setSampleRateIndex()"
+              matTooltip="Sample rate">
             <mat-option *ngFor="let sampleRate of sampleRates" [value]="sampleRate.value">
               {{sampleRate.viewValue}}
             </mat-option>
@@ -55,16 +62,17 @@
         <td>
           Decim
           <mat-select style="width:6ch; background-color: white; margin: 1px;"
-            [(value)]="settings.log2Decim"
-            (selectionChange)="setLog2Decim()"
-            matTooltip="Decimation factor"
-          >
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
             <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
               {{log2Decim.viewValue}}
             </mat-option>
           </mat-select>
         </td>
+        <td></td>
       </tr>
+      <!-- Transverter mode, transverter frequency -->
       <tr>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
@@ -81,6 +89,7 @@
           Hz
         </td>
       </tr>
+      <!-- Record file name -->
       <tr>
         <td colspan="3">
           Remote record file
@@ -91,6 +100,7 @@
           >
         </td>
       </tr>
+      <!-- footer -->
       <tr style="height: 3px;">
       </tr>
     </table>

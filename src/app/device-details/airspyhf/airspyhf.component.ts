@@ -5,6 +5,7 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { AirspyHFSettings, AIRSPYHF_SETTINGS_DEFAULT } from './airspyhf';
 import { DeviceSettings } from '../device-details';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
+import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 export interface SampleRate {
   value: number,
@@ -45,6 +46,7 @@ export class AirspyhfComponent implements OnInit {
     {value: 0, viewValue: "HF"},
     {value: 1, viewValue: "VHF"},
   ];
+  frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex : number;
   sdrangelURL : string;
   settings: AirspyHFSettings = AIRSPYHF_SETTINGS_DEFAULT;
@@ -115,6 +117,11 @@ export class AirspyhfComponent implements OnInit {
 
   getSampleRate() : number {
     return 768000/(1<<this.settings.log2Decim);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.centerFreqKhz = frequency;
+    this.setCenterFrequency();
   }
 
   setCenterFrequency() {
