@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WFMModSettings, WFMMOD_SETTINGS_DEFAULT, WFMModReport, WFMMOD_REPORT_DEFAULT } from './wfm-mod';
 import { Subscription, interval } from 'rxjs';
-import { AudioDeviceInfo } from '../am-demod/am-demod.component';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
@@ -15,6 +14,11 @@ import { CWKeyerSettings } from '../cw-keyer/cw-keyer';
 interface AFInput {
   value: number,
   viewValue: string
+}
+
+interface AudioDeviceInfo {
+  value: string,
+  viewValue: number
 }
 
 interface RFBandwidth {
@@ -159,7 +163,7 @@ export class WfmModComponent implements OnInit {
     if (!this.audioStoreService.isInitialized()) {
       this.audioStoreService.initialize();
     }
-    this.audioStoreService.getOutput().subscribe(
+    this.audioStoreService.getInput().subscribe(
       audioData => {
         this.audioDevices = [];
         for (let [key, value] of Object.entries(audioData)) {
@@ -305,4 +309,9 @@ export class WfmModComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setAudioDevice() {
+    const newSettings: WFMModSettings = <WFMModSettings>{};
+    newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
 }

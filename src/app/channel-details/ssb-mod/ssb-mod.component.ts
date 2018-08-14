@@ -461,4 +461,10 @@ export class SsbModComponent implements OnInit {
     newSettings.cwKeyer = cwSettings;
     this.setDeviceSettings(newSettings);
   }
+
+  setAudioDevice() {
+    const newSettings: SSBModSettings = <SSBModSettings>{};
+    newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
 }

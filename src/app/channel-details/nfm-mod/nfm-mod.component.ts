@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NFMModSettings, NFMMOD_SETTINGS_DEFAULT, NFMModReport, NFMMOD_REPORT_DEFAULT } from './nfm-mod';
 import { Subscription, interval } from 'rxjs';
-import { AudioDeviceInfo } from '../am-demod/am-demod.component';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
@@ -15,6 +14,11 @@ import { CWKeyerSettings } from '../cw-keyer/cw-keyer';
 interface AFInput {
   value: number,
   viewValue: string
+}
+
+interface AudioDeviceInfo {
+  value: string,
+  viewValue: number
 }
 
 interface RFBandwidth {
@@ -197,7 +201,7 @@ export class NfmModComponent implements OnInit {
     if (!this.audioStoreService.isInitialized()) {
       this.audioStoreService.initialize();
     }
-    this.audioStoreService.getOutput().subscribe(
+    this.audioStoreService.getInput().subscribe(
       audioData => {
         this.audioDevices = [];
         for (let [key, value] of Object.entries(audioData)) {
@@ -352,6 +356,12 @@ export class NfmModComponent implements OnInit {
   setCTCSSIndex() {
     const newSettings: NFMModSettings = <NFMModSettings>{};
     newSettings.ctcssIndex = this.settings.ctcssIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioDevice() {
+    const newSettings: NFMModSettings = <NFMModSettings>{};
+    newSettings.audioDeviceName = this.settings.audioDeviceName;
     this.setDeviceSettings(newSettings);
   }
 }

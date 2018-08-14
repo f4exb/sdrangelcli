@@ -125,6 +125,20 @@
         </td>
         <td></td>
       </tr>
+      <!-- Audio options -->
+      <tr>
+        <td colspan="3">
+          Audio:
+          <mat-select style="width:48ch; background-color: white; margin: 1px;"
+              [(value)]="settings.audioDeviceName"
+              (selectionChange)="setAudioDevice()"
+              matTooltip="Audio input device">
+            <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+              {{audioDevice.value}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
       <!-- Row 6: empty footer -->
       <tr style="height: 3px;">
       </tr>

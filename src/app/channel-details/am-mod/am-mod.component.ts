@@ -9,12 +9,16 @@ import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
 import { AudioStoreService } from '../../main/audio/audio-store.service';
-import { AudioDeviceInfo } from '../nfm-demod/nfm-demod.component';
 import { Utils } from '../../common-components/utils';
 
 interface AFInput {
   value: number,
   viewValue: string
+}
+
+interface AudioDeviceInfo {
+  value: string,
+  viewValue: number
 }
 
 @Component({
@@ -142,7 +146,7 @@ export class AmModComponent implements OnInit {
     if (!this.audioStoreService.isInitialized()) {
       this.audioStoreService.initialize();
     }
-    this.audioStoreService.getOutput().subscribe(
+    this.audioStoreService.getInput().subscribe(
       audioData => {
         this.audioDevices = [];
         for (let [key, value] of Object.entries(audioData)) {
@@ -275,6 +279,12 @@ export class AmModComponent implements OnInit {
   setChannelMute() {
     const newSettings: AMModSettings = <AMModSettings>{};
     newSettings.channelMute = this.channelMute ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioDevice() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.audioDeviceName = this.settings.audioDeviceName;
     this.setDeviceSettings(newSettings);
   }
 }
