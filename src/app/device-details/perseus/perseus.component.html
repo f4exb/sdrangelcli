@@ -1,0 +1,25 @@
+<mat-card class="deviceset-card">
+  <mat-card-header class="device-card-header device-header-rx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="device-label">RTLSDR {{getSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Center frequency -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="centerFreqKhz"
+          min=10
+          max=40000
+          tooltip="Center frequency"
+          [steps]="frequencySteps"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>

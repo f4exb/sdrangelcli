@@ -7,6 +7,7 @@ import { LimeSDRInputSettings, LimeSDRInputReport } from "./limesdr-input/limesd
 import { LimeSDROutputSettings, LimeSDROutputReport } from "./limesdr-output/limesdr-output";
 import { PlutoSDRInputSettings, PlutoSDRInputReport } from "./plutosdr-input/plutosdr-input";
 import { PlutoSDROutputReport, PlutoSDROutputSettings } from "./plutosdr-output/plutosdr-output";
+import { PerseusSettings, PerseusReport } from "./perseus/perseus";
 
 export interface DeviceSettings {
     deviceHwType: string,
@@ -16,6 +17,7 @@ export interface DeviceSettings {
     hackRFOutputSettings?: HackRFOutputSettings,
     limeSdrInputSettings?: LimeSDRInputSettings,
     limeSdrOutputSettings?: LimeSDROutputSettings,
+    perseusSettings?: PerseusSettings,
     plutoSdrInputSettings?: PlutoSDRInputSettings,
     plutoSdrOutputSettings?: PlutoSDROutputSettings,
     rtlSdrSettings?: RTLSDRSettings,
@@ -27,6 +29,7 @@ export interface DeviceReport {
     tx: number,
     limeSdrInputReport?: LimeSDRInputReport,
     limeSdrOutputReport?: LimeSDROutputReport,
+    perseusReport?: PerseusReport,
     plutoSdrInputReport?: PlutoSDRInputReport,
     plutoSdrOutputReport?: PlutoSDROutputReport,
     rtlSdrReport?: any

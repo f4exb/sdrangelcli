@@ -15,6 +15,7 @@ import { CommonComponentsModule } from '../common-components/common-components.m
 import { LimesdrOutputComponent } from './limesdr-output/limesdr-output.component';
 import { PlutosdrInputComponent } from './plutosdr-input/plutosdr-input.component';
 import { PlutosdrOutputComponent } from './plutosdr-output/plutosdr-output.component';
+import { PerseusComponent } from './perseus/perseus.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { PlutosdrOutputComponent } from './plutosdr-output/plutosdr-output.compo
     LimesdrInputComponent,
     LimesdrOutputComponent,
     PlutosdrInputComponent,
-    PlutosdrOutputComponent
+    PlutosdrOutputComponent,
+    PerseusComponent
   ]
 })
 export class DeviceDetailsModule { }
