@@ -8,6 +8,7 @@ import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { DeviceSettings } from '../device-details';
 import { delay } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Utils } from '../../common-components/utils';
 
 interface Log2 {
   value: number,
@@ -130,10 +131,8 @@ export class PerseusComponent implements OnInit {
         console.log("Set settings OK", res);
         this.statusMessage = "OK";
         this.statusError = false;
-        of({}).pipe(delay(1000)).subscribe( // wait 1s for changes
-          _ => {
-            this.getDeviceSettings();
-          }
+        Utils.delayObservable(1000).subscribe(
+          _ => { this.getDeviceSettings(); }
         )
       },
       error => {

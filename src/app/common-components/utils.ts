@@ -1,3 +1,6 @@
+import { Observable, of } from "rxjs";
+import { delay } from "rxjs/operators";
+
 export class Utils {
     static intToRGB(value: number) : number[] {
         let result = [];
@@ -32,5 +35,9 @@ export class Utils {
 
     static getRGBStr(rgb: number[]) : string {
         return "rgb(" + rgb[0].toString() + "," + rgb[1].toString() + "," + rgb[2].toString() + ")";
+    }
+
+    static delayObservable(ms: number) : Observable<any> {
+        return of({}).pipe(delay(ms));
     }
 }
