@@ -11,6 +11,7 @@ import { LimesdrInputComponent } from './limesdr-input/limesdr-input.component';
 import { LimesdrOutputComponent } from './limesdr-output/limesdr-output.component';
 import { PlutosdrInputComponent } from './plutosdr-input/plutosdr-input.component';
 import { PlutosdrOutputComponent } from './plutosdr-output/plutosdr-output.component';
+import { PerseusComponent } from './perseus/perseus.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,10 @@ export const routes: Routes = [
       {
         path: 'limesdrout',
         component: LimesdrOutputComponent
+      },
+      {
+        path: 'perseus',
+        component: PerseusComponent
       },
       {
         path: 'plutosdrin',

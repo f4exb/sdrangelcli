@@ -6,6 +6,8 @@ import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { DeviceSettings } from '../device-details';
+import { delay } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 interface Log2 {
   value: number,
@@ -37,9 +39,9 @@ export class PerseusComponent implements OnInit {
   ];
   attenuations: Attenuation[] = [
     {value: 0, viewValue: 0},
-    {value: 10, viewValue: 10},
-    {value: 20, viewValue: 20},
-    {value: 30, viewValue: 30},
+    {value: 1, viewValue: 10},
+    {value: 2, viewValue: 20},
+    {value: 3, viewValue: 30},
   ];
   sampleRates: SampleRate[] = [];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
@@ -57,7 +59,8 @@ export class PerseusComponent implements OnInit {
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService)
-  { }
+  {
+  }
 
   ngOnInit() {
     this.deviceIndex = +this.route.snapshot.parent.params['dix']
@@ -127,7 +130,11 @@ export class PerseusComponent implements OnInit {
         console.log("Set settings OK", res);
         this.statusMessage = "OK";
         this.statusError = false;
-        this.getDeviceSettings();
+        of({}).pipe(delay(1000)).subscribe( // wait 1s for changes
+          _ => {
+            this.getDeviceSettings();
+          }
+        )
       },
       error => {
         this.statusMessage = error.message;
@@ -137,7 +144,11 @@ export class PerseusComponent implements OnInit {
   }
 
   getSampleRate() : number {
-    return this.sampleRates[this.settings.devSampleRateIndex].viewValue/(1<<this.settings.log2Decim);
+    if (this.settings.devSampleRateIndex < this.sampleRates.length) {
+      return this.sampleRates[this.settings.devSampleRateIndex].viewValue/(1<<this.settings.log2Decim);
+    } else {
+      return 48000;
+    }
   }
 
   setLoPPM() {
@@ -191,8 +202,27 @@ export class PerseusComponent implements OnInit {
   private validateCenterFrequencyKhz() {
     if (this.centerFreqKhz < 10) {
       this.centerFreqKhz = 10;
-    } else if (this.centerFreqKhz > 40) {
-      this.centerFreqKhz = 40;
+    } else if (this.centerFreqKhz > 40000) {
+      this.centerFreqKhz = 40000;
     }
   }
+
+  setDither() {
+    const newSettings: PerseusSettings = <PerseusSettings>{};
+    newSettings.adcDither = this.dither ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setPreamp() {
+    const newSettings: PerseusSettings = <PerseusSettings>{};
+    newSettings.adcPreamp = this.preamp ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setWideband() {
+    const newSettings: PerseusSettings = <PerseusSettings>{};
+    newSettings.wideBand = this.wideband ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
 }

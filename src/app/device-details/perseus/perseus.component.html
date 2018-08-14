@@ -3,7 +3,7 @@
     <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
       <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
     </button>&nbsp;
-    <span class="device-label">RTLSDR {{getSampleRate()/1000}} kS/s</span>
+    <span class="device-label">Perseus {{getSampleRate()/1000}} kS/s</span>
   </mat-card-header>
   <mat-card-content>
     <table>
@@ -19,6 +19,78 @@
           (frequencyChanged)="onFrequencyUpdate($event)">
           </app-frequency-dial>
         </td>
+      </tr>
+      <!-- LO correction, dither, preamp -->
+      <tr>
+        <td>
+          LO
+          <input type="number" class="loppm-input"
+            [(ngModel)]="loPPM"
+            (change)="setLoPPM()"
+            matTooltip="LO correction"
+            min=-10 max=10 step=0.1>
+          ppm
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dither" (change)="setDither()" matTooltip="ADC dithering on/off">
+            ADC dither
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="preamp" (change)="setPreamp()" matTooltip="ADC preamplifier on/off">
+            ADC preamp
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!-- Sample rate, Decimation -->
+      <tr>
+        <td>
+          SR
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.devSampleRateIndex"
+              (selectionChange)="setSampleRate()"
+              matTooltip="Sample rate">
+            <mat-option *ngFor="let sampleRate of sampleRates" [value]="sampleRate.value">
+              {{sampleRate.viewValue/1000}}
+            </mat-option>
+          </mat-select>
+          kS/s
+        </td>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td></td>
+      </tr>
+      <!-- Attenuator, Wideband -->
+      <tr>
+        <td>
+          Attn
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.attenuator"
+              (selectionChange)="setAttenuator()"
+              matTooltip="Attenuation">
+            <mat-option *ngFor="let attenuation of attenuations" [value]="attenuation.value">
+              {{attenuation.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="wideband" (change)="setWideband()" matTooltip="Wideband (no RF filter) on/off">
+            Wideband
+          </mat-checkbox>
+        </td>
+        <td></td>
+      </tr>
+      <tr style="height: 3px;">
       </tr>
     </table>
   </mat-card-content>
