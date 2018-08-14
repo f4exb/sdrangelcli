@@ -58,6 +58,8 @@ export class DeviceDetailsComponent implements OnInit {
         } else if (deviceSet.samplingDevice.hwType == "PlutoSDR") {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['plutosdrin'], { relativeTo: this.route});
+          } else {
+            this.router.navigate(['plutosdrout'], { relativeTo: this.route});
           }
         } else if (deviceSet.samplingDevice.hwType == "RTLSDR") {
           this.router.navigate(['rtlsdr'], { relativeTo: this.route});

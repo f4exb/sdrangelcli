@@ -10,6 +10,7 @@ import { HackrfOutputComponent } from './hackrf-output/hackrf-output.component';
 import { LimesdrInputComponent } from './limesdr-input/limesdr-input.component';
 import { LimesdrOutputComponent } from './limesdr-output/limesdr-output.component';
 import { PlutosdrInputComponent } from './plutosdr-input/plutosdr-input.component';
+import { PlutosdrOutputComponent } from './plutosdr-output/plutosdr-output.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,10 @@ export const routes: Routes = [
       {
         path: 'plutosdrin',
         component: PlutosdrInputComponent
+      },
+      {
+        path: 'plutosdrout',
+        component: PlutosdrOutputComponent
       },
       {
         path: 'rtlsdr',

@@ -1,0 +1,177 @@
+<mat-card class="deviceset-card">
+    <mat-card-header class="device-card-header device-header-rx">
+      <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+        <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <button mat-button mat-raised-button
+          [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+          matTooltip="Monitor on/off"
+          (click)="toggleMonitor()">
+        <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      </button>&nbsp;
+      <span class="device-label">PlutoSDR input {{getSampleRate()/1000}} kS/s</span>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- center frequency -->
+        <tr>
+          <td colspan="3">
+              <app-frequency-dial
+              [frequency]="centerFreqKhz"
+              min=70000
+              max=6000000
+              tooltip="Center frequency"
+              [steps]="frequencySteps"
+              (frequencyChanged)="onFrequencyUpdate($event)">
+              </app-frequency-dial>
+          </td>
+        </tr>
+        <!-- LO correction, attenuation, antenna select -->
+        <tr>
+          <td>
+            LO
+            <input type="number" class="loppm-input"
+              [(ngModel)]="loPPMCorrection"
+              (change)="setLoPPM()"
+              matTooltip="LO correction"
+              min=-20 max=20 step=0.1>
+            ppm
+          </td>
+          <td>
+            Attn
+            <input type="number" class="attn-input"
+              [(ngModel)]="attenuationDb"
+              (change)="setAttenuation()"
+              matTooltip="Attenuation"
+              min=-89.75 max=0 step=0.25>
+            dB
+          </td>
+          <td>
+            Antenna
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.antennaPath"
+                (selectionChange)="setAntennaPath()"
+                matTooltip="Antenna path">
+              <mat-option *ngFor="let antennaPath of antennaPaths" [value]="antennaPath.value">
+                {{antennaPath.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <!-- SR, Soft interpolation -->
+        <tr>
+          <td>
+            SR
+            <input type="number" class="sample-rate-input"
+              [(ngModel)]="settings.devSampleRate"
+              (change)="setDevSampleRate()"
+              matTooltip="Device to host sample rate"
+              min=100000,
+              max=80000000>
+            S/s
+          </td>
+          <td>
+            Soft &#x21D1;
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.log2Interp"
+                (selectionChange)="setLog2SoftInterp()"
+                matTooltip="Software interpolation factor">
+              <mat-option *ngFor="let softInterp of softInterps" [value]="softInterp.value">
+                {{softInterp.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <!-- Low pass, FIR enable, Low pass FIR -->
+        <tr>
+          <td>
+            LP
+            <input type="number" class="lp-filter-input"
+              [(ngModel)]="lpfBWkHz"
+              (change)="setLPFilter()"
+              matTooltip="Analog low pass filter bandwidth"
+              min=200,
+              max=14000>
+            kHz
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="lpfFIREnable" (change)="setLPFIREnable()" matTooltip="Enable lowpass FIR filter">
+              FIR
+            </mat-checkbox>
+          </td>
+          <td style="width:18ch">
+            LP FIR
+            <input type="number" class="lp-filter-input"
+              [(ngModel)]="lpfFIRBWkHz"
+              (change)="setLPFIRFilter()"
+              matTooltip="FIR low pass filter bandwidth">
+            kHz
+          </td>
+        </tr>
+        <!-- FIR hardware interpolation, FIR gain-->
+        <tr>
+          <td>
+            Hard &#x21D1;
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.lpfFIRlog2Interp"
+                (selectionChange)="setLog2HardInterp()"
+                matTooltip="Hardware FIR interpolation factor"
+                [disabled]="!settings.lpfFIREnable">
+              <mat-option *ngFor="let hardInterp of hardInterps" [value]="hardInterp.value">
+                {{hardInterp.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td style="width:18ch">
+            Gain FIR
+            <mat-select style="width:6ch; background-color: white; margin: 1px;"
+                [(value)]="settings.lpfFIRGain"
+                (selectionChange)="setFIRGain()"
+                matTooltip="FIR gain"
+                [disabled]="!settings.lpfFIREnable">
+              <mat-option *ngFor="let firGain of firGains" [value]="firGain.value">
+                {{firGain.viewValue}}
+              </mat-option>
+            </mat-select>
+            dB
+          </td>
+          <td></td>
+        </tr>
+        <!-- transverter mode, transverter frequency -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="transverterMode" (change)="setTransverterMode()" matTooltip="Transverter mode">
+              Transverter
+            </mat-checkbox>
+          </td>
+          <td colspan="2">
+            Freq:
+            <input type="number" class="xfrequency-input"
+              [(ngModel)]="settings.transverterDeltaFrequency"
+              (change)="setTransverterFrequency()"
+              matTooltip="Transverter frequency shift">
+            Hz
+          </td>
+        </tr>
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+      <table *ngIf="monitor">
+        <tr>
+          <td style="width: 15ch">
+            <span>RSSI {{report ? report.rssi : ""}}</span>
+          </td>
+          <td style="width: 15ch">
+            <span>Temp {{report ? report.temperature.toFixed(0) : 0}} C</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <span>DAC Rate {{report ? (report.dacRate/1000).toFixed(0) : 0}} kS/s</span>
+          </td>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
