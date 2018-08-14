@@ -5,6 +5,7 @@ import { HackRFInputSettings } from "./hackrf-input/hackrf-input";
 import { HackRFOutputSettings } from "./hackrf-output/hackrf-output";
 import { LimeSDRInputSettings, LimeSDRInputReport } from "./limesdr-input/limesdr-input";
 import { LimeSDROutputSettings, LimeSDROutputReport } from "./limesdr-output/limesdr-output";
+import { PlutoSDRInputSettings, PlutoSDRInputReport } from "./plutosdr-input/plutosdr-input";
 
 export interface DeviceSettings {
     deviceHwType: string,
@@ -14,6 +15,7 @@ export interface DeviceSettings {
     hackRFOutputSettings?: HackRFOutputSettings,
     limeSdrInputSettings?: LimeSDRInputSettings,
     limeSdrOutputSettings?: LimeSDROutputSettings,
+    plutoSdrInputSettings?: PlutoSDRInputSettings,
     rtlSdrSettings?: RTLSDRSettings,
     testSourceSettings?: TestSourceSettings
 }
@@ -23,5 +25,6 @@ export interface DeviceReport {
     tx: number,
     limeSdrInputReport?: LimeSDRInputReport,
     limeSdrOutputReport?: LimeSDROutputReport,
+    plutoSdrInputReport?: PlutoSDRInputReport,
     rtlSdrReport?: any
 }
