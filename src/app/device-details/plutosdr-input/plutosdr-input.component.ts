@@ -92,6 +92,7 @@ export class PlutosdrInputComponent implements OnInit {
   centerFreqKhz: number;
   lpfBWkHz: number;
   lpfFIRBWkHz: number;
+  loPPMCorrection: number;
   dcBlock: boolean;
   iqCorrection: boolean;
   lpfFIREnable: boolean;
@@ -132,6 +133,7 @@ export class PlutosdrInputComponent implements OnInit {
           this.centerFreqKhz = this.settings.centerFrequency/1000;
           this.lpfBWkHz = this.settings.lpfBW/1000;
           this.lpfFIRBWkHz = this.settings.lpfFIRBW/1000;
+          this.loPPMCorrection = this.settings.LOppmTenths/10;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
           this.lpfFIREnable = this.settings.lpfFIREnable !== 0;
@@ -298,6 +300,12 @@ export class PlutosdrInputComponent implements OnInit {
   setFcPos() {
     const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
     newSettings.fcPos = this.settings.fcPos;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLoPPM() {
+    const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
+    newSettings.LOppmTenths = this.loPPMCorrection*10;
     this.setDeviceSettings(newSettings);
   }
 }

@@ -26,8 +26,17 @@
             </app-frequency-dial>
         </td>
       </tr>
-      <!-- DC, IQ, Antenna select -->
+      <!-- LO, DC, IQ corrections -->
       <tr>
+        <td>
+          LO
+          <input type="number" class="loppm-input"
+            [(ngModel)]="loPPMCorrection"
+            (change)="setLoPPM()"
+            matTooltip="LO correction"
+            min=-20 max=20 step=0.1>
+          ppm
+        </td>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
             DC block
@@ -37,17 +46,6 @@
           <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
             IQ correction
           </mat-checkbox>
-        </td>
-        <td>
-          Antenna
-          <mat-select style="width:8ch; background-color: white; margin: 1px;"
-              [(value)]="settings.antennaPath"
-              (selectionChange)="setAntennaPath()"
-              matTooltip="Antenna path">
-            <mat-option *ngFor="let antennaPath of antennaPaths" [value]="antennaPath.value">
-              {{antennaPath.viewValue}}
-            </mat-option>
-          </mat-select>
         </td>
       </tr>
       <!-- SR, Hard decimation, Soft decimation, Fc position -->
@@ -102,7 +100,7 @@
             FIR
           </mat-checkbox>
         </td>
-        <td>
+        <td style="width:18ch">
           LP FIR
           <input type="number" class="lp-filter-input"
             [(ngModel)]="lpfFIRBWkHz"
@@ -125,8 +123,8 @@
             </mat-option>
           </mat-select>
         </td>
-        <td>
-          G FIR
+        <td style="width:18ch">
+          Gain FIR
           <mat-select style="width:6ch; background-color: white; margin: 1px;"
               [(value)]="settings.lpfFIRGain"
               (selectionChange)="setFIRGain()"
@@ -140,7 +138,7 @@
         </td>
         <td></td>
       </tr>
-      <!-- Gain mode, gain -->
+      <!-- Gain mode, gain, antenna -->
       <tr>
         <td>
           Gain
@@ -164,20 +162,47 @@
             max=70>
           dB
         </td>
-        <td></td>
+        <td>
+          Antenna
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.antennaPath"
+              (selectionChange)="setAntennaPath()"
+              matTooltip="Antenna path">
+            <mat-option *ngFor="let antennaPath of antennaPaths" [value]="antennaPath.value">
+              {{antennaPath.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!-- transverter mode, transverter frequency -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="transverterMode" (change)="setTransverterMode()" matTooltip="Transverter mode">
+            Transverter
+          </mat-checkbox>
+        </td>
+        <td colspan="2">
+          Freq:
+          <input type="number" class="xfrequency-input"
+            [(ngModel)]="settings.transverterDeltaFrequency"
+            (change)="setTransverterFrequency()"
+            matTooltip="Transverter frequency shift"
+          >
+          Hz
+        </td>
       </tr>
       <tr style="height: 3px;">
       </tr>
     </table>
     <table *ngIf="monitor">
       <tr>
-        <td>
+        <td style="width: 15ch">
           <span>Gain {{report ? report.gainDB : 0}} dB</span>
         </td>
-        <td>
+        <td style="width: 15ch">
           <span>RSSI {{report ? report.rssi : ""}}</span>
         </td>
-        <td>
+        <td style="width: 15ch">
           <span>Temp {{report ? report.temperature.toFixed(0) : 0}} C</span>
         </td>
       </tr>
