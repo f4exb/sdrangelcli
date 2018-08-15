@@ -1,5 +1,7 @@
 # Introduction
 
+**&#9888; WARNING: this is a work in progress**
+
 This is a browser based web client for [SDRangel SDR software](https://github.com/f4exb/sdrangel) Please click on the link to get more information.
 
 You may also ask questions about SDRangel or this web application in the [SDRangel group](https://groups.io/g/sdrangel) in groups.io
@@ -8,18 +10,18 @@ SDRangel is a Software Defined Radio (SDR) application that processes the digita
 
 This web application communicates with a SDRangel running instance (GUI based or headless) using its HTTP REST API. It is written based on Angular 6+ (see development section for more details).
 
-It can be used to remotely control a GUI based version of SDRangel and also serve as a UI for the headless version. Most of the functions can be accessed using this web interface. 
+It can be used to remotely control a GUI based version of SDRangel and also serve as a UI for the headless version. Most of the functions can be accessed using this web interface.
 
 # Prerequisites
 
 </br>
 #### Step 1. Node & Git
 
-* Make sure you have [Git](https://www.git-scm.com) installed 
+* Make sure you have [Git](https://www.git-scm.com) installed
 * Make sure you have [NodeJS 6.9+](https://nodejs.org/) or later installed on your machine
 * Make sure you have npm (Node Package Manager, comes bundled with NodeJS) at least version 5
 
-You can check whether you already have them and your current versions by executing 
+You can check whether you already have them and your current versions by executing
 
 ```bash
 git --version
@@ -46,11 +48,11 @@ git clone https://github.com/f4exb/sdrangelcli
 
 # install global dependencies
 npm install -g @angular/cli
- 
+
 # install local dependencies
 cd sdrangelcli
 npm install
- 
+
 # check that everything is working by running the following and opening http://localhost:4200 in your browser afterwards
 npm start
 ```
@@ -71,7 +73,7 @@ npm install http-server -g
 # in the sdrangelcli directory do
 http-server
 
-# By default http-server listens on all available network interfaces on port 8080. 
+# By default http-server listens on all available network interfaces on port 8080.
 # This can be changed with the options:
 #   -p <port>
 #   -a <address> This is the address of the network interface on the server
