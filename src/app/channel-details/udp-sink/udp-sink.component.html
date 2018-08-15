@@ -1,0 +1,181 @@
+<mat-card>
+    <mat-card-header class="channel-card-header channel-header-tx">
+      <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+        <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <button mat-button mat-raised-button
+          [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+          matTooltip="Monitor on/off"
+          (click)="toggleMonitor()">
+        <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      </button>&nbsp;
+      <app-channel-header class="channel-header-comp" channelType="UDPSink"
+          [basebandRate]="deviceBasebandRate"
+          [title]="settings.title"
+          [color]="rgbTitleStr"
+          (titleChanged)="onTitleChanged($event)"
+          (colorChanged)="onTitleColorChanged($event)" >
+      </app-channel-header>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- channel monitor (optional) -->
+        <tr *ngIf="monitor">
+          <td colspan="4">
+            <app-channel-monitor [value]=report.channelPowerDB
+              [min]="-120"
+              [max]="0"
+              squelch="true">
+            </app-channel-monitor>
+          </td>
+        </tr>
+        <!-- Frequency dial -->
+        <tr>
+          <td colspan="3">
+            <app-frequency-dial
+            [frequency]="channelCenterFrequencyKhz"
+            [min]="channelMinFrequencyKhz"
+            [max]="channelMaxFrequencyKhz"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+          </td>
+          <td style="width:15ch">
+              &#x394;f {{getDeltaFrequency()}} kHz
+          </td>
+        </tr>
+        <!-- Sample format, stereo, address, port -->
+        <tr>
+          <td>
+            Fmt
+            <mat-select style="width:15ch; background-color: white; margin: 1px;"
+                [(value)]="settings.sampleFormat"
+                (selectionChange)="setSampleFormat()"
+                matTooltip="Sample format">
+              <mat-option *ngFor="let sampleFormat of sampleFormats" [value]="sampleFormat.value">
+                {{sampleFormat.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="stereoInput" (change)="setStereoInput()" matTooltip="Stereo/mono input">
+              Stereo
+            </mat-checkbox>
+          </td>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+              [(ngModel)]="settings.udpAddress"
+              (change)="setAddress()"
+              matTooltip="Destination address">
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.udpPort"
+              (change)="setPort()"
+              matTooltip="Destination port"
+              min=1024 max=65535>
+          </td>
+        </tr>
+        <!-- Input sample rate, RF bandwidth, FM deviation, AM modulation percent -->
+        <tr>
+          <td>
+            SRin
+            <input type="number" class="sr-input"
+              [(ngModel)]="settings.inputSampleRate"
+              (change)="setSampleRate()"
+              matTooltip="Input sample rate"
+              min=8000 max=384000>
+            S/s
+          </td>
+          <td>
+            BW
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="rfBandwidthKhz"
+              (change)="setBandwidth()"
+              matTooltip="Channel bandwidth"
+              min=0 step=0.1>
+            kHz
+          </td>
+          <td>
+            FM&#x394; &#xb1;
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="fmDeviationKhz"
+              (change)="setFMDeviation()"
+              matTooltip="FM deviation"
+              step=0.1>
+            kHz
+          </td>
+          <td>
+            AM
+            <input type="number" class="volume-input"
+              [(ngModel)]="amPercent"
+              (change)="setAmModFactor()"
+              matTooltip="AM modulation"
+              min=0 max=100>
+            %
+          </td>
+          </tr>
+        <!-- squelch enabled, squelch, squelch gate, low cutoff -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="squelchEnabled" (change)="setSquelchEnabled()" matTooltip="Squelch enable">
+              Squelch
+            </mat-checkbox>
+          </td>
+          <td>
+            Level
+            <input type="number" class="volume-input"
+              [(ngModel)]="settings.squelch"
+              (change)="setSquelch()"
+              matTooltip="Squelch power threshold"
+              min=-100 max=0>
+            dB
+          </td>
+          <td>
+            Gate
+            <input type="number" class="volume-input"
+              [(ngModel)]="squelchGateMs"
+              (change)="setSquelchGate()"
+              matTooltip="Squelch threshold gate"
+              min=0 max=900 step=10>
+            ms
+          </td>
+          <td>
+            LF
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="lowCutoffKhz"
+              (change)="setLowCutoff()"
+              matTooltip="Channel filter low cutoff"
+              min=0 step=0.1>
+            kHz
+          </td>
+        </tr>
+        <!-- Gain in, gain out, auto R/W balance -->
+        <tr>
+          <td>
+            Gain in
+            <input type="number" class="volume-input"
+              [(ngModel)]="settings.gainIn"
+              (change)="setGainIn()"
+              matTooltip="Input gain"
+              min=0 max=10 step=0.1>
+          </td>
+          <td>
+            Gain out
+            <input type="number" class="volume-input"
+              [(ngModel)]="settings.gainOut"
+              (change)="setGainOut()"
+              matTooltip="Output gain"
+              min=0 max=10 step=0.1>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="autoRWBalance" (change)="setAutoRWBalance()" matTooltip="Auto buffer R/W balance">
+              R/W balance
+            </mat-checkbox>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>

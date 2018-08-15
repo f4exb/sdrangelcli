@@ -21,6 +21,7 @@ import { NfmModComponent } from './nfm-mod/nfm-mod.component';
 import { WfmModComponent } from './wfm-mod/wfm-mod.component';
 import { SsbModComponent } from './ssb-mod/ssb-mod.component';
 import { UdpSourceComponent } from './udp-source/udp-source.component';
+import { UdpSinkComponent } from './udp-sink/udp-sink.component';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import { UdpSourceComponent } from './udp-source/udp-source.component';
     NfmModComponent,
     WfmModComponent,
     SsbModComponent,
-    UdpSourceComponent
+    UdpSourceComponent,
+    UdpSinkComponent
   ]
 })
 export class ChannelDetailsModule { }
