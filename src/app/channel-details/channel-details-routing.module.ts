@@ -12,6 +12,7 @@ import { AmModComponent } from './am-mod/am-mod.component';
 import { NfmModComponent } from './nfm-mod/nfm-mod.component';
 import { WfmModComponent } from './wfm-mod/wfm-mod.component';
 import { SsbModComponent } from './ssb-mod/ssb-mod.component';
+import { UdpSourceComponent } from './udp-source/udp-source.component';
 
 export const routes: Routes = [
   {
@@ -53,6 +54,10 @@ export const routes: Routes = [
       {
         path: 'ssbmod',
         component: SsbModComponent
+      },
+      {
+        path: 'udpsrc',
+        component: UdpSourceComponent
       },
       {
         path: 'wfmmod',

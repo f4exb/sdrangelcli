@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UDPSrcSettings, UDPSrcReport } from './udp-source';
+import { UDPSrcSettings, UDPSrcReport, UDP_SOURCE_SETTINGS_DEFAULT, UDP_SOURCE_REPORT_DEFAULT } from './udp-source';
 import { Subscription, interval } from 'rxjs';
-import { AudioDeviceInfo } from '../nfm-demod/nfm-demod.component';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
@@ -45,8 +44,8 @@ export class UdpSourceComponent implements OnInit {
   deviceIndex : number;
   channelIndex: number;
   sdrangelURL : string;
-  settings: UDPSrcSettings;
-  report: UDPSrcReport;
+  settings: UDPSrcSettings = UDP_SOURCE_SETTINGS_DEFAULT;
+  report: UDPSrcReport = UDP_SOURCE_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   deviceStoreSubscription : Subscription;
@@ -116,7 +115,7 @@ export class UdpSourceComponent implements OnInit {
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "SSBDemod") {
+        if (channelSettings.channelType == "UDPSrc") {
           this.statusMessage = "OK";
           this.statusError = false;
           this.settings = channelSettings.UDPSrcSettings;
@@ -125,6 +124,7 @@ export class UdpSourceComponent implements OnInit {
           this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
           this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
           this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
+          this.fmDeviationKhz = this.settings.fmDeviation/1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.settings.volume = +this.settings.volume.toFixed(0);
@@ -133,8 +133,10 @@ export class UdpSourceComponent implements OnInit {
           this.audioStereo = this.settings.audioStereo !== 0;
           this.channelMute = this.settings.channelMute !== 0;
           this.squelchEnabled = this.settings.squelchEnabled !== 0;
+          this.settings.gain = +this.settings.gain.toFixed(1)
+          this.squelchGateMs = this.settings.squelchGate*10;
         } else {
-          this.statusMessage = "Not a SSBDemod channel";
+          this.statusMessage = "Not a UDPSrc channel";
           this.statusError = true;
         }
       }
@@ -240,4 +242,81 @@ export class UdpSourceComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setSampleFormat() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.sampleFormat = this.settings.sampleFormat;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAddress() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.udpAddress = this.settings.udpAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setPort() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.udpPort = this.settings.udpPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioPort() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.audioPort = this.settings.audioPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSampleRate() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.outputSampleRate = this.settings.outputSampleRate;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setBandwidth() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.rfBandwidth = this.rfBandwidthKhz*1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFMDeviation() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.fmDeviation = this.fmDeviationKhz*1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelchEnabled() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.squelchEnabled = this.squelchEnabled ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelch() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.squelchDB = this.settings.squelchDB;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setSquelchGate() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.squelchGate = this.squelchGateMs/10;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setGain() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.gain = this.settings.gain;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioActive() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.audioActive = this.audioActive ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAudioStereo() {
+    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    newSettings.audioStereo = this.audioStereo ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
 }

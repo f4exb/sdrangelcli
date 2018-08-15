@@ -43,12 +43,24 @@
     width: 6ch;
 }
 
+.address-input {
+    width: 15ch;
+}
+
+.port-input {
+    width: 7ch;
+}
+
 .squelch-input {
     width: 6ch;
 }
 
+.output-sr-input {
+    width: 8ch;
+}
+
 .rfbw-input {
-    width: 6ch;
+    width: 8ch;
 }
 
 td {

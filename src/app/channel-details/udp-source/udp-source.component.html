@@ -1,3 +1,176 @@
-<p>
-  udp-source works!
-</p>
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-rx">
+    <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <app-channel-header class="channel-header-comp" channelType="UDPSrc"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
+    </app-channel-header>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- channel monitor (optional) -->
+      <tr *ngIf="monitor">
+        <td colspan="4">
+          <app-channel-monitor [value]=report.channelPowerDB
+            [min]="-120"
+            [max]="0"
+            [squelch]="report.squelch !== 0">
+          </app-channel-monitor>
+        </td>
+      </tr>
+      <!-- Frequency dial -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+      </tr>
+      <!-- Sample format, address, port, audio port -->
+      <tr>
+        <td>
+          Fmt
+          <mat-select style="width:12ch; background-color: white; margin: 1px;"
+              [(value)]="settings.sampleFormat"
+              (selectionChange)="setSampleFormat()"
+              matTooltip="Sample format">
+            <mat-option *ngFor="let sampleFormat of sampleFormats" [value]="sampleFormat.value">
+              {{sampleFormat.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.udpAddress"
+            (change)="setAddress()"
+            matTooltip="Destination address">
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.udpPort"
+            (change)="setPort()"
+            matTooltip="Destination port"
+            min=1024 max=65535>
+        </td>
+        <td>
+          Audio
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.audioPort"
+            (change)="setAudioPort()"
+            matTooltip="Audio feedback port"
+            min=1024 max=65535>
+        </td>
+      </tr>
+      <!-- Output sample rate, RF bandwidth, FM deviation -->
+      <tr>
+        <td>
+          SRout
+          <input type="number" class="output-sr-input"
+            [(ngModel)]="settings.outputSampleRate"
+            (change)="setSampleRate()"
+            matTooltip="Output sample rate"
+            min=8000 max=384000>
+          S/s
+        </td>
+        <td>
+          BW
+          <input type="number" class="rfbw-input"
+            [(ngModel)]="rfBandwidthKhz"
+            (change)="setBandwidth()"
+            matTooltip="Channel bandwidth"
+            step=0.1>
+          kHz
+        </td>
+        <td>
+          FM&#x394; &#xb1;
+          <input type="number" class="rfbw-input"
+            [(ngModel)]="fmDeviationKhz"
+            (change)="setFMDeviation()"
+            matTooltip="Expected FM deviation"
+            step=0.1>
+          kHz
+        </td>
+        <td></td>
+      </tr>
+      <!-- squelch enabled, squelch, squelch gate, gain -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="squelchEnabled" (change)="setSquelchEnabled()" matTooltip="Squelch enable">
+            Squelch
+          </mat-checkbox>
+        </td>
+        <td>
+          Level
+          <input type="number" class="volume-input"
+            [(ngModel)]="settings.squelchDB"
+            (change)="setSquelch()"
+            matTooltip="Squelch power threshold"
+            min=-100 max=0>
+          dB
+        </td>
+        <td>
+          Gate
+          <input type="number" class="volume-input"
+            [(ngModel)]="squelchGateMs"
+            (change)="setSquelchGate()"
+            matTooltip="Squelch threshold gate"
+            min=0 max=900 step=10>
+          ms
+        </td>
+        <td>
+          Gain
+          <input type="number" class="volume-input"
+            [(ngModel)]="settings.gain"
+            (change)="setGain()"
+            matTooltip="Input gain"
+            min=0 max=10 step=0.1>
+        </td>
+      </tr>
+      <!-- AGC, Audio feedback, audio stereo, volume -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="agc" (change)="setAGC()" matTooltip="AGC (AM and SSB only)">
+            AGC
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioActive" (change)="setAudioActive()" matTooltip="Audio feedback on/off">
+            Audio
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioStereo" (change)="setAudioStereo()" matTooltip="Audio feedback stereo/mono">
+            Stereo
+          </mat-checkbox>
+        </td>
+        <td>
+          Vol
+          <input type="number" class="volume-input"
+            [(ngModel)]="settings.volume"
+            (change)="setVolume()"
+            matTooltip="Output volume"
+            min=0 max=100>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
