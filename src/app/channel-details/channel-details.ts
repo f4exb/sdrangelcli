@@ -8,6 +8,7 @@ import { AMModSettings, AMModReport } from "./am-mod/am-mod";
 import { NFMModReport, NFMModSettings } from "./nfm-mod/nfm-mod";
 import { WFMModSettings, WFMModReport } from "./wfm-mod/wfm-mod";
 import { SSBModReport, SSBModSettings } from "./ssb-mod/ssb-mod";
+import { UDPSrcReport, UDPSrcSettings } from "./udp-source/udp-source";
 
 export interface ChannelSettings {
     channelType: string,
@@ -21,6 +22,7 @@ export interface ChannelSettings {
     AMModSettings?: AMModSettings,
     NFMModSettings?: NFMModSettings,
     SSBModSettings?: SSBModSettings,
+    UDPSrcSettings?: UDPSrcSettings,
     WFMModSettings?: WFMModSettings
 }
 
@@ -34,6 +36,7 @@ export interface ChannelReport {
     AMModReport?: AMModReport,
     NFMModReport?: NFMModReport,
     SSBModReport?: SSBModReport,
+    UDPSrcReport?: UDPSrcReport,
     WFMModReport?: WFMModReport,
     channelType: string,
     tx: number

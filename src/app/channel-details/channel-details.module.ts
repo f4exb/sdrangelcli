@@ -20,6 +20,7 @@ import { CwKeyerComponent } from './cw-keyer/cw-keyer.component';
 import { NfmModComponent } from './nfm-mod/nfm-mod.component';
 import { WfmModComponent } from './wfm-mod/wfm-mod.component';
 import { SsbModComponent } from './ssb-mod/ssb-mod.component';
+import { UdpSourceComponent } from './udp-source/udp-source.component';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { SsbModComponent } from './ssb-mod/ssb-mod.component';
     CwKeyerComponent,
     NfmModComponent,
     WfmModComponent,
-    SsbModComponent
+    SsbModComponent,
+    UdpSourceComponent
   ]
 })
 export class ChannelDetailsModule { }
