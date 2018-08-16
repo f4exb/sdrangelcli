@@ -162,7 +162,7 @@
             min=0 max=10 step=0.1>
         </td>
       </tr>
-      <!-- AGC, Audio feedback, audio stereo, volume -->
+      <!-- AGC, Audio feedback, audio stereo, audio volume -->
       <tr>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="agc" (change)="setAGC()" matTooltip="AGC (AM and SSB only)">
@@ -184,7 +184,7 @@
           <input type="number" class="volume-input"
             [(ngModel)]="settings.volume"
             (change)="setVolume()"
-            matTooltip="Output volume"
+            matTooltip="Audio feedback volume"
             min=0 max=100>
         </td>
       </tr>

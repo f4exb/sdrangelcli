@@ -1,3 +1,5 @@
+![SDR Angel CLI banner](doc/img/sdrangelcli.png)
+
 # Introduction
 
 **&#9888; WARNING: this is a work in progress**
