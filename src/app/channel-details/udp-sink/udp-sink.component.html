@@ -18,17 +18,45 @@
       </app-channel-header>
     </mat-card-header>
     <mat-card-content>
-      <table>
-        <!-- channel monitor (optional) -->
-        <tr *ngIf="monitor">
-          <td colspan="4">
-            <app-channel-monitor [value]=report.channelPowerDB
+      <!-- channel monitor (optional) -->
+      <table *ngIf="monitor">
+        <tr>
+          <td>
+            <span matTooltip="Channel input power">In</span>
+          </td>
+          <td colspan="3">
+            <app-channel-monitor [value]="report.inputPowerDB"
               [min]="-120"
               [max]="0"
-              squelch="true">
+              [squelch]="report.squelch !== 0">
             </app-channel-monitor>
           </td>
         </tr>
+        <tr>
+          <td>
+            <span matTooltip="Channel output power">Out</span>
+          </td>
+          <td colspan="3">
+            <app-channel-monitor [value]="report.channelPowerDB"
+              [min]="-120"
+              [max]="0"
+              [squelch]="report.squelch !== 0">
+            </app-channel-monitor>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span matTooltip="Buffer read/write balance (center is 0%)">R/W</span>
+          </td>
+          <td colspan="3">
+            <app-buffer-gauge [value]="report.bufferGauge"
+              min=-50
+              max=50>
+            </app-buffer-gauge>
+          </td>
+        </tr>
+      </table>
+      <table>
         <!-- Frequency dial -->
         <tr>
           <td colspan="3">
@@ -77,7 +105,7 @@
               min=1024 max=65535>
           </td>
         </tr>
-        <!-- Input sample rate, RF bandwidth, FM deviation, AM modulation percent -->
+        <!-- Input sample rate, RF bandwidth, FM deviation, low cutoff -->
         <tr>
           <td>
             SRin
@@ -98,25 +126,25 @@
             kHz
           </td>
           <td>
-            FM&#x394; &#xb1;
+            LF
             <input type="number" class="rfbw-input"
+              [(ngModel)]="lowCutoffKhz"
+              (change)="setLowCutoff()"
+              matTooltip="Channel filter low cutoff"
+              min=0 step=0.1>
+            kHz
+          </td>
+          <td>
+            FM&#x394;
+            <input type="number" class="volume-input"
               [(ngModel)]="fmDeviationKhz"
               (change)="setFMDeviation()"
               matTooltip="FM deviation"
               step=0.1>
             kHz
           </td>
-          <td>
-            AM
-            <input type="number" class="volume-input"
-              [(ngModel)]="amPercent"
-              (change)="setAmModFactor()"
-              matTooltip="AM modulation"
-              min=0 max=100>
-            %
-          </td>
-          </tr>
-        <!-- squelch enabled, squelch, squelch gate, low cutoff -->
+        </tr>
+        <!-- squelch enabled, squelch, squelch gate, AM modulation percent -->
         <tr>
           <td>
             <mat-checkbox color="primary" [(ngModel)]="squelchEnabled" (change)="setSquelchEnabled()" matTooltip="Squelch enable">
@@ -142,13 +170,13 @@
             ms
           </td>
           <td>
-            LF
-            <input type="number" class="rfbw-input"
-              [(ngModel)]="lowCutoffKhz"
-              (change)="setLowCutoff()"
-              matTooltip="Channel filter low cutoff"
-              min=0 step=0.1>
-            kHz
+            AM
+            <input type="number" class="volume-input"
+              [(ngModel)]="amPercent"
+              (change)="setAmModFactor()"
+              matTooltip="AM modulation"
+              min=0 max=100>
+            %
           </td>
         </tr>
         <!-- Gain in, gain out, auto R/W balance -->

@@ -1,0 +1,7 @@
+<div style="width: 55ch; height: 1.9em; margin-top: 6px;">
+  <mat-progress-bar mode="determinate" [value]="getNegativePercentage()" class="fill-bar" matTooltip="Write leads"></mat-progress-bar>
+  <mat-progress-bar mode="determinate" [value]="getPositivePercentage()" class="fill-bar" matTooltip="Read leads"></mat-progress-bar>
+  <div style="position:relative; top: -1em; left: 41ch;">
+    {{value.toFixed(0)}} %
+  </div>
+</div>

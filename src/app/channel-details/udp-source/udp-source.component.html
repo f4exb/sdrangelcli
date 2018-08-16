@@ -18,17 +18,34 @@
     </app-channel-header>
   </mat-card-header>
   <mat-card-content>
-    <table>
-      <!-- channel monitor (optional) -->
-      <tr *ngIf="monitor">
-        <td colspan="4">
-          <app-channel-monitor [value]=report.channelPowerDB
+    <!-- channel monitor (optional) -->
+    <table *ngIf="monitor">
+      <tr>
+        <td>
+          <span matTooltip="Channel input power">In</span>
+        </td>
+        <td colspan="3" style="width:60ch">
+          <app-channel-monitor [value]="report.channelPowerDB"
             [min]="-120"
             [max]="0"
             [squelch]="report.squelch !== 0">
           </app-channel-monitor>
         </td>
       </tr>
+      <tr>
+        <td>
+          <span matTooltip="Channel output power">Out</span>
+        </td>
+        <td colspan="3" style="width:60ch">
+          <app-channel-monitor [value]="report.outputPowerDB"
+            [min]="-120"
+            [max]="0"
+            [squelch]="report.squelch !== 0">
+          </app-channel-monitor>
+        </td>
+      </tr>
+    </table>
+    <table>
       <!-- Frequency dial -->
       <tr>
         <td colspan="3">
@@ -102,7 +119,7 @@
         </td>
         <td>
           FM&#x394; &#xb1;
-          <input type="number" class="rfbw-input"
+          <input type="number" class="volume-input"
             [(ngModel)]="fmDeviationKhz"
             (change)="setFMDeviation()"
             matTooltip="Expected FM deviation"
