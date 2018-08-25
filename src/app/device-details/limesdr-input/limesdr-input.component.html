@@ -1,13 +1,13 @@
 <mat-card class="deviceset-card">
   <mat-card-header class="device-card-header device-header-rx">
     <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
-      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
     </button>&nbsp;
     <button mat-button mat-raised-button
         [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
         matTooltip="Monitor on/off"
         (click)="toggleMonitor()">
-      <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
     </button>&nbsp;
     <span class="device-label">LimeSDR input {{getSampleRate()/1000}} kS/s ADC {{getADCSampleRate()/1000}} kS/s</span>
   </mat-card-header>

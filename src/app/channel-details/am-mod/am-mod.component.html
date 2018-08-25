@@ -1,13 +1,13 @@
 <mat-card>
   <mat-card-header class="channel-card-header channel-header-tx">
     <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
-      <img src="/assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
     </button>&nbsp;
     <button mat-button mat-raised-button
         [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
         matTooltip="Monitor on/off"
         (click)="toggleMonitor()">
-      <img src="/assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
     </button>&nbsp;
     <app-channel-header class="channel-header-comp" channelType="AMMod"
         [basebandRate]="deviceBasebandRate"

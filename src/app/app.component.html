@@ -5,37 +5,37 @@
   <input type="text" class="input-card" [(ngModel)]="sdrangelURL" name="sdrangelURL" size="40" matTooltip="URL of the instance to connect to">
   &nbsp;
   <button mat-button class="button-card" (click)="validateURL()" matTooltip="validate URL">
-    <img src="/assets/icons/if_checkmark.svg" style="height:16px; width:16px"/>
+    <img src="./assets/icons/if_checkmark.svg" style="height:16px; width:16px"/>
   </button>
   &nbsp;
   <button mat-button class="button-card"  matTooltip="Instance summary" routerLink="/summary">
-    <img src="/assets/icons/home_icon.svg" style="height:16px; width:16px"/>
+    <img src="./assets/icons/home_icon.svg" style="height:16px; width:16px"/>
   </button>
   &nbsp;
   <button mat-button class="button-card button-green"  matTooltip="Add source device set" (click)="addDevicesetDialog(false)">
-    <img src="/assets/icons/add_circle.svg" style="height:16px; width:16px;"/>
+    <img src="./assets/icons/add_circle.svg" style="height:16px; width:16px;"/>
   </button>
   <button mat-button class="button-card button-red button-margin"  matTooltip="Add sink device set" (click)="addDevicesetDialog(true)">
-      <img src="/assets/icons/add_circle.svg" style="height:16px; width:16px;"/>
+      <img src="./assets/icons/add_circle.svg" style="height:16px; width:16px;"/>
   </button>
   <button mat-button class="button-card button-margin"  matTooltip="Remove last device set" (click)="removeLastDevicesetDialog()">
-      <img src="/assets/icons/minus_circle.svg" style="height:16px; width:16px;"/>
+      <img src="./assets/icons/minus_circle.svg" style="height:16px; width:16px;"/>
   </button>
   &nbsp;
   <button mat-button class="button-card"  matTooltip="Audio output devices" routerLink="/audio/out">
-      <img src="/assets/icons/speaker_icon.svg" style="height:16px; width:16px;"/>
+      <img src="./assets/icons/speaker_icon.svg" style="height:16px; width:16px;"/>
   </button>
   <button mat-button class="button-card button-margin"  matTooltip="Audio input devices" routerLink="/audio/in">
-      <img src="/assets/icons/microphone_icon.svg" style="height:16px; width:16px;"/>
+      <img src="./assets/icons/microphone_icon.svg" style="height:16px; width:16px;"/>
   </button>
   <button mat-button class="button-card button-margin"  matTooltip="Set logging options" (click)="openLoggingDialog()">
-      <img src="/assets/icons/log_icon.svg" style="height:16px; width:16px;"/>
+      <img src="./assets/icons/log_icon.svg" style="height:16px; width:16px;"/>
   </button>
   <button mat-button class="button-card button-margin"  matTooltip="Set station location" (click)="openLocationDialog()">
-      <img src="/assets/icons/location_icon.svg" style="height:16px; width:10px;"/>
+      <img src="./assets/icons/location_icon.svg" style="height:16px; width:10px;"/>
   </button>
   <button mat-button class="button-card button-margin"  matTooltip="Manage presets" routerLink="/presets">
-    <img src="/assets/icons/star.svg" style="height:14px; width:14px; padding-top: 1px"/>
+    <img src="./assets/icons/star.svg" style="height:14px; width:14px; padding-top: 1px"/>
 </button>
 </mat-card>
 <router-outlet></router-outlet>
