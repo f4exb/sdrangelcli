@@ -1,0 +1,53 @@
+<mat-card>
+    <mat-card-header class="channel-card-header channel-header-tx">
+      <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+        <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <button mat-button mat-raised-button
+          [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+          matTooltip="Monitor on/off"
+          (click)="toggleMonitor()">
+        <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      </button>&nbsp;
+      <app-channel-header class="channel-header-comp" channelType="DaemonSrc"
+          [basebandRate]="deviceBasebandRate"
+          [title]="settings.title"
+          [color]="rgbTitleStr"
+          (titleChanged)="onTitleChanged($event)"
+          (colorChanged)="onTitleColorChanged($event)" >
+      </app-channel-header>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- channel monitor (optional) -->
+      <table *ngIf="monitor">
+      </table>
+      <table>
+        <!-- address, port -->
+        <tr>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+              [(ngModel)]="settings.dataAddress"
+              (change)="setDataAddress()"
+              matTooltip="Local data listener address">
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.dataPort"
+              (change)="setDataPort()"
+              matTooltip="Local data listener port"
+              min=1024 max=65535>
+          </td>
+        </tr>
+      </table>
+      <!-- empty footer -->
+      <table>
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+    </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

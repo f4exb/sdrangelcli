@@ -47,6 +47,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "BFMDemod") {
           this.router.navigate(['bfmdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType == "DaemonSrc") {
+          this.router.navigate(['daemonsource'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "DSDDemod") {
           this.router.navigate(['dsddemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "NFMDemod") {
