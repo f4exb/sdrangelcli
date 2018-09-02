@@ -29,6 +29,14 @@ export class DaemonSourceComponent implements OnInit {
   monitor: boolean;
   deviceStoreSubscription : Subscription;
   channelReportSubscription: Subscription;
+  lastTimestampUs: number;
+  lastCorrectableCount: number;
+  lastUncorrectableCount: number;
+  lastSampleCount: number;
+  deltaTimestampUs: number;
+  deltaCorrectableCount: number;
+  deltaUncorrectableCount: number;
+  deltaSampleCount: number;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -39,6 +47,14 @@ export class DaemonSourceComponent implements OnInit {
     this.deviceStoreSubscription = null;
     this.channelReportSubscription = null;
     this.monitor = false;
+    this.lastTimestampUs = 0;
+    this.lastCorrectableCount = 0;
+    this.lastUncorrectableCount = 0;
+    this.lastSampleCount = 0;
+    this.deltaTimestampUs = 0;
+    this.deltaCorrectableCount = 0;
+    this.deltaUncorrectableCount = 0;
+    this.deltaSampleCount = 0;
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
     });
@@ -126,6 +142,22 @@ export class DaemonSourceComponent implements OnInit {
             channelReport => {
               if (channelReport.channelType === "DaemonSrc") {
                 this.report = channelReport.SDRDaemonChannelSourceReport;
+                let timestampUs = this.report.tvSec*1000000 + this.report.tvUSec;
+                if (this.lastTimestampUs === 0) {
+                  this.lastTimestampUs = timestampUs;
+                }
+                if (this.report.samplesCount < this.lastSampleCount) {
+                  this.deltaSampleCount = (0xFFFFFFFF - this.lastSampleCount) + this.report.samplesCount + 1;
+                } else {
+                  this.deltaSampleCount = this.report.samplesCount - this.lastSampleCount;
+                }
+                this.deltaCorrectableCount = this.report.correctableErrorsCount - this.lastCorrectableCount;
+                this.deltaUncorrectableCount = this.report.uncorrectableErrorsCount - this.lastUncorrectableCount;
+                this.deltaTimestampUs = timestampUs - this.lastTimestampUs;
+                this.lastTimestampUs = timestampUs;
+                this.lastSampleCount = this.report.samplesCount;
+                this.lastCorrectableCount = this.report.correctableErrorsCount;
+                this.lastUncorrectableCount = this.report.uncorrectableErrorsCount;
               }
             }
           )
@@ -134,7 +166,20 @@ export class DaemonSourceComponent implements OnInit {
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
+      this.lastTimestampUs = 0;
+      this.lastCorrectableCount = 0;
+      this.lastUncorrectableCount = 0;
+      this.lastSampleCount = 0;
+      this.deltaTimestampUs = 0;
+      this.deltaCorrectableCount = 0;
+      this.deltaUncorrectableCount = 0;
+      this.deltaSampleCount = 0;
     }
+  }
+
+  toggleMonitor() {
+    this.monitor = !this.monitor;
+    this.enableReporting(this.monitor);
   }
 
   onTitleColorChanged(colorStr: string) {
@@ -169,5 +214,41 @@ export class DaemonSourceComponent implements OnInit {
     const newSettings: SDRDaemonChannelSourceSettings = <SDRDaemonChannelSourceSettings>{};
     newSettings.dataPort = this.settings.dataPort;
     this.setDeviceSettings(newSettings);
+  }
+
+  getQueuePercentage() : number {
+    return (this.report.queueLength * 100) / this.report.queueSize
+  }
+
+  getStreamSampleRate() : number {
+    if (this.deltaTimestampUs == 0) {
+      return 0;
+    } else {
+      return (this.deltaSampleCount * 1e6) / this.deltaTimestampUs;
+    }
+  }
+
+  getStreamStatusColor() : string {
+    if (this.deltaSampleCount === 0) {
+      return "blue";
+    } else if (this.deltaUncorrectableCount !== 0) {
+      return "red";
+    } else if (this.deltaCorrectableCount !== 0) {
+      return "grey";
+    } else {
+      return "green";
+    }
+  }
+
+  getStreamStatusText() : string {
+    if (this.deltaSampleCount === 0) {
+      return "Not streaming";
+    } else if (this.deltaUncorrectableCount !== 0) {
+      return "Data lost";
+    } else if (this.deltaCorrectableCount !== 0) {
+      return "Data corrected";
+    } else {
+      return "Streaming OK";
+    }
   }
 }

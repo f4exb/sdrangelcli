@@ -13,9 +13,13 @@ export const DAEMON_SOURCE_SETTINGS_DEFAULT = {
 }
 
 export interface SDRDaemonChannelSourceReport {
+    centerFreq: number,
     correctableErrorsCount: number,
+    nbFECBlocks: number,
+    nbOriginalBlocks: number,
     queueLength: number,
     queueSize: number,
+    sampleRate: number,
     samplesCount: number,
     tvSec: number,
     tvUSec: number,
@@ -23,11 +27,15 @@ export interface SDRDaemonChannelSourceReport {
 }
 
 export const DAEMON_SOURCE_REPORT_DEFAULT = {
+    centerFreq: 434900,
     correctableErrorsCount: 0,
-    queueLength: 0,
-    queueSize: 10,
-    samplesCount: 0,
-    tvSec: 1535770914,
-    tvUSec: 340834,
+    nbFECBlocks: 8,
+    nbOriginalBlocks: 128,
+    queueLength: 18,
+    queueSize: 32,
+    sampleRate: 75000,
+    samplesCount: 101481494,
+    tvSec: 1535913707,
+    tvUSec: 667575,
     uncorrectableErrorsCount: 0
 }

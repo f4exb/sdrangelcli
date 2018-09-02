@@ -20,6 +20,37 @@
     <mat-card-content>
       <!-- channel monitor (optional) -->
       <table *ngIf="monitor">
+        <tr>
+          <td>
+            <span matTooltip="Stream center frequency setting">Freq {{report.centerFreq}} kHz</span>
+          </td>
+          <td>
+            <span matTooltip="Stream nominal sample rate">SR {{report.sampleRate}} S/s</span>
+          </td>
+          <td>
+            <span matTooltip="Nb total blocks/Nb FEC blocks per frame">FEC {{report.nbOriginalBlocks+report.nbFECBlocks}}/{{report.nbFECBlocks}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <mat-progress-bar mode="determinate" [value]="getQueuePercentage()" class="fill-bar" matTooltip="Queue fill ratio"></mat-progress-bar>
+          </td>
+          <td>
+            <span matTooltip="Queue length/Queue size">{{report.queueLength}}/{{report.queueSize}} ({{((report.queueLength*100)/report.queueSize).toFixed(0)}}%)</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span matTooltip="Stream pumping rate and status">Pull SR {{getStreamSampleRate().toFixed(0)}} S/s </span>
+            <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getStreamStatusColor()}" [matTooltip]="getStreamStatusText()"></i>
+          </td>
+          <td style="width: 15ch">
+            <span matTooltip="Correctable errors (current/total)">Corr {{deltaCorrectableCount}}/{{report.correctableErrorsCount}}</span>
+          </td>
+          <td style="width: 15ch">
+            <span matTooltip="Uncorrectable errors (current/total)">Uncorr {{deltaUncorrectableCount}}/{{report.uncorrectableErrorsCount}}</span>
+          </td>
+        </tr>
       </table>
       <table>
         <!-- address, port -->
