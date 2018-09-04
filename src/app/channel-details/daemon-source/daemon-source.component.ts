@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SDRDaemonChannelSourceSettings, DAEMON_SOURCE_SETTINGS_DEFAULT, SDRDaemonChannelSourceReport, DAEMON_SOURCE_REPORT_DEFAULT } from './daemon-source';
+import { DaemonSourceSettings, DAEMON_SOURCE_SETTINGS_DEFAULT, DaemonSourceReport, DAEMON_SOURCE_REPORT_DEFAULT } from './daemon-source';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
@@ -18,8 +18,8 @@ export class DaemonSourceComponent implements OnInit {
   deviceIndex : number;
   channelIndex: number;
   sdrangelURL : string;
-  settings: SDRDaemonChannelSourceSettings = DAEMON_SOURCE_SETTINGS_DEFAULT;
-  report: SDRDaemonChannelSourceReport = DAEMON_SOURCE_REPORT_DEFAULT;
+  settings: DaemonSourceSettings = DAEMON_SOURCE_SETTINGS_DEFAULT;
+  report: DaemonSourceReport = DAEMON_SOURCE_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   statusMessage: string;
@@ -104,7 +104,7 @@ export class DaemonSourceComponent implements OnInit {
         if (channelSettings.channelType == "DaemonSrc") {
           this.statusMessage = "OK";
           this.statusError = false;
-          this.settings = channelSettings.SDRDaemonChannelSourceSettings;
+          this.settings = channelSettings.DaemonSourceSettings;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
         } else {
@@ -115,11 +115,11 @@ export class DaemonSourceComponent implements OnInit {
     )
   }
 
-  private setDeviceSettings(daemonSourceSettings : SDRDaemonChannelSourceSettings) {
+  private setDeviceSettings(daemonSourceSettings : DaemonSourceSettings) {
     const settings : ChannelSettings = <ChannelSettings>{};
     settings.channelType = "DaemonSrc";
     settings.tx = 1,
-    settings.SDRDaemonChannelSourceSettings = daemonSourceSettings;
+    settings.DaemonSourceSettings = daemonSourceSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
         console.log("Set settings OK", res);
@@ -141,7 +141,7 @@ export class DaemonSourceComponent implements OnInit {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
               if (channelReport.channelType === "DaemonSrc") {
-                this.report = channelReport.SDRDaemonChannelSourceReport;
+                this.report = channelReport.DaemonSourceReport;
                 let timestampUs = this.report.tvSec*1000000 + this.report.tvUSec;
                 if (this.lastTimestampUs === 0) {
                   this.lastTimestampUs = timestampUs;
@@ -188,7 +188,7 @@ export class DaemonSourceComponent implements OnInit {
   }
 
   setTitleColor() {
-    const newSettings: SDRDaemonChannelSourceSettings = <SDRDaemonChannelSourceSettings>{};
+    const newSettings: DaemonSourceSettings = <DaemonSourceSettings>{};
     newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
     this.setDeviceSettings(newSettings);
   }
@@ -199,19 +199,19 @@ export class DaemonSourceComponent implements OnInit {
   }
 
   setTitle() {
-    const newSettings: SDRDaemonChannelSourceSettings = <SDRDaemonChannelSourceSettings>{};
+    const newSettings: DaemonSourceSettings = <DaemonSourceSettings>{};
     newSettings.title = this.settings.title;
     this.setDeviceSettings(newSettings);
   }
 
   setDataAddress() {
-    const newSettings: SDRDaemonChannelSourceSettings = <SDRDaemonChannelSourceSettings>{};
+    const newSettings: DaemonSourceSettings = <DaemonSourceSettings>{};
     newSettings.dataAddress = this.settings.dataAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setDataPort() {
-    const newSettings: SDRDaemonChannelSourceSettings = <SDRDaemonChannelSourceSettings>{};
+    const newSettings: DaemonSourceSettings = <DaemonSourceSettings>{};
     newSettings.dataPort = this.settings.dataPort;
     this.setDeviceSettings(newSettings);
   }

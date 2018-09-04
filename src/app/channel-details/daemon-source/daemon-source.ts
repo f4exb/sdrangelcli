@@ -1,4 +1,4 @@
-export interface SDRDaemonChannelSourceSettings {
+export interface DaemonSourceSettings {
     dataAddress: string,
     dataPort: number,
     rgbColor: number,
@@ -12,7 +12,7 @@ export const DAEMON_SOURCE_SETTINGS_DEFAULT = {
     title: "Daemon channel source"
 }
 
-export interface SDRDaemonChannelSourceReport {
+export interface DaemonSourceReport {
     centerFreq: number,
     correctableErrorsCount: number,
     nbFECBlocks: number,
