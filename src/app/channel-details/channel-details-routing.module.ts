@@ -15,6 +15,7 @@ import { SsbModComponent } from './ssb-mod/ssb-mod.component';
 import { UdpSourceComponent } from './udp-source/udp-source.component';
 import { UdpSinkComponent } from './udp-sink/udp-sink.component';
 import { DaemonSourceComponent } from './daemon-source/daemon-source.component';
+import { DaemonSinkComponent } from './daemon-sink/daemon-sink.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,10 @@ export const routes: Routes = [
       {
         path: 'bfmdemod',
         component: BfmDemodComponent
+      },
+      {
+        path: 'daemonsink',
+        component: DaemonSinkComponent
       },
       {
         path: 'daemonsource',

@@ -11,6 +11,7 @@ import { SSBModReport, SSBModSettings } from "./ssb-mod/ssb-mod";
 import { UDPSrcReport, UDPSrcSettings } from "./udp-source/udp-source";
 import { UDPSinkSettings, UDPSinkReport } from "./udp-sink/udp-sink";
 import { DaemonSourceSettings, DaemonSourceReport } from "./daemon-source/daemon-source";
+import { DaemonSinkSettings } from "./daemon-sink/daemon-sink";
 
 export interface ChannelSettings {
     channelType: string,
@@ -24,6 +25,7 @@ export interface ChannelSettings {
     AMModSettings?: AMModSettings,
     NFMModSettings?: NFMModSettings,
     DaemonSourceSettings?: DaemonSourceSettings,
+    DaemonSinkSettings?: DaemonSinkSettings,
     SSBModSettings?: SSBModSettings,
     UDPSinkSettings?: UDPSinkSettings,
     UDPSrcSettings?: UDPSrcSettings,

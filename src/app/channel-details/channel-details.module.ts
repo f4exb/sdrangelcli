@@ -23,6 +23,7 @@ import { SsbModComponent } from './ssb-mod/ssb-mod.component';
 import { UdpSourceComponent } from './udp-source/udp-source.component';
 import { UdpSinkComponent } from './udp-sink/udp-sink.component';
 import { DaemonSourceComponent } from './daemon-source/daemon-source.component';
+import { DaemonSinkComponent } from './daemon-sink/daemon-sink.component';
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { DaemonSourceComponent } from './daemon-source/daemon-source.component';
     SsbModComponent,
     UdpSourceComponent,
     UdpSinkComponent,
-    DaemonSourceComponent
+    DaemonSourceComponent,
+    DaemonSinkComponent
   ]
 })
 export class ChannelDetailsModule { }
