@@ -149,4 +149,16 @@ export class DaemonSinkComponent implements OnInit {
     newSettings.dataPort = this.settings.dataPort;
     this.setDeviceSettings(newSettings);
   }
+
+  setNbFECBlocks() {
+    const newSettings: DaemonSinkSettings = <DaemonSinkSettings>{};
+    newSettings.nbFECBlocks = this.settings.nbFECBlocks;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setTxDelay() {
+    const newSettings: DaemonSinkSettings = <DaemonSinkSettings>{};
+    newSettings.txDelay = this.settings.txDelay;
+    this.setDeviceSettings(newSettings);
+  }
 }
