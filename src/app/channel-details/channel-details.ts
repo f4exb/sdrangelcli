@@ -8,7 +8,7 @@ import { AMModSettings, AMModReport } from "./am-mod/am-mod";
 import { NFMModReport, NFMModSettings } from "./nfm-mod/nfm-mod";
 import { WFMModSettings, WFMModReport } from "./wfm-mod/wfm-mod";
 import { SSBModReport, SSBModSettings } from "./ssb-mod/ssb-mod";
-import { UDPSrcReport, UDPSrcSettings } from "./udp-source/udp-source";
+import { UDPSrcReport, UDPSrcSettings } from "./udp-src/udp-src";
 import { UDPSinkSettings, UDPSinkReport } from "./udp-sink/udp-sink";
 import { DaemonSourceSettings, DaemonSourceReport } from "./daemon-source/daemon-source";
 import { DaemonSinkSettings } from "./daemon-sink/daemon-sink";

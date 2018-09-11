@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UDPSrcSettings, UDPSrcReport, UDP_SOURCE_SETTINGS_DEFAULT, UDP_SOURCE_REPORT_DEFAULT } from './udp-source';
+import { UDPSrcSettings, UDPSrcReport, UDP_SRC_SETTINGS_DEFAULT, UDP_SRC_REPORT_DEFAULT } from './udp-src';
 import { Subscription, interval } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
@@ -15,11 +15,11 @@ interface SampleFormat {
 }
 
 @Component({
-  selector: 'app-udp-source',
-  templateUrl: './udp-source.component.html',
-  styleUrls: ['./udp-source.component.css']
+  selector: 'app-udp-src',
+  templateUrl: './udp-src.component.html',
+  styleUrls: ['./udp-src.component.css']
 })
-export class UdpSourceComponent implements OnInit {
+export class UdpSrcComponent implements OnInit {
   sampleFormats: SampleFormat[] = [
     {value: 0, viewValue: "I/Q 16bits"},
     {value: 1, viewValue: "I/Q 24bits"},
@@ -44,8 +44,8 @@ export class UdpSourceComponent implements OnInit {
   deviceIndex : number;
   channelIndex: number;
   sdrangelURL : string;
-  settings: UDPSrcSettings = UDP_SOURCE_SETTINGS_DEFAULT;
-  report: UDPSrcReport = UDP_SOURCE_REPORT_DEFAULT;
+  settings: UDPSrcSettings = UDP_SRC_SETTINGS_DEFAULT;
+  report: UDPSrcReport = UDP_SRC_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   deviceStoreSubscription : Subscription;

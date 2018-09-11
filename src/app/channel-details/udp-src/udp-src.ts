@@ -20,7 +20,7 @@ export interface UDPSrcSettings {
     volume: number
 }
 
-export const UDP_SOURCE_SETTINGS_DEFAULT = {
+export const UDP_SRC_SETTINGS_DEFAULT = {
     agc: 0,
     audioActive: 0,
     audioPort: 9997,
@@ -48,7 +48,7 @@ export interface UDPSrcReport {
     squelch: number
 }
 
-export const UDP_SOURCE_REPORT_DEFAULT = {
+export const UDP_SRC_REPORT_DEFAULT = {
     channelPowerDB: -3.778681755065918,
     inputSampleRate: 64000,
     squelch: 1

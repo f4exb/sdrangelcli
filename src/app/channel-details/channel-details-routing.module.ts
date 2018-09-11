@@ -12,7 +12,7 @@ import { AmModComponent } from './am-mod/am-mod.component';
 import { NfmModComponent } from './nfm-mod/nfm-mod.component';
 import { WfmModComponent } from './wfm-mod/wfm-mod.component';
 import { SsbModComponent } from './ssb-mod/ssb-mod.component';
-import { UdpSourceComponent } from './udp-source/udp-source.component';
+import { UdpSrcComponent } from './udp-src/udp-src.component';
 import { UdpSinkComponent } from './udp-sink/udp-sink.component';
 import { DaemonSourceComponent } from './daemon-source/daemon-source.component';
 import { DaemonSinkComponent } from './daemon-sink/daemon-sink.component';
@@ -72,7 +72,7 @@ export const routes: Routes = [
       },
       {
         path: 'udpsrc',
-        component: UdpSourceComponent
+        component: UdpSrcComponent
       },
       {
         path: 'wfmmod',
