@@ -9,7 +9,7 @@ import { NFMModReport, NFMModSettings } from "./nfm-mod/nfm-mod";
 import { WFMModSettings, WFMModReport } from "./wfm-mod/wfm-mod";
 import { SSBModReport, SSBModSettings } from "./ssb-mod/ssb-mod";
 import { UDPSrcReport, UDPSrcSettings } from "./udp-src/udp-src";
-import { UDPSinkSettings, UDPSinkReport } from "./udp-sink/udp-sink";
+import { UDPSourceSettings, UDPSourceReport } from "./udp-source/udp-source";
 import { DaemonSourceSettings, DaemonSourceReport } from "./daemon-source/daemon-source";
 import { DaemonSinkSettings } from "./daemon-sink/daemon-sink";
 
@@ -27,7 +27,7 @@ export interface ChannelSettings {
     DaemonSourceSettings?: DaemonSourceSettings,
     DaemonSinkSettings?: DaemonSinkSettings,
     SSBModSettings?: SSBModSettings,
-    UDPSinkSettings?: UDPSinkSettings,
+    UDPSourceSettings?: UDPSourceSettings,
     UDPSrcSettings?: UDPSrcSettings,
     WFMModSettings?: WFMModSettings
 }
@@ -43,7 +43,7 @@ export interface ChannelReport {
     NFMModReport?: NFMModReport,
     DaemonSourceReport?: DaemonSourceReport,
     SSBModReport?: SSBModReport,
-    UDPSinkReport?: UDPSinkReport,
+    UDPSourceReport?: UDPSourceReport,
     UDPSrcReport?: UDPSrcReport,
     WFMModReport?: WFMModReport,
     channelType: string,

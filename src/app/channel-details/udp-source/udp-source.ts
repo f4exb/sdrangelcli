@@ -1,4 +1,4 @@
-export interface UDPSinkSettings {
+export interface UDPSourceSettings {
     amModFactor: number,
     autoRWBalance: number,
     channelMute: number,
@@ -20,7 +20,7 @@ export interface UDPSinkSettings {
     udpPort: number
 }
 
-export const UDP_SINK_SETTINGS_DEFAULT = {
+export const UDP_SOURCE_SETTINGS_DEFAULT = {
     amModFactor: 0.949999988079071,
     autoRWBalance: 1,
     channelMute: 0,
@@ -42,12 +42,12 @@ export const UDP_SINK_SETTINGS_DEFAULT = {
     udpPort: 9998
 }
 
-export interface UDPSinkReport {
+export interface UDPSourceReport {
     channelPowerDB: number,
     channelSampleRate: number
 }
 
-export const UDP_SINK_REPORT_DEFAULT = {
+export const UDP_SOURCE_REPORT_DEFAULT = {
     channelPowerDB: -120,
     channelSampleRate: 50000
 }

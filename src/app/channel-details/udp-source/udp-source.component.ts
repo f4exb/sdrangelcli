@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UDPSinkSettings, UDP_SINK_SETTINGS_DEFAULT, UDPSinkReport, UDP_SINK_REPORT_DEFAULT } from './udp-sink';
+import { UDPSourceSettings, UDP_SOURCE_SETTINGS_DEFAULT, UDPSourceReport, UDP_SOURCE_REPORT_DEFAULT } from './udp-source';
 import { Subscription, interval } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
@@ -15,11 +15,11 @@ interface SampleFormat {
 }
 
 @Component({
-  selector: 'app-udp-sink',
-  templateUrl: './udp-sink.component.html',
-  styleUrls: ['./udp-sink.component.css']
+  selector: 'app-udp-source',
+  templateUrl: './udp-source.component.html',
+  styleUrls: ['./udp-source.component.css']
 })
-export class UdpSinkComponent implements OnInit {
+export class UdpSourceComponent implements OnInit {
   sampleFormats: SampleFormat[] = [
     {value: 0, viewValue: "SnLE I/Q"},
     {value: 1, viewValue: "S16LE NFM"},
@@ -39,8 +39,8 @@ export class UdpSinkComponent implements OnInit {
   deviceIndex : number;
   channelIndex: number;
   sdrangelURL : string;
-  settings: UDPSinkSettings = UDP_SINK_SETTINGS_DEFAULT;
-  report: UDPSinkReport = UDP_SINK_REPORT_DEFAULT;
+  settings: UDPSourceSettings = UDP_SOURCE_SETTINGS_DEFAULT;
+  report: UDPSourceReport = UDP_SOURCE_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   deviceStoreSubscription : Subscription;
@@ -110,10 +110,10 @@ export class UdpSinkComponent implements OnInit {
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "UDPSink") {
+        if (channelSettings.channelType == "UDPSource") {
           this.statusMessage = "OK";
           this.statusError = false;
-          this.settings = channelSettings.UDPSinkSettings;
+          this.settings = channelSettings.UDPSourceSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
           this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
           this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
@@ -132,18 +132,18 @@ export class UdpSinkComponent implements OnInit {
           this.settings.gainOut = +this.settings.gainOut.toFixed(1)
           this.squelchGateMs = +(this.settings.squelchGate*1000).toFixed(0);
         } else {
-          this.statusMessage = "Not a UDPSink channel";
+          this.statusMessage = "Not a UDPSource channel";
           this.statusError = true;
         }
       }
     )
   }
 
-  private setDeviceSettings(udpSinkSettings : UDPSinkSettings) {
+  private setDeviceSettings(udpSinkSettings : UDPSourceSettings) {
     const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "UDPSink";
+    settings.channelType = "UDPSource";
     settings.tx = 1,
-    settings.UDPSinkSettings = udpSinkSettings;
+    settings.UDPSourceSettings = udpSinkSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
         console.log("Set settings OK", res);
@@ -164,8 +164,8 @@ export class UdpSinkComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "UDPSink") {
-                this.report = channelReport.UDPSinkReport;
+              if (channelReport.channelType === "UDPSource") {
+                this.report = channelReport.UDPSourceReport;
               }
             }
           )
@@ -188,7 +188,7 @@ export class UdpSinkComponent implements OnInit {
   }
 
   setCenterFrequency() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.inputFrequencyOffset = this.channelCenterFrequencyKhz * 1000 - this.deviceCenterFrequency;
     this.setDeviceSettings(newSettings);
   }
@@ -204,7 +204,7 @@ export class UdpSinkComponent implements OnInit {
   }
 
   setTitleColor() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
     this.setDeviceSettings(newSettings);
   }
@@ -215,63 +215,63 @@ export class UdpSinkComponent implements OnInit {
   }
 
   setTitle() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.title = this.settings.title;
     this.setDeviceSettings(newSettings);
   }
 
   setChannelMute() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.channelMute = this.channelMute ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setGainIn() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.gainIn = this.settings.gainIn;
     this.setDeviceSettings(newSettings);
   }
 
   setGainOut() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.gainOut = this.settings.gainOut;
     this.setDeviceSettings(newSettings);
   }
 
   setSampleFormat() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.sampleFormat = this.settings.sampleFormat;
     this.setDeviceSettings(newSettings);
   }
 
   setAddress() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.udpAddress = this.settings.udpAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setPort() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.udpPort = this.settings.udpPort;
     this.setDeviceSettings(newSettings);
   }
 
   setSampleRate() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.inputSampleRate = this.settings.inputSampleRate;
     this.setDeviceSettings(newSettings);
   }
 
   setBandwidth() {
     this.validateLowCutoff();
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.rfBandwidth = this.rfBandwidthKhz*1000;
     this.setDeviceSettings(newSettings);
   }
 
   setLowCutoff() {
     this.validateLowCutoff();
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.lowCutoff = this.lowCutoffKhz*1000;
     this.setDeviceSettings(newSettings);
   }
@@ -285,43 +285,43 @@ export class UdpSinkComponent implements OnInit {
   }
 
   setFMDeviation() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.fmDeviation = this.fmDeviationKhz*1000;
     this.setDeviceSettings(newSettings);
   }
 
   setAmModFactor() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.amModFactor = this.amPercent/100;
     this.setDeviceSettings(newSettings);
   }
 
   setSquelchEnabled() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.squelchEnabled = this.squelchEnabled ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setSquelch() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.squelch = this.settings.squelch;
     this.setDeviceSettings(newSettings);
   }
 
   setSquelchGate() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.squelchGate = this.squelchGateMs/1000;
     this.setDeviceSettings(newSettings);
   }
 
   setStereoInput() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.stereoInput = this.stereoInput ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setAutoRWBalance() {
-    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.autoRWBalance = this.autoRWBalance ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }

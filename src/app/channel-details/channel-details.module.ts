@@ -21,7 +21,7 @@ import { NfmModComponent } from './nfm-mod/nfm-mod.component';
 import { WfmModComponent } from './wfm-mod/wfm-mod.component';
 import { SsbModComponent } from './ssb-mod/ssb-mod.component';
 import { UdpSrcComponent } from './udp-src/udp-src.component';
-import { UdpSinkComponent } from './udp-sink/udp-sink.component';
+import { UdpSourceComponent } from './udp-source/udp-source.component';
 import { DaemonSourceComponent } from './daemon-source/daemon-source.component';
 import { DaemonSinkComponent } from './daemon-sink/daemon-sink.component';
 
@@ -56,7 +56,7 @@ import { DaemonSinkComponent } from './daemon-sink/daemon-sink.component';
     WfmModComponent,
     SsbModComponent,
     UdpSrcComponent,
-    UdpSinkComponent,
+    UdpSourceComponent,
     DaemonSourceComponent,
     DaemonSinkComponent
   ]

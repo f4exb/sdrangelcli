@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UdpSinkComponent } from './udp-sink.component';
+import { UdpSourceComponent } from './udp-source.component';
 import { ChannelHeaderComponent } from '../channel-header/channel-header.component';
 import { ChannelMonitorComponent } from '../channel-monitor/channel-monitor.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
@@ -11,13 +11,13 @@ import { CommonComponentsModule } from '../../common-components/common-component
 import { ColorPickerModule } from 'ngx-color-picker';
 
 describe('UdpSinkComponent', () => {
-  let component: UdpSinkComponent;
-  let fixture: ComponentFixture<UdpSinkComponent>;
+  let component: UdpSourceComponent;
+  let fixture: ComponentFixture<UdpSourceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        UdpSinkComponent ,
+        UdpSourceComponent ,
         ChannelHeaderComponent,
         ChannelMonitorComponent
       ],
@@ -42,7 +42,7 @@ describe('UdpSinkComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UdpSinkComponent);
+    fixture = TestBed.createComponent(UdpSourceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
