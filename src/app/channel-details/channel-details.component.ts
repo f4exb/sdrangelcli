@@ -49,7 +49,7 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['bfmdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "DaemonSink") {
           this.router.navigate(['daemonsink'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "DaemonSrc") {
+        } else if (channelSettings.channelType == "DaemonSource") {
           this.router.navigate(['daemonsource'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "DSDDemod") {
           this.router.navigate(['dsddemod'], { relativeTo: this.route});

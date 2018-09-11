@@ -101,14 +101,14 @@ export class DaemonSourceComponent implements OnInit {
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "DaemonSrc") {
+        if (channelSettings.channelType == "DaemonSource") {
           this.statusMessage = "OK";
           this.statusError = false;
           this.settings = channelSettings.DaemonSourceSettings;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
         } else {
-          this.statusMessage = "Not a DaemonSrc channel";
+          this.statusMessage = "Not a DaemonSource channel";
           this.statusError = true;
         }
       }
@@ -117,7 +117,7 @@ export class DaemonSourceComponent implements OnInit {
 
   private setDeviceSettings(daemonSourceSettings : DaemonSourceSettings) {
     const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "DaemonSrc";
+    settings.channelType = "DaemonSource";
     settings.tx = 1,
     settings.DaemonSourceSettings = daemonSourceSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
@@ -140,7 +140,7 @@ export class DaemonSourceComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "DaemonSrc") {
+              if (channelReport.channelType === "DaemonSource") {
                 this.report = channelReport.DaemonSourceReport;
                 let timestampUs = this.report.tvSec*1000000 + this.report.tvUSec;
                 if (this.lastTimestampUs === 0) {
