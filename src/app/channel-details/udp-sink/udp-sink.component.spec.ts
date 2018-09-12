@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UdpSrcComponent } from './udp-src.component';
+import { UdpSinkComponent } from './udp-sink.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule, MatProgressBarModule } from '@angular/material';
@@ -11,13 +11,13 @@ import { ChannelHeaderComponent } from '../channel-header/channel-header.compone
 import { ChannelMonitorComponent } from '../channel-monitor/channel-monitor.component';
 
 describe('UdpSourceComponent', () => {
-  let component: UdpSrcComponent;
-  let fixture: ComponentFixture<UdpSrcComponent>;
+  let component: UdpSinkComponent;
+  let fixture: ComponentFixture<UdpSinkComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        UdpSrcComponent,
+        UdpSinkComponent,
         ChannelHeaderComponent,
         ChannelMonitorComponent
       ],
@@ -42,7 +42,7 @@ describe('UdpSourceComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UdpSrcComponent);
+    fixture = TestBed.createComponent(UdpSinkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UDPSrcSettings, UDPSrcReport, UDP_SRC_SETTINGS_DEFAULT, UDP_SRC_REPORT_DEFAULT } from './udp-src';
+import { UDPSinkSettings, UDPSinkReport, UDP_SINK_SETTINGS_DEFAULT, UDP_SINK_REPORT_DEFAULT } from './udp-sink';
 import { Subscription, interval } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
@@ -15,11 +15,11 @@ interface SampleFormat {
 }
 
 @Component({
-  selector: 'app-udp-src',
-  templateUrl: './udp-src.component.html',
-  styleUrls: ['./udp-src.component.css']
+  selector: 'app-udp-sink',
+  templateUrl: './udp-sink.component.html',
+  styleUrls: ['./udp-sink.component.css']
 })
-export class UdpSrcComponent implements OnInit {
+export class UdpSinkComponent implements OnInit {
   sampleFormats: SampleFormat[] = [
     {value: 0, viewValue: "I/Q 16bits"},
     {value: 1, viewValue: "I/Q 24bits"},
@@ -44,8 +44,8 @@ export class UdpSrcComponent implements OnInit {
   deviceIndex : number;
   channelIndex: number;
   sdrangelURL : string;
-  settings: UDPSrcSettings = UDP_SRC_SETTINGS_DEFAULT;
-  report: UDPSrcReport = UDP_SRC_REPORT_DEFAULT;
+  settings: UDPSinkSettings = UDP_SINK_SETTINGS_DEFAULT;
+  report: UDPSinkReport = UDP_SINK_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   deviceStoreSubscription : Subscription;
@@ -115,10 +115,10 @@ export class UdpSrcComponent implements OnInit {
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "UDPSrc") {
+        if (channelSettings.channelType == "UDPSink") {
           this.statusMessage = "OK";
           this.statusError = false;
-          this.settings = channelSettings.UDPSrcSettings;
+          this.settings = channelSettings.UDPSinkSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
           this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
           this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
@@ -136,18 +136,18 @@ export class UdpSrcComponent implements OnInit {
           this.settings.gain = +this.settings.gain.toFixed(1)
           this.squelchGateMs = this.settings.squelchGate*10;
         } else {
-          this.statusMessage = "Not a UDPSrc channel";
+          this.statusMessage = "Not a UDPSink channel";
           this.statusError = true;
         }
       }
     )
   }
 
-  private setDeviceSettings(udpSrcSettings : UDPSrcSettings) {
+  private setDeviceSettings(udpSrcSettings : UDPSinkSettings) {
     const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "UDPSrc";
+    settings.channelType = "UDPSink";
     settings.tx = 0,
-    settings.UDPSrcSettings = udpSrcSettings;
+    settings.UDPSinkSettings = udpSrcSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
         console.log("Set settings OK", res);
@@ -168,8 +168,8 @@ export class UdpSrcComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "UDPSrc") {
-                this.report = channelReport.UDPSrcReport;
+              if (channelReport.channelType === "UDPSink") {
+                this.report = channelReport.UDPSinkReport;
               }
             }
           )
@@ -192,7 +192,7 @@ export class UdpSrcComponent implements OnInit {
   }
 
   setCenterFrequency() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.inputFrequencyOffset = this.channelCenterFrequencyKhz * 1000 - this.deviceCenterFrequency;
     this.setDeviceSettings(newSettings);
   }
@@ -208,7 +208,7 @@ export class UdpSrcComponent implements OnInit {
   }
 
   setTitleColor() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
     this.setDeviceSettings(newSettings);
   }
@@ -219,103 +219,103 @@ export class UdpSrcComponent implements OnInit {
   }
 
   setTitle() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.title = this.settings.title;
     this.setDeviceSettings(newSettings);
   }
 
   setChannelMute() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.channelMute = this.channelMute ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setVolume() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.volume = this.settings.volume;
     this.setDeviceSettings(newSettings);
   }
 
   setAGC() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.agc = this.agc ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setSampleFormat() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.sampleFormat = this.settings.sampleFormat;
     this.setDeviceSettings(newSettings);
   }
 
   setAddress() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.udpAddress = this.settings.udpAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setPort() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.udpPort = this.settings.udpPort;
     this.setDeviceSettings(newSettings);
   }
 
   setAudioPort() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.audioPort = this.settings.audioPort;
     this.setDeviceSettings(newSettings);
   }
 
   setSampleRate() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.outputSampleRate = this.settings.outputSampleRate;
     this.setDeviceSettings(newSettings);
   }
 
   setBandwidth() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.rfBandwidth = this.rfBandwidthKhz*1000;
     this.setDeviceSettings(newSettings);
   }
 
   setFMDeviation() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.fmDeviation = this.fmDeviationKhz*1000;
     this.setDeviceSettings(newSettings);
   }
 
   setSquelchEnabled() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.squelchEnabled = this.squelchEnabled ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setSquelch() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.squelchDB = this.settings.squelchDB;
     this.setDeviceSettings(newSettings);
   }
 
   setSquelchGate() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.squelchGate = this.squelchGateMs/10;
     this.setDeviceSettings(newSettings);
   }
 
   setGain() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.gain = this.settings.gain;
     this.setDeviceSettings(newSettings);
   }
 
   setAudioActive() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.audioActive = this.audioActive ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setAudioStereo() {
-    const newSettings: UDPSrcSettings = <UDPSrcSettings>{};
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.audioStereo = this.audioStereo ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }

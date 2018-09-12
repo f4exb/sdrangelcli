@@ -67,8 +67,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['ssbmod'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "UDPSource") {
           this.router.navigate(['udpsource'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "UDPSrc") {
-          this.router.navigate(['udpsrc'], { relativeTo: this.route});
+        } else if (channelSettings.channelType == "UDPSink") {
+          this.router.navigate(['udpsink'], { relativeTo: this.route});
         } else if (channelSettings.channelType == "WFMMod") {
           this.router.navigate(['wfmmod'], { relativeTo: this.route});
         } else {
