@@ -37,8 +37,8 @@ export const AVAILABLE_DEVICES_MOCK = {
       },
       {
         deviceSetIndex: 0,
-        displayedName: "BladeRF[0] be03e42993b64f736d82f705f393d0c3",
-        hwType: "BladeRF",
+        displayedName: "BladeRF1[0] be03e42993b64f736d82f705f393d0c3",
+        hwType: "BladeRF1",
         index: 1,
         nbStreams: 1,
         sequence: 0,

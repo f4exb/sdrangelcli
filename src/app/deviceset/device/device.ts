@@ -8,7 +8,7 @@ export interface Device {
     serial?: string,
     state: string,
     streamIndex: number,
-    tx: number    
+    tx: number
   }
 
   export const DEVICE_MOCK1 = {
@@ -21,20 +21,20 @@ export interface Device {
     serial: "5257-8100b3-640040-51006e",
     state: "running",
     streamIndex: 0,
-    tx: 0    
+    tx: 0
   }
 
   export const DEVICE_MOCK2 = {
     bandwidth: 600000,
     centerFrequency: 145480000,
-    hwType: "BladeRF",
+    hwType: "BladeRF1",
     index: 1,
     nbStreams: 1,
     sequence: 0,
     serial: "be03e42993b64f736d82f705f393d0c3",
     state: "running",
     streamIndex: 0,
-    tx: 0    
+    tx: 0
   }
 
   export const DEVICE_TX_MOCK = {
@@ -47,5 +47,5 @@ export interface Device {
     serial: "453c64c8214d178f",
     state: "idle",
     streamIndex: 0,
-    tx: 1    
+    tx: 1
   }
