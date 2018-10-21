@@ -147,9 +147,9 @@ describe('InstanceSummaryComponent many device sets', () => {
   it('should have 3 device sets', () => {
     expect(component.instanceSummary.devicesetlist.devicesetcount).toBe(3);
     expect(component.instanceSummary.devicesetlist.deviceSets).toBeDefined();
-    expect(component.instanceSummary.devicesetlist.deviceSets[0]).toBeDefined();
-    expect(component.instanceSummary.devicesetlist.deviceSets[1]).toBeDefined();
-    expect(component.instanceSummary.devicesetlist.deviceSets[2]).toBeDefined();
+    expect(component.instanceSummary.devicesetlist.deviceSets.slice(0)).toBeDefined();
+    expect(component.instanceSummary.devicesetlist.deviceSets.slice(1)).toBeDefined();
+    expect(component.instanceSummary.devicesetlist.deviceSets.slice(2)).toBeDefined();
   });
 
 });
