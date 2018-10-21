@@ -61,6 +61,8 @@ npm start
 
 # Build and serve
 
+## Build
+
 ```bash
 # build
 cd sdrangelcli
@@ -69,6 +71,11 @@ ng build
 # This will create a dist/sdrangelcli directory that will contain the application
 # You can copy or move sdrangelcli directory wherever you like
 
+```
+
+## Serve directly
+
+```bash
 # Install a simple node.js server
 npm install http-server -g
 
@@ -81,6 +88,49 @@ http-server
 #   -a <address> This is the address of the network interface on the server
 
 ```
+
+## Serve with supervisord
+
+We will not cover supervisord setup and jump into the creation of a `.conf` file for `sdrangelcli`.
+
+Assumptions:
+  - the distribution is installed in `/opt/build/sdrangelcli/dist/sdrangelcli`
+  - the network interface address is `192.168.2.1` and port `8001` will be used
+  - the user name is `f4exb`
+
+You may adapt it to your own needs.
+
+Create a `/etc/supervisor.d/sdrangelcli.conf` with this content:
+
+```bash
+[program:sdrangelcli]
+directory = /opt/build/sdrangelcli/dist/sdrangelcli
+command = http-server -a 192.168.2.1 -p 8001
+process_name = sdrangelcli
+user = f4exb
+stopsignal = INT
+autostart = false
+autorestart = false
+environment =
+    USER=f4exb,
+    PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl",
+    HOME="/home/f4exb"
+redirect_stderr = true
+stdout_logfile = /home/f4exb/log/sdrangelcli.log
+stdout_logfile_maxbytes = 10MB
+stdout_logfile_backups = 3
+loglevel = debug
+```
+
+In `/etc/supervisord.conf` add `/etc/supervisor.d/sdrangelcli.conf` to the list of processes controlled by `supervisord`:
+
+```bash
+...
+[include]
+files = /etc/supervisor.d/sdrangelsrv.conf /etc/supervisor.d/sdrangelcli.conf
+```
+
+Reload supervisord configuration with `sudo systemctl reload supervisord`
 
 # Development
 
