@@ -150,7 +150,7 @@ export class NfmDemodComponent implements OnInit {
           this.settings.volume = +this.settings.volume.toFixed(1);
           this.audioMute = this.settings.audioMute !== 0;
           this.afBandwidthKhz = this.settings.afBandwidth/1000;
-          this.squelchDb = this.settings.squelch / 10;
+          this.squelchDb = this.settings.squelch;
           this.squelchGate = this.settings.squelchGate * 10;
           this.deltaSquelch = this.settings.deltaSquelch !== 0;
           this.ctcss = this.settings.ctcssOn !== 0;
@@ -294,7 +294,7 @@ export class NfmDemodComponent implements OnInit {
 
   setSquelch() {
     const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
-    newSettings.squelch = this.squelchDb * 10;
+    newSettings.squelch = this.squelchDb;
     this.setDeviceSettings(newSettings);
   }
 
