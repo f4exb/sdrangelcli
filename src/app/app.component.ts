@@ -20,6 +20,7 @@ export class AppComponent {
   constructor(private sdrangelUrlService: SdrangelUrlService,
     private popupDialog: MatDialog,
     private elementRef: ElementRef) {
+      this.sdrangelURL = "http://" + window.location.hostname + ":8091/sdrangel";
   }
 
   validateURL() {
