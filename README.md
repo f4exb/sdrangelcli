@@ -152,7 +152,7 @@ Reload supervisord configuration with `sudo systemctl reload supervisord`
 
 # Development
 
-##Prerequisites
+## Prerequisites
 
 ### Step 1. Configure your IDE
 
