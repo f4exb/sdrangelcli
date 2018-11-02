@@ -16,7 +16,6 @@ It can be used to remotely control a GUI based version of SDRangel and also serv
 
 # Prerequisites
 
-</br>
 ## Step 1. Node & Git
 
 * Make sure you have [Git](https://www.git-scm.com) installed
@@ -59,7 +58,7 @@ sudo zypper in nodejs npm
 ```bash
 sudo npm install npm -g
 ```
-</br>
+
 ## Step 2. Clone the repository and set up environment
 
 ```bash
@@ -155,7 +154,6 @@ Reload supervisord configuration with `sudo systemctl reload supervisord`
 
 ##Prerequisites
 
-<br/>
 ### Step 1. Configure your IDE
 
 We'll be wring code using TypeScript and Angular, so it would be nice to have at least code highlighting and autocompletion.
@@ -163,7 +161,6 @@ We recommend using:
 
 * [Visual Studio Code (free)](https://code.visualstudio.com/Download) - After the installation, run the IDE and make sure the recommended extensions are installed as described in this [guide](https://code.visualstudio.com/docs/editor/extension-gallery#_workspace-recommended-extensions). All extensions are listed under `.vscode/extension.json` and can be viewed in the UI using "Show workspace recommended extensions" filter.
 
-</br>
 ### Step 2. Install Angular Augury plugin
 
 If you're using Chrome it might be a good idea to install the [Augury Plugin](https://augury.angular.io) that will help debugging Angular applications
