@@ -41,7 +41,9 @@ export class DeviceDetailsComponent implements OnInit {
     this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSet => {
         this.isTx = deviceSet.samplingDevice.tx !== 0;
-        if (deviceSet.samplingDevice.hwType == "AirspyHF") {
+        if (deviceSet.samplingDevice.hwType == "Airspy") {
+          this.router.navigate(['airspy'], { relativeTo: this.route});
+        } else if (deviceSet.samplingDevice.hwType == "AirspyHF") {
           this.router.navigate(['airspyhf'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType == "HackRF") {
           if (deviceSet.samplingDevice.tx === 0) {

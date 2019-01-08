@@ -8,10 +8,12 @@ import { LimeSDROutputSettings, LimeSDROutputReport } from "./limesdr-output/lim
 import { PlutoSDRInputSettings, PlutoSDRInputReport } from "./plutosdr-input/plutosdr-input";
 import { PlutoSDROutputReport, PlutoSDROutputSettings } from "./plutosdr-output/plutosdr-output";
 import { PerseusSettings, PerseusReport } from "./perseus/perseus";
+import { AirspySettings, AirspyReport } from "./airspy/airspy";
 
 export interface DeviceSettings {
     deviceHwType: string,
     tx: number,
+    airspySettings?: AirspySettings,
     airspyHFSettings?: AirspyHFSettings,
     hackRFInputSettings?: HackRFInputSettings,
     hackRFOutputSettings?: HackRFOutputSettings,
@@ -27,6 +29,7 @@ export interface DeviceSettings {
 export interface DeviceReport {
     deviceHwType: string,
     tx: number,
+    airspyReport?: AirspyReport,
     limeSdrInputReport?: LimeSDRInputReport,
     limeSdrOutputReport?: LimeSDROutputReport,
     perseusReport?: PerseusReport,
