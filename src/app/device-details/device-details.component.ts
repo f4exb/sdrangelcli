@@ -45,6 +45,11 @@ export class DeviceDetailsComponent implements OnInit {
           this.router.navigate(['airspy'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType == "AirspyHF") {
           this.router.navigate(['airspyhf'], { relativeTo: this.route});
+        } else if (deviceSet.samplingDevice.hwType == "BladeRF1") {
+          if (deviceSet.samplingDevice.tx === 0) {
+            this.router.navigate(['bladerf1in'], { relativeTo: this.route});
+          } else {
+          }
         } else if (deviceSet.samplingDevice.hwType == "HackRF") {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['hackrfin'], { relativeTo: this.route});

@@ -13,6 +13,7 @@ import { PlutosdrInputComponent } from './plutosdr-input/plutosdr-input.componen
 import { PlutosdrOutputComponent } from './plutosdr-output/plutosdr-output.component';
 import { PerseusComponent } from './perseus/perseus.component';
 import { AirspyComponent } from './airspy/airspy.component';
+import { Bladerf1InputComponent } from './bladerf1-input/bladerf1-input.component';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,10 @@ export const routes: Routes = [
       {
         path: 'airspyhf',
         component: AirspyhfComponent
+      },
+      {
+        path: 'bladerf1in',
+        component: Bladerf1InputComponent
       },
       {
         path: 'hackrfin',

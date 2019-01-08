@@ -1,0 +1,137 @@
+<mat-card class="deviceset-card">
+  <mat-card-header class="device-card-header device-header-rx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="device-label">BladeRF1 input {{getSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Frequency -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="centerFreqKhz"
+          min=0
+          max=3800000
+          tooltip="Center frequency"
+          [steps]="frequencySteps"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+      </tr>
+      <!--- XB200, DC, IQ -->
+      <tr>
+        <td>
+          xb200
+          <mat-select style="width:11ch; background-color: white; margin: 1px;"
+              [(value)]="xb200FilterIndex"
+              (selectionChange)="setXb200()"
+              matTooltip="XB200 board management">
+            <mat-option *ngFor="let xb200Filter of xb200Filters" [value]="xb200Filter.value">
+              {{xb200Filter.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+            DC block
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
+            IQ correction
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- RFBW, LNA -->
+      <tr>
+        <td>
+          RFBW
+          <mat-select style="width:7ch; background-color: white; margin: 1px;"
+              [(value)]="settings.bandwidth"
+              (selectionChange)="setBandwidth()"
+              matTooltip="RF Bandwidth">
+            <mat-option *ngFor="let bandwidth of bandwidths" [value]="bandwidth.value">
+              {{bandwidth.viewValue}}
+            </mat-option>
+          </mat-select>
+          MHz
+        </td>
+        <td>
+            LNA
+            <mat-select style="width:5ch; background-color: white; margin: 1px;"
+                [(value)]="settings.lnaGain"
+                (selectionChange)="setLnaGain()"
+                matTooltip="RF Bandwidth">
+              <mat-option *ngFor="let lnaGain of lnaGains" [value]="lnaGain.value">
+                {{lnaGain.viewValue}}
+              </mat-option>
+            </mat-select>
+            dB
+        </td>
+        <td></td>
+      </tr>
+      <!--- Sample rate, Decimation, Fc pos -->
+      <tr>
+        <td>
+          SR
+          <input type="number" class="sample-rate-input"
+            [(ngModel)]="settings.devSampleRate"
+            (change)="setSampleRate()"
+            matTooltip="Sample rate">
+          S/s
+        </td>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Fc pos
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.fcPos"
+              (selectionChange)="setFcPos()"
+              matTooltip="Center frequency position">
+            <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
+              {{fcPos.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!--- VGA1, VGA2 -->
+      <tr>
+        <td>
+          VGA1
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.vga1"
+            (change)="setVga1()"
+            matTooltip="VGA1 gain"
+            min=5 max=30>
+          dB
+        </td>
+        <td>
+          VGA2
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.vga2"
+            (change)="setVga2()"
+            matTooltip="VGA2 gain"
+            min=0 max=30 step=3>
+          dB
+        </td>
+        <td></td>
+      </tr>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

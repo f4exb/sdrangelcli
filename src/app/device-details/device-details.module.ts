@@ -17,6 +17,7 @@ import { PlutosdrInputComponent } from './plutosdr-input/plutosdr-input.componen
 import { PlutosdrOutputComponent } from './plutosdr-output/plutosdr-output.component';
 import { PerseusComponent } from './perseus/perseus.component';
 import { AirspyComponent } from './airspy/airspy.component';
+import { Bladerf1InputComponent } from './bladerf1-input/bladerf1-input.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { AirspyComponent } from './airspy/airspy.component';
     PlutosdrInputComponent,
     PlutosdrOutputComponent,
     PerseusComponent,
-    AirspyComponent
+    AirspyComponent,
+    Bladerf1InputComponent
   ]
 })
 export class DeviceDetailsModule { }
