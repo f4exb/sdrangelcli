@@ -20,12 +20,16 @@
           </app-frequency-dial>
         </td>
       </tr>
-      <!--- BiasT, DC, IQ -->
+      <!--- LO ppm, DC, IQ -->
       <tr>
         <td>
-          <mat-checkbox color="primary" [(ngModel)]="biasTee" (change)="setBiasTee()" matTooltip="Bias tee">
-            Bias tee
-          </mat-checkbox>
+          LO
+          <input type="number" class="loppm-input"
+            [(ngModel)]="loPPM"
+            (change)="setLoPPM()"
+            matTooltip="LO correction"
+            min=-20 max=20 step=0.1>
+          ppm
         </td>
         <td>
           <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
@@ -38,19 +42,33 @@
           </mat-checkbox>
         </td>
       </tr>
-      <!--- RFBW, Gain mode, Global gain -->
+      <!--- RFBW -->
       <tr>
         <td>
           RFBW
           <input type="number" class="bandwidth-input"
-            [(value)]="settings.bandwidth"
+            [(ngModel)]="bandwidthKhz"
             (change)="setBandwidth()"
             matTooltip="RF Bandwidth">
-          Hz
+          kHz
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!--- Global gain, Gain mode, Bias tee -->
+      <tr>
+        <td>
+          Gain
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.globalGain"
+            (change)="setGlobalGain()"
+            matTooltip="Global gain"
+            min=-16 max=60>
+          dB
         </td>
         <td>
-          Gain mode
-          <mat-select style="width:5ch; background-color: white; margin: 1px;"
+          Mode
+          <mat-select style="width:9ch; background-color: white; margin: 1px;"
               [(value)]="settings.gainMode"
               (selectionChange)="setGainMode()"
               matTooltip="Gain mode">
@@ -60,13 +78,9 @@
           </mat-select>
         </td>
         <td>
-          Gain
-          <input type="number" class="gain-input"
-            [(ngModel)]="settings.globalGain"
-            (change)="setGlobalGain()"
-            matTooltip="Global gain"
-            min=0 max=30>
-          dB
+          <mat-checkbox color="primary" [(ngModel)]="biasTee" (change)="setBiasTee()" matTooltip="Bias tee">
+            Bias tee
+          </mat-checkbox>
         </td>
       </tr>
       <!--- Sample rate, Decimation, Fc pos -->

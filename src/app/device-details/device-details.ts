@@ -34,7 +34,7 @@ export interface DeviceReport {
     deviceHwType: string,
     tx: number,
     airspyReport?: AirspyReport,
-    bladeRF2Report?: any,
+    bladeRF2InputReport?: any,
     limeSdrInputReport?: LimeSDRInputReport,
     limeSdrOutputReport?: LimeSDROutputReport,
     perseusReport?: PerseusReport,

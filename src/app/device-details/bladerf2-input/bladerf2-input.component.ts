@@ -52,6 +52,7 @@ export class Bladerf2InputComponent implements OnInit {
   sdrangelURL : string;
   settings: BladeRF2Settings = BLADERF2_SETTINGS_DEFAULT;
   centerFreqKhz: number;
+  bandwidthKhz: number;
   dcBlock: boolean;
   iqCorrection: boolean;
   loPPM: number;
@@ -84,8 +85,10 @@ export class Bladerf2InputComponent implements OnInit {
           this.statusError = false;
           this.settings = deviceSettings.bladeRF2InputSettings;
           this.centerFreqKhz = this.settings.centerFrequency/1000;
+          this.bandwidthKhz = this.settings.bandwidth/1000;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
+          this.loPPM = this.settings.LOppmTenths / 10;
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.transverterMode = this.settings.transverterMode !== 0;
           this.biasTee = this.settings.biasTee !== 0;
@@ -104,7 +107,7 @@ export class Bladerf2InputComponent implements OnInit {
         if (deviceSettings.deviceHwType === "BladeRF2") {
           this.statusMessage = "OK";
           this.statusError = false;
-          let reportedGainModes = deviceSettings.bladeRF2Report["gainModes"];
+          let reportedGainModes = deviceSettings.bladeRF2InputReport["gainModes"];
           this.gainModes = [];
           reportedGainModes.forEach(element => {
             let reportedGainModeName = element["name"];
@@ -131,7 +134,7 @@ export class Bladerf2InputComponent implements OnInit {
     const settings : DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = "BladeRF2";
     settings.tx = 0,
-    settings.bladeRF1InputSettings = bladeRF2Settings;
+    settings.bladeRF2InputSettings = bladeRF2Settings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
         console.log("Set settings OK", res);
@@ -152,10 +155,25 @@ export class Bladerf2InputComponent implements OnInit {
     return this.settings.devSampleRate/(1<<this.settings.log2Decim);
   }
 
-  setBandwidth() {
+  setSampleRate() {
     const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
-    newSettings.bandwidth = this.settings.bandwidth;
+    newSettings.devSampleRate = this.settings.devSampleRate;
     this.setDeviceSettings(newSettings);
+  }
+
+  setBandwidth() {
+    this.validateBandwidthKhz();
+    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    newSettings.bandwidth = this.bandwidthKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  private validateBandwidthKhz() {
+    if (this.bandwidthKhz < 200) {
+      this.bandwidthKhz = 200;
+    } else if (this.bandwidthKhz > 56000) {
+      this.bandwidthKhz = 56000;
+    }
   }
 
   onFrequencyUpdate(frequency: number) {
