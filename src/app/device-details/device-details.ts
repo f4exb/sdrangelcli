@@ -10,6 +10,7 @@ import { PlutoSDROutputReport, PlutoSDROutputSettings } from "./plutosdr-output/
 import { PerseusSettings, PerseusReport } from "./perseus/perseus";
 import { AirspySettings, AirspyReport } from "./airspy/airspy";
 import { BladeRF1Settings } from "./bladerf1-input/bladerf1-input";
+import { BladeRF2Settings } from "./bladerf2-input/bladerf2-input";
 
 export interface DeviceSettings {
     deviceHwType: string,
@@ -17,6 +18,7 @@ export interface DeviceSettings {
     airspySettings?: AirspySettings,
     airspyHFSettings?: AirspyHFSettings,
     bladeRF1InputSettings?: BladeRF1Settings,
+    bladeRF2InputSettings?: BladeRF2Settings,
     hackRFInputSettings?: HackRFInputSettings,
     hackRFOutputSettings?: HackRFOutputSettings,
     limeSdrInputSettings?: LimeSDRInputSettings,

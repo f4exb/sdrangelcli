@@ -63,7 +63,7 @@
             <mat-select style="width:5ch; background-color: white; margin: 1px;"
                 [(value)]="settings.lnaGain"
                 (selectionChange)="setLnaGain()"
-                matTooltip="RF Bandwidth">
+                matTooltip="LNA gain">
               <mat-option *ngFor="let lnaGain of lnaGains" [value]="lnaGain.value">
                 {{lnaGain.viewValue}}
               </mat-option>
