@@ -50,6 +50,11 @@ export class DeviceDetailsComponent implements OnInit {
             this.router.navigate(['bladerf1in'], { relativeTo: this.route});
           } else {
           }
+        } else if (deviceSet.samplingDevice.hwType == "BladeRF2") {
+          if (deviceSet.samplingDevice.tx === 0) {
+            this.router.navigate(['bladerf2in'], { relativeTo: this.route});
+          } else {
+          }
         } else if (deviceSet.samplingDevice.hwType == "HackRF") {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['hackrfin'], { relativeTo: this.route});

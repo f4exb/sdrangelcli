@@ -19,6 +19,11 @@ export interface FcPos {
   viewValue: string
 }
 
+export interface GainMode {
+  value: number,
+  viewValue: string
+}
+
 @Component({
   selector: 'app-bladerf2-input',
   templateUrl: './bladerf2-input.component.html',
@@ -42,12 +47,14 @@ export class Bladerf2InputComponent implements OnInit {
     {value: 2, viewValue: "Cen"},
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
+  gainModes: GainMode[];
   deviceIndex : number;
   sdrangelURL : string;
   settings: BladeRF2Settings = BLADERF2_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   dcBlock: boolean;
   iqCorrection: boolean;
+  loPPM: number;
   useReverseAPI: boolean;
   transverterMode: boolean;
   biasTee: boolean;
@@ -64,6 +71,7 @@ export class Bladerf2InputComponent implements OnInit {
     this.deviceIndex = +this.route.snapshot.parent.params['dix']
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
+      this.getDeviceReport();
       this.getDeviceSettings();
     });
   }
@@ -82,6 +90,27 @@ export class Bladerf2InputComponent implements OnInit {
           this.transverterMode = this.settings.transverterMode !== 0;
           this.biasTee = this.settings.biasTee !== 0;
           this.feedDeviceStore();
+        } else {
+          this.statusMessage = "Not a BladeRF2 device";
+          this.statusError = true;
+        }
+      }
+    )
+  }
+
+  private getDeviceReport() {
+    this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
+      deviceSettings => {
+        if (deviceSettings.deviceHwType === "BladeRF2") {
+          this.statusMessage = "OK";
+          this.statusError = false;
+          let reportedGainModes = deviceSettings.bladeRF2Report["gainModes"];
+          this.gainModes = [];
+          reportedGainModes.forEach(element => {
+            let reportedGainModeName = element["name"];
+            let reportedGainModeIndex = element["value"];
+            this.gainModes.push({value: reportedGainModeIndex, viewValue: reportedGainModeName});
+          });
         } else {
           this.statusMessage = "Not a BladeRF2 device";
           this.statusError = true;
@@ -147,6 +176,24 @@ export class Bladerf2InputComponent implements OnInit {
     } else if (this.centerFreqKhz > 60000000) {
       this.centerFreqKhz = 60000000;
     }
+  }
+
+  setGainMode() {
+    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    newSettings.gainMode = this.settings.gainMode;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setGlobalGain() {
+    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    newSettings.globalGain = this.settings.globalGain;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLoPPM() {
+    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    newSettings.LOppmTenths = this.loPPM * 10;
+    this.setDeviceSettings(newSettings);
   }
 
   setLog2Decim() {

@@ -1,3 +1,129 @@
-<p>
-  bladerf2-input works!
-</p>
+<mat-card class="deviceset-card">
+  <mat-card-header class="device-card-header device-header-rx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="device-label">BladeRF2 input {{getSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Frequency -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="centerFreqKhz"
+          min=0
+          max=3800000
+          tooltip="Center frequency"
+          [steps]="frequencySteps"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+      </tr>
+      <!--- BiasT, DC, IQ -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="biasTee" (change)="setBiasTee()" matTooltip="Bias tee">
+            Bias tee
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+            DC block
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
+            IQ correction
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- RFBW, Gain mode, Global gain -->
+      <tr>
+        <td>
+          RFBW
+          <input type="number" class="bandwidth-input"
+            [(value)]="settings.bandwidth"
+            (change)="setBandwidth()"
+            matTooltip="RF Bandwidth">
+          Hz
+        </td>
+        <td>
+          Gain mode
+          <mat-select style="width:5ch; background-color: white; margin: 1px;"
+              [(value)]="settings.gainMode"
+              (selectionChange)="setGainMode()"
+              matTooltip="Gain mode">
+            <mat-option *ngFor="let gainMode of gainModes" [value]="gainMode.value">
+              {{gainMode.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Gain
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.globalGain"
+            (change)="setGlobalGain()"
+            matTooltip="Global gain"
+            min=0 max=30>
+          dB
+        </td>
+      </tr>
+      <!--- Sample rate, Decimation, Fc pos -->
+      <tr>
+        <td>
+          SR
+          <input type="number" class="sample-rate-input"
+            [(ngModel)]="settings.devSampleRate"
+            (change)="setSampleRate()"
+            matTooltip="Sample rate">
+          S/s
+        </td>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Fc pos
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.fcPos"
+              (selectionChange)="setFcPos()"
+              matTooltip="Center frequency position">
+            <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
+              {{fcPos.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!-- Transverter mode, transverter frequency -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
+            Transverter
+          </mat-checkbox>
+        </td>
+        <td colspan="2">
+          Freq:
+          <input type="number" class="xfrequency-input"
+            [(ngModel)]="settings.transverterDeltaFrequency"
+            (change)="setTransverterFrequency()"
+            matTooltip="Transverter frequency shift"
+          >
+          Hz
+        </td>
+      </tr>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>
