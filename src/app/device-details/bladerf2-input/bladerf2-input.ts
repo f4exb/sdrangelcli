@@ -1,22 +1,22 @@
 export interface BladeRF2Settings {
-    centerFrequency?: number,
-    LOppmTenths?: number,
-    devSampleRate?: number,
-    bandwidth?: number,
-    gainMode?: number,
-    globalGain?: number,
-    biasTee?: number,
-    log2Decim?: number,
-    fcPos?: number,
-    dcBlock?: number,
-    iqCorrection?: number,
-    transverterMode?: number,
-    transverterDeltaFrequency?: number,
-    fileRecordName?: string,
-    useReverseAPI?: number,
-    reverseAPIAddress?: string,
-    reverseAPIPort?: number,
-    reverseAPIDeviceIndex?: number
+    centerFrequency?: number;
+    LOppmTenths?: number;
+    devSampleRate?: number;
+    bandwidth?: number;
+    gainMode?: number;
+    globalGain?: number;
+    biasTee?: number;
+    log2Decim?: number;
+    fcPos?: number;
+    dcBlock?: number;
+    iqCorrection?: number;
+    transverterMode?: number;
+    transverterDeltaFrequency?: number;
+    fileRecordName?: string;
+    useReverseAPI?: number;
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
 }
 
 export const BLADERF2_SETTINGS_DEFAULT = {
@@ -38,4 +38,4 @@ export const BLADERF2_SETTINGS_DEFAULT = {
     reverseAPIAddress: '127.0.0.1',
     reverseAPIPort: 8888,
     reverseAPIDeviceIndex: 0
-}
+};

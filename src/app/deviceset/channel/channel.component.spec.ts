@@ -39,6 +39,6 @@ describe('ChannelComponent', () => {
 
   it('should contain data', () => {
     expect(component.channel.deltaFrequency).toBe(-26100);
-    expect(component.channel.id).toBe("SSBDemod");
+    expect(component.channel.id).toBe('SSBDemod');
   });
 });

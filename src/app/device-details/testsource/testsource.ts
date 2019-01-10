@@ -1,20 +1,20 @@
 export interface TestSourceSettings {
-    amModulation: number,
-    amplitudeBits: number,
-    autoCorrOptions: number,
-    centerFrequency: number,
-    dcFactor: number,
-    fcPos: number,
-    fmDeviation: number,
-    frequencyShift: number,
-    iFactor: number,
-    log2Decim: number,
-    modulation: number,
-    modulationTone: number,
-    phaseImbalance: number,
-    qFactor: number,
-    sampleRate: number,
-    sampleSizeIndex: number    
+    amModulation: number;
+    amplitudeBits: number;
+    autoCorrOptions: number;
+    centerFrequency: number;
+    dcFactor: number;
+    fcPos: number;
+    fmDeviation: number;
+    frequencyShift: number;
+    iFactor: number;
+    log2Decim: number;
+    modulation: number;
+    modulationTone: number;
+    phaseImbalance: number;
+    qFactor: number;
+    sampleRate: number;
+    sampleSizeIndex: number;
 }
 
 export const TESTSOURCE_SETTINGS_DEFAULT = {
@@ -33,5 +33,5 @@ export const TESTSOURCE_SETTINGS_DEFAULT = {
     phaseImbalance: 0,
     qFactor: 0,
     sampleRate: 768000,
-    sampleSizeIndex: 0    
-}
+    sampleSizeIndex: 0
+};

@@ -9,13 +9,13 @@ import { DeviceSettings } from '../device-details';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 interface Log2 {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 interface AntennaPath {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -25,9 +25,9 @@ interface AntennaPath {
 })
 export class LimesdrOutputComponent implements OnInit {
   antennaPaths: AntennaPath[] = [
-    {value: 0, viewValue: "None"},
-    {value: 1, viewValue: "Low"},
-    {value: 2, viewValue: "High"},
+    {value: 0, viewValue: 'None'},
+    {value: 1, viewValue: 'Low'},
+    {value: 2, viewValue: 'High'},
   ];
   softInterps: Log2[] = [
     {value: 0, viewValue: 1},
@@ -47,12 +47,12 @@ export class LimesdrOutputComponent implements OnInit {
     {value: 5, viewValue: 32},
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   report: LimeSDROutputReport = LIMESDR_OUTPUT_REPORT_DEFAULT;
   settings: LimeSDROutputSettings = LIMESDR_OUTPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
-  loFreqKhz : number;
+  loFreqKhz: number;
   ncoFreqKhz: number;
   lpfBWkHz: number;
   lpfFIRBWkHz: number;
@@ -63,54 +63,49 @@ export class LimesdrOutputComponent implements OnInit {
   transverterMode: boolean;
   monitor: boolean;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   deviceReportSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
-    this.monitor = false;
-    this.deviceReportSubscription = null;
+    private deviceStoreService: DeviceStoreService) {
+      this.monitor = false;
+      this.deviceReportSubscription = null;
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
     });
   }
 
-  ngOnDestroy() {
-    (this.deviceReportSubscription) && this.deviceReportSubscription.unsubscribe();
-  }
-
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === "LimeSDR") && (deviceSettings.tx === 1)) {
-          this.statusMessage = "OK";
+        if ((deviceSettings.deviceHwType === 'LimeSDR') && (deviceSettings.tx === 1)) {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.limeSdrOutputSettings;
-          this.ncoFreqKhz = this.settings.ncoFrequency/1000;
+          this.ncoFreqKhz = this.settings.ncoFrequency / 1000;
           this.ncoEnable = this.settings.ncoEnable !== 0;
-          this.loFreqKhz = this.settings.centerFrequency/1000;
+          this.loFreqKhz = this.settings.centerFrequency / 1000;
           this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
-          this.lpfBWkHz = this.settings.lpfBW/1000;
-          this.lpfFIRBWkHz = this.settings.lpfFIRBW/1000;
-          this.extClockFreqKhz = this.settings.extClockFreq/1000;
+          this.lpfBWkHz = this.settings.lpfBW / 1000;
+          this.lpfFIRBWkHz = this.settings.lpfFIRBW / 1000;
+          this.extClockFreqKhz = this.settings.extClockFreq / 1000;
           this.extClock = this.settings.extClock !== 0;
           this.lpfFIREnable = this.settings.lpfFIREnable !== 0;
           this.transverterMode = this.settings.transverterMode !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a LimeSDR output device";
+          this.statusMessage = 'Not a LimeSDR output device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   enableReporting(enable: boolean) {
@@ -119,13 +114,13 @@ export class LimesdrOutputComponent implements OnInit {
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceReport => {
-              if ((deviceReport.deviceHwType === "LimeSDR") && (deviceReport.tx === 1)) {
+              if ((deviceReport.deviceHwType === 'LimeSDR') && (deviceReport.tx === 1)) {
                 this.report = deviceReport.limeSdrOutputReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.deviceReportSubscription.unsubscribe();
       this.deviceReportSubscription = null;
@@ -140,20 +135,20 @@ export class LimesdrOutputComponent implements OnInit {
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2SoftInterp)
-    }
+      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2SoftInterp)
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(limeSDRSettings : LimeSDROutputSettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "LimeSDR";
+  private setDeviceSettings(limeSDRSettings: LimeSDROutputSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'LimeSDR';
     settings.tx = 1,
     settings.limeSdrOutputSettings = limeSDRSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getDeviceSettings();
       },
@@ -161,15 +156,15 @@ export class LimesdrOutputComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2SoftInterp);
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2SoftInterp);
   }
 
-  getDACSampleRate() : number {
-    return this.settings.devSampleRate*(1<<this.settings.log2HardInterp);
+  getDACSampleRate(): number {
+    return this.settings.devSampleRate * (1 << this.settings.log2HardInterp);
   }
 
   setNCOEnable() {
@@ -200,9 +195,9 @@ export class LimesdrOutputComponent implements OnInit {
   }
 
   validateNCOFrequency() {
-    let min, max : number;
-    min = -this.getDACSampleRate()/2000;
-    max = this.getDACSampleRate()/2000;
+    let min, max: number;
+    min = -this.getDACSampleRate() / 2000;
+    max = this.getDACSampleRate() / 2000;
     if (this.ncoFreqKhz < min) {
       this.ncoFreqKhz = min;
     } else if (this.ncoFreqKhz > max) {
@@ -270,9 +265,9 @@ export class LimesdrOutputComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getFIFOFillPercentage() : number {
+  getFIFOFillPercentage(): number {
     if (this.report && this.report.fifoSize > 0) {
-      return (this.report.fifoFill/this.report.fifoSize)*100
+      return (this.report.fifoFill / this.report.fifoSize) * 100;
     } else {
       return 0;
     }

@@ -15,21 +15,20 @@ export interface GroupName {
   styleUrls: ['./new-preset-dialog.component.css']
 })
 export class NewPresetDialogComponent implements OnInit {
-  sdrangelURL : string;
-  newGroup : boolean = false;
-  groupName : string;
-  newGroupName : string;
-  presetName : string;
-  groupNames : GroupName[] = [];
-  devicesetIndex : number;
+  sdrangelURL: string;
+  newGroup = false;
+  groupName: string;
+  newGroupName: string;
+  presetName: string;
+  groupNames: GroupName[] = [];
+  devicesetIndex: number;
 
   constructor(private dialogRef: MatDialogRef<NewPresetDialogComponent>,
     private presetService: PresetService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar)
-  {
-    this.devicesetIndex = data.devicesetIndex;
+    public snackBar: MatSnackBar) {
+      this.devicesetIndex = data.devicesetIndex;
   }
 
   ngOnInit() {
@@ -42,7 +41,7 @@ export class NewPresetDialogComponent implements OnInit {
   private fetchGroupsInformation() {
     this.presetService.getInfo(this.sdrangelURL).subscribe(
       presets => {
-        for (let presetGroup of presets.groups) {
+        for (const presetGroup of presets.groups) {
           this.groupNames.push({
             value: presetGroup.groupName,
             viewValue: presetGroup.groupName
@@ -53,14 +52,14 @@ export class NewPresetDialogComponent implements OnInit {
         }
       },
       err => {
-        this.snackBar.open(err.error.message, "OK", {duration: 2000});
-        this.dialogRef.close("Error");
+        this.snackBar.open(err.error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
       }
-    )
+    );
   }
 
   close() {
-    this.dialogRef.close("Dismiss");
+    this.dialogRef.close('Dismiss');
   }
 
   create() {
@@ -69,19 +68,19 @@ export class NewPresetDialogComponent implements OnInit {
       preset: {
         centerFrequency: 0,
         groupName: this.newGroup ? this.newGroupName : this.groupName,
-        type: "",
+        type: '',
         name: this.presetName
       }
-    }
+    };
     this.presetService.newPreset(this.sdrangelURL, preset).subscribe(
       res => {
-        console.log("Created OK", res);
-        this.dialogRef.close("OK");
+        console.log('Created OK', res);
+        this.dialogRef.close('OK');
       },
       error => {
         console.log(error);
-        this.snackBar.open(error.message, "OK", {duration: 2000});
-        this.dialogRef.close("Error");
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
       }
     );
   }

@@ -12,13 +12,13 @@ import { AudioStoreService } from '../../main/audio/audio-store.service';
 import { Utils } from '../../common-components/utils';
 
 interface AFInput {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 interface AudioDeviceInfo {
-  value: string,
-  viewValue: number
+  value: string;
+  viewValue: number;
 }
 
 @Component({
@@ -27,13 +27,13 @@ interface AudioDeviceInfo {
   styleUrls: ['./am-mod.component.css']
 })
 export class AmModComponent implements OnInit {
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
+  sdrangelURL: string;
   settings: AMModSettings = AMMOD_SETTINGS_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
-  deviceStoreSubscription : Subscription;
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   channelDeltaFrequency: number;
   channelCenterFrequencyKhz: number;
@@ -42,16 +42,16 @@ export class AmModComponent implements OnInit {
   rfBandwidthKhz: number;
   modulationPercent: number;
   afInputs: AFInput[] = [
-    { value: 0, viewValue: "None" },
-    { value: 1, viewValue: "Tone" },
-    { value: 2, viewValue: "File" },
-    { value: 3, viewValue: "Audio" },
-    { value: 4, viewValue: "CW" },
+    { value: 0, viewValue: 'None' },
+    { value: 1, viewValue: 'Tone' },
+    { value: 2, viewValue: 'File' },
+    { value: 3, viewValue: 'Audio' },
+    { value: 4, viewValue: 'CW' },
   ];
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
+  rgbTitleStr = 'rgb(0,0,0)';
   audioDevices: AudioDeviceInfo[] = [];
   monitor: boolean;
   channelMute: boolean;
@@ -63,57 +63,51 @@ export class AmModComponent implements OnInit {
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService,
-    private audioStoreService: AudioStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.monitor = false;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
+    private audioStoreService: AudioStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.monitor = false;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getChannelSettings();
     this.getAudioDevicesInfo();
   }
 
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
-  }
-
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "AMMod") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'AMMod') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.AMModSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
-          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
-          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
-          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
-          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
+          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
+          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate / 2)) / 1000;
+          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate / 2)) / 1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth / 1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = this.getRGBTitleStr();
           this.settings.volumeFactor = +this.settings.volumeFactor.toFixed(1);
           this.channelMute = this.settings.channelMute !== 0;
-          this.modulationPercent = +this.settings.modFactor.toFixed(2)*100;
+          this.modulationPercent = +this.settings.modFactor.toFixed(2) * 100;
           this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
         } else {
-          this.statusMessage = "Not an AMMod channel";
+          this.statusMessage = 'Not an AMMod channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
-  getRGBTitleStr() : string {
-    return "rgb(" + this.rgbTitle[0].toString() + "," + this.rgbTitle[1].toString() + "," + this.rgbTitle[2].toString() + ")";
+  getRGBTitleStr(): string {
+    return 'rgb(' + this.rgbTitle[0].toString() + ',' + this.rgbTitle[1].toString() + ',' + this.rgbTitle[2].toString() + ')';
   }
 
   private getDeviceStorage() {
@@ -123,7 +117,7 @@ export class AmModComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -132,14 +126,14 @@ export class AmModComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getAudioDevicesInfo() {
@@ -149,25 +143,25 @@ export class AmModComponent implements OnInit {
     this.audioStoreService.getInput().subscribe(
       audioData => {
         this.audioDevices = [];
-        for (let [key, value] of Object.entries(audioData)) {
-          this.audioDevices.push({value: key, viewValue: value["audioRate"]});
+        for (const [key, value] of Object.entries(audioData)) {
+          this.audioDevices.push({value: key, viewValue: value['audioRate']});
         }
       },
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
-  private setDeviceSettings(amModSettings : AMModSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "AMMod";
+  private setDeviceSettings(amModSettings: AMModSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'AMMod';
     settings.tx = 1,
     settings.AMModSettings = amModSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -175,7 +169,7 @@ export class AmModComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   onCWSettingsUpdate(cwSettings: CWKeyerSettings) {
@@ -190,13 +184,13 @@ export class AmModComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "AMMod") {
+              if (channelReport.channelType === 'AMMod') {
                 this.report = channelReport.AMModReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
@@ -219,8 +213,8 @@ export class AmModComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getDeltaFrequency() : number {
-    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  getDeltaFrequency(): number {
+    const frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency / 1000);
     return +frequency.toFixed(3);
   }
 
@@ -252,13 +246,13 @@ export class AmModComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  setModulationPercent(){
+  setModulationPercent() {
     const newSettings: AMModSettings = <AMModSettings>{};
     newSettings.modFactor = this.modulationPercent / 100;
     this.setDeviceSettings(newSettings);
   }
 
-  setVolume(){
+  setVolume() {
     const newSettings: AMModSettings = <AMModSettings>{};
     newSettings.volumeFactor = this.settings.volumeFactor;
     this.setDeviceSettings(newSettings);

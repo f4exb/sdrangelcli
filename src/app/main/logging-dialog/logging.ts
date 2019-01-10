@@ -6,6 +6,6 @@ export interface Logging {
 }
 
 export const LOGGING_DEFAULT = {
-    consoleLevel: "debug",
+    consoleLevel: 'debug',
     dumpToFile: 0
-}
+};

@@ -16,7 +16,7 @@ describe('WfmDemodComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         WfmDemodComponent,
         ChannelHeaderComponent,
         ChannelMonitorComponent
@@ -36,7 +36,7 @@ describe('WfmDemodComponent', () => {
       ],
       providers: [
         {provide: ActivatedRoute, useValue: { snapshot: {parent: {params: {dix: 0, cix: 0}}}}}
-      ]      
+      ]
     })
     .compileComponents();
   }));

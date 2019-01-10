@@ -10,18 +10,18 @@ import { Utils } from 'src/app/common-components/utils';
 import { Subscription } from 'rxjs';
 
 export interface Log2Decim {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 export interface FcPos {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 export interface GainMode {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -31,7 +31,7 @@ export interface GainMode {
 })
 export class Bladerf2InputComponent implements OnInit {
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   log2Decims: Log2Decim[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
@@ -42,14 +42,14 @@ export class Bladerf2InputComponent implements OnInit {
     {value: 6, viewValue: 64},
   ];
   fcPositions: FcPos[] = [
-    {value: 0, viewValue: "Inf"},
-    {value: 1, viewValue: "Sup"},
-    {value: 2, viewValue: "Cen"},
+    {value: 0, viewValue: 'Inf'},
+    {value: 1, viewValue: 'Sup'},
+    {value: 2, viewValue: 'Cen'},
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   gainModes: GainMode[];
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   settings: BladeRF2Settings = BLADERF2_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   bandwidthKhz: number;
@@ -65,11 +65,11 @@ export class Bladerf2InputComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  { }
+    private deviceStoreService: DeviceStoreService) {
+  }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceReport();
@@ -80,12 +80,12 @@ export class Bladerf2InputComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType === "BladeRF2") {
-          this.statusMessage = "OK";
+        if (deviceSettings.deviceHwType === 'BladeRF2') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.bladeRF2InputSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
-          this.bandwidthKhz = this.settings.bandwidth/1000;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
+          this.bandwidthKhz = this.settings.bandwidth / 1000;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
           this.loPPM = this.settings.LOppmTenths / 10;
@@ -94,65 +94,65 @@ export class Bladerf2InputComponent implements OnInit {
           this.biasTee = this.settings.biasTee !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a BladeRF2 device";
+          this.statusMessage = 'Not a BladeRF2 device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private getDeviceReport() {
     this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType === "BladeRF2") {
-          this.statusMessage = "OK";
+        if (deviceSettings.deviceHwType === 'BladeRF2') {
+          this.statusMessage = 'OK';
           this.statusError = false;
-          let reportedGainModes = deviceSettings.bladeRF2InputReport["gainModes"];
+          const reportedGainModes = deviceSettings.bladeRF2InputReport['gainModes'];
           this.gainModes = [];
           reportedGainModes.forEach(element => {
-            let reportedGainModeName = element["name"];
-            let reportedGainModeIndex = element["value"];
+            const reportedGainModeName = element['name'];
+            const reportedGainModeIndex = element['value'];
             this.gainModes.push({value: reportedGainModeIndex, viewValue: reportedGainModeName});
           });
         } else {
-          this.statusMessage = "Not a BladeRF2 device";
+          this.statusMessage = 'Not a BladeRF2 device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
       basebandRate: this.getSampleRate()
-    }
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(bladeRF2Settings : BladeRF2Settings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "BladeRF2";
+  private setDeviceSettings(bladeRF2Settings: BladeRF2Settings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'BladeRF2';
     settings.tx = 0,
     settings.bladeRF2InputSettings = bladeRF2Settings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         Utils.delayObservable(1000).subscribe(
           _ => { this.getDeviceSettings(); }
-        )
+        );
       },
       error => {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2Decim);
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2Decim);
   }
 
   setSampleRate() {

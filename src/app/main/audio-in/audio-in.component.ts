@@ -9,10 +9,10 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
   styleUrls: ['./audio-in.component.css']
 })
 export class AudioInComponent implements OnInit {
-  sdrangelURL : string;
-  audioDevicesInfo : AudioDevices = AUDIO_DEVICES_DEFAULT;
-  statusMessage : string;
-  statusError : boolean;
+  sdrangelURL: string;
+  audioDevicesInfo: AudioDevices = AUDIO_DEVICES_DEFAULT;
+  statusMessage: string;
+  statusError: boolean;
 
   constructor(private audioService: AudioService,
     private sdrangelUrlService: SdrangelUrlService) {
@@ -22,14 +22,14 @@ export class AudioInComponent implements OnInit {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.fetchAudioInformation();
-    })
+    });
   }
 
   private fetchAudioInformation() {
-    this.audioService.getInfo(this.sdrangelURL + "/audio").subscribe(
+    this.audioService.getInfo(this.sdrangelURL + '/audio').subscribe(
       audioDevicesInfo => {
         this.audioDevicesInfo = audioDevicesInfo;
-        this.statusMessage = "OK";
+        this.statusMessage = 'OK';
         this.statusError = false;
       },
       error => {

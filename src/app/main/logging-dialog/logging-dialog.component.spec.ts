@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('LoggingDialogComponent', () => {
   let component: LoggingDialogComponent;
   let fixture: ComponentFixture<LoggingDialogComponent>;
-  const data = {title: "Test Logging"};
+  const data = {title: 'Test Logging'};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -15,12 +15,12 @@ export class AppComponent {
 
   title = 'SDRangelCli';
   version = '0.0.1';
-  sdrangelURL = "http://127.0.0.1:8091/sdrangel"; // the default URL
+  sdrangelURL = 'http://127.0.0.1:8091/sdrangel'; // the default URL
 
   constructor(private sdrangelUrlService: SdrangelUrlService,
     private popupDialog: MatDialog,
     private elementRef: ElementRef) {
-      this.sdrangelURL = "http://" + window.location.hostname + ":8091/sdrangel";
+      this.sdrangelURL = 'http://' + window.location.hostname + ':8091/sdrangel';
   }
 
   validateURL() {
@@ -36,12 +36,12 @@ export class AppComponent {
     };
     dialogConfig.height = '290px';
     dialogConfig.width = '360px';
-    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    const dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
+    };
     this.popupDialog.open(LocationDialogComponent, dialogConfig);
   }
 
@@ -54,12 +54,12 @@ export class AppComponent {
     };
     dialogConfig.height = '380px';
     dialogConfig.width = '360px';
-    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    const dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
+    };
     this.popupDialog.open(LoggingDialogComponent, dialogConfig);
   }
 
@@ -69,15 +69,15 @@ export class AppComponent {
     dialogConfig.autoFocus = true;
     dialogConfig.height = '150px';
     dialogConfig.width = '360px';
-    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    const dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(RemoveDevicesetDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(RemoveDevicesetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.validateURL(); // triggers refresh
       }
     });
@@ -92,15 +92,15 @@ export class AppComponent {
     };
     dialogConfig.height = '150px';
     dialogConfig.width = '360px';
-    let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    const dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(AddDevicesetDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(AddDevicesetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.validateURL(); // triggers refresh
       }
     });

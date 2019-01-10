@@ -11,7 +11,7 @@ describe('ChangeDeviceDialogComponent', () => {
   const data = {
     deviceSetIndex: 0,
     isTx: false
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

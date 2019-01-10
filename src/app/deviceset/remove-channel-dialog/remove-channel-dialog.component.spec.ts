@@ -13,7 +13,7 @@ describe('RemoveChannelDialogComponent', () => {
     deviceSetIndex: 0,
     centerFrequency: 0,
     channel: CHANNEL1_MOCK
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

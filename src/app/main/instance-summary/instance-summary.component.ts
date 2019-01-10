@@ -15,7 +15,7 @@ export class InstanceSummaryComponent implements OnInit {
   sdrangelURL: string;
   instanceSummary: InstanceSummary = INSTANCE_SUMMARY_DEFAULT;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
 
   constructor(private instanceSummaryService: InstanceSummaryService,
     private sdrangelUrlService: SdrangelUrlService,
@@ -34,7 +34,7 @@ export class InstanceSummaryComponent implements OnInit {
       instanceSummary => {
         this.instanceSummary = instanceSummary;
         this.feedDeviceStore();
-        this.statusMessage = "OK";
+        this.statusMessage = 'OK';
         this.statusError = false;
       },
       error => {
@@ -50,7 +50,7 @@ export class InstanceSummaryComponent implements OnInit {
         this.deviceStoreService.change(deviceIndex, {
           centerFrequency: deviceSet.samplingDevice.centerFrequency,
           basebandRate: deviceSet.samplingDevice.bandwidth});
-      })
+      });
     }
   }
 

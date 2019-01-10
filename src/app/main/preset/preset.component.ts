@@ -10,16 +10,15 @@ import { ExportPresetDialogComponent } from '../export-preset-dialog/export-pres
   styleUrls: ['./preset.component.css']
 })
 export class PresetComponent implements OnInit {
-  @Input('preset') preset : Preset;
-  @Input('groupName') groupName : string;
+  @Input('preset') preset: Preset;
+  @Input('groupName') groupName: string;
   @Output() presetRemoved = new EventEmitter();
   sdrangelURL: string;
   width: number;
   height: number;
 
   constructor(private popupDialog: MatDialog,
-    private elementRef: ElementRef)
-  {
+    private elementRef: ElementRef) {
     this.onResize();
   }
 
@@ -43,17 +42,17 @@ export class PresetComponent implements OnInit {
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+180 > this.height) {
-      dialogY -= dialogY+180 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 180 > this.height) {
+      dialogY -= dialogY + 180 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(RemovePresetDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(RemovePresetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.presetRemoved.emit(); // triggers refresh
       }
     });
@@ -74,17 +73,17 @@ export class PresetComponent implements OnInit {
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+180 > this.height) {
-      dialogY -= dialogY+180 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 180 > this.height) {
+      dialogY -= dialogY + 180 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(ExportPresetDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(ExportPresetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.presetRemoved.emit(); // triggers refresh
       }
     });

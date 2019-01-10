@@ -1,23 +1,23 @@
 export interface UDPSinkSettings {
-    agc: number,
-    audioActive: number,
-    audioPort: number,
-    audioStereo: number,
-    channelMute: number,
-    fmDeviation: number,
-    gain: number,
-    inputFrequencyOffset: number,
-    outputSampleRate: number,
-    rfBandwidth: number,
-    rgbColor: number,
-    sampleFormat: number,
-    squelchDB: number,
-    squelchEnabled: number,
-    squelchGate: number,
-    title: string,
-    udpAddress: string,
-    udpPort: number,
-    volume: number
+    agc: number;
+    audioActive: number;
+    audioPort: number;
+    audioStereo: number;
+    channelMute: number;
+    fmDeviation: number;
+    gain: number;
+    inputFrequencyOffset: number;
+    outputSampleRate: number;
+    rfBandwidth: number;
+    rgbColor: number;
+    sampleFormat: number;
+    squelchDB: number;
+    squelchEnabled: number;
+    squelchGate: number;
+    title: string;
+    udpAddress: string;
+    udpPort: number;
+    volume: number;
 }
 
 export const UDP_SINK_SETTINGS_DEFAULT = {
@@ -36,20 +36,20 @@ export const UDP_SINK_SETTINGS_DEFAULT = {
     squelchDB: -60,
     squelchEnabled: 1,
     squelchGate: 0,
-    title: "UDP Sample Source",
-    udpAddress: "127.0.0.1",
+    title: 'UDP Sample Source',
+    udpAddress: '127.0.0.1',
     udpPort: 9998,
     volume: 20
-}
+};
 
 export interface UDPSinkReport {
-    channelPowerDB: number,
-    inputSampleRate: number,
-    squelch: number
+    channelPowerDB: number;
+    inputSampleRate: number;
+    squelch: number;
 }
 
 export const UDP_SINK_REPORT_DEFAULT = {
     channelPowerDB: -3.778681755065918,
     inputSampleRate: 64000,
     squelch: 1
-}
+};

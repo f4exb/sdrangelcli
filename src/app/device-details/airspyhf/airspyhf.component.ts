@@ -8,18 +8,18 @@ import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 export interface SampleRate {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 export interface Log2Decim {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 export interface Band {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -29,7 +29,7 @@ export interface Band {
 })
 export class AirspyhfComponent implements OnInit {
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   sampleRates: SampleRate[] = [
     {value: 0, viewValue: 768}
   ];
@@ -43,12 +43,12 @@ export class AirspyhfComponent implements OnInit {
     {value: 6, viewValue: 64},
   ];
   bands: Band[] = [
-    {value: 0, viewValue: "HF"},
-    {value: 1, viewValue: "VHF"},
+    {value: 0, viewValue: 'HF'},
+    {value: 1, viewValue: 'VHF'},
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   settings: AirspyHFSettings = AIRSPYHF_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   loPPM: number;
@@ -57,12 +57,11 @@ export class AirspyhfComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
+    private deviceStoreService: DeviceStoreService) {
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
@@ -72,39 +71,39 @@ export class AirspyhfComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType == "AirspyHF") {
-          this.statusMessage = "OK";
+        if (deviceSettings.deviceHwType === 'AirspyHF') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.airspyHFSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
-          this.loPPM = this.settings.LOppmTenths/10;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
+          this.loPPM = this.settings.LOppmTenths / 10;
           this.transverter = this.settings.transverterMode !== 0;
-          this.feedDeviceStore()
+          this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not an AirspyHF device";
+          this.statusMessage = 'Not an AirspyHF device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: 768000/(1<<this.settings.log2Decim)
-    }
+      basebandRate: 768000 / (1 << this.settings.log2Decim)
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(airspyhfSettings : AirspyHFSettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "AirspyHF";
+  private setDeviceSettings(airspyhfSettings: AirspyHFSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'AirspyHF';
     settings.tx = 0,
     settings.airspyHFSettings = airspyhfSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getDeviceSettings();
       },
@@ -112,11 +111,11 @@ export class AirspyhfComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return 768000/(1<<this.settings.log2Decim);
+  getSampleRate(): number {
+    return 768000 / (1 << this.settings.log2Decim);
   }
 
   onFrequencyUpdate(frequency: number) {
@@ -176,7 +175,7 @@ export class AirspyhfComponent implements OnInit {
   }
 
   private validateCenterFrequencyKhz() {
-    let min, max : number;
+    let min, max: number;
     if (this.settings.bandIndex === 0) {
       min = 9;
       max = 31000;

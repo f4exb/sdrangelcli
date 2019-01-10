@@ -16,7 +16,7 @@ export class DeviceDetailsService {
     return this.http.get<DeviceSettings>(newurl);
   }
 
-  setSettings(url: string, devicesetIndex: number, settings: DeviceSettings) : Observable<any>  {
+  setSettings(url: string, devicesetIndex: number, settings: DeviceSettings): Observable<any>  {
     const newurl = url + '/deviceset/' + devicesetIndex + '/device/settings';
     const httpOptions = {
       headers: new HttpHeaders({

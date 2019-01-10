@@ -10,7 +10,7 @@ describe('NewPresetDialogComponent', () => {
   let fixture: ComponentFixture<NewPresetDialogComponent>;
   const data = {
     deviceSetIndex: 0,
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

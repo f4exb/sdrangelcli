@@ -14,7 +14,7 @@ export class AudioService {
     return this.http.get<AudioDevices>(url);
   }
 
-  updateAudioOutput(url: string, audioDevice: AudioOutputDevice) : Observable<any> {
+  updateAudioOutput(url: string, audioDevice: AudioOutputDevice): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
@@ -22,9 +22,9 @@ export class AudioService {
       })
     };
     return this.http.patch(url, JSON.stringify(audioDevice), httpOptions);
-  }  
+  }
 
-  updateAudioInput(url: string, audioDevice: AudioInputDevice) : Observable<any> {
+  updateAudioInput(url: string, audioDevice: AudioInputDevice): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
@@ -32,5 +32,5 @@ export class AudioService {
       })
     };
     return this.http.patch(url, JSON.stringify(audioDevice), httpOptions);
-  }  
+  }
 }

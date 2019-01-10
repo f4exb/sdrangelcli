@@ -24,10 +24,10 @@ describe('ChangeDeviceService', () => {
         // We call the service
         service.getAvailableDevices(sdrangelURL, false).subscribe(data => {
           expect(data.devicecount).toBe(7);
-          expect(data.devices[0].hwType).toBe("AirspyHF");
+          expect(data.devices[0].hwType).toBe('AirspyHF');
         });
         // We set the expectations for the HttpClient mock
-        const req = httpMock.expectOne(req => req.method === 'GET' && req.url === (sdrangelURL+ "/devices?tx=0"));
+        const req = httpMock.expectOne(reqx => reqx.method === 'GET' && reqx.url === (sdrangelURL + '/devices?tx=0'));
         // Then we set the fake data to be returned by the mock
         req.flush(AVAILABLE_DEVICES_MOCK);
   }));

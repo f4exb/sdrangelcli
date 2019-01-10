@@ -24,10 +24,10 @@ describe('AddChannelService', () => {
         // We call the service
         service.getAvailableChannels(sdrangelURL, false).subscribe(data => {
           expect(data.channelcount).toBe(7);
-          expect(data.channels[0].id).toBe("AMDemod");
+          expect(data.channels[0].id).toBe('AMDemod');
         });
         // We set the expectations for the HttpClient mock
-        const req = httpMock.expectOne(req => req.method === 'GET' && req.url === (sdrangelURL+ "/channels?tx=0"));
+        const req = httpMock.expectOne(reqx => reqx.method === 'GET' && reqx.url === (sdrangelURL + '/channels?tx=0'));
         // Then we set the fake data to be returned by the mock
         req.flush(AVAILABLE_CHANNELS_MOCK);
   }));

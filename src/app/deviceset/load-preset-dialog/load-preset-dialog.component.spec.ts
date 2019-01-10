@@ -10,7 +10,7 @@ describe('LoadPresetDialogComponent', () => {
   let fixture: ComponentFixture<LoadPresetDialogComponent>;
   const data = {
     deviceSetIndex: 0,
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

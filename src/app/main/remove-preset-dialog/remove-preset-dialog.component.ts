@@ -16,11 +16,10 @@ export class RemovePresetDialogComponent implements OnInit {
   groupName: string;
 
   constructor(private dialogRef: MatDialogRef<RemovePresetDialogComponent>,
-    private presetService : PresetService,
+    private presetService: PresetService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar)
-  {
+    public snackBar: MatSnackBar) {
     this.preset = data.preset;
     this.groupName = data.groupName;
   }
@@ -32,7 +31,7 @@ export class RemovePresetDialogComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close("Dismiss");
+    this.dialogRef.close('Dismiss');
   }
 
   remove() {
@@ -41,16 +40,16 @@ export class RemovePresetDialogComponent implements OnInit {
       centerFrequency: this.preset.centerFrequency,
       name: this.preset.name,
       type: this.preset.type
-    }
+    };
     this.presetService.removePreset(this.sdrangelURL, presetDelete).subscribe(
       res => {
-        console.log("Removed OK", res);
-        this.dialogRef.close("OK");
+        console.log('Removed OK', res);
+        this.dialogRef.close('OK');
       },
       error => {
         console.log(error);
-        this.snackBar.open(error.message, "OK", {duration: 2000});
-        this.dialogRef.close("Error");
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
       }
     );
   }

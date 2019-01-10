@@ -9,18 +9,18 @@ import { DeviceSettings } from '../device-details';
 import { FREQUENCY_STEP_DEVICE_DEFAULTS, FrequencyStep } from '../../common-components/frequency-dial/frequency-dial.component';
 
 interface Log2Decim {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 interface AntennaPath {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 interface GainMode {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -30,16 +30,16 @@ interface GainMode {
 })
 export class LimesdrInputComponent implements OnInit {
   antennaPaths: AntennaPath[] = [
-    {value: 0, viewValue: "None"},
-    {value: 1, viewValue: "High"},
-    {value: 2, viewValue: "Low"},
-    {value: 3, viewValue: "Wide"},
-    {value: 4, viewValue: "LB1"},
-    {value: 5, viewValue: "LB1"},
+    {value: 0, viewValue: 'None'},
+    {value: 1, viewValue: 'High'},
+    {value: 2, viewValue: 'Low'},
+    {value: 3, viewValue: 'Wide'},
+    {value: 4, viewValue: 'LB1'},
+    {value: 5, viewValue: 'LB1'},
   ];
   gainModes: GainMode[] = [
-    {value: 0, viewValue: "Auto"},
-    {value: 1, viewValue: "Manual"},
+    {value: 0, viewValue: 'Auto'},
+    {value: 1, viewValue: 'Manual'},
   ];
   softDecims: Log2Decim[] = [
     {value: 0, viewValue: 1},
@@ -58,13 +58,13 @@ export class LimesdrInputComponent implements OnInit {
     {value: 4, viewValue: 16},
     {value: 5, viewValue: 32},
   ];
-  frequencySteps : FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
+  deviceIndex: number;
+  sdrangelURL: string;
   report: LimeSDRInputReport = LIMESDR_INPUT_REPORT_DEFAULT;
   settings: LimeSDRInputSettings = LIMESDR_INPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
-  loFreqKhz : number;
+  loFreqKhz: number;
   ncoFreqKhz: number;
   lpfBWkHz: number;
   lpfFIRBWkHz: number;
@@ -77,44 +77,39 @@ export class LimesdrInputComponent implements OnInit {
   transverterMode: boolean;
   monitor: boolean;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   deviceReportSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
-    this.monitor = false;
-    this.deviceReportSubscription = null;
+    private deviceStoreService: DeviceStoreService) {
+      this.monitor = false;
+      this.deviceReportSubscription = null;
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
     });
   }
 
-  ngOnDestroy() {
-    (this.deviceReportSubscription) && this.deviceReportSubscription.unsubscribe();
-  }
-
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === "LimeSDR") && (deviceSettings.tx === 0)) {
-          this.statusMessage = "OK";
+        if ((deviceSettings.deviceHwType === 'LimeSDR') && (deviceSettings.tx === 0)) {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.limeSdrInputSettings;
-          this.ncoFreqKhz = this.settings.ncoFrequency/1000;
+          this.ncoFreqKhz = this.settings.ncoFrequency / 1000;
           this.ncoEnable = this.settings.ncoEnable !== 0;
-          this.loFreqKhz = this.settings.centerFrequency/1000;
+          this.loFreqKhz = this.settings.centerFrequency / 1000;
           this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
-          this.lpfBWkHz = this.settings.lpfBW/1000;
-          this.lpfFIRBWkHz = this.settings.lpfFIRBW/1000;
-          this.extClockFreqKhz = this.settings.extClockFreq/1000;
+          this.lpfBWkHz = this.settings.lpfBW / 1000;
+          this.lpfFIRBWkHz = this.settings.lpfFIRBW / 1000;
+          this.extClockFreqKhz = this.settings.extClockFreq / 1000;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
           this.extClock = this.settings.extClock !== 0;
@@ -122,11 +117,11 @@ export class LimesdrInputComponent implements OnInit {
           this.transverterMode = this.settings.transverterMode !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a LimeSDR input device";
+          this.statusMessage = 'Not a LimeSDR input device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   enableReporting(enable: boolean) {
@@ -135,13 +130,13 @@ export class LimesdrInputComponent implements OnInit {
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
             devicelReport => {
-              if ((devicelReport.deviceHwType === "LimeSDR") && (devicelReport.tx === 0)) {
+              if ((devicelReport.deviceHwType === 'LimeSDR') && (devicelReport.tx === 0)) {
                 this.report = devicelReport.limeSdrInputReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.deviceReportSubscription.unsubscribe();
       this.deviceReportSubscription = null;
@@ -156,20 +151,20 @@ export class LimesdrInputComponent implements OnInit {
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2SoftDecim)
-    }
+      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2SoftDecim)
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(limeSDRSettings : LimeSDRInputSettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "LimeSDR";
+  private setDeviceSettings(limeSDRSettings: LimeSDRInputSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'LimeSDR';
     settings.tx = 0,
     settings.limeSdrInputSettings = limeSDRSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getDeviceSettings();
       },
@@ -177,15 +172,15 @@ export class LimesdrInputComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2SoftDecim);
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2SoftDecim);
   }
 
-  getADCSampleRate() : number {
-    return this.settings.devSampleRate*(1<<this.settings.log2HardDecim);
+  getADCSampleRate(): number {
+    return this.settings.devSampleRate * (1 << this.settings.log2HardDecim);
   }
 
   setDCBlock() {
@@ -215,7 +210,7 @@ export class LimesdrInputComponent implements OnInit {
   setCenterFrequency() {
     const newSettings: LimeSDRInputSettings = <LimeSDRInputSettings>{};
     this.loFreqKhz = this.centerFreqKhz - (this.ncoEnable ? this.ncoFreqKhz : 0);
-    newSettings.centerFrequency = this.loFreqKhz*1000;
+    newSettings.centerFrequency = this.loFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
@@ -228,9 +223,9 @@ export class LimesdrInputComponent implements OnInit {
   }
 
   validateNCOFrequency() {
-    let min, max : number;
-    min = -this.getADCSampleRate()/2000;
-    max = this.getADCSampleRate()/2000;
+    let min, max: number;
+    min = -this.getADCSampleRate() / 2000;
+    max = this.getADCSampleRate() / 2000;
     if (this.ncoFreqKhz < min) {
       this.ncoFreqKhz = min;
     } else if (this.ncoFreqKhz > max) {
@@ -322,9 +317,9 @@ export class LimesdrInputComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getFIFOFillPercentage() : number {
+  getFIFOFillPercentage(): number {
     if (this.report && this.report.fifoSize > 0) {
-      return (this.report.fifoFill/this.report.fifoSize)*100
+      return (this.report.fifoFill / this.report.fifoSize) * 100;
     } else {
       return 0;
     }

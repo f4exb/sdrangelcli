@@ -17,10 +17,9 @@ export class AddDevicesetDialogComponent implements OnInit {
     private addDevicesetService: AddDevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar)
-  {
-    this.isTx = data.isTx;
-    this.title = this.isTx ? "Add sink device set" : "Add source device set";
+    public snackBar: MatSnackBar) {
+      this.isTx = data.isTx;
+      this.title = this.isTx ? 'Add sink device set' : 'Add source device set';
   }
 
   ngOnInit() {
@@ -30,18 +29,18 @@ export class AddDevicesetDialogComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close("Dismiss");
+    this.dialogRef.close('Dismiss');
   }
 
   add() {
-    this.addDevicesetService.add(this.sdrangelURL + "/deviceset", this.isTx).subscribe(
+    this.addDevicesetService.add(this.sdrangelURL + '/deviceset', this.isTx).subscribe(
       res => {
-        console.log("ADD OK", res);
-        this.dialogRef.close("OK");
+        console.log('ADD OK', res);
+        this.dialogRef.close('OK');
       },
       err => {
-        this.snackBar.open(err.error.message, "OK", {duration: 2000});
-        this.dialogRef.close("Error");
+        this.snackBar.open(err.error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
       }
     );
   }

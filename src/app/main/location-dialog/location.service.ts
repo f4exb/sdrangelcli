@@ -15,7 +15,7 @@ export class LocationService {
     return this.http.get<Location>(url);
   }
 
-  put(url: string, location: Location) : Observable<any> {
+  put(url: string, location: Location): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',

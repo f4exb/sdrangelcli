@@ -1,17 +1,17 @@
 export interface HackRFInputSettings {
-    LOppmTenths: number,
-    bandwidth: number,
-    biasT: number,
-    centerFrequency: number,
-    dcBlock: number,
-    devSampleRate: number,
-    fcPos: number,
-    iqCorrection: number,
-    linkTxFrequency: number,
-    lnaExt: number,
-    lnaGain: number,
-    log2Decim: number,
-    vgaGain: number
+    LOppmTenths: number;
+    bandwidth: number;
+    biasT: number;
+    centerFrequency: number;
+    dcBlock: number;
+    devSampleRate: number;
+    fcPos: number;
+    iqCorrection: number;
+    linkTxFrequency: number;
+    lnaExt: number;
+    lnaGain: number;
+    log2Decim: number;
+    vgaGain: number;
 }
 
 export const HACKRF_INPUT_SETTINGS_DEFAULT = {
@@ -28,4 +28,4 @@ export const HACKRF_INPUT_SETTINGS_DEFAULT = {
     lnaGain: 16,
     log2Decim: 0,
     vgaGain: 16
-}
+};

@@ -15,7 +15,7 @@ export class LoggingService {
     return this.http.get<Logging>(url);
   }
 
-  put(url: string, logging: Logging) : Observable<any> {
+  put(url: string, logging: Logging): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',

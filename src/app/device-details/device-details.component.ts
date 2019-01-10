@@ -13,13 +13,12 @@ export class DeviceDetailsComponent implements OnInit {
   deviceIndex: number;
   isTx: boolean;
   private sub: Subscription;
-  sdrangelURL : string;
+  sdrangelURL: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private deviceSetService: DevicesetService,
-    private sdrangelUrlService: SdrangelUrlService,)
-  {
+    private sdrangelUrlService: SdrangelUrlService) {
     this.sub = null;
   }
 
@@ -33,60 +32,56 @@ export class DeviceDetailsComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {
-    (this.sub) && this.sub.unsubscribe();
-  }
-
   private getDeviceSettings() {
     this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSet => {
         this.isTx = deviceSet.samplingDevice.tx !== 0;
-        if (deviceSet.samplingDevice.hwType == "Airspy") {
+        if (deviceSet.samplingDevice.hwType === 'Airspy') {
           this.router.navigate(['airspy'], { relativeTo: this.route});
-        } else if (deviceSet.samplingDevice.hwType == "AirspyHF") {
+        } else if (deviceSet.samplingDevice.hwType === 'AirspyHF') {
           this.router.navigate(['airspyhf'], { relativeTo: this.route});
-        } else if (deviceSet.samplingDevice.hwType == "BladeRF1") {
+        } else if (deviceSet.samplingDevice.hwType === 'BladeRF1') {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['bladerf1in'], { relativeTo: this.route});
           } else {
           }
-        } else if (deviceSet.samplingDevice.hwType == "BladeRF2") {
+        } else if (deviceSet.samplingDevice.hwType === 'BladeRF2') {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['bladerf2in'], { relativeTo: this.route});
           } else {
           }
-        } else if (deviceSet.samplingDevice.hwType == "HackRF") {
+        } else if (deviceSet.samplingDevice.hwType === 'HackRF') {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['hackrfin'], { relativeTo: this.route});
           } else {
             this.router.navigate(['hackrfout'], { relativeTo: this.route});
           }
-        } else if (deviceSet.samplingDevice.hwType == "LimeSDR") {
+        } else if (deviceSet.samplingDevice.hwType === 'LimeSDR') {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['limesdrin'], { relativeTo: this.route});
           } else {
             this.router.navigate(['limesdrout'], { relativeTo: this.route});
           }
-        } else if (deviceSet.samplingDevice.hwType == "Perseus") {
+        } else if (deviceSet.samplingDevice.hwType === 'Perseus') {
           this.router.navigate(['perseus'], { relativeTo: this.route});
-        } else if (deviceSet.samplingDevice.hwType == "PlutoSDR") {
+        } else if (deviceSet.samplingDevice.hwType === 'PlutoSDR') {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['plutosdrin'], { relativeTo: this.route});
           } else {
             this.router.navigate(['plutosdrout'], { relativeTo: this.route});
           }
-        } else if (deviceSet.samplingDevice.hwType == "RTLSDR") {
+        } else if (deviceSet.samplingDevice.hwType === 'RTLSDR') {
           this.router.navigate(['rtlsdr'], { relativeTo: this.route});
-        } else if (deviceSet.samplingDevice.hwType == "TestSource") {
+        } else if (deviceSet.samplingDevice.hwType === 'TestSource') {
           this.router.navigate(['testsource'], { relativeTo: this.route});
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});
         }
       }
-    )
+    );
   }
 
-  getDevicesetLabel() : string {
-    return (this.isTx ? "Tx" : "Rx") + this.deviceIndex;
+  getDevicesetLabel(): string {
+    return (this.isTx ? 'Tx' : 'Rx') + this.deviceIndex;
   }
 }

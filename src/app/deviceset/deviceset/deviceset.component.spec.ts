@@ -53,7 +53,7 @@ describe('DevicesetComponent without channels', () => {
   });
 
   it('label should be Rx0', () => {
-    expect(component.getLabel()).toBe("Rx0");
+    expect(component.getLabel()).toBe('Rx0');
   });
 });
 
@@ -139,6 +139,6 @@ describe('DevicesetComponent with Tx device', () => {
   });
 
   it('label should be Tx2', () => {
-    expect(component.getLabel()).toBe("Tx2");
+    expect(component.getLabel()).toBe('Tx2');
   });
 });

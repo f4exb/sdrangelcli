@@ -15,43 +15,36 @@ import { ChannelSettings } from '../channel-details';
   styleUrls: ['./daemon-sink.component.css']
 })
 export class DaemonSinkComponent implements OnInit {
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
-  settings : DaemonSinkSettings = DAEMON_SINK_SETTINGS_DEFAULT;
+  sdrangelURL: string;
+  settings: DaemonSinkSettings = DAEMON_SINK_SETTINGS_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
-  deviceStoreSubscription : Subscription;
+  rgbTitleStr = 'rgb(0,0,0)';
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
-
+    private deviceStoreService: DeviceStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getChannelSettings();
-  }
-
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
   }
 
   private getDeviceStorage() {
@@ -61,7 +54,7 @@ export class DaemonSinkComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -70,42 +63,42 @@ export class DaemonSinkComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "DaemonSink") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'DaemonSink') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.DaemonSinkSettings;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
         } else {
-          this.statusMessage = "Not a DaemonSink channel";
+          this.statusMessage = 'Not a DaemonSink channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
-  private setDeviceSettings(daemonSinkSettings : DaemonSinkSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "DaemonSink";
+  private setDeviceSettings(daemonSinkSettings: DaemonSinkSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'DaemonSink';
     settings.tx = 0,
     settings.DaemonSinkSettings = daemonSinkSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -113,7 +106,7 @@ export class DaemonSinkComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   onTitleColorChanged(colorStr: string) {

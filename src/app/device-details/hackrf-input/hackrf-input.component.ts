@@ -8,18 +8,18 @@ import { DeviceSettings } from '../device-details';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 interface Log2Decim {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 interface FcPos {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 interface RFBandwidth {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 @Component({
@@ -29,7 +29,7 @@ interface RFBandwidth {
 })
 export class HackrfInputComponent implements OnInit {
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   log2Decims: Log2Decim[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
@@ -40,9 +40,9 @@ export class HackrfInputComponent implements OnInit {
     {value: 6, viewValue: 64},
   ];
   fcPositions: FcPos[] = [
-    {value: 0, viewValue: "Inf"},
-    {value: 1, viewValue: "Sup"},
-    {value: 2, viewValue: "Cen"},
+    {value: 0, viewValue: 'Inf'},
+    {value: 1, viewValue: 'Sup'},
+    {value: 2, viewValue: 'Cen'},
   ];
   rfBandwidths: RFBandwidth[] = [
     {value: 1750000, viewValue: 1.75},
@@ -63,8 +63,8 @@ export class HackrfInputComponent implements OnInit {
     {value: 28000000, viewValue: 28},
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   settings: HackRFInputSettings = HACKRF_INPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   dcBlock: boolean;
@@ -76,12 +76,11 @@ export class HackrfInputComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
+    private deviceStoreService: DeviceStoreService) {
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
@@ -91,11 +90,11 @@ export class HackrfInputComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType == "HackRF") && (deviceSettings.tx === 0)) {
-          this.statusMessage = "OK";
+        if ((deviceSettings.deviceHwType === 'HackRF') && (deviceSettings.tx === 0)) {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.hackRFInputSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
           this.loPPM = this.settings.LOppmTenths / 10;
@@ -103,30 +102,30 @@ export class HackrfInputComponent implements OnInit {
           this.rfAmp = this.settings.lnaExt !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a HackRF input device";
+          this.statusMessage = 'Not a HackRF input device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2Decim)
-    }
+      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2Decim)
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(hackrfSettings : HackRFInputSettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "HackRF";
+  private setDeviceSettings(hackrfSettings: HackRFInputSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'HackRF';
     settings.tx = 0,
     settings.hackRFInputSettings = hackrfSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getDeviceSettings();
       },
@@ -134,11 +133,11 @@ export class HackrfInputComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2Decim);
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2Decim);
   }
 
   setLoPPM() {

@@ -9,8 +9,8 @@ describe('ImportPresetDialogComponent', () => {
   let component: ImportPresetDialogComponent;
   let fixture: ComponentFixture<ImportPresetDialogComponent>;
   const data = {
-    groupName: "test"
-  }
+    groupName: 'test'
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

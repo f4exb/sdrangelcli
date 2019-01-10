@@ -12,15 +12,14 @@ import { NewPresetDialogComponent } from '../new-preset-dialog/new-preset-dialog
   styleUrls: ['./deviceset.component.css']
 })
 export class DevicesetComponent implements OnInit {
-  @Input() deviceSet : DeviceSet;
+  @Input() deviceSet: DeviceSet;
   @Output() devicesetChanged = new EventEmitter();
   width: number;
   height: number;
 
   constructor(private popupDialog: MatDialog,
-    private elementRef: ElementRef)
-  {
-    this.onResize();
+    private elementRef: ElementRef) {
+      this.onResize();
   }
 
   ngOnInit() {
@@ -32,15 +31,15 @@ export class DevicesetComponent implements OnInit {
      this.width = window.innerWidth;
   }
 
-  getLabel() : string {
+  getLabel(): string {
     if (this.deviceSet.samplingDevice.tx === 0) {
-      return "Rx" + this.deviceSet.samplingDevice.index;
+      return 'Rx' + this.deviceSet.samplingDevice.index;
     } else {
-      return "Tx" + this.deviceSet.samplingDevice.index;
+      return 'Tx' + this.deviceSet.samplingDevice.index;
     }
   }
 
-  getCenterFrequency() : number {
+  getCenterFrequency(): number {
     if (this.deviceSet.samplingDevice) {
       return this.deviceSet.samplingDevice.centerFrequency;
     } else {
@@ -59,17 +58,17 @@ export class DevicesetComponent implements OnInit {
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+180 > this.height) {
-      dialogY -= dialogY+180 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 180 > this.height) {
+      dialogY -= dialogY + 180 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(AddChannelDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(AddChannelDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.devicesetChanged.emit(); // triggers refresh
       }
     });
@@ -85,17 +84,17 @@ export class DevicesetComponent implements OnInit {
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+180 > this.height) {
-      dialogY -= dialogY+180 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 180 > this.height) {
+      dialogY -= dialogY + 180 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(LoadPresetDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(LoadPresetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.devicesetChanged.emit(); // triggers refresh
       }
     });
@@ -111,17 +110,17 @@ export class DevicesetComponent implements OnInit {
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+180 > this.height) {
-      dialogY -= dialogY+180 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 180 > this.height) {
+      dialogY -= dialogY + 180 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(SavePresetDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(SavePresetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.devicesetChanged.emit(); // triggers refresh
       }
     });
@@ -137,17 +136,17 @@ export class DevicesetComponent implements OnInit {
     dialogConfig.height = '260px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+260 > this.height) {
-      dialogY -= dialogY+260 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 260 > this.height) {
+      dialogY -= dialogY + 260 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(NewPresetDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(NewPresetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.devicesetChanged.emit(); // triggers refresh
       }
     });

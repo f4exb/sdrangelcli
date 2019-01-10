@@ -9,18 +9,18 @@ import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { Utils } from 'src/app/common-components/utils';
 
 export interface SampleRate {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 export interface Log2Decim {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 export interface FcPos {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -30,7 +30,7 @@ export interface FcPos {
 })
 export class AirspyComponent implements OnInit {
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   log2Decims: Log2Decim[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
@@ -41,14 +41,14 @@ export class AirspyComponent implements OnInit {
     {value: 6, viewValue: 64},
   ];
   fcPositions: FcPos[] = [
-    {value: 0, viewValue: "Inf"},
-    {value: 1, viewValue: "Sup"},
-    {value: 2, viewValue: "Cen"},
+    {value: 0, viewValue: 'Inf'},
+    {value: 1, viewValue: 'Sup'},
+    {value: 2, viewValue: 'Cen'},
   ];
   sampleRates: SampleRate[] = [];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   settings: AirspySettings = AIRSPY_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   loPPM: number;
@@ -62,12 +62,11 @@ export class AirspyComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
+    private deviceStoreService: DeviceStoreService) {
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceReport();
@@ -78,81 +77,81 @@ export class AirspyComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType === "Airspy") {
-          this.statusMessage = "OK";
+        if (deviceSettings.deviceHwType === 'Airspy') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.airspySettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
           this.transverter = this.settings.transverterMode !== 0;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
           this.lnaAGC = this.settings.lnaAGC !== 0;
           this.mixerAGC = this.settings.mixerAGC !== 0;
           this.biasT = this.settings.biasT !== 0;
-          this.loPPM = this.settings.LOppmTenths/10;
+          this.loPPM = this.settings.LOppmTenths / 10;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not an Airspy device";
+          this.statusMessage = 'Not an Airspy device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private getDeviceReport() {
     this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceReport => {
-        if (deviceReport.deviceHwType === "Airspy") {
-          this.statusMessage = "OK";
+        if (deviceReport.deviceHwType === 'Airspy') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           let i = 0;
           deviceReport.airspyReport.sampleRates.forEach(element => {
             this.sampleRates.push({value: i, viewValue: element.rate});
             i += 1;
-          })
+          });
         } else {
-          this.statusMessage = "Not an Airspy device";
+          this.statusMessage = 'Not an Airspy device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
       basebandRate: this.getSampleRate()
-    }
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  getSampleRate() : number {
+  getSampleRate(): number {
     if (this.settings.devSampleRateIndex < this.sampleRates.length) {
-      return this.sampleRates[this.settings.devSampleRateIndex].viewValue/(1<<this.settings.log2Decim);
+      return this.sampleRates[this.settings.devSampleRateIndex].viewValue / (1 << this.settings.log2Decim);
     } else {
       return 6000000;
     }
   }
 
-  private setDeviceSettings(airspySettings : AirspySettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "Airspy";
+  private setDeviceSettings(airspySettings: AirspySettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'Airspy';
     settings.tx = 0,
     settings.airspySettings = airspySettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         Utils.delayObservable(1000).subscribe(
           _ => { this.getDeviceSettings(); }
-        )
+        );
       },
       error => {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   setLoPPM() {

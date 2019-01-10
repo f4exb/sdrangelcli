@@ -9,14 +9,14 @@ import { AudioOutDialogComponent } from '../audio-out-dialog/audio-out-dialog.co
   styleUrls: ['./audio-out-device.component.css']
 })
 export class AudioOutDeviceComponent implements OnInit {
-  @Input() audioDevice : AudioOutputDevice;
+  @Input() audioDevice: AudioOutputDevice;
 
   constructor(private popupDialog: MatDialog) { }
 
   ngOnInit() {
   }
 
-  isSystemDefault() : boolean {
+  isSystemDefault(): boolean {
     if (this.audioDevice.isSystemDefault) {
       return this.audioDevice.isSystemDefault !== 0;
     } else {
@@ -24,7 +24,7 @@ export class AudioOutDeviceComponent implements OnInit {
     }
   }
 
-  isEdited() : boolean {
+  isEdited(): boolean {
     if (this.audioDevice.defaultUnregistered === 0) {
       return true;
     } else {
@@ -32,23 +32,22 @@ export class AudioOutDeviceComponent implements OnInit {
     }
   }
 
-  getChannelMode() : string {
-    switch(this.audioDevice.udpChannelMode)
-    {
+  getChannelMode(): string {
+    switch (this.audioDevice.udpChannelMode) {
       case 0:
-        return "left";
+        return 'left';
       case 1:
-        return "right";
+        return 'right';
       case 2:
-        return "mixed";
+        return 'mixed';
       case 3:
-        return "stereo";
+        return 'stereo';
       default:
-        return "none";
+        return 'none';
     }
   }
 
-  copyToUDP() : boolean {
+  copyToUDP(): boolean {
     if (this.audioDevice.copyToUDP === 0) {
       return false;
     } else {
@@ -56,7 +55,7 @@ export class AudioOutDeviceComponent implements OnInit {
     }
   }
 
-  useRTP() : boolean {
+  useRTP(): boolean {
     if (this.audioDevice.udpUsesRTP === 0) {
       return false;
     } else {
@@ -76,7 +75,7 @@ export class AudioOutDeviceComponent implements OnInit {
     dialogConfig.position = {
       top: '0',
       left: '35%'
-    }
+    };
     this.popupDialog.open(AudioOutDialogComponent, dialogConfig);
-  }  
+  }
 }

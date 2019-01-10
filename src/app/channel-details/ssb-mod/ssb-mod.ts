@@ -1,30 +1,30 @@
-import { CWKEYER_SETTINGS_DEFAULT, CWKeyerSettings } from "../cw-keyer/cw-keyer";
+import { CWKEYER_SETTINGS_DEFAULT, CWKeyerSettings } from '../cw-keyer/cw-keyer';
 
 export interface SSBModSettings {
-    agc: number,
-    agcOrder: number,
-    agcThreshold: number,
-    agcThresholdDelay: number,
-    agcThresholdEnable: number,
-    agcThresholdGate: number,
-    agcTime: number,
-    audioBinaural: number,
-    audioDeviceName: string,
-    audioFlipChannels: number,
-    audioMute: number,
-    bandwidth: number,
-    cwKeyer: CWKeyerSettings,
-    dsb: number,
-    inputFrequencyOffset: number,
-    lowCutoff: number,
-    modAFInput: number,
-    playLoop: number,
-    rgbColor: number,
-    spanLog2: number,
-    title: string,
-    toneFrequency: number,
-    usb: number,
-    volumeFactor: number
+    agc: number;
+    agcOrder: number;
+    agcThreshold: number;
+    agcThresholdDelay: number;
+    agcThresholdEnable: number;
+    agcThresholdGate: number;
+    agcTime: number;
+    audioBinaural: number;
+    audioDeviceName: string;
+    audioFlipChannels: number;
+    audioMute: number;
+    bandwidth: number;
+    cwKeyer: CWKeyerSettings;
+    dsb: number;
+    inputFrequencyOffset: number;
+    lowCutoff: number;
+    modAFInput: number;
+    playLoop: number;
+    rgbColor: number;
+    spanLog2: number;
+    title: string;
+    toneFrequency: number;
+    usb: number;
+    volumeFactor: number;
 }
 
 export const SSBMOD_SETTINGS_DEFAULT = {
@@ -36,7 +36,7 @@ export const SSBMOD_SETTINGS_DEFAULT = {
     agcThresholdGate: 192,
     agcTime: 9600,
     audioBinaural: 0,
-    audioDeviceName: "System default device",
+    audioDeviceName: 'System default device',
     audioFlipChannels: 0,
     audioMute: 0,
     bandwidth: 3000,
@@ -48,20 +48,20 @@ export const SSBMOD_SETTINGS_DEFAULT = {
     playLoop: 0,
     rgbColor: -16711936,
     spanLog2: 3,
-    title: "SSB Modulator",
+    title: 'SSB Modulator',
     toneFrequency: 1000,
     usb: 1,
     volumeFactor: 1
-}
+};
 
 export interface SSBModReport {
-    audioSampleRate: number,
-    channelPowerDB: number,
-    channelSampleRate: number
+    audioSampleRate: number;
+    channelPowerDB: number;
+    channelSampleRate: number;
 }
 
 export const SSBMOD_REPORT_DEFAULT = {
     audioSampleRate: 48000,
     channelPowerDB: -120,
     channelSampleRate: 224000
-}
+};

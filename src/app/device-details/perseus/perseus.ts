@@ -1,14 +1,14 @@
 export interface PerseusSettings {
-    LOppmTenths: number,
-    adcDither: number,
-    adcPreamp: number,
-    attenuator: number,
-    centerFrequency: number,
-    devSampleRateIndex: number,
-    log2Decim: number,
-    transverterDeltaFrequency: number,
-    transverterMode: number,
-    wideBand: number
+    LOppmTenths: number;
+    adcDither: number;
+    adcPreamp: number;
+    attenuator: number;
+    centerFrequency: number;
+    devSampleRateIndex: number;
+    log2Decim: number;
+    transverterDeltaFrequency: number;
+    transverterMode: number;
+    wideBand: number;
 }
 
 export const PERSEUS_SETTINGS_DEFAULT = {
@@ -22,14 +22,14 @@ export const PERSEUS_SETTINGS_DEFAULT = {
     transverterDeltaFrequency: 0,
     transverterMode: 0,
     wideBand: 0
-}
+};
 
 export interface PerseusRate {
-    rate: number
+    rate: number;
 }
 
 export interface PerseusReport {
-    sampleRates: PerseusRate[]
+    sampleRates: PerseusRate[];
 }
 
 export const PERSEUS_REPORT_DEFAULT = {
@@ -37,4 +37,4 @@ export const PERSEUS_REPORT_DEFAULT = {
         { rate: 48000},
         { rate: 96000}
     ]
-}
+};

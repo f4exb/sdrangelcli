@@ -9,14 +9,14 @@ import { AudioInDialogComponent } from '../audio-in-dialog/audio-in-dialog.compo
   styleUrls: ['./audio-in-device.component.css']
 })
 export class AudioInDeviceComponent implements OnInit {
-  @Input() audioDevice : AudioInputDevice;
+  @Input() audioDevice: AudioInputDevice;
 
   constructor(private popupDialog: MatDialog) { }
 
   ngOnInit() {
   }
 
-  isSystemDefault() : boolean {
+  isSystemDefault(): boolean {
     if (this.audioDevice.isSystemDefault) {
       return this.audioDevice.isSystemDefault !== 0;
     } else {
@@ -24,7 +24,7 @@ export class AudioInDeviceComponent implements OnInit {
     }
   }
 
-  isEdited() : boolean {
+  isEdited(): boolean {
     if (this.audioDevice.defaultUnregistered === 0) {
       return true;
     } else {
@@ -44,7 +44,7 @@ export class AudioInDeviceComponent implements OnInit {
     dialogConfig.position = {
       top: '0',
       left: '35%'
-    }
+    };
     this.popupDialog.open(AudioInDialogComponent, dialogConfig);
   }
 }

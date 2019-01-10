@@ -12,11 +12,11 @@ export class ChangeDeviceService {
   constructor(private http: HttpClient) { }
 
   getAvailableDevices(url: string, forTx: boolean): Observable<AvailableDevices> {
-    const newurl = url + '/devices'+ (forTx ? "?tx=1" : "?tx=0");
+    const newurl = url + '/devices' + (forTx ? '?tx=1' : '?tx=0');
     return this.http.get<AvailableDevices>(newurl);
   }
 
-  changeDevice(url: string, deviceSetIndex: number, newDevice: NewDevice) : Observable<any> {
+  changeDevice(url: string, deviceSetIndex: number, newDevice: NewDevice): Observable<any> {
     const newurl = url + '/deviceset/' + deviceSetIndex + '/device';
     const httpOptions = {
       headers: new HttpHeaders({

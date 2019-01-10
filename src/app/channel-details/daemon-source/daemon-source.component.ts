@@ -15,19 +15,19 @@ import { ChannelSettings } from '../channel-details';
   styleUrls: ['./daemon-source.component.css']
 })
 export class DaemonSourceComponent implements OnInit {
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
+  sdrangelURL: string;
   settings: DaemonSourceSettings = DAEMON_SOURCE_SETTINGS_DEFAULT;
   report: DaemonSourceReport = DAEMON_SOURCE_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
+  rgbTitleStr = 'rgb(0,0,0)';
   monitor: boolean;
-  deviceStoreSubscription : Subscription;
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   lastTimestampUs: number;
   lastCorrectableCount: number;
@@ -42,34 +42,28 @@ export class DaemonSourceComponent implements OnInit {
     private channeldetailsService: ChannelDetailsService,
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.monitor = false;
-    this.lastTimestampUs = 0;
-    this.lastCorrectableCount = 0;
-    this.lastUncorrectableCount = 0;
-    this.lastSampleCount = 0;
-    this.deltaTimestampUs = 0;
-    this.deltaCorrectableCount = 0;
-    this.deltaUncorrectableCount = 0;
-    this.deltaSampleCount = 0;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
+    private deviceStoreService: DeviceStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.monitor = false;
+      this.lastTimestampUs = 0;
+      this.lastCorrectableCount = 0;
+      this.lastUncorrectableCount = 0;
+      this.lastSampleCount = 0;
+      this.deltaTimestampUs = 0;
+      this.deltaCorrectableCount = 0;
+      this.deltaUncorrectableCount = 0;
+      this.deltaSampleCount = 0;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getChannelSettings();
-  }
-
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
   }
 
   private getDeviceStorage() {
@@ -79,7 +73,7 @@ export class DaemonSourceComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -88,42 +82,42 @@ export class DaemonSourceComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "DaemonSource") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'DaemonSource') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.DaemonSourceSettings;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
         } else {
-          this.statusMessage = "Not a DaemonSource channel";
+          this.statusMessage = 'Not a DaemonSource channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
-  private setDeviceSettings(daemonSourceSettings : DaemonSourceSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "DaemonSource";
+  private setDeviceSettings(daemonSourceSettings: DaemonSourceSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'DaemonSource';
     settings.tx = 1,
     settings.DaemonSourceSettings = daemonSourceSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -131,7 +125,7 @@ export class DaemonSourceComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   enableReporting(enable: boolean) {
@@ -140,9 +134,9 @@ export class DaemonSourceComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "DaemonSource") {
+              if (channelReport.channelType === 'DaemonSource') {
                 this.report = channelReport.DaemonSourceReport;
-                let timestampUs = this.report.tvSec*1000000 + this.report.tvUSec;
+                const timestampUs = this.report.tvSec * 1000000 + this.report.tvUSec;
                 if (this.lastTimestampUs === 0) {
                   this.lastTimestampUs = timestampUs;
                 }
@@ -160,9 +154,9 @@ export class DaemonSourceComponent implements OnInit {
                 this.lastUncorrectableCount = this.report.uncorrectableErrorsCount;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
@@ -216,39 +210,39 @@ export class DaemonSourceComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getQueuePercentage() : number {
-    return (this.report.queueLength * 100) / this.report.queueSize
+  getQueuePercentage(): number {
+    return (this.report.queueLength * 100) / this.report.queueSize;
   }
 
-  getStreamSampleRate() : number {
-    if (this.deltaTimestampUs == 0) {
+  getStreamSampleRate(): number {
+    if (this.deltaTimestampUs === 0) {
       return 0;
     } else {
       return (this.deltaSampleCount * 1e6) / this.deltaTimestampUs;
     }
   }
 
-  getStreamStatusColor() : string {
+  getStreamStatusColor(): string {
     if (this.deltaSampleCount === 0) {
-      return "blue";
+      return 'blue';
     } else if (this.deltaUncorrectableCount !== 0) {
-      return "red";
+      return 'red';
     } else if (this.deltaCorrectableCount !== 0) {
-      return "grey";
+      return 'grey';
     } else {
-      return "green";
+      return 'green';
     }
   }
 
-  getStreamStatusText() : string {
+  getStreamStatusText(): string {
     if (this.deltaSampleCount === 0) {
-      return "Not streaming";
+      return 'Not streaming';
     } else if (this.deltaUncorrectableCount !== 0) {
-      return "Data lost";
+      return 'Data lost';
     } else if (this.deltaCorrectableCount !== 0) {
-      return "Data corrected";
+      return 'Data corrected';
     } else {
-      return "Streaming OK";
+      return 'Streaming OK';
     }
   }
 }

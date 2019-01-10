@@ -1,19 +1,19 @@
 export interface LimeSDROutputSettings {
-    antennaPath: number,
-    centerFrequency: number,
-    devSampleRate: number,
-    extClock: number,
-    extClockFreq: number,
-    gain: number,
-    log2HardInterp: number,
-    log2SoftInterp: number,
-    lpfBW: number,
-    lpfFIRBW: number,
-    lpfFIREnable: number,
-    ncoEnable: number,
-    ncoFrequency: number,
-    transverterDeltaFrequency: number,
-    transverterMode: number
+    antennaPath: number;
+    centerFrequency: number;
+    devSampleRate: number;
+    extClock: number;
+    extClockFreq: number;
+    gain: number;
+    log2HardInterp: number;
+    log2SoftInterp: number;
+    lpfBW: number;
+    lpfFIRBW: number;
+    lpfFIREnable: number;
+    ncoEnable: number;
+    ncoFrequency: number;
+    transverterDeltaFrequency: number;
+    transverterMode: number;
 }
 
 export const LIMESDR_OUTPUT_SETTINGS_DEFAULT = {
@@ -32,19 +32,19 @@ export const LIMESDR_OUTPUT_SETTINGS_DEFAULT = {
     ncoFrequency: -500000,
     transverterDeltaFrequency: 0,
     transverterMode: 0
-}
+};
 
 export interface LimeSDROutputReport {
-    droppedPacketsCount: number,
-    fifoFill: number,
-    fifoSize: number,
-    hwTimestamp: number,
-    linkRate: number,
-    overrunCount: number,
-    streamActive: number,
-    success: number,
-    temperature: number,
-    underrunCount: number
+    droppedPacketsCount: number;
+    fifoFill: number;
+    fifoSize: number;
+    hwTimestamp: number;
+    linkRate: number;
+    overrunCount: number;
+    streamActive: number;
+    success: number;
+    temperature: number;
+    underrunCount: number;
 }
 
 export const LIMESDR_OUTPUT_REPORT_DEFAULT = {
@@ -58,4 +58,4 @@ export const LIMESDR_OUTPUT_REPORT_DEFAULT = {
     success: 0,
     temperature: 54.47434997558594,
     underrunCount: 0
-}
+};

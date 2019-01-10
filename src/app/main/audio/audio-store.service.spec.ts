@@ -17,8 +17,8 @@ describe('AudioStoreService', () => {
   }));
 
   it('should publish and subscribe', inject([AudioStoreService], (service: AudioStoreService) => {
-    const audioOutputDevices : AudioOutputDevice[] = AUDIO_DEVICES_MOCK.outputDevices;
+    const audioOutputDevices: AudioOutputDevice[] = AUDIO_DEVICES_MOCK.outputDevices;
     service.changeOutput(audioOutputDevices);
-    service.getOutput().subscribe(audioStorage => {expect(audioStorage["System default device"]["audioRate"]).toBe(48000)});
+    service.getOutput().subscribe(audioStorage => { expect(audioStorage['System default device']['audioRate']).toBe(48000); });
   }));
 });

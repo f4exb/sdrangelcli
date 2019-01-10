@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('LocationDialogComponent', () => {
   let component: LocationDialogComponent;
   let fixture: ComponentFixture<LocationDialogComponent>;
-  const data = {title: "Test Location"};
+  const data = {title: 'Test Location'};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

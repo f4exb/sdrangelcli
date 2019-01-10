@@ -12,18 +12,18 @@ import { ChannelSettings } from '../channel-details';
 import { CWKeyerSettings } from '../cw-keyer/cw-keyer';
 
 interface AFInput {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 interface AudioDeviceInfo {
-  value: string,
-  viewValue: number
+  value: string;
+  viewValue: number;
 }
 
 interface RFBandwidth {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 @Component({
@@ -32,13 +32,13 @@ interface RFBandwidth {
   styleUrls: ['./wfm-mod.component.css']
 })
 export class WfmModComponent implements OnInit {
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
+  sdrangelURL: string;
   settings: WFMModSettings = WFMMOD_SETTINGS_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
-  deviceStoreSubscription : Subscription;
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   channelDeltaFrequency: number;
   channelCenterFrequencyKhz: number;
@@ -47,16 +47,16 @@ export class WfmModComponent implements OnInit {
   afBandwidthKhz: number;
   fmDeviationKhz: number;
   afInputs: AFInput[] = [
-    { value: 0, viewValue: "None" },
-    { value: 1, viewValue: "Tone" },
-    { value: 2, viewValue: "File" },
-    { value: 3, viewValue: "Audio" },
-    { value: 4, viewValue: "CW" },
+    { value: 0, viewValue: 'None' },
+    { value: 1, viewValue: 'Tone' },
+    { value: 2, viewValue: 'File' },
+    { value: 3, viewValue: 'Audio' },
+    { value: 4, viewValue: 'CW' },
   ];
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
+  rgbTitleStr = 'rgb(0,0,0)';
   audioDevices: AudioDeviceInfo[] = [];
   monitor: boolean;
   channelMute: boolean;
@@ -84,53 +84,47 @@ export class WfmModComponent implements OnInit {
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService,
-    private audioStoreService: AudioStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.monitor = false;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
+    private audioStoreService: AudioStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.monitor = false;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getChannelSettings();
     this.getAudioDevicesInfo();
   }
 
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
-  }
-
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "WFMMod") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'WFMMod') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.WFMModSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
-          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
-          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
-          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
-          this.afBandwidthKhz = this.settings.afBandwidth/1000;
+          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
+          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate / 2)) / 1000;
+          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate / 2)) / 1000;
+          this.afBandwidthKhz = this.settings.afBandwidth / 1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = this.getRGBTitleStr();
           this.settings.volumeFactor = +this.settings.volumeFactor.toFixed(1);
           this.channelMute = this.settings.channelMute !== 0;
-          this.fmDeviationKhz = +this.settings.fmDeviation/1000;
+          this.fmDeviationKhz = +this.settings.fmDeviation / 1000;
           this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
         } else {
-          this.statusMessage = "Not a WFMMod channel";
+          this.statusMessage = 'Not a WFMMod channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private getDeviceStorage() {
@@ -140,7 +134,7 @@ export class WfmModComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -149,14 +143,14 @@ export class WfmModComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getAudioDevicesInfo() {
@@ -166,25 +160,25 @@ export class WfmModComponent implements OnInit {
     this.audioStoreService.getInput().subscribe(
       audioData => {
         this.audioDevices = [];
-        for (let [key, value] of Object.entries(audioData)) {
-          this.audioDevices.push({value: key, viewValue: value["audioRate"]});
+        for (const [key, value] of Object.entries(audioData)) {
+          this.audioDevices.push({value: key, viewValue: value['audioRate']});
         }
       },
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
-  private setDeviceSettings(wfmModSettings : WFMModSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "WFMMod";
+  private setDeviceSettings(wfmModSettings: WFMModSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'WFMMod';
     settings.tx = 1,
     settings.WFMModSettings = wfmModSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -192,7 +186,7 @@ export class WfmModComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   onCWSettingsUpdate(cwSettings: CWKeyerSettings) {
@@ -207,13 +201,13 @@ export class WfmModComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "WFMMod") {
+              if (channelReport.channelType === 'WFMMod') {
                 this.report = channelReport.WFMModReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
@@ -225,8 +219,8 @@ export class WfmModComponent implements OnInit {
     this.enableReporting(this.monitor);
   }
 
-  getRGBTitleStr() : string {
-    return "rgb(" + this.rgbTitle[0].toString() + "," + this.rgbTitle[1].toString() + "," + this.rgbTitle[2].toString() + ")";
+  getRGBTitleStr(): string {
+    return 'rgb(' + this.rgbTitle[0].toString() + ',' + this.rgbTitle[1].toString() + ',' + this.rgbTitle[2].toString() + ')';
   }
 
   onFrequencyUpdate(frequency: number) {
@@ -240,8 +234,8 @@ export class WfmModComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getDeltaFrequency() : number {
-    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  getDeltaFrequency(): number {
+    const frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency / 1000);
     return +frequency.toFixed(3);
   }
 
@@ -273,13 +267,13 @@ export class WfmModComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  setFMDeviation(){
+  setFMDeviation() {
     const newSettings: WFMModSettings = <WFMModSettings>{};
     newSettings.fmDeviation = this.fmDeviationKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
-  setVolume(){
+  setVolume() {
     const newSettings: WFMModSettings = <WFMModSettings>{};
     newSettings.volumeFactor = this.settings.volumeFactor;
     this.setDeviceSettings(newSettings);

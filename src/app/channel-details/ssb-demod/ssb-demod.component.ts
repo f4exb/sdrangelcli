@@ -5,23 +5,23 @@ import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
-import { AudioStoreService, AudioStorage } from '../../main/audio/audio-store.service';
+import { AudioStoreService } from '../../main/audio/audio-store.service';
 import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
 
 interface AudioDeviceInfo {
-  value: string,
-  viewValue: number
+  value: string;
+  viewValue: number;
 }
 
 interface Log2 {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 interface AudioSampleRates {
-  [deviceName: string]: number
+  [deviceName: string]: number;
 }
 
 @Component({
@@ -30,13 +30,13 @@ interface AudioSampleRates {
   styleUrls: ['./ssb-demod.component.css']
 })
 export class SsbDemodComponent implements OnInit {
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
+  sdrangelURL: string;
   settings: SSBDemodSettings = SSBDEMOD_SETTINGS_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
-  deviceStoreSubscription : Subscription;
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   channelDeltaFrequency: number;
   channelCenterFrequencyKhz: number;
@@ -46,9 +46,9 @@ export class SsbDemodComponent implements OnInit {
   lowCutoffKhz: number;
   audioMute: boolean;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
+  rgbTitleStr = 'rgb(0,0,0)';
   audioDevices: AudioDeviceInfo[] = [];
   audioSampleRates: AudioSampleRates = <AudioSampleRates>{};
   monitor: boolean;
@@ -87,27 +87,21 @@ export class SsbDemodComponent implements OnInit {
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService,
-    private audioStoreService: AudioStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.monitor = false;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
+    private audioStoreService: AudioStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.monitor = false;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getAudioDevicesInfo();
     this.getChannelSettings();
-  }
-
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
   }
 
   private getDeviceStorage() {
@@ -117,7 +111,7 @@ export class SsbDemodComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -126,28 +120,28 @@ export class SsbDemodComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "SSBDemod") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'SSBDemod') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.SSBDemodSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
-          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
-          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
-          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
-          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
+          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
+          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate / 2)) / 1000;
+          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate / 2)) / 1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth / 1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.settings.volume = +this.settings.volume.toFixed(1);
@@ -162,11 +156,11 @@ export class SsbDemodComponent implements OnInit {
           this.binaural = this.settings.audioBinaural !== 0;
           this.lrFlip = this.settings.audioFlipChannels !== 0;
         } else {
-          this.statusMessage = "Not a SSBDemod channel";
+          this.statusMessage = 'Not a SSBDemod channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private getAudioDevicesInfo() {
@@ -176,26 +170,26 @@ export class SsbDemodComponent implements OnInit {
     this.audioStoreService.getOutput().subscribe(
       audioData => {
         this.audioDevices = [];
-        for (let [key, value] of Object.entries(audioData)) {
-          this.audioDevices.push({value: key, viewValue: value["audioRate"]});
-          this.audioSampleRates[key] = value["audioRate"];
+        for (const [key, value] of Object.entries(audioData)) {
+          this.audioDevices.push({value: key, viewValue: value['audioRate']});
+          this.audioSampleRates[key] = value['audioRate'];
         }
       },
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
-  private setDeviceSettings(ssbDemodSettings : SSBDemodSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "SSBDemod";
+  private setDeviceSettings(ssbDemodSettings: SSBDemodSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'SSBDemod';
     settings.tx = 0,
     settings.SSBDemodSettings = ssbDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -203,7 +197,7 @@ export class SsbDemodComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   enableReporting(enable: boolean) {
@@ -212,13 +206,13 @@ export class SsbDemodComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "SSBDemod") {
+              if (channelReport.channelType === 'SSBDemod') {
                 this.ssbDemodreport = channelReport.SSBDemodReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
@@ -241,8 +235,8 @@ export class SsbDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getDeltaFrequency() : number {
-    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  getDeltaFrequency(): number {
+    const frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency / 1000);
     return +frequency.toFixed(3);
   }
 
@@ -300,7 +294,7 @@ export class SsbDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  private getAudioSampleRate() : number {
+  private getAudioSampleRate(): number {
     if (this.settings.audioDeviceName in this.audioSampleRates) {
       return this.audioSampleRates[this.settings.audioDeviceName];
     } else {
@@ -308,13 +302,13 @@ export class SsbDemodComponent implements OnInit {
     }
   }
 
-  getChannelBaseband() : number {
-    return (this.getAudioSampleRate() / 1000) / (1<<this.settings.spanLog2);
+  getChannelBaseband(): number {
+    return (this.getAudioSampleRate() / 1000) / (1 << this.settings.spanLog2);
   }
 
   private setHiCutMinMax() {
-    let audioSampleRate = this.getAudioSampleRate();
-    this.maxHiCutKhz = (audioSampleRate / (1<<this.settings.spanLog2))/1000;
+    const audioSampleRate = this.getAudioSampleRate();
+    this.maxHiCutKhz = (audioSampleRate / (1 << this.settings.spanLog2)) / 1000;
     if (this.settings.dsb === 0) {
       this.minHiCutKhz = -this.maxHiCutKhz;
     } else {

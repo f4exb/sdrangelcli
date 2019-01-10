@@ -9,10 +9,10 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
   styleUrls: ['./presets.component.css']
 })
 export class PresetsComponent implements OnInit {
-  sdrangelURL : string;
-  presets : Presets = PRESETS_DEFAULT;
-  statusMessage : string;
-  statusError : boolean;
+  sdrangelURL: string;
+  presets: Presets = PRESETS_DEFAULT;
+  statusMessage: string;
+  statusError: boolean;
 
   constructor(private presetService: PresetService,
     private sdrangelUrlService: SdrangelUrlService) {
@@ -22,14 +22,14 @@ export class PresetsComponent implements OnInit {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.fetchPresetsInformation();
-    })
+    });
   }
 
   private fetchPresetsInformation() {
     this.presetService.getInfo(this.sdrangelURL).subscribe(
       presets => {
         this.presets = presets;
-        this.statusMessage = "OK";
+        this.statusMessage = 'OK';
         this.statusError = false;
       },
       error => {

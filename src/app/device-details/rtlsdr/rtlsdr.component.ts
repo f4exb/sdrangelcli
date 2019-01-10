@@ -8,18 +8,18 @@ import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 export interface Log2Decim {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 export interface FcPos {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 export interface Gain {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 @Component({
@@ -29,7 +29,7 @@ export interface Gain {
 })
 export class RtlsdrComponent implements OnInit {
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   log2Decims: Log2Decim[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
@@ -40,15 +40,15 @@ export class RtlsdrComponent implements OnInit {
     {value: 6, viewValue: 64},
   ];
   fcPositions: FcPos[] = [
-    {value: 0, viewValue: "Inf"},
-    {value: 1, viewValue: "Sup"},
-    {value: 2, viewValue: "Cen"},
+    {value: 0, viewValue: 'Inf'},
+    {value: 1, viewValue: 'Sup'},
+    {value: 2, viewValue: 'Cen'},
   ];
   gains: Gain[] = [
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   settings: RTLSDRSettings = RTLSDR_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   rfBandwidthKhz: number;
@@ -62,12 +62,11 @@ export class RtlsdrComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
+    private deviceStoreService: DeviceStoreService) {
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
@@ -78,12 +77,12 @@ export class RtlsdrComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType === "RTLSDR") {
-          this.statusMessage = "OK";
+        if (deviceSettings.deviceHwType === 'RTLSDR') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.rtlSdrSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
-          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth / 1000;
           this.transverter = this.settings.transverterMode !== 0;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqImbalance !== 0;
@@ -92,50 +91,50 @@ export class RtlsdrComponent implements OnInit {
           this.noModMode = this.settings.noModMode !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a RTLSDR device";
+          this.statusMessage = 'Not a RTLSDR device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private getDeviceReport() {
     this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType === "RTLSDR") {
-          this.statusMessage = "OK";
+        if (deviceSettings.deviceHwType === 'RTLSDR') {
+          this.statusMessage = 'OK';
           this.statusError = false;
-          let reportedGains = deviceSettings.rtlSdrReport["gains"];
+          const reportedGains = deviceSettings.rtlSdrReport['gains'];
           this.gains = [];
           reportedGains.forEach(element => {
-            let reportedGain = element["gainCB"];
-            this.gains.push({value: reportedGain, viewValue: reportedGain/10});
+            const reportedGain = element['gainCB'];
+            this.gains.push({value: reportedGain, viewValue: reportedGain / 10});
           });
         } else {
-          this.statusMessage = "Not a RTLSDR device";
+          this.statusMessage = 'Not a RTLSDR device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2Decim)
-    }
+      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2Decim)
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(rtlsdrSettings : RTLSDRSettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "RTLSDR";
+  private setDeviceSettings(rtlsdrSettings: RTLSDRSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'RTLSDR';
     settings.tx = 0,
     settings.rtlSdrSettings = rtlsdrSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getDeviceSettings();
       },
@@ -143,11 +142,11 @@ export class RtlsdrComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2Decim);
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2Decim);
   }
 
   setLoPPM() {
@@ -247,7 +246,7 @@ export class RtlsdrComponent implements OnInit {
   }
 
   private validateSampleRate() {
-    let min, max : number;
+    let min, max: number;
     min = this.lowSampleRate ? 230000 : 950000;
     max = this.lowSampleRate ? 300000 : 2400000;
     if (this.settings.devSampleRate < min) {
@@ -266,7 +265,7 @@ export class RtlsdrComponent implements OnInit {
   }
 
   private validateCenterFrequencyKhz() {
-    let min, max : number;
+    let min, max: number;
     min = this.noModMode ? 0 : 24000;
     max = this.lowSampleRate ? 275000 : 1900000;
     if (this.centerFreqKhz < min) {

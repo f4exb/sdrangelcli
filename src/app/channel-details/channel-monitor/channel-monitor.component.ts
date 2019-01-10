@@ -6,10 +6,10 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./channel-monitor.component.css']
 })
 export class ChannelMonitorComponent implements OnInit {
-  @Input() value : number;
-  @Input() min : number;
-  @Input() max : number;
-  @Input() squelch : boolean;
+  @Input() value: number;
+  @Input() min: number;
+  @Input() max: number;
+  @Input() squelch: boolean;
 
   constructor() { }
 
@@ -17,22 +17,22 @@ export class ChannelMonitorComponent implements OnInit {
   }
 
   getValuePercentage() {
-    return (this.value - this.min)*(100/(this.max - this.min));
+    return (this.value - this.min) * (100 / (this.max - this.min));
   }
 
-  getSquelchStatusColor() : string {
+  getSquelchStatusColor(): string {
     if (this.squelch) {
-      return "rgb(50,180,50)";
+      return 'rgb(50,180,50)';
     } else {
-      return "grey";
+      return 'grey';
     }
   }
 
-  getSquelchStatusText() : string {
+  getSquelchStatusText(): string {
     if (this.squelch) {
-      return "Squelch open";
+      return 'Squelch open';
     } else {
-      return "Squelch closed";
+      return 'Squelch closed';
     }
   }
 }

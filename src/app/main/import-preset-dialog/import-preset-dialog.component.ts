@@ -16,13 +16,12 @@ export class ImportPresetDialogComponent implements OnInit {
   remoteFilePath: string;
 
   constructor(private dialogRef: MatDialogRef<ImportPresetDialogComponent>,
-    private presetService : PresetService,
+    private presetService: PresetService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar)
-  {
+    public snackBar: MatSnackBar) {
     this.groupName = data.groupName;
-    this.presetName = data.presetName
+    this.presetName = data.presetName;
   }
 
   ngOnInit() {
@@ -32,7 +31,7 @@ export class ImportPresetDialogComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close("Dismiss");
+    this.dialogRef.close('Dismiss');
   }
 
   import() {
@@ -40,16 +39,16 @@ export class ImportPresetDialogComponent implements OnInit {
       groupName: this.groupName,
       description: this.presetName,
       filePath: this.remoteFilePath
-    }
+    };
     this.presetService.importPreset(this.sdrangelURL, presetImport).subscribe(
       res => {
-        console.log("Imported OK", res);
-        this.dialogRef.close("OK");
+        console.log('Imported OK', res);
+        this.dialogRef.close('OK');
       },
       error => {
         console.log(error);
-        this.snackBar.open(error.message, "OK", {duration: 2000});
-        this.dialogRef.close("Error");
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
       }
     );
   }

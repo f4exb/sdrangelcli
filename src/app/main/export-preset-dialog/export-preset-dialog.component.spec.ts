@@ -10,12 +10,12 @@ describe('ExportPresetDialogComponent', () => {
   let fixture: ComponentFixture<ExportPresetDialogComponent>;
   const data = {
     preset: {
-      groupName: "test",
+      groupName: 'test',
       centerFrequency: 435000000,
-      name: "test",
-      type: "R"
+      name: 'test',
+      type: 'R'
     }
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

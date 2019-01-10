@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
-import { Channel } from './channel'
+import { Channel } from './channel';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { RemoveChannelDialogComponent } from '../remove-channel-dialog/remove-channel-dialog.component';
 import { Router } from '@angular/router';
@@ -10,18 +10,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./channel.component.css']
 })
 export class ChannelComponent implements OnInit {
-  @Input('channel') channel : Channel;
-  @Input('centerFrequency') centerFrequency : number;
-  @Input('devicesetIndex') devicesetIndex : number;
+  @Input('channel') channel: Channel;
+  @Input('centerFrequency') centerFrequency: number;
+  @Input('devicesetIndex') devicesetIndex: number;
   @Output() channelRemoved = new EventEmitter();
   width: number;
   height: number;
 
   constructor(private popupDialog: MatDialog,
     private elementRef: ElementRef,
-    private router: Router)
-  {
-    this.onResize();
+    private router: Router) {
+      this.onResize();
   }
 
   ngOnInit() {
@@ -34,7 +33,7 @@ export class ChannelComponent implements OnInit {
   }
 
   editChannel() {
-    this.router.navigate(['../device/'+this.devicesetIndex+'/channel/'+this.channel.index]);
+    this.router.navigate(['../device/' + this.devicesetIndex + '/channel/' + this.channel.index]);
   }
 
   openRemoveChannelDialog() {
@@ -49,17 +48,17 @@ export class ChannelComponent implements OnInit {
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+180 > this.height) {
-      dialogY -= dialogY+180 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 180 > this.height) {
+      dialogY -= dialogY + 180 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(RemoveChannelDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(RemoveChannelDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.channelRemoved.emit(); // triggers refresh
       }
     });

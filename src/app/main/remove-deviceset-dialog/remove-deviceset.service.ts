@@ -10,7 +10,7 @@ export class RemoveDevicesetService {
   constructor(private http: HttpClient) {
   }
 
-  delete(url: string) : Observable<any> {
+  delete(url: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',

@@ -12,13 +12,13 @@ import { interval } from 'rxjs';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
 
 export interface AudioDeviceInfo {
-  value: string,
-  viewValue: number
+  value: string;
+  viewValue: number;
 }
 
 export interface AMSynchronousOperation {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -27,13 +27,13 @@ export interface AMSynchronousOperation {
   styleUrls: ['./am-demod.component.css']
 })
 export class AmDemodComponent implements OnInit {
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
+  sdrangelURL: string;
   settings: AMDemodSettings = AMDEMOD_SETTINGS_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
-  deviceStoreSubscription : Subscription;
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   channelDeltaFrequency: number;
   channelCenterFrequencyKhz: number;
@@ -43,14 +43,14 @@ export class AmDemodComponent implements OnInit {
   bandpassFilter: boolean;
   audioMute: boolean;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
+  rgbTitleStr = 'rgb(0,0,0)';
   audioDevices: AudioDeviceInfo[] = [];
   amSyncchronousOperations: AMSynchronousOperation[] = [
-    {value: 0, viewValue: "DSB"},
-    {value: 1, viewValue: "USB"},
-    {value: 2, viewValue: "LSB"}
+    {value: 0, viewValue: 'DSB'},
+    {value: 1, viewValue: 'USB'},
+    {value: 2, viewValue: 'LSB'}
   ];
   pll: boolean;
   monitor: boolean;
@@ -61,42 +61,35 @@ export class AmDemodComponent implements OnInit {
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService,
-    private audioStoreService: AudioStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.monitor = false;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
+    private audioStoreService: AudioStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.monitor = false;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getChannelSettings();
     this.getAudioDevicesInfo();
   }
 
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
-  }
-
-
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "AMDemod") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'AMDemod') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.AMDemodSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
-          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
-          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
-          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
-          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
+          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
+          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate / 2)) / 1000;
+          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate / 2)) / 1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth / 1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = this.getRGBTitleStr();
           this.settings.volume = +this.settings.volume.toFixed(1);
@@ -104,11 +97,11 @@ export class AmDemodComponent implements OnInit {
           this.audioMute = this.settings.audioMute !== 0;
           this.pll = this.settings.pll !== 0;
         } else {
-          this.statusMessage = "Not an AMDemod channel";
+          this.statusMessage = 'Not an AMDemod channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private getDeviceStorage() {
@@ -118,7 +111,7 @@ export class AmDemodComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -127,14 +120,14 @@ export class AmDemodComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getAudioDevicesInfo() {
@@ -144,25 +137,25 @@ export class AmDemodComponent implements OnInit {
     this.audioStoreService.getOutput().subscribe(
       audioData => {
         this.audioDevices = [];
-        for (let [key, value] of Object.entries(audioData)) {
-          this.audioDevices.push({value: key, viewValue: value["audioRate"]});
+        for (const [key, value] of Object.entries(audioData)) {
+          this.audioDevices.push({value: key, viewValue: value['audioRate']});
         }
       },
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
-  private setDeviceSettings(amDemodSettings : AMDemodSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "AMDemod";
+  private setDeviceSettings(amDemodSettings: AMDemodSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'AMDemod';
     settings.tx = 0,
     settings.AMDemodSettings = amDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -170,7 +163,7 @@ export class AmDemodComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   onFrequencyUpdate(frequency: number) {
@@ -184,13 +177,13 @@ export class AmDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getDeltaFrequency() : number {
-    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
-    return +frequency.toFixed(3)
+  getDeltaFrequency(): number {
+    const frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency / 1000);
+    return +frequency.toFixed(3);
   }
 
-  getRGBTitleStr() : string {
-    return "rgb(" + this.rgbTitle[0].toString() + "," + this.rgbTitle[1].toString() + "," + this.rgbTitle[2].toString() + ")";
+  getRGBTitleStr(): string {
+    return 'rgb(' + this.rgbTitle[0].toString() + ',' + this.rgbTitle[1].toString() + ',' + this.rgbTitle[2].toString() + ')';
   }
 
   onTitleColorChanged(colorStr: string) {
@@ -269,13 +262,13 @@ export class AmDemodComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "AMDemod") {
+              if (channelReport.channelType === 'AMDemod') {
                 this.amDemodreport = channelReport.AMDemodReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
@@ -287,19 +280,19 @@ export class AmDemodComponent implements OnInit {
     this.enableReporting(this.monitor);
   }
 
-  getSquelchStatusColor() : string {
+  getSquelchStatusColor(): string {
     if (this.amDemodreport.squelch !== 0) {
-      return "rgb(50,180,50)";
+      return 'rgb(50,180,50)';
     } else {
-      return "grey";
+      return 'grey';
     }
   }
 
-  getSquelchStatusText() : string {
+  getSquelchStatusText(): string {
     if (this.amDemodreport.squelch !== 0) {
-      return "Squelch open";
+      return 'Squelch open';
     } else {
-      return "Squelch closed";
+      return 'Squelch closed';
     }
   }
 }

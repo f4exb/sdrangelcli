@@ -31,7 +31,7 @@ describe('AudioService', () => {
           expect(data.outputDevices[20].index).toBe(19);
         });
         // We set the expectations for the HttpClient mock
-        const req = httpMock.expectOne(req => req.method === 'GET' && req.url === sdrangelURL);
+        const req = httpMock.expectOne(reqx => reqx.method === 'GET' && reqx.url === sdrangelURL);
         // Then we set the fake data to be returned by the mock
         req.flush(AUDIO_DEVICES_MOCK);
   }));

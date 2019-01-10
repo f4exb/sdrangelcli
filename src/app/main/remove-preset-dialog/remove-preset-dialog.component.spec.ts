@@ -10,9 +10,9 @@ describe('RemovePresetDialogComponent', () => {
   let component: RemovePresetDialogComponent;
   let fixture: ComponentFixture<RemovePresetDialogComponent>;
   const data = {
-    groupName: "test",
+    groupName: 'test',
     preset: PRESET_MOCK
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -11,18 +11,18 @@ import { of } from 'rxjs';
 import { Utils } from '../../common-components/utils';
 
 interface Log2 {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 interface Attenuation {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 interface SampleRate {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 @Component({
@@ -32,7 +32,7 @@ interface SampleRate {
 })
 export class PerseusComponent implements OnInit {
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   log2Decims: Log2[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
@@ -46,8 +46,8 @@ export class PerseusComponent implements OnInit {
   ];
   sampleRates: SampleRate[] = [];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   settings: PerseusSettings = PERSEUS_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   transverter: boolean;
@@ -59,12 +59,11 @@ export class PerseusComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
+    private deviceStoreService: DeviceStoreService) {
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceReport();
@@ -75,76 +74,76 @@ export class PerseusComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType === "Perseus") {
-          this.statusMessage = "OK";
+        if (deviceSettings.deviceHwType === 'Perseus') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.perseusSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
           this.transverter = this.settings.transverterMode !== 0;
-          this.loPPM = this.settings.LOppmTenths/10;
+          this.loPPM = this.settings.LOppmTenths / 10;
           this.wideband = this.settings.wideBand !== 0;
           this.dither = this.settings.adcDither !== 0;
           this.preamp = this.settings.adcPreamp !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a Perseus device";
+          this.statusMessage = 'Not a Perseus device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private getDeviceReport() {
     this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceReport => {
-        if (deviceReport.deviceHwType === "Perseus") {
-          this.statusMessage = "OK";
+        if (deviceReport.deviceHwType === 'Perseus') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           let i = 0;
           deviceReport.perseusReport.sampleRates.forEach(element => {
             this.sampleRates.push({value: i, viewValue: element.rate});
             i += 1;
-          })
+          });
         } else {
-          this.statusMessage = "Not a Perseus device";
+          this.statusMessage = 'Not a Perseus device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
       basebandRate: this.getSampleRate()
-    }
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(perseusSettings : PerseusSettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "Perseus";
+  private setDeviceSettings(perseusSettings: PerseusSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'Perseus';
     settings.tx = 0,
     settings.perseusSettings = perseusSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         Utils.delayObservable(1000).subscribe(
           _ => { this.getDeviceSettings(); }
-        )
+        );
       },
       error => {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
+  getSampleRate(): number {
     if (this.settings.devSampleRateIndex < this.sampleRates.length) {
-      return this.sampleRates[this.settings.devSampleRateIndex].viewValue/(1<<this.settings.log2Decim);
+      return this.sampleRates[this.settings.devSampleRateIndex].viewValue / (1 << this.settings.log2Decim);
     } else {
       return 48000;
     }

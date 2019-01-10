@@ -1,25 +1,25 @@
 export interface LimeSDRInputSettings {
-    antennaPath: number,
-    centerFrequency: number,
-    dcBlock: number,
-    devSampleRate: number,
-    extClock: number,
-    extClockFreq: number,
-    gain: number,
-    gainMode: number,
-    iqCorrection: number,
-    lnaGain: number,
-    log2HardDecim: number,
-    log2SoftDecim: number,
-    lpfBW: number,
-    lpfFIRBW: number,
-    lpfFIREnable: number,
-    ncoEnable: number,
-    ncoFrequency: number,
-    pgaGain: number,
-    tiaGain: number,
-    transverterDeltaFrequency: number,
-    transverterMode: number
+    antennaPath: number;
+    centerFrequency: number;
+    dcBlock: number;
+    devSampleRate: number;
+    extClock: number;
+    extClockFreq: number;
+    gain: number;
+    gainMode: number;
+    iqCorrection: number;
+    lnaGain: number;
+    log2HardDecim: number;
+    log2SoftDecim: number;
+    lpfBW: number;
+    lpfFIRBW: number;
+    lpfFIREnable: number;
+    ncoEnable: number;
+    ncoFrequency: number;
+    pgaGain: number;
+    tiaGain: number;
+    transverterDeltaFrequency: number;
+    transverterMode: number;
 }
 
 export const LIMESDR_INPUT_SETTINGS_DEFAULT = {
@@ -44,19 +44,19 @@ export const LIMESDR_INPUT_SETTINGS_DEFAULT = {
     tiaGain: 2,
     transverterDeltaFrequency: 0,
     transverterMode: 0
-}
+};
 
 export interface LimeSDRInputReport {
-    droppedPacketsCount: number,
-    fifoFill: number,
-    fifoSize: number,
-    hwTimestamp: number,
-    linkRate: number,
-    overrunCount: number,
-    streamActive: number,
-    success: number,
-    temperature: number,
-    underrunCount: number
+    droppedPacketsCount: number;
+    fifoFill: number;
+    fifoSize: number;
+    hwTimestamp: number;
+    linkRate: number;
+    overrunCount: number;
+    streamActive: number;
+    success: number;
+    temperature: number;
+    underrunCount: number;
 }
 
 export const LIMESDR_INPUT_REPORT_DEFAULT = {
@@ -70,4 +70,4 @@ export const LIMESDR_INPUT_REPORT_DEFAULT = {
     success: 1,
     temperature: 53.53076171875,
     underrunCount: 0
-}
+};

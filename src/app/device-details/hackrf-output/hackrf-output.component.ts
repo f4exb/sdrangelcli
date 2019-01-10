@@ -8,13 +8,13 @@ import { DeviceSettings } from '../device-details';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 
 interface Log2Interp {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 interface RFBandwidth {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 @Component({
@@ -24,7 +24,7 @@ interface RFBandwidth {
 })
 export class HackrfOutputComponent implements OnInit {
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   log2Interps: Log2Interp[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
@@ -53,8 +53,8 @@ export class HackrfOutputComponent implements OnInit {
     {value: 28000000, viewValue: 28},
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   settings: HackRFOutputSettings = HACKRF_OUTPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   loPPM: number;
@@ -64,11 +64,11 @@ export class HackrfOutputComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  { }
+    private deviceStoreService: DeviceStoreService) {
+  }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
@@ -78,40 +78,40 @@ export class HackrfOutputComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType == "HackRF") && (deviceSettings.tx !== 0)) {
-          this.statusMessage = "OK";
+        if ((deviceSettings.deviceHwType === 'HackRF') && (deviceSettings.tx !== 0)) {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.hackRFOutputSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
           this.loPPM = this.settings.LOppmTenths / 10;
           this.biasT = this.settings.biasT !== 0;
           this.rfAmp = this.settings.lnaExt !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a HackRF output device";
+          this.statusMessage = 'Not a HackRF output device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2Interp)
-    }
+      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2Interp)
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(hackrfSettings : HackRFOutputSettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "HackRF";
+  private setDeviceSettings(hackrfSettings: HackRFOutputSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'HackRF';
     settings.tx = 1,
     settings.hackRFOutputSettings = hackrfSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getDeviceSettings();
       },
@@ -119,11 +119,11 @@ export class HackrfOutputComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2Interp);
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2Interp);
   }
 
   setLoPPM() {

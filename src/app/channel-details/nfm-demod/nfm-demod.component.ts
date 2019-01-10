@@ -12,18 +12,18 @@ import { ChannelSettings } from '../channel-details';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
 
 export interface AudioDeviceInfo {
-  value: string,
-  viewValue: number
+  value: string;
+  viewValue: number;
 }
 
 export interface CTCSSValue {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 export interface RFBandwidth {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 @Component({
@@ -32,13 +32,13 @@ export interface RFBandwidth {
   styleUrls: ['./nfm-demod.component.css']
 })
 export class NfmDemodComponent implements OnInit {
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
+  sdrangelURL: string;
   settings: NFMDemodSettings = NFMDEMOD_SETTINGS_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
-  deviceStoreSubscription : Subscription;
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   channelDeltaFrequency: number;
   channelCenterFrequencyKhz: number;
@@ -47,44 +47,44 @@ export class NfmDemodComponent implements OnInit {
   rfBandwidthKhz: number;
   audioMute: boolean;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
+  rgbTitleStr = 'rgb(0,0,0)';
   audioDevices: AudioDeviceInfo[] = [];
   ctcssValues: CTCSSValue[] = [ // The 32 EIA standard tones
-    {value: 0, viewValue: "--"},
-    {value: 1, viewValue: "67.0"},
-    {value: 2, viewValue: "71.9"},
-    {value: 3, viewValue: "74.4"},
-    {value: 4, viewValue: "77.0"},
-    {value: 5, viewValue: "79.7"},
-    {value: 6, viewValue: "82.5"},
-    {value: 7, viewValue: "85.4"},
-    {value: 8, viewValue: "88.5"},
-    {value: 9, viewValue: "91.5"},
-    {value: 10, viewValue: "94.8"},
-    {value: 11, viewValue: "97.4"},
-    {value: 12, viewValue: "100.0"},
-    {value: 13, viewValue: "103.5"},
-    {value: 14, viewValue: "107.2"},
-    {value: 15, viewValue: "110.9"},
-    {value: 16, viewValue: "114.8"},
-    {value: 17, viewValue: "118.8"},
-    {value: 18, viewValue: "123.0"},
-    {value: 19, viewValue: "127.3"},
-    {value: 20, viewValue: "131.8"},
-    {value: 21, viewValue: "136.5"},
-    {value: 22, viewValue: "141.3"},
-    {value: 23, viewValue: "146.2"},
-    {value: 24, viewValue: "151.4"},
-    {value: 25, viewValue: "156.7"},
-    {value: 26, viewValue: "162.2"},
-    {value: 27, viewValue: "167.9"},
-    {value: 28, viewValue: "173.8"},
-    {value: 29, viewValue: "179.9"},
-    {value: 30, viewValue: "186.2"},
-    {value: 31, viewValue: "192.8"},
-    {value: 32, viewValue: "203.5"},
+    {value: 0, viewValue: '--'},
+    {value: 1, viewValue: '67.0'},
+    {value: 2, viewValue: '71.9'},
+    {value: 3, viewValue: '74.4'},
+    {value: 4, viewValue: '77.0'},
+    {value: 5, viewValue: '79.7'},
+    {value: 6, viewValue: '82.5'},
+    {value: 7, viewValue: '85.4'},
+    {value: 8, viewValue: '88.5'},
+    {value: 9, viewValue: '91.5'},
+    {value: 10, viewValue: '94.8'},
+    {value: 11, viewValue: '97.4'},
+    {value: 12, viewValue: '100.0'},
+    {value: 13, viewValue: '103.5'},
+    {value: 14, viewValue: '107.2'},
+    {value: 15, viewValue: '110.9'},
+    {value: 16, viewValue: '114.8'},
+    {value: 17, viewValue: '118.8'},
+    {value: 18, viewValue: '123.0'},
+    {value: 19, viewValue: '127.3'},
+    {value: 20, viewValue: '131.8'},
+    {value: 21, viewValue: '136.5'},
+    {value: 22, viewValue: '141.3'},
+    {value: 23, viewValue: '146.2'},
+    {value: 24, viewValue: '151.4'},
+    {value: 25, viewValue: '156.7'},
+    {value: 26, viewValue: '162.2'},
+    {value: 27, viewValue: '167.9'},
+    {value: 28, viewValue: '173.8'},
+    {value: 29, viewValue: '179.9'},
+    {value: 30, viewValue: '186.2'},
+    {value: 31, viewValue: '192.8'},
+    {value: 32, viewValue: '203.5'},
   ];
   rfBandwidths: RFBandwidth[] = [
     {value: 5000, viewValue: 5},
@@ -110,56 +110,50 @@ export class NfmDemodComponent implements OnInit {
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService,
-    private audioStoreService: AudioStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.monitor = false;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
+    private audioStoreService: AudioStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.monitor = false;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getChannelSettings();
     this.getAudioDevicesInfo();
   }
 
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
-  }
-
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "NFMDemod") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'NFMDemod') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.NFMDemodSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
-          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
-          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
-          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
-          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
+          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
+          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate / 2)) / 1000;
+          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate / 2)) / 1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth / 1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.settings.volume = +this.settings.volume.toFixed(1);
           this.audioMute = this.settings.audioMute !== 0;
-          this.afBandwidthKhz = this.settings.afBandwidth/1000;
+          this.afBandwidthKhz = this.settings.afBandwidth / 1000;
           this.squelchDb = this.settings.squelch;
           this.squelchGate = this.settings.squelchGate * 10;
           this.deltaSquelch = this.settings.deltaSquelch !== 0;
           this.ctcss = this.settings.ctcssOn !== 0;
         } else {
-          this.statusMessage = "Not a NFMDemod channel";
+          this.statusMessage = 'Not a NFMDemod channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private getDeviceStorage() {
@@ -169,7 +163,7 @@ export class NfmDemodComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -178,14 +172,14 @@ export class NfmDemodComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getAudioDevicesInfo() {
@@ -195,25 +189,25 @@ export class NfmDemodComponent implements OnInit {
     this.audioStoreService.getOutput().subscribe(
       audioData => {
         this.audioDevices = [];
-        for (let [key, value] of Object.entries(audioData)) {
-          this.audioDevices.push({value: key, viewValue: value["audioRate"]});
+        for (const [key, value] of Object.entries(audioData)) {
+          this.audioDevices.push({value: key, viewValue: value['audioRate']});
         }
       },
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
-  private setDeviceSettings(nfmDemodSettings : NFMDemodSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "NFMDemod";
+  private setDeviceSettings(nfmDemodSettings: NFMDemodSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'NFMDemod';
     settings.tx = 0,
     settings.NFMDemodSettings = nfmDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -221,7 +215,7 @@ export class NfmDemodComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   onFrequencyUpdate(frequency: number) {
@@ -235,8 +229,8 @@ export class NfmDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getDeltaFrequency() : number {
-    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  getDeltaFrequency(): number {
+    const frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency / 1000);
     return +frequency.toFixed(3);
   }
 
@@ -328,13 +322,13 @@ export class NfmDemodComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "NFMDemod") {
+              if (channelReport.channelType === 'NFMDemod') {
                 this.nfmDemodreport = channelReport.NFMDemodReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;

@@ -14,14 +14,13 @@ export class ChannelDetailsComponent implements OnInit {
   channelIndex: number;
   isTx: boolean;
   private sub: Subscription;
-  sdrangelURL : string;
+  sdrangelURL: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
-    private sdrangelUrlService: SdrangelUrlService)
-  {
-    this.sub = null;
+    private sdrangelUrlService: SdrangelUrlService) {
+      this.sub = null;
   }
 
   ngOnInit() {
@@ -35,50 +34,46 @@ export class ChannelDetailsComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {
-    (this.sub) && this.sub.unsubscribe();
-  }
-
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
         this.isTx = channelSettings.tx !== 0;
-        if (channelSettings.channelType == "AMDemod") {
+        if (channelSettings.channelType === 'AMDemod') {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "BFMDemod") {
+        } else if (channelSettings.channelType === 'BFMDemod') {
           this.router.navigate(['bfmdemod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "DaemonSink") {
+        } else if (channelSettings.channelType === 'DaemonSink') {
           this.router.navigate(['daemonsink'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "DaemonSource") {
+        } else if (channelSettings.channelType === 'DaemonSource') {
           this.router.navigate(['daemonsource'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "DSDDemod") {
+        } else if (channelSettings.channelType === 'DSDDemod') {
           this.router.navigate(['dsddemod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "NFMDemod") {
+        } else if (channelSettings.channelType === 'NFMDemod') {
           this.router.navigate(['nfmdemod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "SSBDemod") {
+        } else if (channelSettings.channelType === 'SSBDemod') {
           this.router.navigate(['ssbdemod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "WFMDemod") {
+        } else if (channelSettings.channelType === 'WFMDemod') {
           this.router.navigate(['wfmdemod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "AMMod") {
+        } else if (channelSettings.channelType === 'AMMod') {
           this.router.navigate(['ammod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "NFMMod") {
+        } else if (channelSettings.channelType === 'NFMMod') {
           this.router.navigate(['nfmmod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "SSBMod") {
+        } else if (channelSettings.channelType === 'SSBMod') {
           this.router.navigate(['ssbmod'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "UDPSource") {
+        } else if (channelSettings.channelType === 'UDPSource') {
           this.router.navigate(['udpsource'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "UDPSink") {
+        } else if (channelSettings.channelType === 'UDPSink') {
           this.router.navigate(['udpsink'], { relativeTo: this.route});
-        } else if (channelSettings.channelType == "WFMMod") {
+        } else if (channelSettings.channelType === 'WFMMod') {
           this.router.navigate(['wfmmod'], { relativeTo: this.route});
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});
         }
       }
-    )
+    );
   }
 
-  getDevicesetLabel() : string {
-    return (this.isTx ? "Tx" : "Rx") + this.deviceIndex;
+  getDevicesetLabel(): string {
+    return (this.isTx ? 'Tx' : 'Rx') + this.deviceIndex;
   }
 }

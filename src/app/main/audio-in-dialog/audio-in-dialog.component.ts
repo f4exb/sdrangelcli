@@ -11,19 +11,18 @@ import { SdrangelUrlService } from '../../sdrangel-url.service';
 })
 export class AudioInDialogComponent implements OnInit {
   sdrangelURL: string;
-  audioDevice : AudioInputDevice;
-  audioDeviceRef : AudioInputDevice;
+  audioDevice: AudioInputDevice;
+  audioDeviceRef: AudioInputDevice;
 
   constructor(private dialogRef: MatDialogRef<AudioInDialogComponent>,
     private audioService: AudioService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar)
-  {
-    this.audioDevice = data.audioDevice;
-    this.audioDevice.volume = Number(this.audioDevice.volume.toFixed(2));
-    this.audioDeviceRef = <AudioInputDevice> {};
-    this.audioDeviceCopy(this.audioDevice, this.audioDeviceRef); // store reference state with custom copy
+    public snackBar: MatSnackBar) {
+      this.audioDevice = data.audioDevice;
+      this.audioDevice.volume = Number(this.audioDevice.volume.toFixed(2));
+      this.audioDeviceRef = <AudioInputDevice> {};
+      this.audioDeviceCopy(this.audioDevice, this.audioDeviceRef); // store reference state with custom copy
   }
 
   ngOnInit() {
@@ -38,14 +37,14 @@ export class AudioInDialogComponent implements OnInit {
   }
 
   save() {
-    this.audioService.updateAudioInput(this.sdrangelURL + "/audio/output/parameters", this.audioDevice).subscribe(
+    this.audioService.updateAudioInput(this.sdrangelURL + '/audio/output/parameters', this.audioDevice).subscribe(
       res => {
-        console.log("Update OK", res);
+        console.log('Update OK', res);
         this.dialogRef.close();
         this.audioDeviceCopy(this.audioDevice, this.audioDeviceRef); // update reference state with custom copy
       },
       err => {
-        this.snackBar.open(err.error.message, "OK", {duration: 2000});
+        this.snackBar.open(err.error.message, 'OK', {duration: 2000});
         this.dialogRef.close();
         this.audioDeviceCopy(this.audioDeviceRef, this.audioDevice); // restore reference state with custom copy
       }

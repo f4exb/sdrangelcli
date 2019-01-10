@@ -1,12 +1,12 @@
 export interface AirspyHFSettings {
-    centerFrequency?: number,
-    LOppmTenths?: number,
-    devSampleRateIndex?: number,
-    log2Decim?: number,
-    transverterMode?: number,
-    transverterDeltaFrequency?: number,
-    bandIndex?: number,
-    fileRecordName?: string
+    centerFrequency?: number;
+    LOppmTenths?: number;
+    devSampleRateIndex?: number;
+    log2Decim?: number;
+    transverterMode?: number;
+    transverterDeltaFrequency?: number;
+    bandIndex?: number;
+    fileRecordName?: string;
 }
 
 export const AIRSPYHF_SETTINGS_DEFAULT = {
@@ -18,4 +18,4 @@ export const AIRSPYHF_SETTINGS_DEFAULT = {
     transverterDeltaFrequency: 0,
     bandIndex: 0,
     fileRecordName: 'none'
-}
+};

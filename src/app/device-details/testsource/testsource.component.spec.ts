@@ -25,7 +25,7 @@ describe('TestsourceComponent', () => {
       ],
       providers: [
         {provide: ActivatedRoute, useValue: { snapshot: {parent: {params: {dix: 0}}}}}
-      ]      
+      ]
     })
     .compileComponents();
   }));

@@ -53,7 +53,7 @@ describe('InstanceSummaryComponent one device set', () => {
   });
 
   it('should fetch data', () => {
-    expect(component.instanceSummary.appname).toBe("SDRangel");
+    expect(component.instanceSummary.appname).toBe('SDRangel');
   });
 
 });
@@ -99,7 +99,7 @@ describe('InstanceSummaryComponent empty', () => {
   });
 
   it('should fetch data', () => {
-    expect(component.instanceSummary.appname).toBe("SDRangelSrv");
+    expect(component.instanceSummary.appname).toBe('SDRangelSrv');
   });
 
 });

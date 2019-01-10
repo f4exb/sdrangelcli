@@ -6,9 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./buffer-gauge.component.css']
 })
 export class BufferGaugeComponent implements OnInit {
-  @Input() value : number;
-  @Input() min : number;
-  @Input() max : number;
+  @Input() value: number;
+  @Input() min: number;
+  @Input() max: number;
 
   constructor() { }
 
@@ -17,7 +17,7 @@ export class BufferGaugeComponent implements OnInit {
 
   getPositivePercentage() {
     if (this.value >= 0) {
-      return (this.value)*(100/(this.max));
+      return (this.value) * (100 / (this.max));
     } else {
       return 0;
     }
@@ -25,7 +25,7 @@ export class BufferGaugeComponent implements OnInit {
 
   getNegativePercentage() {
     if (this.value < 0) {
-      return (this.value)*(100/(this.min));
+      return (this.value) * (100 / (this.min));
     } else {
       return 0;
     }

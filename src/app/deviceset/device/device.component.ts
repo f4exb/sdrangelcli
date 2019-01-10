@@ -12,20 +12,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./device.component.css']
 })
 export class DeviceComponent implements OnInit {
-  @Input() device : Device;
+  @Input() device: Device;
   @Output() deviceChanged = new EventEmitter();
-  width : number;
-  height : number;
-  sdrangelURL : string;
+  width: number;
+  height: number;
+  sdrangelURL: string;
 
   constructor(private popupDialog: MatDialog,
     private elementRef: ElementRef,
     private deviceService: DeviceService,
     private sdrangelUrlService: SdrangelUrlService,
     public snackBar: MatSnackBar,
-    private router: Router)
-  {
-    this.onResize();
+    private router: Router) {
+      this.onResize();
   }
 
   ngOnInit() {
@@ -40,7 +39,7 @@ export class DeviceComponent implements OnInit {
      this.width = window.innerWidth;
   }
 
-  hasSerial() : boolean {
+  hasSerial(): boolean {
     if (this.device && this.device.serial) {
       return true;
     } else {
@@ -48,32 +47,32 @@ export class DeviceComponent implements OnInit {
     }
   }
 
-  getSerial() : string {
+  getSerial(): string {
     if (this.device && this.device.serial) {
-      return "["+ String(this.device.sequence) + ":" + String(this.device.streamIndex) + "] " + this.device.serial;
+      return '[' + String(this.device.sequence) + ':' + String(this.device.streamIndex) + '] ' + this.device.serial;
     } else {
-      return "";
+      return '';
     }
   }
 
-  status() : string {
+  status(): string {
     return this.device.state;
   }
 
-  getRunStatusColor() : string {
-    if (this.device.state === "idle") {
-      return "rgb(100,100,255)";
-    } else if (this.device.state === "running") {
-      return "rgb(50,180,50)";
-    } else if (this.device.state === "error") {
-      return "red";
+  getRunStatusColor(): string {
+    if (this.device.state === 'idle') {
+      return 'rgb(100,100,255)';
+    } else if (this.device.state === 'running') {
+      return 'rgb(50,180,50)';
+    } else if (this.device.state === 'error') {
+      return 'red';
     } else {
-      return "grey";
+      return 'grey';
     }
   }
 
   editDevice() {
-    this.router.navigate(['../device/'+this.device.index]);
+    this.router.navigate(['../device/' + this.device.index]);
   }
 
   openChangeDeviceDialog() {
@@ -87,49 +86,49 @@ export class DeviceComponent implements OnInit {
     dialogConfig.height = '230px';
     dialogConfig.width = '400px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+180 > this.height) {
-      dialogY -= dialogY+200 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 180 > this.height) {
+      dialogY -= dialogY + 200 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(ChangeDeviceDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(ChangeDeviceDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.deviceChanged.emit(); // triggers refresh
       }
     });
   }
 
   startDevice() {
-    if (this.device.state !== "running") {
+    if (this.device.state !== 'running') {
       this.deviceService.start(this.sdrangelURL, this.device.index).subscribe(
         res => {
-          console.log("Started OK", res);
+          console.log('Started OK', res);
           this.deviceChanged.emit(); // triggers refresh
         },
         error => {
           console.log(error);
-          this.snackBar.open(error.message, "OK", {duration: 2000});
+          this.snackBar.open(error.message, 'OK', {duration: 2000});
         }
-      )
+      );
     }
   }
 
   stopDevice() {
-    if (this.device.state === "running") {
+    if (this.device.state === 'running') {
       this.deviceService.stop(this.sdrangelURL, this.device.index).subscribe(
         res => {
-          console.log("Stopped OK", res);
+          console.log('Stopped OK', res);
           this.deviceChanged.emit(); // triggers refresh
         },
         error => {
           console.log(error);
-          this.snackBar.open(error.message, "OK", {duration: 2000});
+          this.snackBar.open(error.message, 'OK', {duration: 2000});
         }
-      )
+      );
     }
   }
 }

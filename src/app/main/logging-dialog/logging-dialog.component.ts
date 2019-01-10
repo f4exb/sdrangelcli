@@ -16,10 +16,10 @@ export interface LogLevel {
 })
 export class LoggingDialogComponent implements OnInit {
   logLevels: LogLevel[] = [
-    {value: "debug", viewValue: "Debug"},
-    {value: "info", viewValue: "Info"},
-    {value: "warning", viewValue: "Warning"},
-    {value: "error", viewValue: "Error"}
+    {value: 'debug', viewValue: 'Debug'},
+    {value: 'info', viewValue: 'Info'},
+    {value: 'warning', viewValue: 'Warning'},
+    {value: 'error', viewValue: 'Error'}
   ];
   sdrangelURL: string;
   title: string;
@@ -30,8 +30,7 @@ export class LoggingDialogComponent implements OnInit {
     private loggingService: LoggingService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar)
-  {
+    public snackBar: MatSnackBar) {
       this.title = data.title;
   }
 
@@ -43,7 +42,7 @@ export class LoggingDialogComponent implements OnInit {
   }
 
   get() {
-    this.loggingService.get(this.sdrangelURL + "/logging").subscribe( logging => {
+    this.loggingService.get(this.sdrangelURL + '/logging').subscribe( logging => {
       this.logging = logging;
       this.logToFile = logging.dumpToFile !== 0;
     });
@@ -62,14 +61,14 @@ export class LoggingDialogComponent implements OnInit {
         delete this.logging.fileName;
       }
     }
-    this.loggingService.put(this.sdrangelURL + "/logging", this.logging).subscribe (
+    this.loggingService.put(this.sdrangelURL + '/logging', this.logging).subscribe (
       res => {
-        console.log("PUT OK", res);
+        console.log('PUT OK', res);
       },
       err => {
-        this.snackBar.open(err.error.message, "OK", {duration: 2000});
+        this.snackBar.open(err.error.message, 'OK', {duration: 2000});
       }
-    )
+    );
     this.dialogRef.close();
   }
 

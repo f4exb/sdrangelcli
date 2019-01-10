@@ -6,10 +6,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./channel-header.component.css']
 })
 export class ChannelHeaderComponent implements OnInit {
-  @Input('channelType') channelType : string;
-  @Input('basebandRate') basebandRate : number;
-  @Input('title') title : string;
-  @Input('color') colorStr : string;
+  @Input('channelType') channelType: string;
+  @Input('basebandRate') basebandRate: number;
+  @Input('title') title: string;
+  @Input('color') colorStr: string;
   @Output('titleChanged') titleChanged = new EventEmitter<string>();
   @Output('colorChanged') colorChanged = new EventEmitter<string>();
 

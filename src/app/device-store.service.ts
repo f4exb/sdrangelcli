@@ -10,14 +10,14 @@ export interface DeviceStorage {
 }
 
 interface DeviceStore {
-  [deviceIndex: number]: BehaviorSubject<DeviceStorage>
+  [deviceIndex: number]: BehaviorSubject<DeviceStorage>;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceStoreService {
-  private deviceStore = <DeviceStore>{}
+  private deviceStore = <DeviceStore>{};
 
   constructor() { }
 
@@ -29,11 +29,11 @@ export class DeviceStoreService {
     }
   }
 
-  get(deviceIndex: number) : Observable<DeviceStorage> {
+  get(deviceIndex: number): Observable<DeviceStorage> {
     if (deviceIndex in this.deviceStore) {
       return this.deviceStore[deviceIndex].asObservable();
     } else {
-      return throwError("No device at this index");
+      return throwError('No device at this index');
     }
   }
 }

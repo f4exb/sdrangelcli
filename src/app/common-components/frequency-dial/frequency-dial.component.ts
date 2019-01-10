@@ -11,7 +11,7 @@ export const FREQUENCY_STEP_CHANNEL_DEFAULTS = [
   {value: 1, viewValue: 1},
   {value: 5, viewValue: 5},
   {value: 6.25, viewValue: 6.25},
-  {value: 25/3, viewValue: 8.33},
+  {value: 25 / 3, viewValue: 8.33},
   {value: 10, viewValue: 10},
   {value: 12.5, viewValue: 12.5},
   {value: 25, viewValue: 25},
@@ -40,13 +40,13 @@ export const FREQUENCY_STEP_DEVICE_DEFAULTS = [
   styleUrls: ['./frequency-dial.component.css']
 })
 export class FrequencyDialComponent implements OnInit {
-  @Input('frequency') frequency : number;
-  @Input('min') min : number;
-  @Input('max') max : number;
-  @Input('steps') frequencySteps : FrequencyStep[] = FREQUENCY_STEP_CHANNEL_DEFAULTS;
-  @Input('tooltip') tooltip : string = "Frequency";
+  @Input('frequency') frequency: number;
+  @Input('min') min: number;
+  @Input('max') max: number;
+  @Input('steps') frequencySteps: FrequencyStep[] = FREQUENCY_STEP_CHANNEL_DEFAULTS;
+  @Input('tooltip') tooltip = 'Frequency';
   @Output('frequencyChanged') frequencyChanged = new EventEmitter<number>();
-  frequencyStep : number = 1;
+  frequencyStep = 1;
 
   constructor() { }
 
@@ -63,8 +63,8 @@ export class FrequencyDialComponent implements OnInit {
   }
 
   alignToStep() {
-    let x = Math.floor(this.frequency / this.frequencyStep);
-    let freqFloor = x * this.frequencyStep;
+    const x = Math.floor(this.frequency / this.frequencyStep);
+    const freqFloor = x * this.frequencyStep;
     if (freqFloor < this.min) {
       this.frequency = this.min;
     } else {

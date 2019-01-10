@@ -37,7 +37,7 @@ describe('PerseusComponent', () => {
     component = fixture.componentInstance;
     component.sampleRates = [
       {value: 0, viewValue: 48000}
-    ]
+    ];
     component.settings.devSampleRateIndex = 0;
     fixture.detectChanges();
   });

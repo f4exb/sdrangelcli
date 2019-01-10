@@ -16,8 +16,8 @@ export class ChannelDetailsService {
     return this.http.get<ChannelSettings>(newurl);
   }
 
-  setSettings(url: string, devicesetIndex: number, channelIndex: number, settings: ChannelSettings) : Observable<any>  {
-    const newurl = url + '/deviceset/' + devicesetIndex + '/channel/'+ channelIndex + '/settings';
+  setSettings(url: string, devicesetIndex: number, channelIndex: number, settings: ChannelSettings): Observable<any>  {
+    const newurl = url + '/deviceset/' + devicesetIndex + '/channel/' + channelIndex + '/settings';
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',

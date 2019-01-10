@@ -15,7 +15,7 @@ export class PresetService {
     return this.http.get<Presets>(url + '/presets');
   }
 
-  loadPreset(url: string, preset: PresetLoad) : Observable<any> {
+  loadPreset(url: string, preset: PresetLoad): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
@@ -25,7 +25,7 @@ export class PresetService {
     return this.http.patch(url + '/preset', JSON.stringify(preset), httpOptions).pipe(delay(500));
   }
 
-  savePreset(url: string, preset: PresetLoad) : Observable<any> {
+  savePreset(url: string, preset: PresetLoad): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
@@ -35,7 +35,7 @@ export class PresetService {
     return this.http.put(url + '/preset', JSON.stringify(preset), httpOptions);
   }
 
-  newPreset(url: string, preset: PresetLoad) : Observable<any> {
+  newPreset(url: string, preset: PresetLoad): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
@@ -45,7 +45,7 @@ export class PresetService {
     return this.http.post(url + '/preset', JSON.stringify(preset), httpOptions);
   }
 
-  removePreset(url: string, preset: PresetDelete) : Observable<any> {
+  removePreset(url: string, preset: PresetDelete): Observable<any> {
     const httpOptions = {
       body:  JSON.stringify(preset),
       headers: new HttpHeaders({
@@ -56,7 +56,7 @@ export class PresetService {
     return this.http.delete(url + '/preset', httpOptions);
   }
 
-  exportPreset(url: string, preset: PresetExport) : Observable<any> {
+  exportPreset(url: string, preset: PresetExport): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
@@ -66,7 +66,7 @@ export class PresetService {
     return this.http.post(url + '/preset/file', JSON.stringify(preset), httpOptions);
   }
 
-  importPreset(url: string, preset: PresetImport) : Observable<any> {
+  importPreset(url: string, preset: PresetImport): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',

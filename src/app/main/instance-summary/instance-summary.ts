@@ -1,48 +1,48 @@
-import { DeviceSet, DEVICESET_MOCK_WITH_CHANNELS, DEVICESET_MOCK1, DEVICESET_TX_MOCK } from "../../deviceset/deviceset/deviceset";
+import { DeviceSet, DEVICESET_MOCK_WITH_CHANNELS, DEVICESET_MOCK1, DEVICESET_TX_MOCK } from '../../deviceset/deviceset/deviceset';
 
 export interface InstanceSummary {
-    appname: string,
-    architecture: string,
-    dspRxBits: number,
-    dspTxBits: number,
-    os: string,
-    pid: number,
-    qtVersion: string,
-    version: string,
+    appname: string;
+    architecture: string;
+    dspRxBits: number;
+    dspTxBits: number;
+    os: string;
+    pid: number;
+    qtVersion: string;
+    version: string;
     devicesetlist: {
         devicesetcount: number,
         devicesetfocus?: number,
         deviceSets?: [DeviceSet]
-    },
+    };
     logging: {
         consoleLevel: string,
         dumpToFile: number,
         fileLevel?: string,
         fileName?: string
-    }    
+    };
   }
 
   export const INSTANCE_SUMMARY_DEFAULT = {
-    appname: "Default",
-    architecture: "none",
+    appname: 'Default',
+    architecture: 'none',
     devicesetlist: {
       devicesetcount: 0
     },
     dspRxBits: 24,
     dspTxBits: 16,
     logging: {
-      consoleLevel: "debug",
+      consoleLevel: 'debug',
       dumpToFile: 0
     },
-    os: "None",
+    os: 'None',
     pid: 0,
-    qtVersion: "0.0.0",
-    version: "0.0.0"    
-  }  
+    qtVersion: '0.0.0',
+    version: '0.0.0'
+  };
 
   export const INSTANCE_SUMMARY_MOCK1 = {
-    appname: "SDRangel",
-    architecture: "x86_64",
+    appname: 'SDRangel',
+    architecture: 'x86_64',
     devicesetlist: {
       deviceSets: [
         DEVICESET_MOCK_WITH_CHANNELS
@@ -53,36 +53,36 @@ export interface InstanceSummary {
     dspRxBits: 24,
     dspTxBits: 16,
     logging: {
-      consoleLevel: "debug",
+      consoleLevel: 'debug',
       dumpToFile: 0
     },
-    os: "Ubuntu 18.04 LTS",
+    os: 'Ubuntu 18.04 LTS',
     pid: 8958,
-    qtVersion: "5.9.5",
-    version: "4.0.3"
+    qtVersion: '5.9.5',
+    version: '4.0.3'
   };
 
   export const INSTANCE_SUMMARY_MOCK_EMPTY = {
-    appname: "SDRangelSrv",
-    architecture: "x86_64",
+    appname: 'SDRangelSrv',
+    architecture: 'x86_64',
     devicesetlist: {
       devicesetcount: 0
     },
     dspRxBits: 24,
     dspTxBits: 16,
     logging: {
-      consoleLevel: "debug",
+      consoleLevel: 'debug',
       dumpToFile: 0
     },
-    os: "Ubuntu 18.04 LTS",
+    os: 'Ubuntu 18.04 LTS',
     pid: 12603,
-    qtVersion: "5.9.5",
-    version: "4.0.3"    
-  }
+    qtVersion: '5.9.5',
+    version: '4.0.3'
+  };
 
   export const INSTANCE_SUMMARY_MOCK_MANY = {
-    appname: "SDRangel",
-    architecture: "x86_64",
+    appname: 'SDRangel',
+    architecture: 'x86_64',
     devicesetlist: {
       deviceSets: [
         DEVICESET_MOCK_WITH_CHANNELS,
@@ -95,11 +95,11 @@ export interface InstanceSummary {
     dspRxBits: 24,
     dspTxBits: 16,
     logging: {
-      consoleLevel: "debug",
+      consoleLevel: 'debug',
       dumpToFile: 0
     },
-    os: "Ubuntu 18.04 LTS",
+    os: 'Ubuntu 18.04 LTS',
     pid: 8958,
-    qtVersion: "5.9.5",
-    version: "4.0.3"
+    qtVersion: '5.9.5',
+    version: '4.0.3'
   };

@@ -16,27 +16,26 @@ export interface DeviceType {
 })
 export class ChangeDeviceDialogComponent implements OnInit {
   sdrangelURL: string;
-  deviceTypes : DeviceType[] = []; // this is used by the selector
+  deviceTypes: DeviceType[] = []; // this is used by the selector
   availableDevices: AvailableDevice[] = [];
   selectedDeviceTypeIndex: number; // this is the index of selected item in the list of available devices
   deviceSetIndex: number;
   isTx: boolean;
 
   constructor(private dialogRef: MatDialogRef<ChangeDeviceDialogComponent>,
-    private changeDeviceService : ChangeDeviceService,
+    private changeDeviceService: ChangeDeviceService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar) 
-  { 
-    this.deviceSetIndex = data.deviceSetIndex;
-    this.isTx = data.isTx;
+    public snackBar: MatSnackBar) {
+      this.deviceSetIndex = data.deviceSetIndex;
+      this.isTx = data.isTx;
   }
 
   ngOnInit() {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getAvailableDevices(this.sdrangelURL);
-    });    
+    });
   }
 
   private getAvailableDevices(sdrangelURL: string) {
@@ -51,34 +50,34 @@ export class ChangeDeviceDialogComponent implements OnInit {
         });
       },
       error => {
-        this.snackBar.open(error.message, "OK", {duration: 2000});
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
       }
-    )
-  } 
+    );
+  }
 
   close() {
-    this.dialogRef.close("Dismiss");
+    this.dialogRef.close('Dismiss');
   }
 
   save() {
-    let device = this.availableDevices[this.selectedDeviceTypeIndex]; // selected device full data
-    let newDevice : NewDevice = <NewDevice>{};
+    const device = this.availableDevices[this.selectedDeviceTypeIndex]; // selected device full data
+    const newDevice: NewDevice = <NewDevice>{};
     newDevice.tx = device.tx;
     newDevice.hwType = device.hwType;
     if (device.serial) {
-      newDevice.serial = device.serial
+      newDevice.serial = device.serial;
     } else {
       newDevice.sequence = device.sequence;
     }
     this.changeDeviceService.changeDevice(this.sdrangelURL, this.deviceSetIndex, newDevice).subscribe(
       res => {
-        console.log("Changed OK", res);
-        this.dialogRef.close("OK");
+        console.log('Changed OK', res);
+        this.dialogRef.close('OK');
       },
       error => {
         console.log(error);
-        this.snackBar.open(error.message, "OK", {duration: 2000});
-        this.dialogRef.close("Error");
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
       }
     );  }
 }

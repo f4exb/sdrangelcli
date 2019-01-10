@@ -22,10 +22,10 @@ describe('ChannelHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChannelHeaderComponent);
     component = fixture.componentInstance;
-    component.channelType = "AMDemod";
+    component.channelType = 'AMDemod';
     component.basebandRate = 96000;
-    component.colorStr = "rgb(255,255,0)";
-    component.title = "Test AM demod";
+    component.colorStr = 'rgb(255,255,0)';
+    component.title = 'Test AM demod';
     fixture.detectChanges();
   });
 

@@ -4,9 +4,6 @@ import { InstanceSummaryComponent} from './main/instance-summary/instance-summar
 import { AudioOutComponent } from './main/audio-out/audio-out.component';
 import { AudioInComponent } from './main/audio-in/audio-in.component';
 import { PresetsComponent } from './main/presets/presets.component';
-import { DeviceDetailsComponent } from './device-details/device-details.component';
-import { AirspyhfComponent } from './device-details/airspyhf/airspyhf.component';
-import { DeviceNotSupportedComponent } from './device-details/device-not-supported/device-not-supported.component';
 
 const routes: Routes = [
     {
@@ -30,14 +27,6 @@ const routes: Routes = [
         path: 'presets',
         component: PresetsComponent
     },
-    // {
-    //     path: 'device/:dix',
-    //     component: DeviceDetailsComponent,
-    //     children: [
-    //         {path: 'airspyhf', component: AirspyhfComponent},
-    //         {path: 'notsupported', component: DeviceNotSupportedComponent},
-    //     ]
-    // },
     {
         path: 'device/:dix',
         loadChildren: './device-details/device-details.module#DeviceDetailsModule'
@@ -46,12 +35,13 @@ const routes: Routes = [
         path: 'device/:dix/channel/:cix',
         loadChildren: './channel-details/channel-details.module#ChannelDetailsModule'
     },
-  ];
+];
 
-  @NgModule({
+@NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],
     providers: []
-  })
-  export class AppRoutingModule {
-  }
+})
+
+export class AppRoutingModule {
+}

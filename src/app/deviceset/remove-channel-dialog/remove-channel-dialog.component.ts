@@ -17,37 +17,36 @@ export class RemoveChannelDialogComponent implements OnInit {
   channelIndex: number;
 
   constructor(private dialogRef: MatDialogRef<RemoveChannelDialogComponent>,
-    private removeChannelService : RemoveChannelService,
+    private removeChannelService: RemoveChannelService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar) 
-  {
-    this.channel = data.channel;
-    this.centerFrequency = data.centerFrequency;
-    this.deviceSetIndex = data.deviceSetIndex;
+    public snackBar: MatSnackBar) {
+      this.channel = data.channel;
+      this.centerFrequency = data.centerFrequency;
+      this.deviceSetIndex = data.deviceSetIndex;
   }
 
   ngOnInit() {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
-    });    
+    });
   }
 
   close() {
-    this.dialogRef.close("Dismiss");
+    this.dialogRef.close('Dismiss');
   }
 
   remove() {
     this.removeChannelService.removeChannel(this.sdrangelURL, this.deviceSetIndex, this.channel.index).subscribe(
       res => {
-        console.log("Removed OK", res);
-        this.dialogRef.close("OK");
+        console.log('Removed OK', res);
+        this.dialogRef.close('OK');
       },
       error => {
         console.log(error);
-        this.snackBar.open(error.message, "OK", {duration: 2000});
-        this.dialogRef.close("Error");
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
       }
     );
-  }  
+  }
 }

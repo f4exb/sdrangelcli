@@ -10,8 +10,8 @@ import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 
 interface SampleFormat {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -21,18 +21,18 @@ interface SampleFormat {
 })
 export class UdpSinkComponent implements OnInit {
   sampleFormats: SampleFormat[] = [
-    {value: 0, viewValue: "I/Q 16bits"},
-    {value: 1, viewValue: "I/Q 24bits"},
-    {value: 2, viewValue: "NFM"},
-    {value: 3, viewValue: "NFM mono"},
-    {value: 4, viewValue: "LSB"},
-    {value: 5, viewValue: "USB"},
-    {value: 6, viewValue: "LSB mono"},
-    {value: 7, viewValue: "USB mono"},
-    {value: 8, viewValue: "AM"},
-    {value: 9, viewValue: "AM no DC"},
-    {value: 10, viewValue: "AM BPF"},
-  ]
+    {value: 0, viewValue: 'I/Q 16bits'},
+    {value: 1, viewValue: 'I/Q 24bits'},
+    {value: 2, viewValue: 'NFM'},
+    {value: 3, viewValue: 'NFM mono'},
+    {value: 4, viewValue: 'LSB'},
+    {value: 5, viewValue: 'USB'},
+    {value: 6, viewValue: 'LSB mono'},
+    {value: 7, viewValue: 'USB mono'},
+    {value: 8, viewValue: 'AM'},
+    {value: 9, viewValue: 'AM no DC'},
+    {value: 10, viewValue: 'AM BPF'},
+  ];
   rfBandwidthKhz: number;
   fmDeviationKhz: number;
   squelchGateMs: number;
@@ -41,49 +41,43 @@ export class UdpSinkComponent implements OnInit {
   audioStereo: boolean;
   channelMute: boolean;
   squelchEnabled: boolean;
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
+  sdrangelURL: string;
   settings: UDPSinkSettings = UDP_SINK_SETTINGS_DEFAULT;
   report: UDPSinkReport = UDP_SINK_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
-  deviceStoreSubscription : Subscription;
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   channelDeltaFrequency: number;
   channelCenterFrequencyKhz: number;
   channelMinFrequencyKhz: number;
   channelMaxFrequencyKhz: number;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
+  rgbTitleStr = 'rgb(0,0,0)';
   monitor: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.monitor = false;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
+    private deviceStoreService: DeviceStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.monitor = false;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getChannelSettings();
-  }
-
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
   }
 
   private getDeviceStorage() {
@@ -93,7 +87,7 @@ export class UdpSinkComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -102,29 +96,29 @@ export class UdpSinkComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "UDPSink") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'UDPSink') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.UDPSinkSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
-          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
-          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
-          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
-          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
-          this.fmDeviationKhz = this.settings.fmDeviation/1000;
+          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
+          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate / 2)) / 1000;
+          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate / 2)) / 1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth / 1000;
+          this.fmDeviationKhz = this.settings.fmDeviation / 1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.settings.volume = +this.settings.volume.toFixed(0);
@@ -133,25 +127,25 @@ export class UdpSinkComponent implements OnInit {
           this.audioStereo = this.settings.audioStereo !== 0;
           this.channelMute = this.settings.channelMute !== 0;
           this.squelchEnabled = this.settings.squelchEnabled !== 0;
-          this.settings.gain = +this.settings.gain.toFixed(1)
-          this.squelchGateMs = this.settings.squelchGate*10;
+          this.settings.gain = +this.settings.gain.toFixed(1);
+          this.squelchGateMs = this.settings.squelchGate * 10;
         } else {
-          this.statusMessage = "Not a UDPSink channel";
+          this.statusMessage = 'Not a UDPSink channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
-  private setDeviceSettings(udpSrcSettings : UDPSinkSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "UDPSink";
+  private setDeviceSettings(udpSrcSettings: UDPSinkSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'UDPSink';
     settings.tx = 0,
     settings.UDPSinkSettings = udpSrcSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -159,7 +153,7 @@ export class UdpSinkComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   enableReporting(enable: boolean) {
@@ -168,13 +162,13 @@ export class UdpSinkComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "UDPSink") {
+              if (channelReport.channelType === 'UDPSink') {
                 this.report = channelReport.UDPSinkReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
@@ -197,8 +191,8 @@ export class UdpSinkComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getDeltaFrequency() : number {
-    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  getDeltaFrequency(): number {
+    const frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency / 1000);
     return +frequency.toFixed(3);
   }
 
@@ -274,13 +268,13 @@ export class UdpSinkComponent implements OnInit {
 
   setBandwidth() {
     const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
-    newSettings.rfBandwidth = this.rfBandwidthKhz*1000;
+    newSettings.rfBandwidth = this.rfBandwidthKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
   setFMDeviation() {
     const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
-    newSettings.fmDeviation = this.fmDeviationKhz*1000;
+    newSettings.fmDeviation = this.fmDeviationKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
@@ -298,7 +292,7 @@ export class UdpSinkComponent implements OnInit {
 
   setSquelchGate() {
     const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
-    newSettings.squelchGate = this.squelchGateMs/10;
+    newSettings.squelchGate = this.squelchGateMs / 10;
     this.setDeviceSettings(newSettings);
   }
 

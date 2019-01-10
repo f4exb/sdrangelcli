@@ -9,28 +9,28 @@ import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { Utils } from 'src/app/common-components/utils';
 
 export interface Bandwidth {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 export interface Log2Decim {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 export interface FcPos {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 export interface Xb200Filter {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 export interface LnaGain {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -40,7 +40,7 @@ export interface LnaGain {
 })
 export class Bladerf1InputComponent implements OnInit {
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   log2Decims: Log2Decim[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
@@ -51,9 +51,9 @@ export class Bladerf1InputComponent implements OnInit {
     {value: 6, viewValue: 64},
   ];
   fcPositions: FcPos[] = [
-    {value: 0, viewValue: "Inf"},
-    {value: 1, viewValue: "Sup"},
-    {value: 2, viewValue: "Cen"},
+    {value: 0, viewValue: 'Inf'},
+    {value: 1, viewValue: 'Sup'},
+    {value: 2, viewValue: 'Cen'},
   ];
   bandwidths: Bandwidth[] = [
     {value: 1500000, viewValue: 1.5},
@@ -74,23 +74,23 @@ export class Bladerf1InputComponent implements OnInit {
     {value: 28000000, viewValue: 28}
   ];
   xb200Filters: Xb200Filter[] = [
-    {value: 0, viewValue: "None"},
-    {value: 1, viewValue: "Bypass"},
-    {value: 2, viewValue: "50 MHz"},
-    {value: 3, viewValue: "144 MHz"},
-    {value: 4, viewValue: "222 MHz"},
-    {value: 5, viewValue: "Custom"},
-    {value: 6, viewValue: "Auto 1dB"},
-    {value: 7, viewValue: "Auto 3dB"}
+    {value: 0, viewValue: 'None'},
+    {value: 1, viewValue: 'Bypass'},
+    {value: 2, viewValue: '50 MHz'},
+    {value: 3, viewValue: '144 MHz'},
+    {value: 4, viewValue: '222 MHz'},
+    {value: 5, viewValue: 'Custom'},
+    {value: 6, viewValue: 'Auto 1dB'},
+    {value: 7, viewValue: 'Auto 3dB'}
   ];
   lnaGains: LnaGain[] = [
-    {value: 0, viewValue: "0"},
-    {value: 1, viewValue: "3"},
-    {value: 2, viewValue: "6"},
+    {value: 0, viewValue: '0'},
+    {value: 1, viewValue: '3'},
+    {value: 2, viewValue: '6'},
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  deviceIndex: number;
+  sdrangelURL: string;
   settings: BladeRF1Settings = BLADERF1_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   bandwidthIndex: number;
@@ -102,11 +102,11 @@ export class Bladerf1InputComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  { }
+    private deviceStoreService: DeviceStoreService) {
+  }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
@@ -116,22 +116,22 @@ export class Bladerf1InputComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType === "BladeRF1") {
-          this.statusMessage = "OK";
+        if (deviceSettings.deviceHwType === 'BladeRF1') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.bladeRF1InputSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.setXb200FilterIndex();
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a BladeRF1 device";
+          this.statusMessage = 'Not a BladeRF1 device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   private setXb200FilterIndex() {
@@ -150,33 +150,33 @@ export class Bladerf1InputComponent implements OnInit {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
       basebandRate: this.getSampleRate()
-    }
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(bladeRF1Settings : BladeRF1Settings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "BladeRF1";
+  private setDeviceSettings(bladeRF1Settings: BladeRF1Settings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'BladeRF1';
     settings.tx = 0,
     settings.bladeRF1InputSettings = bladeRF1Settings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         Utils.delayObservable(1000).subscribe(
           _ => { this.getDeviceSettings(); }
-        )
+        );
       },
       error => {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2Decim);
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2Decim);
   }
 
   setBandwidth() {

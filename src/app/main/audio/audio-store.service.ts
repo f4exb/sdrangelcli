@@ -9,7 +9,7 @@ export interface AudioStorage {
 }
 
 interface AudioStore {
-  [deviceName: string]: AudioStorage
+  [deviceName: string]: AudioStorage;
 }
 
 @Injectable({
@@ -18,24 +18,24 @@ interface AudioStore {
 export class AudioStoreService {
   private audioOutStore = new BehaviorSubject(<AudioStore>{});
   private audioInStore = new BehaviorSubject(<AudioStore>{});
-  private initialized : boolean;
-  sdrangelURL : string;
+  private initialized: boolean;
+  sdrangelURL: string;
 
-  constructor(private audioService : AudioService,
-    private sdrangelUrlService : SdrangelUrlService) {
+  constructor(private audioService: AudioService,
+    private sdrangelUrlService: SdrangelUrlService) {
     this.initialized = false;
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
-    })
+    });
   }
 
-  isInitialized() : boolean {
+  isInitialized(): boolean {
     return this.initialized;
   }
 
   initialize() {
     if (!this.initialized) {
-      this.audioService.getInfo(this.sdrangelURL + "/audio").subscribe(
+      this.audioService.getInfo(this.sdrangelURL + '/audio').subscribe(
         audioDevicesInfo => {
           if (audioDevicesInfo.nbOutputDevices > 0) {
             this.changeOutput(audioDevicesInfo.outputDevices);
@@ -49,27 +49,27 @@ export class AudioStoreService {
     }
   }
 
-  changeOutput(audioOutputDevices : AudioOutputDevice[]) {
-    let audioStoreData = <AudioStore>{};
-    for (let audioOutputDevice of audioOutputDevices) {
+  changeOutput(audioOutputDevices: AudioOutputDevice[]) {
+    const audioStoreData = <AudioStore>{};
+    for (const audioOutputDevice of audioOutputDevices) {
       audioStoreData[audioOutputDevice.name] = {audioRate: audioOutputDevice.sampleRate};
     }
     this.audioOutStore.next(Object.assign({}, audioStoreData));
   }
 
-  changeInput(audioInputDevices : AudioInputDevice[]) {
-    let audioStoreData = <AudioStore>{};
-    for (let audioInputDevice of audioInputDevices) {
+  changeInput(audioInputDevices: AudioInputDevice[]) {
+    const audioStoreData = <AudioStore>{};
+    for (const audioInputDevice of audioInputDevices) {
       audioStoreData[audioInputDevice.name] = {audioRate: audioInputDevice.sampleRate};
     }
     this.audioInStore.next(Object.assign({}, audioStoreData));
   }
 
-  getOutput() : Observable<AudioStore> {
+  getOutput(): Observable<AudioStore> {
     return this.audioOutStore.asObservable();
   }
 
-  getInput() : Observable<AudioStore> {
+  getInput(): Observable<AudioStore> {
     return this.audioInStore.asObservable();
   }
 }

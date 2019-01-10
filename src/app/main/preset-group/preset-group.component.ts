@@ -9,15 +9,14 @@ import { ImportPresetDialogComponent } from '../import-preset-dialog/import-pres
   styleUrls: ['./preset-group.component.css']
 })
 export class PresetGroupComponent implements OnInit {
-  @Input() presetGroup : PresetGroup;
+  @Input() presetGroup: PresetGroup;
   @Output() presetGroupChanged = new EventEmitter();
   sdrangelURL: string;
   width: number;
   height: number;
 
   constructor(private popupDialog: MatDialog,
-    private elementRef: ElementRef)
-  {
+    private elementRef: ElementRef) {
     this.onResize();
   }
 
@@ -40,17 +39,17 @@ export class PresetGroupComponent implements OnInit {
     dialogConfig.height = '240px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
-    let dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
-    if (dialogY+240 > this.height) {
-      dialogY -= dialogY+240 - this.height;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    if (dialogY + 240 > this.height) {
+      dialogY -= dialogY + 240 - this.height;
     }
     dialogConfig.position = {
       top: dialogY + 'px',
       left: dialogX + 'px'
-    }
-    let dialogRef = this.popupDialog.open(ImportPresetDialogComponent, dialogConfig);
+    };
+    const dialogRef = this.popupDialog.open(ImportPresetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      if (result == "OK") {
+      if (result === 'OK') {
         this.presetGroupChanged.emit(); // triggers refresh
       }
     });

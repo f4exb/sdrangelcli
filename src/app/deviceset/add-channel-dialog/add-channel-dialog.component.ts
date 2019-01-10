@@ -14,20 +14,19 @@ export interface ChannelType {
   styleUrls: ['./add-channel-dialog.component.css']
 })
 export class AddChannelDialogComponent implements OnInit {
-  channelTypes : ChannelType[] = [];
-  selectedChannelId : string;
+  channelTypes: ChannelType[] = [];
+  selectedChannelId: string;
   deviceSetIndex: number;
-  isTx : boolean;
-  sdrangelURL : string;
+  isTx: boolean;
+  sdrangelURL: string;
 
   constructor(private dialogRef: MatDialogRef<AddChannelDialogComponent>,
-    private addChannelService : AddChannelService,
+    private addChannelService: AddChannelService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar)
-  {
-    this.deviceSetIndex = data.deviceSetIndex;
-    this.isTx = data.isTx;
+    public snackBar: MatSnackBar) {
+      this.deviceSetIndex = data.deviceSetIndex;
+      this.isTx = data.isTx;
   }
 
   ngOnInit() {
@@ -40,7 +39,7 @@ export class AddChannelDialogComponent implements OnInit {
   private getAvailableChannels(sdrangelURL: string) {
     this.addChannelService.getAvailableChannels(sdrangelURL, this.isTx).subscribe(
       availableChannels => {
-        for (let availableChannel of availableChannels.channels) {
+        for (const availableChannel of availableChannels.channels) {
           this.channelTypes.push({value: availableChannel.id, viewValue: availableChannel.name});
           if (!this.selectedChannelId) {
             this.selectedChannelId = availableChannel.id;
@@ -48,25 +47,25 @@ export class AddChannelDialogComponent implements OnInit {
         }
       },
       error => {
-        this.snackBar.open(error.message, "OK", {duration: 2000});
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
       }
-    )
+    );
   }
 
   close() {
-    this.dialogRef.close("Dismiss");
+    this.dialogRef.close('Dismiss');
   }
 
   save() {
     this.addChannelService.addChannel(this.sdrangelURL, this.deviceSetIndex, this.isTx, this.selectedChannelId).subscribe(
       res => {
-        console.log("Added OK", res);
-        this.dialogRef.close("OK");
+        console.log('Added OK', res);
+        this.dialogRef.close('OK');
       },
       error => {
         console.log(error);
-        this.snackBar.open(error.message, "OK", {duration: 2000});
-        this.dialogRef.close("Error");
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
       }
     );
   }

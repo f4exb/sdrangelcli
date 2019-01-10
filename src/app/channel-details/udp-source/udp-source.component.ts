@@ -10,8 +10,8 @@ import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 
 interface SampleFormat {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 @Component({
@@ -21,11 +21,11 @@ interface SampleFormat {
 })
 export class UdpSourceComponent implements OnInit {
   sampleFormats: SampleFormat[] = [
-    {value: 0, viewValue: "SnLE I/Q"},
-    {value: 1, viewValue: "S16LE NFM"},
-    {value: 2, viewValue: "S16LE LSB"},
-    {value: 3, viewValue: "S16LE USB"},
-    {value: 4, viewValue: "S16LE AM"},
+    {value: 0, viewValue: 'SnLE I/Q'},
+    {value: 1, viewValue: 'S16LE NFM'},
+    {value: 2, viewValue: 'S16LE LSB'},
+    {value: 3, viewValue: 'S16LE USB'},
+    {value: 4, viewValue: 'S16LE AM'},
   ];
   amPercent: number;
   autoRWBalance: boolean;
@@ -36,49 +36,43 @@ export class UdpSourceComponent implements OnInit {
   squelchGateMs: number;
   stereoInput: boolean;
   squelchEnabled: boolean;
-  deviceIndex : number;
+  deviceIndex: number;
   channelIndex: number;
-  sdrangelURL : string;
+  sdrangelURL: string;
   settings: UDPSourceSettings = UDP_SOURCE_SETTINGS_DEFAULT;
   report: UDPSourceReport = UDP_SOURCE_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
-  deviceStoreSubscription : Subscription;
+  deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   channelDeltaFrequency: number;
   channelCenterFrequencyKhz: number;
   channelMinFrequencyKhz: number;
   channelMaxFrequencyKhz: number;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   rgbTitle: number[] = [0, 0, 0];
-  rgbTitleStr: string = 'rgb(0,0,0)'
+  rgbTitleStr = 'rgb(0,0,0)';
   monitor: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
     private deviceSetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
-    this.deviceStoreSubscription = null;
-    this.channelReportSubscription = null;
-    this.monitor = false;
-    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
-      this.sdrangelURL = url;
-    });
+    private deviceStoreService: DeviceStoreService) {
+      this.deviceStoreSubscription = null;
+      this.channelReportSubscription = null;
+      this.monitor = false;
+      this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+      });
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
-    this.channelIndex = +this.route.snapshot.parent.params['cix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.channelIndex = +this.route.snapshot.parent.params['cix'];
     this.getDeviceStorage();
     this.getChannelSettings();
-  }
-
-  ngOnDestroy() {
-    (this.deviceStoreSubscription) && this.deviceStoreSubscription.unsubscribe();
-    (this.channelReportSubscription) && this.channelReportSubscription.unsubscribe();
   }
 
   private getDeviceStorage() {
@@ -88,7 +82,7 @@ export class UdpSourceComponent implements OnInit {
         this.deviceBasebandRate = deviceStorage.basebandRate;
       },
       error => {
-        if (error == "No device at this index") {
+        if (error === 'No device at this index') {
           this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceset => {
               this.deviceStoreService.change(
@@ -97,57 +91,57 @@ export class UdpSourceComponent implements OnInit {
                   basebandRate: deviceset.samplingDevice.bandwidth,
                   centerFrequency: deviceset.samplingDevice.centerFrequency
                 }
-              )
+              );
               this.deviceBasebandRate = deviceset.samplingDevice.bandwidth;
               this.deviceCenterFrequency = deviceset.samplingDevice.centerFrequency;
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType == "UDPSource") {
-          this.statusMessage = "OK";
+        if (channelSettings.channelType === 'UDPSource') {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.UDPSourceSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
-          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency)/1000;
-          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate/2))/1000;
-          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate/2))/1000;
-          this.rfBandwidthKhz = this.settings.rfBandwidth/1000;
-          this.lowCutoffKhz = this.settings.lowCutoff/1000;
-          this.fmDeviationKhz = this.settings.fmDeviation/1000;
-          this.amPercent = +(this.settings.amModFactor*100).toFixed(0);
+          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
+          this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate / 2)) / 1000;
+          this.channelMinFrequencyKhz = (this.deviceCenterFrequency - (this.deviceBasebandRate / 2)) / 1000;
+          this.rfBandwidthKhz = this.settings.rfBandwidth / 1000;
+          this.lowCutoffKhz = this.settings.lowCutoff / 1000;
+          this.fmDeviationKhz = this.settings.fmDeviation / 1000;
+          this.amPercent = +(this.settings.amModFactor * 100).toFixed(0);
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.channelMute = this.settings.channelMute !== 0;
           this.squelchEnabled = this.settings.squelchEnabled !== 0;
           this.autoRWBalance = this.settings.autoRWBalance !== 0;
           this.stereoInput = this.settings.stereoInput !== 0;
-          this.settings.gainIn = +this.settings.gainIn.toFixed(1)
-          this.settings.gainOut = +this.settings.gainOut.toFixed(1)
-          this.squelchGateMs = +(this.settings.squelchGate*1000).toFixed(0);
+          this.settings.gainIn = +this.settings.gainIn.toFixed(1);
+          this.settings.gainOut = +this.settings.gainOut.toFixed(1);
+          this.squelchGateMs = +(this.settings.squelchGate * 1000).toFixed(0);
         } else {
-          this.statusMessage = "Not a UDPSource channel";
+          this.statusMessage = 'Not a UDPSource channel';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
-  private setDeviceSettings(udpSinkSettings : UDPSourceSettings) {
-    const settings : ChannelSettings = <ChannelSettings>{};
-    settings.channelType = "UDPSource";
+  private setDeviceSettings(udpSinkSettings: UDPSourceSettings) {
+    const settings: ChannelSettings = <ChannelSettings>{};
+    settings.channelType = 'UDPSource';
     settings.tx = 1,
     settings.UDPSourceSettings = udpSinkSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getChannelSettings();
       },
@@ -155,7 +149,7 @@ export class UdpSourceComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
   enableReporting(enable: boolean) {
@@ -164,13 +158,13 @@ export class UdpSourceComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === "UDPSource") {
+              if (channelReport.channelType === 'UDPSource') {
                 this.report = channelReport.UDPSourceReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.channelReportSubscription.unsubscribe();
       this.channelReportSubscription = null;
@@ -193,8 +187,8 @@ export class UdpSourceComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  getDeltaFrequency() : number {
-    let frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency/1000);
+  getDeltaFrequency(): number {
+    const frequency = this.channelCenterFrequencyKhz - (this.deviceCenterFrequency / 1000);
     return +frequency.toFixed(3);
   }
 
@@ -265,14 +259,14 @@ export class UdpSourceComponent implements OnInit {
   setBandwidth() {
     this.validateLowCutoff();
     const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
-    newSettings.rfBandwidth = this.rfBandwidthKhz*1000;
+    newSettings.rfBandwidth = this.rfBandwidthKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
   setLowCutoff() {
     this.validateLowCutoff();
     const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
-    newSettings.lowCutoff = this.lowCutoffKhz*1000;
+    newSettings.lowCutoff = this.lowCutoffKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
@@ -286,13 +280,13 @@ export class UdpSourceComponent implements OnInit {
 
   setFMDeviation() {
     const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
-    newSettings.fmDeviation = this.fmDeviationKhz*1000;
+    newSettings.fmDeviation = this.fmDeviationKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
   setAmModFactor() {
     const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
-    newSettings.amModFactor = this.amPercent/100;
+    newSettings.amModFactor = this.amPercent / 100;
     this.setDeviceSettings(newSettings);
   }
 
@@ -310,7 +304,7 @@ export class UdpSourceComponent implements OnInit {
 
   setSquelchGate() {
     const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
-    newSettings.squelchGate = this.squelchGateMs/1000;
+    newSettings.squelchGate = this.squelchGateMs / 1000;
     this.setDeviceSettings(newSettings);
   }
 

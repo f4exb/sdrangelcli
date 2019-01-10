@@ -9,18 +9,18 @@ import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { DeviceSettings } from '../device-details';
 
 interface Log2 {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 interface AntennaPath {
-  value: number,
-  viewValue: string
+  value: number;
+  viewValue: string;
 }
 
 interface FIRGain {
-  value: number,
-  viewValue: number
+  value: number;
+  viewValue: number;
 }
 
 @Component({
@@ -30,8 +30,8 @@ interface FIRGain {
 })
 export class PlutosdrOutputComponent implements OnInit {
   antennaPaths: AntennaPath[] = [
-    {value: 0, viewValue: "A"},
-    {value: 1, viewValue: "B"},
+    {value: 0, viewValue: 'A'},
+    {value: 1, viewValue: 'B'},
   ];
   softInterps: Log2[] = [
     {value: 0, viewValue: 1},
@@ -50,9 +50,9 @@ export class PlutosdrOutputComponent implements OnInit {
     {value: -6, viewValue: -6},
     {value: 0, viewValue: 0},
   ];
-  frequencySteps : FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  deviceIndex : number;
-  sdrangelURL : string;
+  frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
+  deviceIndex: number;
+  sdrangelURL: string;
   report: PlutoSDROutputReport = PLUTOSDR_OUTPUT_REPORT_DEFAULT;
   settings: PlutoSDROutputSettings = PLUTOSDR_OUTPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
@@ -64,51 +64,46 @@ export class PlutosdrOutputComponent implements OnInit {
   transverterMode: boolean;
   monitor: boolean;
   statusMessage: string;
-  statusError: boolean = false;
+  statusError = false;
   deviceReportSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
-    private deviceStoreService: DeviceStoreService)
-  {
-    this.monitor = false;
-    this.deviceReportSubscription = null;
+    private deviceStoreService: DeviceStoreService) {
+      this.monitor = false;
+      this.deviceReportSubscription = null;
   }
 
   ngOnInit() {
-    this.deviceIndex = +this.route.snapshot.parent.params['dix']
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
       this.getDeviceSettings();
     });
   }
 
-  ngOnDestroy() {
-    (this.deviceReportSubscription) && this.deviceReportSubscription.unsubscribe();
-  }
-
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === "PlutoSDR") && (deviceSettings.tx === 1)) {
-          this.statusMessage = "OK";
+        if ((deviceSettings.deviceHwType === 'PlutoSDR') && (deviceSettings.tx === 1)) {
+          this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.plutoSdrOutputSettings;
-          this.centerFreqKhz = this.settings.centerFrequency/1000;
-          this.lpfBWkHz = this.settings.lpfBW/1000;
-          this.lpfFIRBWkHz = this.settings.lpfFIRBW/1000;
-          this.loPPMCorrection = this.settings.LOppmTenths/10;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
+          this.lpfBWkHz = this.settings.lpfBW / 1000;
+          this.lpfFIRBWkHz = this.settings.lpfFIRBW / 1000;
+          this.loPPMCorrection = this.settings.LOppmTenths / 10;
           this.lpfFIREnable = this.settings.lpfFIREnable !== 0;
-          this.attenuationDb = this.settings.att/4;
+          this.attenuationDb = this.settings.att / 4;
           this.transverterMode = this.settings.transverterMode !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = "Not a PlutoSDR output device";
+          this.statusMessage = 'Not a PlutoSDR output device';
           this.statusError = true;
         }
       }
-    )
+    );
   }
 
   enableReporting(enable: boolean) {
@@ -117,13 +112,13 @@ export class PlutosdrOutputComponent implements OnInit {
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
             devicelReport => {
-              if ((devicelReport.deviceHwType === "PlutoSDR") && (devicelReport.tx === 1)) {
+              if ((devicelReport.deviceHwType === 'PlutoSDR') && (devicelReport.tx === 1)) {
                 this.report = devicelReport.plutoSdrOutputReport;
               }
             }
-          )
+          );
         }
-      )
+      );
     } else {
       this.deviceReportSubscription.unsubscribe();
       this.deviceReportSubscription = null;
@@ -138,20 +133,20 @@ export class PlutosdrOutputComponent implements OnInit {
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.devSampleRate/(1<<this.settings.log2Interp)
-    }
+      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2Interp)
+    };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(plutoSDRSettings : PlutoSDROutputSettings) {
-    const settings : DeviceSettings = <DeviceSettings>{};
-    settings.deviceHwType = "PlutoSDR";
+  private setDeviceSettings(plutoSDRSettings: PlutoSDROutputSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'PlutoSDR';
     settings.tx = 1,
     settings.plutoSdrOutputSettings = plutoSDRSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
-        console.log("Set settings OK", res);
-        this.statusMessage = "OK";
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
         this.statusError = false;
         this.getDeviceSettings();
       },
@@ -159,11 +154,11 @@ export class PlutosdrOutputComponent implements OnInit {
         this.statusMessage = error.message;
         this.statusError = true;
       }
-    )
+    );
   }
 
-  getSampleRate() : number {
-    return this.settings.devSampleRate/(1<<this.settings.log2Interp);
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2Interp);
   }
 
   onFrequencyUpdate(frequency: number) {
@@ -173,7 +168,7 @@ export class PlutosdrOutputComponent implements OnInit {
 
   setCenterFrequency() {
     const newSettings: PlutoSDROutputSettings = <PlutoSDROutputSettings>{};
-    newSettings.centerFrequency = this.centerFreqKhz*1000;
+    newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
@@ -245,7 +240,7 @@ export class PlutosdrOutputComponent implements OnInit {
 
   setLoPPM() {
     const newSettings: PlutoSDROutputSettings = <PlutoSDROutputSettings>{};
-    newSettings.LOppmTenths = this.loPPMCorrection*10;
+    newSettings.LOppmTenths = this.loPPMCorrection * 10;
     this.setDeviceSettings(newSettings);
   }
 
