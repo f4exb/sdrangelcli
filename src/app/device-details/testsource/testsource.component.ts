@@ -67,6 +67,9 @@ export class TestsourceComponent implements OnInit {
     {value: 0, viewValue: 'None'},
     {value: 1, viewValue: 'AM'},
     {value: 2, viewValue: 'FM'},
+    {value: 3, viewValue: 'P0'},
+    {value: 4, viewValue: 'P1'},
+    {value: 5, viewValue: 'P2'},
   ];
   deviceIndex: number;
   sdrangelURL: string;
