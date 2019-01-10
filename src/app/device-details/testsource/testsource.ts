@@ -15,6 +15,10 @@ export interface TestSourceSettings {
     qFactor: number;
     sampleRate: number;
     sampleSizeIndex: number;
+    useReverseAPI: number;
+    reverseAPIDeviceIndex: number;
+    reverseAPIAddress: string;
+    reverseAPIPort: number;
 }
 
 export const TESTSOURCE_SETTINGS_DEFAULT = {
@@ -33,5 +37,9 @@ export const TESTSOURCE_SETTINGS_DEFAULT = {
     phaseImbalance: 0,
     qFactor: 0,
     sampleRate: 768000,
-    sampleSizeIndex: 0
+    sampleSizeIndex: 0,
+    useReverseAPI: 0,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888
 };

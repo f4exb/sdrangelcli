@@ -78,6 +78,7 @@ export class TestsourceComponent implements OnInit {
   iBiasPercent: number;
   qBiasPercent: number;
   phaseImbalancePercent: number;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -107,6 +108,7 @@ export class TestsourceComponent implements OnInit {
           this.iBiasPercent = +(this.settings.iFactor * 100).toFixed(0);
           this.qBiasPercent = +(this.settings.qFactor * 100).toFixed(0);
           this.phaseImbalancePercent = +(this.settings.phaseImbalance * 100).toFixed(0);
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not a TestSource device';
@@ -266,6 +268,30 @@ export class TestsourceComponent implements OnInit {
   setPhaseImbalance() {
     const newSettings: TestSourceSettings = <TestSourceSettings>{};
     newSettings.phaseImbalance = this.phaseImbalancePercent / 100;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: TestSourceSettings = <TestSourceSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }
 }
