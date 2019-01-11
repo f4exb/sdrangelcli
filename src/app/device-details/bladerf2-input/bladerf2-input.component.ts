@@ -255,4 +255,28 @@ export class Bladerf2InputComponent implements OnInit {
     newSettings.transverterDeltaFrequency = this.settings.transverterDeltaFrequency;
     this.setDeviceSettings(newSettings);
   }
+
+  setUseReverseAPI() {
+    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
 }

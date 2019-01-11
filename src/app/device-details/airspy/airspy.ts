@@ -15,6 +15,10 @@ export interface AirspySettings {
     transverterMode?: number;
     transverterDeltaFrequency?: number;
     fileRecordName?: string;
+    useReverseAPI: number;
+    reverseAPIDeviceIndex: number;
+    reverseAPIAddress: string;
+    reverseAPIPort: number;
 }
 
 export const AIRSPY_SETTINGS_DEFAULT = {
@@ -33,7 +37,11 @@ export const AIRSPY_SETTINGS_DEFAULT = {
     iqCorrection: 0,
     transverterMode: 0,
     transverterDeltaFrequency: 0,
-    fileRecordName: 'none'
+    fileRecordName: 'none',
+    useReverseAPI: 0,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888
 };
 
 export interface AirspyRate {

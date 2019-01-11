@@ -51,6 +51,14 @@
     margin: 1px;
 }
 
+.address-input {
+    width: 15ch;
+}
+
+.port-input {
+    width: 7ch;
+}
+
 .gain-input {
     width: 6ch;
 }

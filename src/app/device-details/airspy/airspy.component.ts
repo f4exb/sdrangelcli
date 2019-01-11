@@ -58,6 +58,7 @@ export class AirspyComponent implements OnInit {
   lnaAGC: boolean;
   mixerAGC: boolean;
   biasT: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -89,6 +90,7 @@ export class AirspyComponent implements OnInit {
           this.mixerAGC = this.settings.mixerAGC !== 0;
           this.biasT = this.settings.biasT !== 0;
           this.loPPM = this.settings.LOppmTenths / 10;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not an Airspy device';
@@ -255,6 +257,30 @@ export class AirspyComponent implements OnInit {
   setVgaGain() {
     const newSettings: AirspySettings = <AirspySettings>{};
     newSettings.vgaGain = this.settings.vgaGain;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: AirspySettings = <AirspySettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: AirspySettings = <AirspySettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: AirspySettings = <AirspySettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: AirspySettings = <AirspySettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }
 }

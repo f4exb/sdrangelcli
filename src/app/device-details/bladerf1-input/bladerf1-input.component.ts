@@ -264,4 +264,28 @@ export class Bladerf1InputComponent implements OnInit {
     newSettings.devSampleRate = this.settings.devSampleRate;
     this.setDeviceSettings(newSettings);
   }
+
+  setUseReverseAPI() {
+    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
 }

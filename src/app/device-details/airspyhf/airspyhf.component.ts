@@ -53,6 +53,7 @@ export class AirspyhfComponent implements OnInit {
   centerFreqKhz: number;
   loPPM: number;
   transverter: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -78,6 +79,7 @@ export class AirspyhfComponent implements OnInit {
           this.centerFreqKhz = this.settings.centerFrequency / 1000;
           this.loPPM = this.settings.LOppmTenths / 10;
           this.transverter = this.settings.transverterMode !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not an AirspyHF device';
@@ -188,5 +190,29 @@ export class AirspyhfComponent implements OnInit {
     } else if (this.centerFreqKhz > max) {
       this.centerFreqKhz = max;
     }
+  }
+
+  setUseReverseAPI() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
   }
 }
