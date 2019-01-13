@@ -77,6 +77,18 @@
     width: 6ch;
 }
 
+.gain-input {
+    width: 6ch;
+}
+
+.address-input {
+    width: 15ch;
+}
+
+.port-input {
+    width: 7ch;
+}
+
 td {
     background-color: rgb(230, 230, 210);
 }

@@ -55,6 +55,7 @@ export class PerseusComponent implements OnInit {
   wideband: boolean;
   dither: boolean;
   preamp: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -84,6 +85,7 @@ export class PerseusComponent implements OnInit {
           this.wideband = this.settings.wideBand !== 0;
           this.dither = this.settings.adcDither !== 0;
           this.preamp = this.settings.adcPreamp !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not a Perseus device';
@@ -223,4 +225,27 @@ export class PerseusComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setUseReverseAPI() {
+    const newSettings: PerseusSettings = <PerseusSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: PerseusSettings = <PerseusSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: PerseusSettings = <PerseusSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: PerseusSettings = <PerseusSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
 }

@@ -7,6 +7,10 @@ export interface HackRFOutputSettings {
     lnaExt: number;
     log2Interp: number;
     vgaGain: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
 }
 
 export const HACKRF_OUTPUT_SETTINGS_DEFAULT = {
@@ -17,5 +21,9 @@ export const HACKRF_OUTPUT_SETTINGS_DEFAULT = {
     devSampleRate: 2000000,
     lnaExt: 1,
     log2Interp: 5,
-    vgaGain: 19
+    vgaGain: 19,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0
 };

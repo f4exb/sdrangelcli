@@ -9,6 +9,10 @@ export interface PerseusSettings {
     transverterDeltaFrequency: number;
     transverterMode: number;
     wideBand: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
 }
 
 export const PERSEUS_SETTINGS_DEFAULT = {
@@ -21,7 +25,11 @@ export const PERSEUS_SETTINGS_DEFAULT = {
     log2Decim: 0,
     transverterDeltaFrequency: 0,
     transverterMode: 0,
-    wideBand: 0
+    wideBand: 0,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0
 };
 
 export interface PerseusRate {

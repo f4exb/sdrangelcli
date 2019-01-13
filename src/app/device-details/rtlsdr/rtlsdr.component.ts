@@ -58,6 +58,7 @@ export class RtlsdrComponent implements OnInit {
   agc: boolean;
   lowSampleRate: boolean;
   noModMode: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -89,6 +90,7 @@ export class RtlsdrComponent implements OnInit {
           this.agc = this.settings.agc !== 0;
           this.lowSampleRate = this.settings.lowSampleRate !== 0;
           this.noModMode = this.settings.noModMode !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not a RTLSDR device';
@@ -273,5 +275,29 @@ export class RtlsdrComponent implements OnInit {
     } else if (this.centerFreqKhz > max) {
       this.centerFreqKhz = max;
     }
+  }
+
+  setUseReverseAPI() {
+    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
   }
 }

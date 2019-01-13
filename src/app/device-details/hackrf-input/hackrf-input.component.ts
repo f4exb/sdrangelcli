@@ -72,6 +72,7 @@ export class HackrfInputComponent implements OnInit {
   loPPM: number;
   biasT: boolean;
   rfAmp: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -100,6 +101,7 @@ export class HackrfInputComponent implements OnInit {
           this.loPPM = this.settings.LOppmTenths / 10;
           this.biasT = this.settings.biasT !== 0;
           this.rfAmp = this.settings.lnaExt !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not a HackRF input device';
@@ -214,6 +216,30 @@ export class HackrfInputComponent implements OnInit {
   setVGAGain() {
     const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
     newSettings.vgaGain = this.settings.vgaGain;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: HackRFInputSettings = <HackRFInputSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }
 }

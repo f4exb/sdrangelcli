@@ -12,6 +12,10 @@ export interface HackRFInputSettings {
     lnaGain: number;
     log2Decim: number;
     vgaGain: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
 }
 
 export const HACKRF_INPUT_SETTINGS_DEFAULT = {
@@ -27,5 +31,9 @@ export const HACKRF_INPUT_SETTINGS_DEFAULT = {
     lnaExt: 0,
     lnaGain: 16,
     log2Decim: 0,
-    vgaGain: 16
+    vgaGain: 16,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0
 };

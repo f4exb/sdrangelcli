@@ -12,6 +12,10 @@ export interface PlutoSDROutputSettings {
     lpfFIRlog2Interp: number;
     transverterDeltaFrequency: number;
     transverterMode: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
 }
 
 export const PLUTOSDR_OUTPUT_SETTINGS_DEFAULT = {
@@ -27,7 +31,11 @@ export const PLUTOSDR_OUTPUT_SETTINGS_DEFAULT = {
     lpfFIRGain: 0,
     lpfFIRlog2Interp: 0,
     transverterDeltaFrequency: 0,
-    transverterMode: 0
+    transverterMode: 0,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0
 };
 
 export interface PlutoSDROutputReport {

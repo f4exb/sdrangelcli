@@ -101,6 +101,7 @@ export class PlutosdrInputComponent implements OnInit {
   statusMessage: string;
   statusError = false;
   deviceReportSubscription: Subscription;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -133,6 +134,7 @@ export class PlutosdrInputComponent implements OnInit {
           this.iqCorrection = this.settings.iqCorrection !== 0;
           this.lpfFIREnable = this.settings.lpfFIREnable !== 0;
           this.transverterMode = this.settings.transverterMode !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not a PlutoSDR input device';
@@ -301,6 +303,30 @@ export class PlutosdrInputComponent implements OnInit {
   setLoPPM() {
     const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
     newSettings.LOppmTenths = this.loPPMCorrection * 10;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }
 }

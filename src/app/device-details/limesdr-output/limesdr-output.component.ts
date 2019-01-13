@@ -65,6 +65,7 @@ export class LimesdrOutputComponent implements OnInit {
   statusMessage: string;
   statusError = false;
   deviceReportSubscription: Subscription;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -99,6 +100,7 @@ export class LimesdrOutputComponent implements OnInit {
           this.extClock = this.settings.extClock !== 0;
           this.lpfFIREnable = this.settings.lpfFIREnable !== 0;
           this.transverterMode = this.settings.transverterMode !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not a LimeSDR output device';
@@ -271,6 +273,30 @@ export class LimesdrOutputComponent implements OnInit {
     } else {
       return 0;
     }
+  }
+
+  setUseReverseAPI() {
+    const newSettings: LimeSDROutputSettings = <LimeSDROutputSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: LimeSDROutputSettings = <LimeSDROutputSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: LimeSDROutputSettings = <LimeSDROutputSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: LimeSDROutputSettings = <LimeSDROutputSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
   }
 
 }
