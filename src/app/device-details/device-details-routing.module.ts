@@ -15,7 +15,8 @@ import { PerseusComponent } from './perseus/perseus.component';
 import { AirspyComponent } from './airspy/airspy.component';
 import { Bladerf1InputComponent } from './bladerf1-input/bladerf1-input.component';
 import { Bladerf2InputComponent } from './bladerf2-input/bladerf2-input.component';
-import { FcdproInputComponent } from './fcdpro-input/fcdpro-input.component';
+import { FcdproComponent } from './fcdpro-input/fcdpro.component';
+import { FcdproplusComponent } from './fcdproplus/fcdproplus.component';
 
 export const routes: Routes = [
   {
@@ -40,7 +41,11 @@ export const routes: Routes = [
       },
       {
         path: 'fcdpro',
-        component: FcdproInputComponent
+        component: FcdproComponent
+      },
+      {
+        path: 'fcdproplus',
+        component: FcdproplusComponent
       },
       {
         path: 'hackrfin',

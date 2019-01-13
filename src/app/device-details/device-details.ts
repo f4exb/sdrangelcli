@@ -12,6 +12,7 @@ import { AirspySettings, AirspyReport } from './airspy/airspy';
 import { BladeRF1Settings } from './bladerf1-input/bladerf1-input';
 import { BladeRF2Settings } from './bladerf2-input/bladerf2-input';
 import { FCDProSettings } from './fcdpro-input/fcdpro';
+import { FCDProPlusSettings } from './fcdproplus/fcdproplus';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -21,6 +22,7 @@ export interface DeviceSettings {
     bladeRF1InputSettings?: BladeRF1Settings;
     bladeRF2InputSettings?: BladeRF2Settings;
     fcdProSettings?: FCDProSettings;
+    fcdProPlusSettings?: FCDProPlusSettings;
     hackRFInputSettings?: HackRFInputSettings;
     hackRFOutputSettings?: HackRFOutputSettings;
     limeSdrInputSettings?: LimeSDRInputSettings;

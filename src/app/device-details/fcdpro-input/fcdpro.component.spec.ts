@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FcdproInputComponent } from './fcdpro-input.component';
+import { FcdproComponent } from './fcdpro.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule } from '@angular/material';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonComponentsModule } from '../../common-components/common-components.module';
 
-describe('FcdproInputComponent', () => {
-  let component: FcdproInputComponent;
-  let fixture: ComponentFixture<FcdproInputComponent>;
+describe('FcdproComponent', () => {
+  let component: FcdproComponent;
+  let fixture: ComponentFixture<FcdproComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        FcdproInputComponent
+        FcdproComponent
       ],
       imports: [
         RouterModule,
@@ -35,7 +35,7 @@ describe('FcdproInputComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FcdproInputComponent);
+    fixture = TestBed.createComponent(FcdproComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

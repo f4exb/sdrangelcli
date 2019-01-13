@@ -24,11 +24,11 @@ export interface EnumStr {
 }
 
 @Component({
-  selector: 'app-fcdpro-input',
-  templateUrl: './fcdpro-input.component.html',
-  styleUrls: ['./fcdpro-input.component.css']
+  selector: 'app-fcdpro',
+  templateUrl: './fcdpro.component.html',
+  styleUrls: ['./fcdpro.component.css']
 })
-export class FcdproInputComponent implements OnInit {
+export class FcdproComponent implements OnInit {
   statusMessage: string;
   statusError = false;
   log2Decims: Log2Decim[] = [

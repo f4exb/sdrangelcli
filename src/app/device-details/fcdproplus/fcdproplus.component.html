@@ -1,0 +1,189 @@
+<mat-card>
+  <mat-card-header class="device-card-header device-header-rx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="device-label">FCD Pro+ {{getSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- frequency -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="centerFreqKhz"
+          [min]="24000"
+          [max]="1900000"
+          tooltip="Center frequency"
+          [steps]="frequencySteps"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+      </tr>
+      <!-- Line 1  LO correction, DC correction, IQ imbalance correction -->
+      <tr>
+        <td>
+          LO
+          <input type="number" class="loppm-input"
+            [(ngModel)]="loPPM"
+            (change)="setLoPPM()"
+            matTooltip="LO correction"
+            min=-30 max=30 step=0.1
+          >
+          ppm
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+            DC block
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="iqImbalance" (change)="setIQImbalance()" matTooltip="IQ correction">
+            IQ corr
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--Decimation, Fc pos,  -->
+      <tr>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Fc pos
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.fcPos"
+              (selectionChange)="setFcPos()"
+              matTooltip="Center frequency position">
+            <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
+              {{fcPos.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td></td>
+      </tr>
+      <!-- LNA, Mix, BiasT -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="lnaGain" (change)="setLNAGain()" matTooltip="LNA gain">
+            LNA gain
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="mixGain" (change)="setMixGain()" matTooltip="Mixer gain">
+            Mixer gain
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="biasT" (change)="setBiasT()" matTooltip="Bias tee">
+            Bias tee
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!-- RF filter, IF filter, -->
+      <tr>
+        <td>
+          RF filter
+          <mat-select class="combo-input"
+              [(value)]="settings.rfFilterIndex"
+              (selectionChange)="setRFFilterIndex()"
+              matTooltip="RF filter band">
+            <mat-option *ngFor="let rfFiltItem of rfFilt" [value]="rfFiltItem.value">
+              {{rfFiltItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Band
+          <mat-select class="combo-input"
+              [(value)]="settings.ifFilterIndex"
+              (selectionChange)="setIFFilterIndex()"
+              matTooltip="IF filter bandwidth">
+            <mat-option *ngFor="let ifFiltItem of ifFilt" [value]="ifFiltItem.value">
+              {{ifFiltItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td></td>
+      </tr>
+      <!-- Transverter mode, transverter frequency -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
+            Trans
+          </mat-checkbox>
+        </td>
+        <td colspan="2">
+          Freq:
+          <input type="number" class="xfrequency-input"
+            [(ngModel)]="settings.transverterDeltaFrequency"
+            (change)="setTransverterFrequency()"
+            matTooltip="Transverter frequency shift"
+          >
+          Hz
+        </td>
+      </tr>
+      <!-- Record file name -->
+      <tr>
+        <td colspan="3">
+          Remote record file
+          <input type="text" class="record-file-input"
+            [(ngModel)]="settings.fileRecordName"
+            (change)="setFileRecordName()"
+            matTooltip="Name of record file"
+          >
+        </td>
+      </tr>
+      <!--- Use reverse API, reverse API device index -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+            Reverse API
+          </mat-checkbox>
+        </td>
+        <td>
+          Device
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.reverseAPIDeviceIndex"
+            (change)="setReverseAPIDeviceIndex()"
+            matTooltip="Reverse API device index"
+            min=0>
+        </td>
+        <td></td>
+      </tr>
+      <!--- reverse API address, reverse API port -->
+      <tr>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.reverseAPIAddress"
+            (change)="setReverseAPIAddress()"
+            matTooltip="Reverse API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.reverseAPIPort"
+            (change)="setReverseAPIPort()"
+            matTooltip="Reverse API port"
+            min=1024 max=65535>
+        </td>
+        <td></td>
+      </tr>
+      <!-- footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>
