@@ -1,0 +1,334 @@
+<mat-card>
+  <mat-card-header class="device-card-header device-header-rx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="device-label">FCD Pro {{getSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- frequency,  -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="centerFreqKhz"
+          [min]="24000"
+          [max]="1900000"
+          tooltip="Center frequency"
+          [steps]="frequencySteps"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td></td>
+      </tr>
+      <!-- Line 1  LO correction, DC correction, IQ correction, -->
+      <tr>
+        <td>
+          LO
+          <input type="number" class="loppm-input"
+            [(ngModel)]="loPPM"
+            (change)="setLoPPM()"
+            matTooltip="LO correction"
+            min=-30 max=30 step=0.1
+          >
+          ppm
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+            DC block
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
+            IQ corr
+          </mat-checkbox>
+        </td>
+        <td></td>
+      </tr>
+      <!-- Decimation, Fc pos, Transverter mode, transverter frequency -->
+      <tr>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Fc pos
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.fcPos"
+              (selectionChange)="setFcPos()"
+              matTooltip="Center frequency position">
+            <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
+              {{fcPos.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
+            Transverter
+          </mat-checkbox>
+        </td>
+        <td>
+          F
+          <input type="number" class="xfrequency-input"
+            [(ngModel)]="settings.transverterDeltaFrequency"
+            (change)="setTransverterFrequency()"
+            matTooltip="Transverter frequency shift"
+          >
+          Hz
+        </td>
+      </tr>
+      <!-- LNA Enh, Band, Bias, Mode -->
+      <tr>
+        <td>
+          LNA Enh
+          <mat-select class="combo-input"
+              [(value)]="settings.lnaEnhanceIndex"
+              (selectionChange)="setLNAEnhanceIndex()"
+              matTooltip="LNA enhancement mode">
+            <mat-option *ngFor="let lnaEnhItem of lnaEnh" [value]="lnaEnhItem.value">
+              {{lnaEnhItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Band
+          <mat-select class="combo-input"
+              [(value)]="settings.bandIndex"
+              (selectionChange)="setBandIndex()"
+              matTooltip="RF band">
+            <mat-option *ngFor="let bandItem of band" [value]="bandItem.value">
+              {{bandItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Bias
+          <mat-select class="combo-input"
+              [(value)]="settings.biasCurrentIndex"
+              (selectionChange)="setBiasCurrentIndex()"
+              matTooltip="Bias current">
+            <mat-option *ngFor="let biasItem of bias" [value]="biasItem.value">
+              {{biasItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Mode
+          <mat-select class="combo-input"
+              [(value)]="settings.modeIndex"
+              (selectionChange)="setModeIndex()"
+              matTooltip="IF gain mode">
+            <mat-option *ngFor="let modeItem of mode" [value]="modeItem.value">
+              {{modeItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!-- LNA gain, RF filter, Mixer gain, Mixer filter -->
+      <tr>
+        <td>
+          LNA gain
+          <mat-select class="combo-gain-input"
+              [(value)]="settings.lnaGainIndex"
+              (selectionChange)="setLNAGainIndex()"
+              matTooltip="LNA gain">
+            <mat-option *ngFor="let lnaGainItem of lnaGain" [value]="lnaGainItem.value">
+              {{lnaGainItem.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+        <td>
+          RF filt
+          <mat-select class="combo-input" style="width: 11ch"
+              [(value)]="settings.rfFilterIndex"
+              (selectionChange)="setRFFilterIndex()"
+              matTooltip="RF filter">
+            <mat-option *ngFor="let rfFiltItem of rfFilt" [value]="rfFiltItem.value">
+              {{rfFiltItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Mix gain
+          <mat-select class="combo-gain-input"
+              [(value)]="settings.mixerGainIndex"
+              (selectionChange)="setMixerGainIndex()"
+              matTooltip="Mixer gain">
+            <mat-option *ngFor="let mixGainItem of mixGain" [value]="mixGainItem.value">
+              {{mixGainItem.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+        <td>
+          Mix filt
+          <mat-select class="combo-input"
+              [(value)]="settings.mixerFilterIndex"
+              (selectionChange)="setMixerFilterIndex()"
+              matTooltip="Mixer filter">
+            <mat-option *ngFor="let mixFiltItem of mixFilt" [value]="mixFiltItem.value">
+              {{mixFiltItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!-- Gain1, RC filter, Gain2, Gain3 -->
+      <tr>
+        <td>
+          Gain1
+          <mat-select class="combo-gain-input"
+              [(value)]="settings.gain1Index"
+              (selectionChange)="setGain1Index()"
+              matTooltip="Amp #1 gain">
+            <mat-option *ngFor="let gain1Item of gain1" [value]="gain1Item.value">
+              {{gain1Item.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+        <td>
+          RC filt
+          <mat-select class="combo-input"
+              [(value)]="settings.rcFilterIndex"
+              (selectionChange)="setRCFilterIndex()"
+              matTooltip="RC filter">
+            <mat-option *ngFor="let rcFiltItem of rcFilt" [value]="rcFiltItem.value">
+              {{rcFiltItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Gain2
+          <mat-select class="combo-gain-input"
+              [(value)]="settings.gain2Index"
+              (selectionChange)="setGain2Index()"
+              matTooltip="Amp #2 gain">
+            <mat-option *ngFor="let gain2Item of gain2" [value]="gain2Item.value">
+              {{gain2Item.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+        <td>
+          Gain3
+          <mat-select class="combo-gain-input"
+              [(value)]="settings.gain3Index"
+              (selectionChange)="setGain3Index()"
+              matTooltip="Amp #3 gain">
+            <mat-option *ngFor="let gain3Item of gain3" [value]="gain3Item.value">
+              {{gain3Item.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+      </tr>
+      <!-- Gain4, IF filter, Gain5, Gain6 -->
+      <tr>
+        <td>
+          Gain4
+          <mat-select class="combo-gain-input"
+              [(value)]="settings.gain4Index"
+              (selectionChange)="setGain4Index()"
+              matTooltip="Amp #4 gain">
+            <mat-option *ngFor="let gain4Item of gain4" [value]="gain4Item.value">
+              {{gain4Item.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+        <td>
+          IF filt
+          <mat-select class="combo-input"
+              [(value)]="settings.ifFilterIndex"
+              (selectionChange)="setIFFilterIndex()"
+              matTooltip="IF filter">
+            <mat-option *ngFor="let ifFiltItem of ifFilt" [value]="ifFiltItem.value">
+              {{ifFiltItem.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Gain5
+          <mat-select class="combo-gain-input"
+              [(value)]="settings.gain5Index"
+              (selectionChange)="setGain5Index()"
+              matTooltip="Amp #5 gain">
+            <mat-option *ngFor="let gain5Item of gain5" [value]="gain5Item.value">
+              {{gain5Item.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+        <td>
+          Gain6
+          <mat-select class="combo-gain-input"
+              [(value)]="settings.gain6Index"
+              (selectionChange)="setGain6Index()"
+              matTooltip="Amp #6 gain">
+            <mat-option *ngFor="let gain6Item of gain6" [value]="gain6Item.value">
+              {{gain6Item.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
+        </td>
+      </tr>
+      <!-- Record file name -->
+      <tr>
+        <td colspan="4">
+          Remote record file
+          <input type="text" class="record-file-input"
+            [(ngModel)]="settings.fileRecordName"
+            (change)="setFileRecordName()"
+            matTooltip="Name of record file"
+          >
+        </td>
+      </tr>
+      <!--- Use reverse API, reverse API device index, reverse API address, reverse API port -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+            Reverse API
+          </mat-checkbox>
+        </td>
+        <td>
+          Device
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.reverseAPIDeviceIndex"
+            (change)="setReverseAPIDeviceIndex()"
+            matTooltip="Reverse API device index"
+            min=0>
+        </td>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.reverseAPIAddress"
+            (change)="setReverseAPIAddress()"
+            matTooltip="Reverse API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.reverseAPIPort"
+            (change)="setReverseAPIPort()"
+            matTooltip="Reverse API port"
+            min=1024 max=65535>
+        </td>
+      </tr>
+      <!-- footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

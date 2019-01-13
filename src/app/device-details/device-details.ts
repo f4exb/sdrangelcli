@@ -11,6 +11,7 @@ import { PerseusSettings, PerseusReport } from './perseus/perseus';
 import { AirspySettings, AirspyReport } from './airspy/airspy';
 import { BladeRF1Settings } from './bladerf1-input/bladerf1-input';
 import { BladeRF2Settings } from './bladerf2-input/bladerf2-input';
+import { FCDProSettings } from './fcdpro-input/fcdpro';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -19,6 +20,7 @@ export interface DeviceSettings {
     airspyHFSettings?: AirspyHFSettings;
     bladeRF1InputSettings?: BladeRF1Settings;
     bladeRF2InputSettings?: BladeRF2Settings;
+    fcdProSettings?: FCDProSettings;
     hackRFInputSettings?: HackRFInputSettings;
     hackRFOutputSettings?: HackRFOutputSettings;
     limeSdrInputSettings?: LimeSDRInputSettings;
