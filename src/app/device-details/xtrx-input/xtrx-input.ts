@@ -49,3 +49,19 @@ export const XTRX_INPUT_SETTINGS_DEFAULT = {
     reverseAPIPort: 8888,
     reverseAPIDeviceIndex: 0
 };
+
+export interface XTRXInputReport {
+    success?: number; // bool
+    fifoSize?: number;
+    fifoFill?: number;
+    temperature?: number;
+    gpsLock?: number; // bool
+}
+
+export const XTRX_INPUT_REPORT_DEFAULT = {
+    success: 0,
+    fifoSize: 65536,
+    fifoFill: 0,
+    temperature: 0,
+    gpsLock: 0
+};

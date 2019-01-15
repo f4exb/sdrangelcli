@@ -13,7 +13,7 @@ import { BladeRF1Settings } from './bladerf1-input/bladerf1-input';
 import { BladeRF2Settings } from './bladerf2-input/bladerf2-input';
 import { FCDProSettings } from './fcdpro-input/fcdpro';
 import { FCDProPlusSettings } from './fcdproplus/fcdproplus';
-import { XTRXInputSettings } from './xtrx-input/xtrx-input';
+import { XTRXInputSettings, XTRXInputReport } from './xtrx-input/xtrx-input';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -47,4 +47,5 @@ export interface DeviceReport {
     plutoSdrInputReport?: PlutoSDRInputReport;
     plutoSdrOutputReport?: PlutoSDROutputReport;
     rtlSdrReport?: any;
+    xtrxInputReport?: XTRXInputReport;
 }

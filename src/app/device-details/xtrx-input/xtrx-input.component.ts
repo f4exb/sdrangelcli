@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from 'src/app/common-components/frequency-dial/frequency-dial.component';
-import { XTRXInputSettings, XTRX_INPUT_SETTINGS_DEFAULT } from './xtrx-input';
+import { XTRXInputSettings, XTRX_INPUT_SETTINGS_DEFAULT, XTRX_INPUT_REPORT_DEFAULT, XTRXInputReport } from './xtrx-input';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceSettings } from '../device-details';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
+import { Subscription, interval } from 'rxjs';
 
 export interface Log2Decim {
   value: number;
@@ -51,8 +52,11 @@ export class XtrxInputComponent implements OnInit {
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex: number;
   sdrangelURL: string;
+  report: XTRXInputReport = XTRX_INPUT_REPORT_DEFAULT;
   settings: XTRXInputSettings = XTRX_INPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
+  loFreqKhz: number;
+  ncoFreqKhz: number;
   rfBandwidthKhz: number;
   dcBlock: boolean;
   iqCorrection: boolean;
@@ -60,6 +64,8 @@ export class XtrxInputComponent implements OnInit {
   ncoEnable: boolean;
   extClock: boolean;
   useReverseAPI: boolean;
+  deviceReportSubscription: Subscription;
+  monitor: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -68,6 +74,236 @@ export class XtrxInputComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.deviceIndex = +this.route.snapshot.parent.params['dix'];
+    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+      this.sdrangelURL = url;
+      this.getDeviceSettings();
+    });
   }
 
+  private getDeviceSettings() {
+    this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
+      deviceSettings => {
+        if (deviceSettings.deviceHwType === 'XTRX') {
+          this.statusMessage = 'OK';
+          this.statusError = false;
+          this.settings = deviceSettings.xtrxInputSettings;
+          this.ncoFreqKhz = this.settings.ncoFrequency / 1000;
+          this.ncoEnable = this.settings.ncoEnable !== 0;
+          this.loFreqKhz = this.settings.centerFrequency / 1000;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
+          this.rfBandwidthKhz = this.settings.lpfBW / 1000;
+          this.dcBlock = this.settings.dcBlock !== 0;
+          this.iqCorrection = this.settings.iqCorrection !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
+          this.extClock = this.settings.extClock !== 0;
+          this.feedDeviceStore();
+        } else {
+          this.statusMessage = 'Not a XTRX device';
+          this.statusError = true;
+        }
+      }
+    );
+  }
+
+  private feedDeviceStore() {
+    const deviceStorage = <DeviceStorage>{
+      centerFrequency: this.settings.centerFrequency,
+      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2SoftDecim)
+    };
+    this.deviceStoreService.change(this.deviceIndex, deviceStorage);
+  }
+
+  enableReporting(enable: boolean) {
+    if (enable) {
+      this.deviceReportSubscription = interval(1000).subscribe(
+        _ => {
+          this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
+            devicelReport => {
+              if ((devicelReport.deviceHwType === 'XTRX') && (devicelReport.tx === 0)) {
+                this.report = devicelReport.xtrxInputReport;
+              }
+            }
+          );
+        }
+      );
+    } else {
+      this.deviceReportSubscription.unsubscribe();
+      this.deviceReportSubscription = null;
+    }
+  }
+
+  toggleMonitor() {
+    this.monitor = !this.monitor;
+    this.enableReporting(this.monitor);
+  }
+
+  private setDeviceSettings(xtrxInputSettings: XTRXInputSettings) {
+    const settings: DeviceSettings = <DeviceSettings>{};
+    settings.deviceHwType = 'XTRX';
+    settings.tx = 0,
+    settings.xtrxInputSettings = xtrxInputSettings;
+    this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
+      res => {
+        console.log('Set settings OK', res);
+        this.statusMessage = 'OK';
+        this.statusError = false;
+        this.getDeviceSettings();
+      },
+      error => {
+        this.statusMessage = error.message;
+        this.statusError = true;
+      }
+    );
+  }
+
+  getSampleRate(): number {
+    return this.settings.devSampleRate / (1 << this.settings.log2SoftDecim);
+  }
+
+  getADCSampleRate(): number {
+    return this.settings.devSampleRate * (1 << this.settings.log2HardDecim);
+  }
+
+  setDCBlock() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.dcBlock = this.dcBlock ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setIQCorrection() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setNCOEnable() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
+    newSettings.ncoEnable = this.ncoEnable ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.centerFreqKhz = frequency;
+    this.setCenterFrequency();
+  }
+
+  setCenterFrequency() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    this.loFreqKhz = this.centerFreqKhz - (this.ncoEnable ? this.ncoFreqKhz : 0);
+    newSettings.centerFrequency = this.loFreqKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setNCOFrequency() {
+    this.validateNCOFrequency();
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
+    newSettings.ncoFrequency = this.ncoFreqKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  validateNCOFrequency() {
+    let min, max: number;
+    min = -this.getADCSampleRate() / 2000;
+    max = this.getADCSampleRate() / 2000;
+    if (this.ncoFreqKhz < min) {
+      this.ncoFreqKhz = min;
+    } else if (this.ncoFreqKhz > max) {
+      this.ncoFreqKhz = max;
+    }
+  }
+
+  setAntennaPath() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.antennaPath = this.settings.antennaPath;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setDevSampleRate() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.devSampleRate = this.settings.devSampleRate;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLog2HardDecim() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.log2HardDecim = this.settings.log2HardDecim;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLog2SoftDecim() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.log2SoftDecim = this.settings.log2SoftDecim;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLPFilter() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.lpfBW = this.rfBandwidthKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setGainMode() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.gainMode = this.settings.gainMode;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setGain() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.gain = this.settings.gain;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLNAGain() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.lnaGain = this.settings.lnaGain;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setTIAGain() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.tiaGain = this.settings.tiaGain;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setPGAGain() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.pgaGain = this.settings.pgaGain;
+    this.setDeviceSettings(newSettings);
+  }
+
+  getFIFOFillPercentage(): number {
+    if (this.report && this.report.fifoSize > 0) {
+      return (this.report.fifoFill / this.report.fifoSize) * 100;
+    } else {
+      return 0;
+    }
+  }
+
+  setUseReverseAPI() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
 }
