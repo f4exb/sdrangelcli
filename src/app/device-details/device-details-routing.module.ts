@@ -17,6 +17,7 @@ import { Bladerf1InputComponent } from './bladerf1-input/bladerf1-input.componen
 import { Bladerf2InputComponent } from './bladerf2-input/bladerf2-input.component';
 import { FcdproComponent } from './fcdpro-input/fcdpro.component';
 import { FcdproplusComponent } from './fcdproplus/fcdproplus.component';
+import { XtrxInputComponent } from './xtrx-input/xtrx-input.component';
 
 export const routes: Routes = [
   {
@@ -82,6 +83,10 @@ export const routes: Routes = [
       {
         path: 'testsource',
         component: TestsourceComponent
+      },
+      {
+        path: 'xtrxin',
+        component: XtrxInputComponent
       },
       {
         path: 'notsupported',

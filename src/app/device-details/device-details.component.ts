@@ -44,11 +44,13 @@ export class DeviceDetailsComponent implements OnInit {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['bladerf1in'], { relativeTo: this.route});
           } else {
+            this.router.navigate(['bladerf1out'], { relativeTo: this.route});
           }
         } else if (deviceSet.samplingDevice.hwType === 'BladeRF2') {
           if (deviceSet.samplingDevice.tx === 0) {
             this.router.navigate(['bladerf2in'], { relativeTo: this.route});
           } else {
+            this.router.navigate(['bladerf2out'], { relativeTo: this.route});
           }
         } else if (deviceSet.samplingDevice.hwType === 'FCDPro') {
           this.router.navigate(['fcdpro'], { relativeTo: this.route});
@@ -78,6 +80,12 @@ export class DeviceDetailsComponent implements OnInit {
           this.router.navigate(['rtlsdr'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'TestSource') {
           this.router.navigate(['testsource'], { relativeTo: this.route});
+        } else if (deviceSet.samplingDevice.hwType === 'XTRX') {
+          if (deviceSet.samplingDevice.tx === 0) {
+            this.router.navigate(['xtrxin'], { relativeTo: this.route});
+          } else {
+            this.router.navigate(['xtrxout'], { relativeTo: this.route});
+          }
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});
         }
