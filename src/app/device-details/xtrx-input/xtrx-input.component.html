@@ -118,7 +118,16 @@
             max=130000>
           kHz
         </td>
-        <td></td>
+        <td>
+          <mat-select style="width:13ch; background-color: white; margin: 1px;"
+              [(value)]="settings.pwrmode"
+              (selectionChange)="setPowerMode()"
+              matTooltip="LMS power mode">
+            <mat-option *ngFor="let powerMode of powerModes" [value]="powerMode.value">
+              {{powerMode.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
         <td></td>
       </tr>
       <!-- Gain mode, global gain -->
@@ -232,14 +241,8 @@
           <span matTooltip="GPSDO lock status">GPS lock</span>
         </td>
         <td></td>
-        <td></td>
       </tr>
       <tr>
-        <td>
-          Link
-          <span matTooltip="Link streaming rate">{{report ? (report.linkRate/1000000).toFixed(3) : 0}}</span>
-          MB/s
-        </td>
         <td>
           FIFO
           <span matTooltip="FIFO size">{{report ? (report.fifoSize/1000000).toFixed(3) : 0}}</span>

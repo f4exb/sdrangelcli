@@ -18,7 +18,12 @@ export interface GainMode {
   viewValue: string;
 }
 
-export interface Antenna {
+export interface AntennaPath {
+  value: number;
+  viewValue: string;
+}
+
+export interface PowerMode {
   value: number;
   viewValue: string;
 }
@@ -31,7 +36,7 @@ export interface Antenna {
 export class XtrxInputComponent implements OnInit {
   statusMessage: string;
   statusError = false;
-  log2Decims: Log2Decim[] = [
+  softDecims: Log2Decim[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
     {value: 2, viewValue: 4},
@@ -40,14 +45,32 @@ export class XtrxInputComponent implements OnInit {
     {value: 5, viewValue: 32},
     {value: 6, viewValue: 64},
   ];
+  hardDecims: Log2Decim[] = [
+    {value: 0, viewValue: 1},
+    {value: 1, viewValue: 2},
+    {value: 2, viewValue: 4},
+    {value: 3, viewValue: 8},
+    {value: 4, viewValue: 16},
+    {value: 5, viewValue: 32},
+  ];
   gainModes: GainMode[] = [
     {value: 0, viewValue: 'Auto'},
     {value: 1, viewValue: 'Manual'},
   ];
-  Antennas: Antenna[] = [
+  antennaPaths: AntennaPath[] = [
     {value: 0, viewValue: 'Low'},
-    {value: 1, viewValue: 'High'},
-    {value: 2, viewValue: 'Wide'},
+    {value: 1, viewValue: 'Wide'},
+    {value: 2, viewValue: 'High'},
+  ];
+  powerModes: PowerMode[] = [
+    {value: 0, viewValue: '0:Save max'},
+    {value: 1, viewValue: '1:'},
+    {value: 2, viewValue: '2:'},
+    {value: 3, viewValue: '3:Economy'},
+    {value: 4, viewValue: '4:Optimal'},
+    {value: 5, viewValue: '5:'},
+    {value: 6, viewValue: '6:'},
+    {value: 7, viewValue: '7:Perf max'},
   ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex: number;
@@ -57,7 +80,7 @@ export class XtrxInputComponent implements OnInit {
   centerFreqKhz: number;
   loFreqKhz: number;
   ncoFreqKhz: number;
-  rfBandwidthKhz: number;
+  lpfBWkHz: number;
   dcBlock: boolean;
   iqCorrection: boolean;
   transverter: boolean;
@@ -91,8 +114,8 @@ export class XtrxInputComponent implements OnInit {
           this.ncoFreqKhz = this.settings.ncoFrequency / 1000;
           this.ncoEnable = this.settings.ncoEnable !== 0;
           this.loFreqKhz = this.settings.centerFrequency / 1000;
-          this.centerFreqKhz = this.settings.centerFrequency / 1000;
-          this.rfBandwidthKhz = this.settings.lpfBW / 1000;
+          this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
+          this.lpfBWkHz = this.settings.lpfBW / 1000;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
@@ -215,6 +238,14 @@ export class XtrxInputComponent implements OnInit {
     }
   }
 
+  validateLPFFrequency() {
+    if (this.lpfBWkHz < 501) {
+      this.lpfBWkHz = 501;
+    } else if (this.lpfBWkHz > 130000) {
+      this.lpfBWkHz = 130000;
+    }
+  }
+
   setAntennaPath() {
     const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
     newSettings.antennaPath = this.settings.antennaPath;
@@ -240,14 +271,21 @@ export class XtrxInputComponent implements OnInit {
   }
 
   setLPFilter() {
+    this.validateLPFFrequency();
     const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.lpfBW = this.rfBandwidthKhz * 1000;
+    newSettings.lpfBW = this.lpfBWkHz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
   setGainMode() {
     const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
     newSettings.gainMode = this.settings.gainMode;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setPowerMode() {
+    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    newSettings.pwrmode = this.settings.pwrmode;
     this.setDeviceSettings(newSettings);
   }
 
