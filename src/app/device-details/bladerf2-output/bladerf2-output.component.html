@@ -3,7 +3,7 @@
     <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
       <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
     </button>&nbsp;
-    <span class="device-label">BladeRF2 input {{getSampleRate()/1000}} kS/s</span>
+    <span class="device-label">BladeRF2 output {{getSampleRate()/1000}} kS/s</span>
   </mat-card-header>
   <mat-card-content>
     <table>
@@ -36,9 +36,11 @@
           <input type="number" class="bandwidth-input"
             [(ngModel)]="bandwidthKhz"
             (change)="setBandwidth()"
-            matTooltip="RF Bandwidth">
+            matTooltip="RF Bandwidth"
+            min=200 max=56000>
           kHz
         </td>
+        <td></td>
       </tr>
       <!--- Global gain, Bias tee -->
       <tr>
@@ -71,11 +73,11 @@
         <td>
           Interp
           <mat-select style="width:6ch; background-color: white; margin: 1px;"
-              [(value)]="settings.logInterp"
+              [(value)]="settings.log2Interp"
               (selectionChange)="setLog2Interp()"
-              matTooltip="Decimation factor">
-            <mat-option *ngFor="let logInterp of logInterps" [value]="logInterp.value">
-              {{logInterp.viewValue}}
+              matTooltip="Interpolation factor">
+            <mat-option *ngFor="let log2Interp of log2Interps" [value]="log2Interp.value">
+              {{log2Interp.viewValue}}
             </mat-option>
           </mat-select>
         </td>
@@ -84,7 +86,7 @@
       <!-- Transverter mode, transverter frequency -->
       <tr>
         <td>
-          <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
+          <mat-checkbox color="primary" [(ngModel)]="transverterMode" (change)="setTransverterMode()" matTooltip="Transverter mode">
             Transverter
           </mat-checkbox>
         </td>

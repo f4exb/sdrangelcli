@@ -17,8 +17,8 @@ export interface BladeRF1OutputSettings {
 export const BLADERF1_OUTPUT_SETTINGS_DEFAULT = {
     centerFrequency: 435000 * 1000,
     devSampleRate: 3072000,
-    vga1: 20,
-    vga2: 9,
+    vga1: -20,
+    vga2: 20,
     bandwidth: 1500000,
     log2Interp: 4,
     xb200: 0,

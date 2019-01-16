@@ -20,6 +20,7 @@ import { FcdproplusComponent } from './fcdproplus/fcdproplus.component';
 import { XtrxInputComponent } from './xtrx-input/xtrx-input.component';
 import { XtrxOutputComponent } from './xtrx-output/xtrx-output.component';
 import { Bladerf1OutputComponent } from './bladerf1-output/bladerf1-output.component';
+import { Bladerf2OutputComponent } from './bladerf2-output/bladerf2-output.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +46,10 @@ export const routes: Routes = [
       {
         path: 'bladerf2in',
         component: Bladerf2InputComponent
+      },
+      {
+        path: 'bladerf2out',
+        component: Bladerf2OutputComponent
       },
       {
         path: 'fcdpro',
