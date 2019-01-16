@@ -11,7 +11,7 @@ import { PerseusSettings, PerseusReport } from './perseus/perseus';
 import { AirspySettings, AirspyReport } from './airspy/airspy';
 import { BladeRF1Settings } from './bladerf1-input/bladerf1-input';
 import { BladeRF2Settings } from './bladerf2-input/bladerf2-input';
-import { FCDProSettings } from './fcdpro-input/fcdpro';
+import { FCDProSettings } from './fcdpro/fcdpro';
 import { FCDProPlusSettings } from './fcdproplus/fcdproplus';
 import { XTRXInputSettings, XTRXInputReport } from './xtrx-input/xtrx-input';
 import { XTRXOutputReport, XTRXOutputSettings } from './xtrx-output/xtrx-output';
