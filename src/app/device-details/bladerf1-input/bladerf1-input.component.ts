@@ -116,7 +116,7 @@ export class Bladerf1InputComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if (deviceSettings.deviceHwType === 'BladeRF1') {
+        if ((deviceSettings.deviceHwType === 'BladeRF1') && (deviceSettings.tx === 0)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.bladeRF1InputSettings;
@@ -127,7 +127,7 @@ export class Bladerf1InputComponent implements OnInit {
           this.setXb200FilterIndex();
           this.feedDeviceStore();
         } else {
-          this.statusMessage = 'Not a BladeRF1 device';
+          this.statusMessage = 'Not a BladeRF1 input device';
           this.statusError = true;
         }
       }
