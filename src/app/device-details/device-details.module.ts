@@ -23,6 +23,7 @@ import { FcdproComponent } from './fcdpro/fcdpro.component';
 import { FcdproplusComponent } from './fcdproplus/fcdproplus.component';
 import { XtrxInputComponent } from './xtrx-input/xtrx-input.component';
 import { XtrxOutputComponent } from './xtrx-output/xtrx-output.component';
+import { Bladerf1OutputComponent } from './bladerf1-output/bladerf1-output.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { XtrxOutputComponent } from './xtrx-output/xtrx-output.component';
     FcdproComponent,
     FcdproplusComponent,
     XtrxInputComponent,
-    XtrxOutputComponent
+    XtrxOutputComponent,
+    Bladerf1OutputComponent
   ]
 })
 export class DeviceDetailsModule { }

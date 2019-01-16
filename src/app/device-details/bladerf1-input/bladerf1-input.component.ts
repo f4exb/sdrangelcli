@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
-import { BladeRF1Settings, BLADERF1_SETTINGS_DEFAULT } from './bladerf1-input';
+import { BladeRF1InputSettings, BLADERF1_INPUT_SETTINGS_DEFAULT } from './bladerf1-input';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
@@ -91,7 +91,7 @@ export class Bladerf1InputComponent implements OnInit {
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex: number;
   sdrangelURL: string;
-  settings: BladeRF1Settings = BLADERF1_SETTINGS_DEFAULT;
+  settings: BladeRF1InputSettings = BLADERF1_INPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   bandwidthIndex: number;
   dcBlock: boolean;
@@ -154,7 +154,7 @@ export class Bladerf1InputComponent implements OnInit {
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(bladeRF1Settings: BladeRF1Settings) {
+  private setDeviceSettings(bladeRF1Settings: BladeRF1InputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'BladeRF1';
     settings.tx = 0,
@@ -180,25 +180,25 @@ export class Bladerf1InputComponent implements OnInit {
   }
 
   setBandwidth() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.bandwidth = this.settings.bandwidth;
     this.setDeviceSettings(newSettings);
   }
 
   setLnaGain() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.lnaGain = this.settings.lnaGain;
     this.setDeviceSettings(newSettings);
   }
 
   setDCBlock() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.dcBlock = this.dcBlock ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setIQCorrection() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
@@ -210,7 +210,7 @@ export class Bladerf1InputComponent implements OnInit {
 
   setCenterFrequency() {
     this.validateCenterFrequencyKhz();
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
@@ -224,31 +224,31 @@ export class Bladerf1InputComponent implements OnInit {
   }
 
   setLog2Decim() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.log2Decim = this.settings.log2Decim;
     this.setDeviceSettings(newSettings);
   }
 
   setFcPos() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.fcPos = this.settings.fcPos;
     this.setDeviceSettings(newSettings);
   }
 
   setVga1() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.vga1 = this.settings.vga1;
     this.setDeviceSettings(newSettings);
   }
 
   setVga2() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.vga2 = this.settings.vga2;
     this.setDeviceSettings(newSettings);
   }
 
   setXb200() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.xb200 = this.xb200FilterIndex  === 0 ? 0 : 1;
     if (this.xb200FilterIndex > 1) { // actual filters
       newSettings.xb200Filter = this.xb200FilterIndex - 2;
@@ -260,31 +260,31 @@ export class Bladerf1InputComponent implements OnInit {
   }
 
   setSampleRate() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.devSampleRate = this.settings.devSampleRate;
     this.setDeviceSettings(newSettings);
   }
 
   setUseReverseAPI() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIAddress() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIPort() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.reverseAPIPort = this.settings.reverseAPIPort;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIDeviceIndex() {
-    const newSettings: BladeRF1Settings = <BladeRF1Settings>{};
+    const newSettings: BladeRF1InputSettings = <BladeRF1InputSettings>{};
     newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }
