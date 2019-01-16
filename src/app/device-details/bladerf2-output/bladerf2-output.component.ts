@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BLADERF2_INPUT_SETTINGS_DEFAULT, BladeRF2InputSettings } from './bladerf2-input';
-import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
+import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from 'src/app/common-components/frequency-dial/frequency-dial.component';
+import { BladeRF2OutputSettings, BLADERF2_OUTPUT_SETTINGS_DEFAULT } from './bladerf2-output';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
@@ -9,30 +9,20 @@ import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { Utils } from 'src/app/common-components/utils';
 import { Subscription } from 'rxjs';
 
-export interface Log2Decim {
+export interface Log2Interp {
   value: number;
   viewValue: number;
 }
 
-export interface FcPos {
-  value: number;
-  viewValue: string;
-}
-
-export interface GainMode {
-  value: number;
-  viewValue: string;
-}
-
 @Component({
-  selector: 'app-bladerf2-input',
-  templateUrl: './bladerf2-input.component.html',
-  styleUrls: ['./bladerf2-input.component.css']
+  selector: 'app-bladerf2-output',
+  templateUrl: './bladerf2-output.component.html',
+  styleUrls: ['./bladerf2-output.component.css']
 })
-export class Bladerf2InputComponent implements OnInit {
+export class Bladerf2OutputComponent implements OnInit {
   statusMessage: string;
   statusError = false;
-  log2Decims: Log2Decim[] = [
+  log2Interps: Log2Interp[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
     {value: 2, viewValue: 4},
@@ -41,20 +31,12 @@ export class Bladerf2InputComponent implements OnInit {
     {value: 5, viewValue: 32},
     {value: 6, viewValue: 64},
   ];
-  fcPositions: FcPos[] = [
-    {value: 0, viewValue: 'Inf'},
-    {value: 1, viewValue: 'Sup'},
-    {value: 2, viewValue: 'Cen'},
-  ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
-  gainModes: GainMode[];
   deviceIndex: number;
   sdrangelURL: string;
-  settings: BladeRF2InputSettings = BLADERF2_INPUT_SETTINGS_DEFAULT;
+  settings: BladeRF2OutputSettings = BLADERF2_OUTPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   bandwidthKhz: number;
-  dcBlock: boolean;
-  iqCorrection: boolean;
   loPPM: number;
   useReverseAPI: boolean;
   transverterMode: boolean;
@@ -72,7 +54,6 @@ export class Bladerf2InputComponent implements OnInit {
     this.deviceIndex = +this.route.snapshot.parent.params['dix'];
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
       this.sdrangelURL = url;
-      this.getDeviceReport();
       this.getDeviceSettings();
     });
   }
@@ -80,42 +61,19 @@ export class Bladerf2InputComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.tx === 0)) {
+        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.tx !== 0)) {
           this.statusMessage = 'OK';
           this.statusError = false;
-          this.settings = deviceSettings.bladeRF2InputSettings;
+          this.settings = deviceSettings.bladeRF2OutputSettings;
           this.centerFreqKhz = this.settings.centerFrequency / 1000;
           this.bandwidthKhz = this.settings.bandwidth / 1000;
-          this.dcBlock = this.settings.dcBlock !== 0;
-          this.iqCorrection = this.settings.iqCorrection !== 0;
           this.loPPM = this.settings.LOppmTenths / 10;
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.transverterMode = this.settings.transverterMode !== 0;
           this.biasTee = this.settings.biasTee !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = 'Not a BladeRF2 input device';
-          this.statusError = true;
-        }
-      }
-    );
-  }
-
-  private getDeviceReport() {
-    this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
-      deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.tx === 0)) {
-          this.statusMessage = 'OK';
-          this.statusError = false;
-          const reportedGainModes = deviceSettings.bladeRF2InputReport['gainModes'];
-          this.gainModes = [];
-          reportedGainModes.forEach(element => {
-            const reportedGainModeName = element['name'];
-            const reportedGainModeIndex = element['value'];
-            this.gainModes.push({value: reportedGainModeIndex, viewValue: reportedGainModeName});
-          });
-        } else {
-          this.statusMessage = 'Not a BladeRF2 input device';
+          this.statusMessage = 'Not a BladeRF2 output device';
           this.statusError = true;
         }
       }
@@ -130,11 +88,11 @@ export class Bladerf2InputComponent implements OnInit {
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(bladeRF2Settings: BladeRF2InputSettings) {
+  private setDeviceSettings(bladeRF2Settings: BladeRF2OutputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'BladeRF2';
-    settings.tx = 0,
-    settings.bladeRF2InputSettings = bladeRF2Settings;
+    settings.tx = 1,
+    settings.bladeRF2OutputSettings = bladeRF2Settings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
         console.log('Set settings OK', res);
@@ -152,18 +110,18 @@ export class Bladerf2InputComponent implements OnInit {
   }
 
   getSampleRate(): number {
-    return this.settings.devSampleRate / (1 << this.settings.log2Decim);
+    return this.settings.devSampleRate / (1 << this.settings.log2Interp);
   }
 
   setSampleRate() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.devSampleRate = this.settings.devSampleRate;
     this.setDeviceSettings(newSettings);
   }
 
   setBandwidth() {
     this.validateBandwidthKhz();
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.bandwidth = this.bandwidthKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
@@ -183,7 +141,7 @@ export class Bladerf2InputComponent implements OnInit {
 
   setCenterFrequency() {
     this.validateCenterFrequencyKhz();
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
@@ -196,86 +154,62 @@ export class Bladerf2InputComponent implements OnInit {
     }
   }
 
-  setGainMode() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
-    newSettings.gainMode = this.settings.gainMode;
-    this.setDeviceSettings(newSettings);
-  }
-
   setGlobalGain() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.globalGain = this.settings.globalGain;
     this.setDeviceSettings(newSettings);
   }
 
   setLoPPM() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.LOppmTenths = this.loPPM * 10;
     this.setDeviceSettings(newSettings);
   }
 
-  setLog2Decim() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
-    newSettings.log2Decim = this.settings.log2Decim;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setFcPos() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
-    newSettings.fcPos = this.settings.fcPos;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setDCBlock() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
-    newSettings.dcBlock = this.dcBlock ? 1 : 0;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setIQCorrection() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
-    newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
+  setLog2Interp() {
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
+    newSettings.log2Interp = this.settings.log2Interp;
     this.setDeviceSettings(newSettings);
   }
 
   setBiasTee() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.biasTee = this.biasTee ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setTransverterMode() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.transverterMode = this.transverterMode ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setTransverterFrequency() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.transverterDeltaFrequency = this.settings.transverterDeltaFrequency;
     this.setDeviceSettings(newSettings);
   }
 
   setUseReverseAPI() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIAddress() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIPort() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.reverseAPIPort = this.settings.reverseAPIPort;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIDeviceIndex() {
-    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
+    const newSettings: BladeRF2OutputSettings = <BladeRF2OutputSettings>{};
     newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }

@@ -16,6 +16,7 @@ import { FCDProPlusSettings } from './fcdproplus/fcdproplus';
 import { XTRXInputSettings, XTRXInputReport } from './xtrx-input/xtrx-input';
 import { XTRXOutputReport, XTRXOutputSettings } from './xtrx-output/xtrx-output';
 import { BladeRF1OutputSettings } from './bladerf1-output/bladerf1-output';
+import { BladeRF2OutputSettings } from './bladerf2-output/bladerf2-output';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -25,6 +26,7 @@ export interface DeviceSettings {
     bladeRF1InputSettings?: BladeRF1InputSettings;
     bladeRF1OutputSettings?: BladeRF1OutputSettings;
     bladeRF2InputSettings?: BladeRF2InputSettings;
+    bladeRF2OutputSettings?: BladeRF2OutputSettings;
     fcdProSettings?: FCDProSettings;
     fcdProPlusSettings?: FCDProPlusSettings;
     hackRFInputSettings?: HackRFInputSettings;
