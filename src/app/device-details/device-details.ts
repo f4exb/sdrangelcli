@@ -10,7 +10,7 @@ import { PlutoSDROutputReport, PlutoSDROutputSettings } from './plutosdr-output/
 import { PerseusSettings, PerseusReport } from './perseus/perseus';
 import { AirspySettings, AirspyReport } from './airspy/airspy';
 import { BladeRF1InputSettings } from './bladerf1-input/bladerf1-input';
-import { BladeRF2Settings } from './bladerf2-input/bladerf2-input';
+import { BladeRF2InputSettings } from './bladerf2-input/bladerf2-input';
 import { FCDProSettings } from './fcdpro/fcdpro';
 import { FCDProPlusSettings } from './fcdproplus/fcdproplus';
 import { XTRXInputSettings, XTRXInputReport } from './xtrx-input/xtrx-input';
@@ -22,7 +22,7 @@ export interface DeviceSettings {
     airspySettings?: AirspySettings;
     airspyHFSettings?: AirspyHFSettings;
     bladeRF1InputSettings?: BladeRF1InputSettings;
-    bladeRF2InputSettings?: BladeRF2Settings;
+    bladeRF2InputSettings?: BladeRF2InputSettings;
     fcdProSettings?: FCDProSettings;
     fcdProPlusSettings?: FCDProPlusSettings;
     hackRFInputSettings?: HackRFInputSettings;

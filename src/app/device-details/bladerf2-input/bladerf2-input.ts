@@ -1,4 +1,4 @@
-export interface BladeRF2Settings {
+export interface BladeRF2InputSettings {
     centerFrequency?: number;
     LOppmTenths?: number;
     devSampleRate?: number;
@@ -19,7 +19,7 @@ export interface BladeRF2Settings {
     reverseAPIDeviceIndex?: number;
 }
 
-export const BLADERF2_SETTINGS_DEFAULT = {
+export const BLADERF2_INPUT_SETTINGS_DEFAULT = {
     centerFrequency: 0,
     LOppmTenths: 0,
     devSampleRate: 3072000,

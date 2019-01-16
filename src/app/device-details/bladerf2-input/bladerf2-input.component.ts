@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BLADERF2_SETTINGS_DEFAULT, BladeRF2Settings } from './bladerf2-input';
+import { BLADERF2_INPUT_SETTINGS_DEFAULT, BladeRF2InputSettings } from './bladerf2-input';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from '../../common-components/frequency-dial/frequency-dial.component';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceDetailsService } from '../device-details.service';
@@ -50,7 +50,7 @@ export class Bladerf2InputComponent implements OnInit {
   gainModes: GainMode[];
   deviceIndex: number;
   sdrangelURL: string;
-  settings: BladeRF2Settings = BLADERF2_SETTINGS_DEFAULT;
+  settings: BladeRF2InputSettings = BLADERF2_INPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   bandwidthKhz: number;
   dcBlock: boolean;
@@ -130,7 +130,7 @@ export class Bladerf2InputComponent implements OnInit {
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
-  private setDeviceSettings(bladeRF2Settings: BladeRF2Settings) {
+  private setDeviceSettings(bladeRF2Settings: BladeRF2InputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'BladeRF2';
     settings.tx = 0,
@@ -156,14 +156,14 @@ export class Bladerf2InputComponent implements OnInit {
   }
 
   setSampleRate() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.devSampleRate = this.settings.devSampleRate;
     this.setDeviceSettings(newSettings);
   }
 
   setBandwidth() {
     this.validateBandwidthKhz();
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.bandwidth = this.bandwidthKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
@@ -183,7 +183,7 @@ export class Bladerf2InputComponent implements OnInit {
 
   setCenterFrequency() {
     this.validateCenterFrequencyKhz();
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.centerFrequency = this.centerFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
   }
@@ -197,85 +197,85 @@ export class Bladerf2InputComponent implements OnInit {
   }
 
   setGainMode() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.gainMode = this.settings.gainMode;
     this.setDeviceSettings(newSettings);
   }
 
   setGlobalGain() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.globalGain = this.settings.globalGain;
     this.setDeviceSettings(newSettings);
   }
 
   setLoPPM() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.LOppmTenths = this.loPPM * 10;
     this.setDeviceSettings(newSettings);
   }
 
   setLog2Decim() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.log2Decim = this.settings.log2Decim;
     this.setDeviceSettings(newSettings);
   }
 
   setFcPos() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.fcPos = this.settings.fcPos;
     this.setDeviceSettings(newSettings);
   }
 
   setDCBlock() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.dcBlock = this.dcBlock ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setIQCorrection() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setBiasTee() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.biasTee = this.biasTee ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setTransverterMode() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.transverterMode = this.transverterMode ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setTransverterFrequency() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.transverterDeltaFrequency = this.settings.transverterDeltaFrequency;
     this.setDeviceSettings(newSettings);
   }
 
   setUseReverseAPI() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIAddress() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIPort() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.reverseAPIPort = this.settings.reverseAPIPort;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIDeviceIndex() {
-    const newSettings: BladeRF2Settings = <BladeRF2Settings>{};
+    const newSettings: BladeRF2InputSettings = <BladeRF2InputSettings>{};
     newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }
