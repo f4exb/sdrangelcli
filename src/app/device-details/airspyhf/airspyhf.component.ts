@@ -22,6 +22,11 @@ export interface Band {
   viewValue: string;
 }
 
+export interface AttenuatorStep {
+  value: number;
+  viewValue: number;
+}
+
 @Component({
   selector: 'app-airspyhf',
   templateUrl: './airspyhf.component.html',
@@ -46,6 +51,17 @@ export class AirspyhfComponent implements OnInit {
     {value: 0, viewValue: 'HF'},
     {value: 1, viewValue: 'VHF'},
   ];
+  attenuatorSteps: AttenuatorStep[] = [
+    {value: 0, viewValue: 0},
+    {value: 1, viewValue: 6},
+    {value: 2, viewValue: 12},
+    {value: 3, viewValue: 18},
+    {value: 4, viewValue: 24},
+    {value: 5, viewValue: 30},
+    {value: 6, viewValue: 36},
+    {value: 7, viewValue: 42},
+    {value: 8, viewValue: 48},
+  ];
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex: number;
   sdrangelURL: string;
@@ -54,6 +70,12 @@ export class AirspyhfComponent implements OnInit {
   loPPM: number;
   transverter: boolean;
   useReverseAPI: boolean;
+  useAGC: boolean;
+  agcHigh: boolean;
+  useDSP: boolean;
+  useLNA: boolean;
+  dcBlock: boolean;
+  iqCorrection: boolean;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -80,6 +102,12 @@ export class AirspyhfComponent implements OnInit {
           this.loPPM = this.settings.LOppmTenths / 10;
           this.transverter = this.settings.transverterMode !== 0;
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
+          this.useAGC = this.settings.useAGC !== 0;
+          this.agcHigh = this.settings.agcHigh !== 0;
+          this.useDSP = this.settings.useDSP !== 0;
+          this.useLNA = this.settings.useLNA !== 0;
+          this.dcBlock = this.settings.dcBlock !== 0;
+          this.iqCorrection = this.settings.iqCorrection !== 0;
           this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not an AirspyHF device';
@@ -213,6 +241,48 @@ export class AirspyhfComponent implements OnInit {
   setReverseAPIDeviceIndex() {
     const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
     newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setDCBlock() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.dcBlock = this.dcBlock ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setIQCorrection() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLNA() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.useLNA = this.useLNA ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setDSP() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.useDSP = this.useDSP ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAGC() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.useAGC = this.useAGC ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAGCHigh() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.agcHigh = this.agcHigh ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setAttenuatorStep() {
+    const newSettings: AirspyHFSettings = <AirspyHFSettings>{};
+    newSettings.attenuatorSteps = this.settings.attenuatorSteps;
     this.setDeviceSettings(newSettings);
   }
 }

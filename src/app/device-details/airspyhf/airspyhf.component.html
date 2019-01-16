@@ -20,7 +20,7 @@
             </app-frequency-dial>
         </td>
       </tr>
-      <!-- LO ppm, Frequency band-->
+      <!-- Line 1  LO correction, DC correction, IQ correction -->
       <tr>
         <td>
           LO
@@ -31,6 +31,20 @@
             step=0.1>
           ppm
         </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+            DC block
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
+            IQ corr
+          </mat-checkbox>
+        </td>
+      </tr>
+
+      <!-- Frequency band, use LNA, use DSP -->
+      <tr>
         <td>
           Band
           <mat-select style="width:10ch; background-color: white; margin: 1px;"
@@ -43,6 +57,14 @@
           </mat-select>
         </td>
         <td>
+          <mat-checkbox color="primary" [(ngModel)]="useLNA" (change)="setLNA()" matTooltip="LNA (+ 6dB)">
+            LNA
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useDSP" (change)="setDSP()" matTooltip="Use libairspyhf DSP">
+            DSP
+          </mat-checkbox>
         </td>
       </tr>
       <!-- Sample rate, Decimation -->
@@ -72,21 +94,30 @@
         </td>
         <td></td>
       </tr>
+      <!-- AGC, AGC high threshold, Attenuator -->
       <!-- Transverter mode, transverter frequency -->
       <tr>
         <td>
-          <mat-checkbox color="primary" [(ngModel)]="transverter" (change)="setTransverterMode()" matTooltip="Transverter mode">
-            Trans
+          <mat-checkbox color="primary" [(ngModel)]="useAGC" (change)="setAGC()" matTooltip="Automatic Gain Control">
+            AGC
           </mat-checkbox>
         </td>
-        <td colspan="2">
-          Freq:
-          <input type="number" class="xfrequency-input"
-            [(ngModel)]="settings.transverterDeltaFrequency"
-            (change)="setTransverterFrequency()"
-            matTooltip="Transverter frequency shift"
-          >
-          Hz
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="agcHigh" (change)="setAGCHigh()" matTooltip="AGC high threshold">
+            High
+          </mat-checkbox>
+        </td>
+        <td>
+          Attenuator
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.attenuatorSteps"
+              (selectionChange)="setAttenuatorStep()"
+              matTooltip="Attenuator (AGC must be off)">
+            <mat-option *ngFor="let attenuatorStep of attenuatorSteps" [value]="attenuatorStep.value">
+              {{attenuatorStep.viewValue}}
+            </mat-option>
+          </mat-select>
+          dB
         </td>
       </tr>
       <!-- Record file name -->
