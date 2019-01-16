@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from 'src/app/common-components/frequency-dial/frequency-dial.component';
-import { XTRXInputSettings, XTRX_INPUT_SETTINGS_DEFAULT, XTRX_INPUT_REPORT_DEFAULT, XTRXInputReport } from './xtrx-input';
+import { XTRXOutputReport, XTRX_OUTPUT_REPORT_DEFAULT, XTRXOutputSettings, XTRX_OUTPUT_SETTINGS_DEFAULT } from './xtrx-output';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
@@ -8,14 +8,9 @@ import { DeviceSettings } from '../device-details';
 import { DeviceStoreService, DeviceStorage } from '../../device-store.service';
 import { Subscription, interval } from 'rxjs';
 
-export interface Log2Decim {
+export interface Log2Interp {
   value: number;
   viewValue: number;
-}
-
-export interface GainMode {
-  value: number;
-  viewValue: string;
 }
 
 export interface AntennaPath {
@@ -29,14 +24,14 @@ export interface PowerMode {
 }
 
 @Component({
-  selector: 'app-xtrx-input',
-  templateUrl: './xtrx-input.component.html',
-  styleUrls: ['./xtrx-input.component.css']
+  selector: 'app-xtrx-output',
+  templateUrl: './xtrx-output.component.html',
+  styleUrls: ['./xtrx-output.component.css']
 })
-export class XtrxInputComponent implements OnInit {
+export class XtrxOutputComponent implements OnInit {
   statusMessage: string;
   statusError = false;
-  softDecims: Log2Decim[] = [
+  softInterps: Log2Interp[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
     {value: 2, viewValue: 4},
@@ -45,7 +40,7 @@ export class XtrxInputComponent implements OnInit {
     {value: 5, viewValue: 32},
     {value: 6, viewValue: 64},
   ];
-  hardDecims: Log2Decim[] = [
+  hardInterps: Log2Interp[] = [
     {value: 0, viewValue: 1},
     {value: 1, viewValue: 2},
     {value: 2, viewValue: 4},
@@ -53,14 +48,9 @@ export class XtrxInputComponent implements OnInit {
     {value: 4, viewValue: 16},
     {value: 5, viewValue: 32},
   ];
-  gainModes: GainMode[] = [
-    {value: 0, viewValue: 'Auto'},
-    {value: 1, viewValue: 'Manual'},
-  ];
   antennaPaths: AntennaPath[] = [
-    {value: 0, viewValue: 'Low'},
-    {value: 1, viewValue: 'Wide'},
-    {value: 2, viewValue: 'High'},
+    {value: 3, viewValue: 'High'},
+    {value: 4, viewValue: 'Wide'},
   ];
   powerModes: PowerMode[] = [
     {value: 0, viewValue: '0:Save max'},
@@ -75,14 +65,12 @@ export class XtrxInputComponent implements OnInit {
   frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex: number;
   sdrangelURL: string;
-  report: XTRXInputReport = XTRX_INPUT_REPORT_DEFAULT;
-  settings: XTRXInputSettings = XTRX_INPUT_SETTINGS_DEFAULT;
+  report: XTRXOutputReport = XTRX_OUTPUT_REPORT_DEFAULT;
+  settings: XTRXOutputSettings = XTRX_OUTPUT_SETTINGS_DEFAULT;
   centerFreqKhz: number;
   loFreqKhz: number;
   ncoFreqKhz: number;
   lpfBWkHz: number;
-  dcBlock: boolean;
-  iqCorrection: boolean;
   transverter: boolean;
   ncoEnable: boolean;
   extClock: boolean;
@@ -107,22 +95,20 @@ export class XtrxInputComponent implements OnInit {
   private getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'XTRX') && (deviceSettings.tx === 0)) {
+        if ((deviceSettings.deviceHwType === 'XTRX') && (deviceSettings.tx !== 0)) {
           this.statusMessage = 'OK';
           this.statusError = false;
-          this.settings = deviceSettings.xtrxInputSettings;
+          this.settings = deviceSettings.xtrxOutputSettings;
           this.ncoFreqKhz = this.settings.ncoFrequency / 1000;
           this.ncoEnable = this.settings.ncoEnable !== 0;
           this.loFreqKhz = this.settings.centerFrequency / 1000;
           this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
           this.lpfBWkHz = this.settings.lpfBW / 1000;
-          this.dcBlock = this.settings.dcBlock !== 0;
-          this.iqCorrection = this.settings.iqCorrection !== 0;
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.extClock = this.settings.extClock !== 0;
           this.feedDeviceStore();
         } else {
-          this.statusMessage = 'Not a XTRX input device';
+          this.statusMessage = 'Not a XTRX output device';
           this.statusError = true;
         }
       }
@@ -132,7 +118,7 @@ export class XtrxInputComponent implements OnInit {
   private feedDeviceStore() {
     const deviceStorage = <DeviceStorage>{
       centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2SoftDecim)
+      basebandRate: this.settings.devSampleRate / (1 << this.settings.log2SoftInterp)
     };
     this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
@@ -142,9 +128,9 @@ export class XtrxInputComponent implements OnInit {
       this.deviceReportSubscription = interval(1000).subscribe(
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
-            devicelReport => {
-              if ((devicelReport.deviceHwType === 'XTRX') && (devicelReport.tx === 0)) {
-                this.report = devicelReport.xtrxInputReport;
+            deviceReport => {
+              if ((deviceReport.deviceHwType === 'XTRX') && (deviceReport.tx !== 0)) {
+                this.report = deviceReport.xtrxOutputReport;
               }
             }
           );
@@ -161,11 +147,11 @@ export class XtrxInputComponent implements OnInit {
     this.enableReporting(this.monitor);
   }
 
-  private setDeviceSettings(xtrxInputSettings: XTRXInputSettings) {
+  private setDeviceSettings(xtrxOutputSettings: XTRXOutputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'XTRX';
-    settings.tx = 0,
-    settings.xtrxInputSettings = xtrxInputSettings;
+    settings.tx = 1,
+    settings.xtrxOutputSettings = xtrxOutputSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {
         console.log('Set settings OK', res);
@@ -181,27 +167,15 @@ export class XtrxInputComponent implements OnInit {
   }
 
   getSampleRate(): number {
-    return this.settings.devSampleRate / (1 << this.settings.log2SoftDecim);
+    return this.settings.devSampleRate / (1 << this.settings.log2SoftInterp);
   }
 
-  getADCSampleRate(): number {
-    return this.settings.devSampleRate * (1 << this.settings.log2HardDecim);
-  }
-
-  setDCBlock() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.dcBlock = this.dcBlock ? 1 : 0;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setIQCorrection() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
-    this.setDeviceSettings(newSettings);
+  getDACSampleRate(): number {
+    return this.settings.devSampleRate * (1 << this.settings.log2HardInterp);
   }
 
   setNCOEnable() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
     newSettings.ncoEnable = this.ncoEnable ? 1 : 0;
     this.setDeviceSettings(newSettings);
@@ -213,7 +187,7 @@ export class XtrxInputComponent implements OnInit {
   }
 
   setCenterFrequency() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     this.loFreqKhz = this.centerFreqKhz - (this.ncoEnable ? this.ncoFreqKhz : 0);
     newSettings.centerFrequency = this.loFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
@@ -221,7 +195,7 @@ export class XtrxInputComponent implements OnInit {
 
   setNCOFrequency() {
     this.validateNCOFrequency();
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     this.centerFreqKhz = this.loFreqKhz + (this.ncoEnable ? this.ncoFreqKhz : 0);
     newSettings.ncoFrequency = this.ncoFreqKhz * 1000;
     this.setDeviceSettings(newSettings);
@@ -229,8 +203,8 @@ export class XtrxInputComponent implements OnInit {
 
   validateNCOFrequency() {
     let min, max: number;
-    min = -this.getADCSampleRate() / 2000;
-    max = this.getADCSampleRate() / 2000;
+    min = -this.getDACSampleRate() / 2000;
+    max = this.getDACSampleRate() / 2000;
     if (this.ncoFreqKhz < min) {
       this.ncoFreqKhz = min;
     } else if (this.ncoFreqKhz > max) {
@@ -247,69 +221,45 @@ export class XtrxInputComponent implements OnInit {
   }
 
   setAntennaPath() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.antennaPath = this.settings.antennaPath;
     this.setDeviceSettings(newSettings);
   }
 
   setDevSampleRate() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.devSampleRate = this.settings.devSampleRate;
     this.setDeviceSettings(newSettings);
   }
 
-  setLog2HardDecim() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.log2HardDecim = this.settings.log2HardDecim;
+  setLog2HardInterp() {
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
+    newSettings.log2HardInterp = this.settings.log2HardInterp;
     this.setDeviceSettings(newSettings);
   }
 
-  setLog2SoftDecim() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.log2SoftDecim = this.settings.log2SoftDecim;
+  setLog2SoftInterp() {
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
+    newSettings.log2SoftInterp = this.settings.log2SoftInterp;
     this.setDeviceSettings(newSettings);
   }
 
   setLPFilter() {
     this.validateLPFFrequency();
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.lpfBW = this.lpfBWkHz * 1000;
     this.setDeviceSettings(newSettings);
   }
 
-  setGainMode() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.gainMode = this.settings.gainMode;
-    this.setDeviceSettings(newSettings);
-  }
-
   setPowerMode() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.pwrmode = this.settings.pwrmode;
     this.setDeviceSettings(newSettings);
   }
 
   setGain() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.gain = this.settings.gain;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setLNAGain() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.lnaGain = this.settings.lnaGain;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setTIAGain() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.tiaGain = this.settings.tiaGain;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setPGAGain() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
-    newSettings.pgaGain = this.settings.pgaGain;
     this.setDeviceSettings(newSettings);
   }
 
@@ -322,25 +272,25 @@ export class XtrxInputComponent implements OnInit {
   }
 
   setUseReverseAPI() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIAddress() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIPort() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.reverseAPIPort = this.settings.reverseAPIPort;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIDeviceIndex() {
-    const newSettings: XTRXInputSettings = <XTRXInputSettings>{};
+    const newSettings: XTRXOutputSettings = <XTRXOutputSettings>{};
     newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }

@@ -1,0 +1,209 @@
+<mat-card class="deviceset-card">
+  <mat-card-header class="device-card-header device-header-tx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <span class="device-label">XTRX output {{getSampleRate()/1000}} kS/s ADC {{getDACSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- center frequency -->
+      <tr>
+        <td colspan="3">
+            <app-frequency-dial
+            [frequency]="centerFreqKhz"
+            min=30000
+            max=3800000
+            tooltip="Center frequency"
+            [steps]="frequencySteps"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+        </td>
+      </tr>
+      <!-- NCO enable, NCO frequency -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="ncoEnable" (change)="setNCOEnable()" matTooltip="NCO enable">
+            NCO
+          </mat-checkbox>
+        </td>
+        <td style="width:16ch">
+          Freq
+          <input type="number" class="nco-frequency-input"
+            [(ngModel)]="ncoFreqKhz"
+            (change)="setNCOFrequency()"
+            matTooltip="NCO frequency">
+          kHz
+        </td>
+        <td>
+          LO
+          <span>{{loFreqKhz}}</span>
+          kHz
+        </td>
+      </tr>
+      <!-- Antenna select, Gain -->
+      <tr>
+        <td>
+          Antenna
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.antennaPath"
+              (selectionChange)="setAntennaPath()"
+              matTooltip="Antenna path">
+            <mat-option *ngFor="let antennaPath of antennaPaths" [value]="antennaPath.value">
+              {{antennaPath.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Gain
+          <input type="number" class="log2-input"
+            [(ngModel)]="settings.gain"
+            (change)="setGain()"
+            [disabled]="settings.gainMode === 1"
+            matTooltip="Global gain"
+            min=0,
+            max=70>
+          dB
+        </td>
+        <td></td>
+      </tr>
+      <!-- SR, Hard interpolation, Soft interpolation -->
+      <tr>
+        <td>
+          SR
+          <input type="number" class="sample-rate-input"
+            [(ngModel)]="settings.devSampleRate"
+            (change)="setDevSampleRate()"
+            matTooltip="Device to host sample rate"
+            min=100000,
+            max=80000000>
+          S/s
+        </td>
+        <td>
+          Hard &#x21D1;
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2HardInterp"
+              (selectionChange)="setLog2HardInterp()"
+              matTooltip="Hardware interpolation factor">
+            <mat-option *ngFor="let hardInterp of hardInterps" [value]="hardInterp.value">
+              {{hardInterp.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Soft &#x21D1;
+          <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2SoftInterp"
+              (selectionChange)="setLog2SoftInterp()"
+              matTooltip="Software interpolation factor">
+            <mat-option *ngFor="let softInterp of softInterps" [value]="softInterp.value">
+              {{softInterp.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!-- Low pass, Power mode -->
+      <tr>
+        <td>
+          LP
+          <input type="number" class="lp-filter-input"
+            [(ngModel)]="lpfBWkHz"
+            (change)="setLPFilter()"
+            matTooltip="Analog low pass filter bandwidth"
+            min=1401,
+            max=130000>
+          kHz
+        </td>
+        <td>
+          <mat-select style="width:13ch; background-color: white; margin: 1px;"
+              [(value)]="settings.pwrmode"
+              (selectionChange)="setPowerMode()"
+              matTooltip="LMS power mode">
+            <mat-option *ngFor="let powerMode of powerModes" [value]="powerMode.value">
+              {{powerMode.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td></td>
+      </tr>
+      <!--- Use reverse API, reverse API device index,  -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+            Reverse API
+          </mat-checkbox>
+        </td>
+        <td>
+          Device
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.reverseAPIDeviceIndex"
+            (change)="setReverseAPIDeviceIndex()"
+            matTooltip="Reverse API device index"
+            min=0>
+        </td>
+        <td></td>
+      </tr>
+      <!--- reverse API address, reverse API port -->
+      <tr>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.reverseAPIAddress"
+            (change)="setReverseAPIAddress()"
+            matTooltip="Reverse API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.reverseAPIPort"
+            (change)="setReverseAPIPort()"
+            matTooltip="Reverse API port"
+            min=1024 max=65535>
+        </td>
+        <td></td>
+      </tr>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+    <table *ngIf="monitor">
+      <tr>
+        <td style="width: 15ch" [class.green]="report ? report.success !== 0 : false">
+          <span matTooltip="Device is streaming">Streaming</span>
+        </td>
+        <td style="width: 15ch" [class.green]="report ? report.gpsLock !== 0 : false">
+          <span matTooltip="GPSDO lock status">GPS lock</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          FIFO
+          <span matTooltip="FIFO size">{{report ? (report.fifoSize/1000000).toFixed(3) : 0}}</span>
+          MB
+        </td>
+        <td [class.yellow]="getFIFOFillPercentage() > 50">
+          Fill
+          <span matTooltip="Percentage of FIFO filled">{{getFIFOFillPercentage().toFixed(0)}}</span>
+          %
+        </td>
+        <td>
+          Temp
+          <span matTooltip="Board temperature">{{report ? report.temperature.toFixed(1) : 0}}</span>
+          C
+        </td>
+      </tr>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

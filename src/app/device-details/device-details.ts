@@ -14,6 +14,7 @@ import { BladeRF2Settings } from './bladerf2-input/bladerf2-input';
 import { FCDProSettings } from './fcdpro-input/fcdpro';
 import { FCDProPlusSettings } from './fcdproplus/fcdproplus';
 import { XTRXInputSettings, XTRXInputReport } from './xtrx-input/xtrx-input';
+import { XTRXOutputReport, XTRXOutputSettings } from './xtrx-output/xtrx-output';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -34,6 +35,7 @@ export interface DeviceSettings {
     rtlSdrSettings?: RTLSDRSettings;
     testSourceSettings?: TestSourceSettings;
     xtrxInputSettings?: XTRXInputSettings;
+    xtrxOutputSettings?: XTRXOutputSettings;
 }
 
 export interface DeviceReport {
@@ -48,4 +50,5 @@ export interface DeviceReport {
     plutoSdrOutputReport?: PlutoSDROutputReport;
     rtlSdrReport?: any;
     xtrxInputReport?: XTRXInputReport;
+    xtrxOutputReport?: XTRXOutputReport;
 }
