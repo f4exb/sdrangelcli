@@ -78,6 +78,8 @@ export class DeviceDetailsComponent implements OnInit {
           }
         } else if (deviceSet.samplingDevice.hwType === 'RTLSDR') {
           this.router.navigate(['rtlsdr'], { relativeTo: this.route});
+        } else if (deviceSet.samplingDevice.hwType === 'SDRplay1') {
+          this.router.navigate(['sdrplay1'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'TestSource') {
           this.router.navigate(['testsource'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'XTRX') {

@@ -17,6 +17,7 @@ import { XTRXInputSettings, XTRXInputReport } from './xtrx-input/xtrx-input';
 import { XTRXOutputReport, XTRXOutputSettings } from './xtrx-output/xtrx-output';
 import { BladeRF1OutputSettings } from './bladerf1-output/bladerf1-output';
 import { BladeRF2OutputSettings } from './bladerf2-output/bladerf2-output';
+import { SDRplaySettings } from './sdrplay/sdrplay';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -37,6 +38,7 @@ export interface DeviceSettings {
     plutoSdrInputSettings?: PlutoSDRInputSettings;
     plutoSdrOutputSettings?: PlutoSDROutputSettings;
     rtlSdrSettings?: RTLSDRSettings;
+    sdrPlaySettings?: SDRplaySettings;
     testSourceSettings?: TestSourceSettings;
     xtrxInputSettings?: XTRXInputSettings;
     xtrxOutputSettings?: XTRXOutputSettings;
@@ -53,6 +55,7 @@ export interface DeviceReport {
     plutoSdrInputReport?: PlutoSDRInputReport;
     plutoSdrOutputReport?: PlutoSDROutputReport;
     rtlSdrReport?: any;
+    sdrPlayReport?: any;
     xtrxInputReport?: XTRXInputReport;
     xtrxOutputReport?: XTRXOutputReport;
 }

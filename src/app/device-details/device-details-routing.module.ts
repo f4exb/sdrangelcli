@@ -21,6 +21,7 @@ import { XtrxInputComponent } from './xtrx-input/xtrx-input.component';
 import { XtrxOutputComponent } from './xtrx-output/xtrx-output.component';
 import { Bladerf1OutputComponent } from './bladerf1-output/bladerf1-output.component';
 import { Bladerf2OutputComponent } from './bladerf2-output/bladerf2-output.component';
+import { SdrplayComponent } from './sdrplay/sdrplay.component';
 
 export const routes: Routes = [
   {
@@ -90,6 +91,10 @@ export const routes: Routes = [
       {
         path: 'rtlsdr',
         component: RtlsdrComponent
+      },
+      {
+        path: 'sdrplay1',
+        component: SdrplayComponent
       },
       {
         path: 'testsource',
