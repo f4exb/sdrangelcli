@@ -22,7 +22,7 @@ import { WfmModComponent } from './wfm-mod/wfm-mod.component';
 import { SsbModComponent } from './ssb-mod/ssb-mod.component';
 import { UdpSinkComponent } from './udp-sink/udp-sink.component';
 import { UdpSourceComponent } from './udp-source/udp-source.component';
-import { DaemonSourceComponent } from './daemon-source/daemon-source.component';
+import { RemoteSourceComponent } from './remote-source/remote-source.component';
 import { RemoteSinkComponent } from './remote-sink/remote-sink.component';
 
 @NgModule({
@@ -57,7 +57,7 @@ import { RemoteSinkComponent } from './remote-sink/remote-sink.component';
     SsbModComponent,
     UdpSinkComponent,
     UdpSourceComponent,
-    DaemonSourceComponent,
+    RemoteSourceComponent,
     RemoteSinkComponent
   ]
 })

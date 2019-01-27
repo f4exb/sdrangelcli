@@ -1,18 +1,18 @@
-export interface DaemonSourceSettings {
+export interface RemoteSourceSettings {
     dataAddress: string;
     dataPort: number;
     rgbColor: number;
     title: string;
 }
 
-export const DAEMON_SOURCE_SETTINGS_DEFAULT = {
+export const REMOTE_SOURCE_SETTINGS_DEFAULT = {
     dataAddress: '127.0.0.1',
     dataPort: 9090,
     rgbColor: -7601148,
-    title: 'Daemon channel source'
+    title: 'Remote channel source'
 };
 
-export interface DaemonSourceReport {
+export interface RemoteSourceReport {
     centerFreq: number;
     correctableErrorsCount: number;
     nbFECBlocks: number;
@@ -26,7 +26,7 @@ export interface DaemonSourceReport {
     uncorrectableErrorsCount: number;
 }
 
-export const DAEMON_SOURCE_REPORT_DEFAULT = {
+export const REMOTE_SOURCE_REPORT_DEFAULT = {
     centerFreq: 434900,
     correctableErrorsCount: 0,
     nbFECBlocks: 8,

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DaemonSourceComponent } from './daemon-source.component';
+import { RemoteSourceComponent } from './remote-source.component';
 import { ChannelHeaderComponent } from '../channel-header/channel-header.component';
 import { ChannelMonitorComponent } from '../channel-monitor/channel-monitor.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
@@ -10,14 +10,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonComponentsModule } from '../../common-components/common-components.module';
 import { ColorPickerModule } from 'ngx-color-picker';
 
-describe('DaemonSourceComponent', () => {
-  let component: DaemonSourceComponent;
-  let fixture: ComponentFixture<DaemonSourceComponent>;
+describe('RemoteSourceComponent', () => {
+  let component: RemoteSourceComponent;
+  let fixture: ComponentFixture<RemoteSourceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DaemonSourceComponent,
+        RemoteSourceComponent,
         ChannelHeaderComponent,
         ChannelMonitorComponent
       ],
@@ -42,7 +42,7 @@ describe('DaemonSourceComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DaemonSourceComponent);
+    fixture = TestBed.createComponent(RemoteSourceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

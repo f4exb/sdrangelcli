@@ -44,8 +44,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['bfmdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'RemoteSink') {
           this.router.navigate(['remotesink'], { relativeTo: this.route});
-        } else if (channelSettings.channelType === 'DaemonSource') {
-          this.router.navigate(['daemonsource'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'RemoteSource') {
+          this.router.navigate(['remotesource'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'DSDDemod') {
           this.router.navigate(['dsddemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'NFMDemod') {

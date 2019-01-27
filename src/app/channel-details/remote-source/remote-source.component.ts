@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DaemonSourceSettings, DAEMON_SOURCE_SETTINGS_DEFAULT, DaemonSourceReport, DAEMON_SOURCE_REPORT_DEFAULT } from './daemon-source';
+import { RemoteSourceSettings, REMOTE_SOURCE_SETTINGS_DEFAULT, RemoteSourceReport, REMOTE_SOURCE_REPORT_DEFAULT } from './remote-source';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
 import { DevicesetService } from '../../deviceset/deviceset/deviceset.service';
@@ -10,16 +10,16 @@ import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 
 @Component({
-  selector: 'app-daemon-source',
-  templateUrl: './daemon-source.component.html',
-  styleUrls: ['./daemon-source.component.css']
+  selector: 'app-remote-source',
+  templateUrl: './remote-source.component.html',
+  styleUrls: ['./remote-source.component.css']
 })
-export class DaemonSourceComponent implements OnInit {
+export class RemoteSourceComponent implements OnInit {
   deviceIndex: number;
   channelIndex: number;
   sdrangelURL: string;
-  settings: DaemonSourceSettings = DAEMON_SOURCE_SETTINGS_DEFAULT;
-  report: DaemonSourceReport = DAEMON_SOURCE_REPORT_DEFAULT;
+  settings: RemoteSourceSettings = REMOTE_SOURCE_SETTINGS_DEFAULT;
+  report: RemoteSourceReport = REMOTE_SOURCE_REPORT_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   statusMessage: string;
@@ -95,25 +95,25 @@ export class DaemonSourceComponent implements OnInit {
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType === 'DaemonSource') {
+        if (channelSettings.channelType === 'RemoteSource') {
           this.statusMessage = 'OK';
           this.statusError = false;
-          this.settings = channelSettings.DaemonSourceSettings;
+          this.settings = channelSettings.RemoteSourceSettings;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
         } else {
-          this.statusMessage = 'Not a DaemonSource channel';
+          this.statusMessage = 'Not a RemoteSource channel';
           this.statusError = true;
         }
       }
     );
   }
 
-  private setDeviceSettings(daemonSourceSettings: DaemonSourceSettings) {
+  private setDeviceSettings(daemonSourceSettings: RemoteSourceSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
-    settings.channelType = 'DaemonSource';
+    settings.channelType = 'RemoteSource';
     settings.tx = 1,
-    settings.DaemonSourceSettings = daemonSourceSettings;
+    settings.RemoteSourceSettings = daemonSourceSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
         console.log('Set settings OK', res);
@@ -135,7 +135,7 @@ export class DaemonSourceComponent implements OnInit {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
               if (channelReport.channelType === 'DaemonSource') {
-                this.report = channelReport.DaemonSourceReport;
+                this.report = channelReport.RemoteSourceReport;
                 const timestampUs = this.report.tvSec * 1000000 + this.report.tvUSec;
                 if (this.lastTimestampUs === 0) {
                   this.lastTimestampUs = timestampUs;
@@ -182,7 +182,7 @@ export class DaemonSourceComponent implements OnInit {
   }
 
   setTitleColor() {
-    const newSettings: DaemonSourceSettings = <DaemonSourceSettings>{};
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
     newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
     this.setDeviceSettings(newSettings);
   }
@@ -193,19 +193,19 @@ export class DaemonSourceComponent implements OnInit {
   }
 
   setTitle() {
-    const newSettings: DaemonSourceSettings = <DaemonSourceSettings>{};
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
     newSettings.title = this.settings.title;
     this.setDeviceSettings(newSettings);
   }
 
   setDataAddress() {
-    const newSettings: DaemonSourceSettings = <DaemonSourceSettings>{};
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
     newSettings.dataAddress = this.settings.dataAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setDataPort() {
-    const newSettings: DaemonSourceSettings = <DaemonSourceSettings>{};
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
     newSettings.dataPort = this.settings.dataPort;
     this.setDeviceSettings(newSettings);
   }
