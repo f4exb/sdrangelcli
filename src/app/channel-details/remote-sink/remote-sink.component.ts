@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DaemonSinkSettings, DAEMON_SINK_SETTINGS_DEFAULT } from './daemon-sink';
+import { RemoteSinkSettings, REMOTE_SINK_SETTINGS_DEFAULT } from './remote-sink';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
@@ -10,15 +10,15 @@ import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 
 @Component({
-  selector: 'app-daemon-sink',
-  templateUrl: './daemon-sink.component.html',
-  styleUrls: ['./daemon-sink.component.css']
+  selector: 'app-remote-sink',
+  templateUrl: './remote-sink.component.html',
+  styleUrls: ['./remote-sink.component.css']
 })
-export class DaemonSinkComponent implements OnInit {
+export class RemoteSinkComponent implements OnInit {
   deviceIndex: number;
   channelIndex: number;
   sdrangelURL: string;
-  settings: DaemonSinkSettings = DAEMON_SINK_SETTINGS_DEFAULT;
+  settings: RemoteSinkSettings = REMOTE_SINK_SETTINGS_DEFAULT;
   deviceCenterFrequency: number;
   deviceBasebandRate: number;
   statusMessage: string;
@@ -76,25 +76,25 @@ export class DaemonSinkComponent implements OnInit {
   private getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType === 'DaemonSink') {
+        if (channelSettings.channelType === 'RemoteSink') {
           this.statusMessage = 'OK';
           this.statusError = false;
-          this.settings = channelSettings.DaemonSinkSettings;
+          this.settings = channelSettings.RemoteSinkSettings;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
         } else {
-          this.statusMessage = 'Not a DaemonSink channel';
+          this.statusMessage = 'Not a RemoteSink channel';
           this.statusError = true;
         }
       }
     );
   }
 
-  private setDeviceSettings(daemonSinkSettings: DaemonSinkSettings) {
+  private setDeviceSettings(remoteSinkSettings: RemoteSinkSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
-    settings.channelType = 'DaemonSink';
+    settings.channelType = 'RemoteSink';
     settings.tx = 0,
-    settings.DaemonSinkSettings = daemonSinkSettings;
+    settings.RemoteSinkSettings = remoteSinkSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
         console.log('Set settings OK', res);
@@ -115,7 +115,7 @@ export class DaemonSinkComponent implements OnInit {
   }
 
   setTitleColor() {
-    const newSettings: DaemonSinkSettings = <DaemonSinkSettings>{};
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
     this.setDeviceSettings(newSettings);
   }
@@ -126,31 +126,31 @@ export class DaemonSinkComponent implements OnInit {
   }
 
   setTitle() {
-    const newSettings: DaemonSinkSettings = <DaemonSinkSettings>{};
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.title = this.settings.title;
     this.setDeviceSettings(newSettings);
   }
 
   setDataAddress() {
-    const newSettings: DaemonSinkSettings = <DaemonSinkSettings>{};
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.dataAddress = this.settings.dataAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setDataPort() {
-    const newSettings: DaemonSinkSettings = <DaemonSinkSettings>{};
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.dataPort = this.settings.dataPort;
     this.setDeviceSettings(newSettings);
   }
 
   setNbFECBlocks() {
-    const newSettings: DaemonSinkSettings = <DaemonSinkSettings>{};
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.nbFECBlocks = this.settings.nbFECBlocks;
     this.setDeviceSettings(newSettings);
   }
 
   setTxDelay() {
-    const newSettings: DaemonSinkSettings = <DaemonSinkSettings>{};
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.txDelay = this.settings.txDelay;
     this.setDeviceSettings(newSettings);
   }

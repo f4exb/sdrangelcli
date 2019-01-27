@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DaemonSinkComponent } from './daemon-sink.component';
+import { RemoteSinkComponent } from './remote-sink.component';
 import { ChannelHeaderComponent } from '../channel-header/channel-header.component';
 import { ChannelMonitorComponent } from '../channel-monitor/channel-monitor.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
@@ -10,14 +10,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonComponentsModule } from '../../common-components/common-components.module';
 import { ColorPickerModule } from 'ngx-color-picker';
 
-describe('DaemonSinkComponent', () => {
-  let component: DaemonSinkComponent;
-  let fixture: ComponentFixture<DaemonSinkComponent>;
+describe('RemoteSinkComponent', () => {
+  let component: RemoteSinkComponent;
+  let fixture: ComponentFixture<RemoteSinkComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DaemonSinkComponent,
+        RemoteSinkComponent,
         ChannelHeaderComponent,
         ChannelMonitorComponent
       ],
@@ -42,7 +42,7 @@ describe('DaemonSinkComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DaemonSinkComponent);
+    fixture = TestBed.createComponent(RemoteSinkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
