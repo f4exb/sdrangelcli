@@ -18,6 +18,7 @@ import { XTRXOutputReport, XTRXOutputSettings } from './xtrx-output/xtrx-output'
 import { BladeRF1OutputSettings } from './bladerf1-output/bladerf1-output';
 import { BladeRF2OutputSettings } from './bladerf2-output/bladerf2-output';
 import { SDRplaySettings } from './sdrplay/sdrplay';
+import { RemoteInputSettings, RemoteInputReport } from './remote-input/remote-input';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -37,6 +38,7 @@ export interface DeviceSettings {
     perseusSettings?: PerseusSettings;
     plutoSdrInputSettings?: PlutoSDRInputSettings;
     plutoSdrOutputSettings?: PlutoSDROutputSettings;
+    remoteInputSettings?: RemoteInputSettings;
     rtlSdrSettings?: RTLSDRSettings;
     sdrPlaySettings?: SDRplaySettings;
     testSourceSettings?: TestSourceSettings;
@@ -54,6 +56,7 @@ export interface DeviceReport {
     perseusReport?: PerseusReport;
     plutoSdrInputReport?: PlutoSDRInputReport;
     plutoSdrOutputReport?: PlutoSDROutputReport;
+    remoteInputReport?: RemoteInputReport;
     rtlSdrReport?: any;
     sdrPlayReport?: any;
     xtrxInputReport?: XTRXInputReport;

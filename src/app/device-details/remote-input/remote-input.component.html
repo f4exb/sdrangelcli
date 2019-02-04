@@ -1,0 +1,150 @@
+<mat-card class="deviceset-card">
+  <mat-card-header class="device-card-header device-header-rx">
+    <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <span class="device-label">Remote input {{getSampleRate()/1000}} kS/s</span>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- DC, IQ -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+            DC block
+          </mat-checkbox>
+        </td>
+        <td style="width: 15ch">
+          <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
+            IQ correction
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- Remote API address, Remote API port -->
+      <tr>
+        <td>
+          API Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.apiAddress"
+            (change)="setRemoteAPIAddress()"
+            matTooltip="Remote API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.apiPort"
+            (change)="setRemoteAPIPort()"
+            matTooltip="Remote API port"
+            min=1024 max=65535>
+        </td>
+      </tr>
+      <!--- Local data address, Local data port -->
+      <tr>
+        <td>
+          Data Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.dataAddress"
+            (change)="setLocalDataAddress()"
+            matTooltip="Local data IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.dataPort"
+            (change)="setLocalDataPort()"
+            matTooltip="Local data port"
+            min=1024 max=65535>
+        </td>
+      </tr>
+      <!--- Use reverse API, reverse API device index -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+            Reverse API
+          </mat-checkbox>
+        </td>
+        <td>
+          Device
+          <input type="number" class="gain-input"
+            [(ngModel)]="settings.reverseAPIDeviceIndex"
+            (change)="setReverseAPIDeviceIndex()"
+            matTooltip="Reverse API device index"
+            min=0>
+        </td>
+      </tr>
+      <!--- reverse API address, reverse API port -->
+      <tr>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.reverseAPIAddress"
+            (change)="setReverseAPIAddress()"
+            matTooltip="Reverse API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.reverseAPIPort"
+            (change)="setReverseAPIPort()"
+            matTooltip="Reverse API port"
+            min=1024 max=65535>
+        </td>
+      </tr>
+      <!-- Footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+    <table *ngIf="monitor">
+      <!-- Frequency, sample rate -->
+      <tr>
+        <td colspan="2">
+          Freq
+          <span matTooltip="Remote center frequency">{{report ? (report.centerFrequency/1000) : 0}}</span>
+          kHz
+        </td>
+        <td>
+          SR
+          <span matTooltip="Stream sample rate">{{report ? (report.sampleRate/1000) : 0}}</span>
+          kS/s
+        </td>
+      </tr>
+      <!-- timestamp -->
+      <tr>
+        <td colspan="3">
+          <span matTooltip="Stream timestamp">{{report ? report.remoteTimestamp : ''}}</span>
+        </td>
+      </tr>
+      <!-- min nb blocks, max blocks recovery, R/W balance -->
+      <tr>
+        <td>
+          Blk
+          <span matTooltip="Minimum number of blocks retrived per frame">{{report ? report.minNbBlocks : 0}}</span>
+        </td>
+        <td>
+          FEC
+          <span matTooltip="Maximum number of recovery blocks used per frame">{{report ? report.maxNbRecovery : 0}}</span>
+        </td>
+        <td>
+          R/W
+          <span matTooltip="Main buffer R/W positions unbalance. Positive means read leads">{{report ? report.bufferRWBalance : 0}}</span>
+          %
+        </td>
+      </tr>
+      <!-- Footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

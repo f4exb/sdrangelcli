@@ -26,6 +26,7 @@ import { XtrxOutputComponent } from './xtrx-output/xtrx-output.component';
 import { Bladerf1OutputComponent } from './bladerf1-output/bladerf1-output.component';
 import { Bladerf2OutputComponent } from './bladerf2-output/bladerf2-output.component';
 import { SdrplayComponent } from './sdrplay/sdrplay.component';
+import { RemoteInputComponent } from './remote-input/remote-input.component';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { SdrplayComponent } from './sdrplay/sdrplay.component';
     XtrxOutputComponent,
     Bladerf1OutputComponent,
     Bladerf2OutputComponent,
-    SdrplayComponent
+    SdrplayComponent,
+    RemoteInputComponent
   ]
 })
 export class DeviceDetailsModule { }
