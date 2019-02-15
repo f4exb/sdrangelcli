@@ -16,6 +16,8 @@ export interface AudioOutputDevice {
     copyToUDP: number;
     udpUsesRTP: number;
     udpChannelMode: number;
+    udpChannelCodec: number;
+    udpDecimationFactor: number;
     udpAddress: string;
     udpPort: number;
 }

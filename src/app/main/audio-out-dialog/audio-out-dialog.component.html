@@ -6,21 +6,13 @@
       <td>
         <span class="label">Sample rate (Hz)</span><br/>
       </td>
-      <td>
-        <span class="label">Channel mode</span><br/>
-      </td>
+      <td></td>
     </tr>
     <tr>
       <td>
         <input class="sample-rate-input" type="number" [(ngModel)]="audioDevice.sampleRate"><br/>
       </td>
-      <td>
-        <mat-select class="channel-mode-input" [(value)]="audioDevice.udpChannelMode">
-          <mat-option *ngFor="let channelMode of channelModes" [value]="channelMode.value">
-            {{channelMode.viewValue}}
-          </mat-option>
-        </mat-select>
-      </td>
+      <td></td>
     </tr>
     <tr>
       <td>
@@ -36,6 +28,50 @@
       </td>
       <td>
         <input class="udp-port-input" type="number" [(ngModel)]="audioDevice.udpPort"><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="label">Channel mode</span><br/>
+      </td>
+      <td>
+        <span class="label">Channel codec</span><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-select class="channel-mode-input" [(value)]="audioDevice.udpChannelMode">
+          <mat-option *ngFor="let channelMode of channelModes" [value]="channelMode.value">
+            {{channelMode.viewValue}}
+          </mat-option>
+        </mat-select>
+      </td>
+      <td>
+        <mat-select class="channel-mode-input" [(value)]="audioDevice.udpChannelCodec">
+          <mat-option *ngFor="let channelCodec of channelCodecs" [value]="channelCodec.value">
+            {{channelCodec.viewValue}}
+          </mat-option>
+        </mat-select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="label">Channel decim.</span><br/>
+      </td>
+      <td>
+        <span class="label">SDP string</span><br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="number" class="channel-mode-input"
+          [(ngModel)]="audioDevice.udpDecimationFactor"
+          matTooltip="Decimation"
+          min=1 max=6 step=1
+        >
+      </td>
+      <td>
+        <span class="sdp-label">{{getSDPString()}}</span>
       </td>
     </tr>
     <tr>

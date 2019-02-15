@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { AudioService } from '../audio/audio.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 
-export interface ChannelMode {
+export interface ChannelFeature {
   value: number;
   viewValue: string;
 }
@@ -15,11 +15,17 @@ export interface ChannelMode {
   styleUrls: ['./audio-out-dialog.component.css']
 })
 export class AudioOutDialogComponent implements OnInit {
-  channelModes: ChannelMode[] = [
+  channelModes: ChannelFeature[] = [
     {value: 0, viewValue: 'Left'},
     {value: 1, viewValue: 'Right'},
     {value: 2, viewValue: 'Mixed'},
     {value: 3, viewValue: 'Stereo'}
+  ];
+  channelCodecs: ChannelFeature[] = [
+    {value: 0, viewValue: 'L16'},
+    {value: 1, viewValue: 'L8'},
+    {value: 2, viewValue: 'PCMA'},
+    {value: 3, viewValue: 'PCMU'}
   ];
   sdrangelURL: string;
   audioDevice: AudioOutputDevice;
@@ -53,6 +59,12 @@ export class AudioOutDialogComponent implements OnInit {
     this.audioDevice.udpUsesRTP = this.udpUsesRTP ? 1 : 0;
   }
 
+  getSDPString(): string {
+    const nChannelsStr = this.audioDevice.udpChannelMode === 3 ? '2' : '1';
+    const channelSampleRate = this.audioDevice.sampleRate / this.audioDevice.udpDecimationFactor;
+    return this.channelCodecs[this.audioDevice.udpChannelCodec].viewValue + '/' + channelSampleRate.toString() + '/' + nChannelsStr;
+  }
+
   close() {
     this.dialogRef.close();
     this.audioDeviceCopy(this.audioDeviceRef, this.audioDevice); // restore from reference
@@ -79,6 +91,8 @@ export class AudioOutDialogComponent implements OnInit {
     to.udpUsesRTP = from.udpUsesRTP;
     to.udpAddress = from.udpAddress;
     to.udpChannelMode = from.udpChannelMode;
+    to.udpChannelCodec = from.udpChannelCodec;
+    to.udpDecimationFactor = from.udpDecimationFactor;
     to.udpPort = from.udpPort;
     to.defaultUnregistered = from.defaultUnregistered;
   }
