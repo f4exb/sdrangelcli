@@ -42,6 +42,8 @@ export const AUDIO_OUT_DEVICE_MOCK = {
     sampleRate: 48000,
     udpAddress: '192.168.0.38',
     udpChannelMode: 2,
+    udpChannelCodec: 0,
+    udpDecimationFactor: 1,
     udpPort: 9998,
     udpUsesRTP: 1
 };
@@ -157,6 +159,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '192.168.0.38',
           udpChannelMode: 2,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 1
         },
@@ -169,6 +173,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -181,6 +187,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -193,6 +201,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -205,6 +215,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -217,6 +229,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -229,6 +243,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -241,6 +257,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -253,6 +271,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -265,6 +285,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -277,6 +299,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -289,6 +313,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -301,6 +327,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -313,6 +341,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -325,6 +355,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -337,6 +369,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -349,6 +383,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -361,6 +397,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -373,6 +411,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -385,6 +425,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 48000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         },
@@ -397,6 +439,8 @@ export const AUDIO_DEVICES_MOCK = {
           sampleRate: 8000,
           udpAddress: '127.0.0.1',
           udpChannelMode: 0,
+          udpChannelCodec: 0,
+          udpDecimationFactor: 1,
           udpPort: 9998,
           udpUsesRTP: 0
         }
