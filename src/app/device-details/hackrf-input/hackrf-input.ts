@@ -7,7 +7,6 @@ export interface HackRFInputSettings {
     devSampleRate: number;
     fcPos: number;
     iqCorrection: number;
-    linkTxFrequency: number;
     lnaExt: number;
     lnaGain: number;
     log2Decim: number;
@@ -27,7 +26,6 @@ export const HACKRF_INPUT_SETTINGS_DEFAULT = {
     devSampleRate: 2400000,
     fcPos: 2,
     iqCorrection: 0,
-    linkTxFrequency: 0,
     lnaExt: 0,
     lnaGain: 16,
     log2Decim: 0,

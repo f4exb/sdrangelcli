@@ -12,6 +12,11 @@ interface Log2Interp {
   viewValue: number;
 }
 
+interface FcPos {
+  value: number;
+  viewValue: string;
+}
+
 interface RFBandwidth {
   value: number;
   viewValue: number;
@@ -33,6 +38,11 @@ export class HackrfOutputComponent implements OnInit {
     {value: 4, viewValue: 16},
     {value: 5, viewValue: 32},
     {value: 6, viewValue: 64},
+  ];
+  fcPositions: FcPos[] = [
+    {value: 0, viewValue: 'Inf'},
+    {value: 1, viewValue: 'Sup'},
+    {value: 2, viewValue: 'Cen'},
   ];
   rfBandwidths: RFBandwidth[] = [
     {value: 1750000, viewValue: 1.75},
@@ -166,6 +176,12 @@ export class HackrfOutputComponent implements OnInit {
   setLog2Interp() {
     const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
     newSettings.log2Interp = this.settings.log2Interp;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFcPos() {
+    const newSettings: HackRFOutputSettings = <HackRFOutputSettings>{};
+    newSettings.fcPos = this.settings.fcPos;
     this.setDeviceSettings(newSettings);
   }
 

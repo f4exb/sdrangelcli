@@ -4,6 +4,7 @@ export interface HackRFOutputSettings {
     biasT: number;
     centerFrequency: number;
     devSampleRate: number;
+    fcPos: number;
     lnaExt: number;
     log2Interp: number;
     vgaGain: number;
@@ -19,6 +20,7 @@ export const HACKRF_OUTPUT_SETTINGS_DEFAULT = {
     biasT: 0,
     centerFrequency: 435000000,
     devSampleRate: 2000000,
+    fcPos: 2,
     lnaExt: 1,
     log2Interp: 5,
     vgaGain: 19,
