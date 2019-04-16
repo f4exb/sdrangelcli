@@ -24,6 +24,7 @@ import { UdpSinkComponent } from './udp-sink/udp-sink.component';
 import { UdpSourceComponent } from './udp-source/udp-source.component';
 import { RemoteSourceComponent } from './remote-source/remote-source.component';
 import { RemoteSinkComponent } from './remote-sink/remote-sink.component';
+import { FreedvModComponent } from './freedv-mod/freedv-mod.component';
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { RemoteSinkComponent } from './remote-sink/remote-sink.component';
     UdpSinkComponent,
     UdpSourceComponent,
     RemoteSourceComponent,
-    RemoteSinkComponent
+    RemoteSinkComponent,
+    FreedvModComponent
   ]
 })
 export class ChannelDetailsModule { }
