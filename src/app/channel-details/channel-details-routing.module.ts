@@ -17,6 +17,7 @@ import { UdpSourceComponent } from './udp-source/udp-source.component';
 import { RemoteSourceComponent } from './remote-source/remote-source.component';
 import { RemoteSinkComponent } from './remote-sink/remote-sink.component';
 import { FreeDVModComponent } from './freedv-mod/freedv-mod.component';
+import { FreeDVDemodComponent } from './freedv-demod/freedv-demod.component';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,10 @@ export const routes: Routes = [
       {
         path: 'bfmdemod',
         component: BfmDemodComponent
+      },
+      {
+        path: 'freedvdemod',
+        component: FreeDVDemodComponent
       },
       {
         path: 'remotesink',

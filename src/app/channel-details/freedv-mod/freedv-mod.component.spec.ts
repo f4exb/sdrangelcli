@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FreedvModComponent } from './freedv-mod.component';
+import { FreeDVModComponent } from './freedv-mod.component';
 import { ChannelHeaderComponent } from '../channel-header/channel-header.component';
 import { ChannelMonitorComponent } from '../channel-monitor/channel-monitor.component';
 import { RouterModule, ActivatedRoute } from '@angular/router';
@@ -11,13 +11,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ColorPickerModule } from 'ngx-color-picker';
 
 describe('FreedvModComponent', () => {
-  let component: FreedvModComponent;
-  let fixture: ComponentFixture<FreedvModComponent>;
+  let component: FreeDVModComponent;
+  let fixture: ComponentFixture<FreeDVModComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-          FreedvModComponent,
+          FreeDVModComponent,
           ChannelHeaderComponent,
           ChannelMonitorComponent
         ],
@@ -42,7 +42,7 @@ describe('FreedvModComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FreedvModComponent);
+    fixture = TestBed.createComponent(FreeDVModComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
