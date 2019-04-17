@@ -12,12 +12,14 @@ import { UDPSinkReport, UDPSinkSettings } from './udp-sink/udp-sink';
 import { UDPSourceSettings, UDPSourceReport } from './udp-source/udp-source';
 import { RemoteSourceSettings, RemoteSourceReport } from './remote-source/remote-source';
 import { RemoteSinkSettings } from './remote-sink/remote-sink';
+import { FreeDVModSettings, FreeDVModReport } from './freedv-mod/freedv-mod';
 
 export interface ChannelSettings {
     channelType: string;
     tx: number;
     AMDemodSettings?: AMDemodSettings;
     BFMDemodSettings?: BFMDemodSettings;
+    FreeDVModSettings?: FreeDVModSettings;
     NFMDemodSettings?: NFMDemodSettings;
     SSBDemodSettings?: SSBDemodSettings;
     DSDDemodSettings?: DSDDemodSettings;
@@ -35,6 +37,7 @@ export interface ChannelSettings {
 export interface ChannelReport {
     AMDemodReport?: AMDemodReport;
     BFMDemodReport?: BFMDemodReport;
+    FreeDVModReport?: FreeDVModReport;
     NFMDemodReport?: NFMDemodReport;
     SSBDemodReport?: SSBDemodReport;
     DSDDemodReport?: DSDDemodReport;

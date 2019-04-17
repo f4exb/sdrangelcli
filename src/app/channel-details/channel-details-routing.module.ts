@@ -16,6 +16,7 @@ import { UdpSinkComponent } from './udp-sink/udp-sink.component';
 import { UdpSourceComponent } from './udp-source/udp-source.component';
 import { RemoteSourceComponent } from './remote-source/remote-source.component';
 import { RemoteSinkComponent } from './remote-sink/remote-sink.component';
+import { FreeDVModComponent } from './freedv-mod/freedv-mod.component';
 
 export const routes: Routes = [
   {
@@ -57,6 +58,10 @@ export const routes: Routes = [
       {
         path: 'ammod',
         component: AmModComponent
+      },
+      {
+        path: 'freedvmod',
+        component: FreeDVModComponent
       },
       {
         path: 'nfmmod',

@@ -1,3 +1,138 @@
-<p>
-  freedv-mod works!
-</p>
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-tx">
+    <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <app-channel-header class="channel-header-comp" channelType="FreeDVMod"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
+    </app-channel-header>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Row 1: channel monitor (optional) -->
+      <tr *ngIf="monitor">
+        <td colspan="3">
+          <app-channel-monitor [value]=this.report.channelPowerDB
+            [min]="-120"
+            [max]="0"
+            [squelch]="!this.audioMute">
+          </app-channel-monitor>
+        </td>
+      </tr>
+      <!-- Row 2: Frequency dial -->
+      <tr>
+        <td colspan="2">
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td style="width:15ch">
+          &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+      </tr>
+      <!-- Row 3: Span, Mode, volume -->
+      <tr>
+        <td>
+          &#xf7;
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.spanLog2"
+              (selectionChange)="setSpan()"
+              matTooltip="Channel decimation">
+            <mat-option *ngFor="let spanLog2 of spanLog2s" [value]="spanLog2.value">
+              {{spanLog2.viewValue}}
+            </mat-option>
+          </mat-select>
+          <span matTooltip="Channel bandwidth">
+            {{getChannelBaseband()}} kHz
+          </span>
+        </td>
+        <td>
+          Mode
+          <mat-select class="source-input"
+              [(value)]="settings.freeDVMode"
+              (selectionChange)="setFreeDVMode()"
+              matTooltip="FreeDV protocol and modulation mode">
+            <mat-option *ngFor="let freeDVMode of freeDVModes" [value]="freeDVMode.value">
+              {{freeDVMode.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Vol
+          <input type="number" class="volume-input"
+              [(ngModel)]="settings.volumeFactor"
+              (change)="setVolume()"
+              matTooltip="Audio input volume"
+              min=0 max=2
+              step="0.1">
+        </td>
+      </tr>
+      <!-- row 4: AF input, Tone frequency, audio mute-->
+      <tr>
+        <td>
+          Source
+          <mat-select class="source-input"
+              [(value)]="settings.modAFInput"
+              (selectionChange)="setModulationSource()"
+              matTooltip="Input source">
+            <mat-option *ngFor="let afInput of afInputs" [value]="afInput.value">
+              {{afInput.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Tone
+          <input type="number" class="rfbw-input"
+              [(ngModel)]="toneFrequencyKhz"
+              (change)="setToneFrequency()"
+              matTooltip="Modulation tone frequency"
+              min=0.1 max=2.5 step=0.01>
+          kHz
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
+            Mute
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!-- Audio options -->
+      <tr>
+        <td colspan="3">
+          Audio:
+          <mat-select style="width:48ch; background-color: white; margin: 1px;"
+              [(value)]="settings.audioDeviceName"
+              (selectionChange)="setAudioDevice()"
+              matTooltip="Audio input device">
+            <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+              {{audioDevice.value}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!-- Row 6: empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+    <!-- empty footer -->
+    <table>
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>
