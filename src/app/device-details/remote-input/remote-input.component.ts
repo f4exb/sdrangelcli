@@ -125,6 +125,30 @@ export class RemoteInputComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setRemoteAPIAddress() {
+    const newSettings: RemoteInputSettings = <RemoteInputSettings>{};
+    newSettings.apiAddress = this.settings.apiAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setRemoteAPIPort() {
+    const newSettings: RemoteInputSettings = <RemoteInputSettings>{};
+    newSettings.apiPort = this.settings.apiPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLocalDataAddress() {
+    const newSettings: RemoteInputSettings = <RemoteInputSettings>{};
+    newSettings.dataAddress = this.settings.dataAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLocalDataPort() {
+    const newSettings: RemoteInputSettings = <RemoteInputSettings>{};
+    newSettings.dataPort = this.settings.dataPort;
+    this.setDeviceSettings(newSettings);
+  }
+
   setUseReverseAPI() {
     const newSettings: RemoteInputSettings = <RemoteInputSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
