@@ -54,6 +54,7 @@ export class AmDemodComponent implements OnInit {
   ];
   pll: boolean;
   monitor: boolean;
+  useReverseAPI: boolean;
   amDemodreport: AMDemodReport = AMDEMOD_REPORT_DEFAULT;
 
   constructor(private route: ActivatedRoute,
@@ -96,6 +97,7 @@ export class AmDemodComponent implements OnInit {
           this.bandpassFilter = this.settings.bandpassEnable !== 0;
           this.audioMute = this.settings.audioMute !== 0;
           this.pll = this.settings.pll !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not an AMDemod channel';
           this.statusError = true;
@@ -253,6 +255,36 @@ export class AmDemodComponent implements OnInit {
   setSynchronousAMOperation() {
     const newSettings: AMDemodSettings = <AMDemodSettings>{};
     newSettings.syncAMOperation = this.settings.syncAMOperation;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: AMDemodSettings = <AMDemodSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 

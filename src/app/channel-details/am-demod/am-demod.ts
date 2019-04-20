@@ -10,6 +10,11 @@ export interface AMDemodSettings {
     volume: number;
     pll: number;
     syncAMOperation: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
+    reverseAPIChannelIndex?: number;
 }
 
 export const AMDEMOD_SETTINGS_DEFAULT = {
