@@ -106,6 +106,7 @@ export class SsbModComponent implements OnInit {
     { value: 4, viewValue: 'CW' },
   ];
   toneFrequencyKhz: number;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -186,6 +187,7 @@ export class SsbModComponent implements OnInit {
           this.squelchDelayMs = (1000 * this.settings.agcThresholdDelay) / this.getAudioSampleRate();
           this.agcThreshold = this.settings.agcThreshold !== 0;
           this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a SSBMod channel';
           this.statusError = true;
@@ -459,6 +461,36 @@ export class SsbModComponent implements OnInit {
   setAudioDevice() {
     const newSettings: SSBModSettings = <SSBModSettings>{};
     newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: SSBModSettings = <SSBModSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: SSBModSettings = <SSBModSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: SSBModSettings = <SSBModSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: SSBModSettings = <SSBModSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: SSBModSettings = <SSBModSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 }

@@ -64,6 +64,7 @@ export class WfmDemodComponent implements OnInit {
   ];
   afBandwidthKhz: number;
   audioMute: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -147,6 +148,7 @@ export class WfmDemodComponent implements OnInit {
           this.settings.volume = +this.settings.volume.toFixed(1);
           this.afBandwidthKhz = this.settings.afBandwidth / 1000;
           this.audioMute = this.settings.audioMute !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a WFMDemod channel';
           this.statusError = true;
@@ -272,4 +274,33 @@ export class WfmDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setUseReverseAPI() {
+    const newSettings: WFMDemodSettings = <WFMDemodSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: WFMDemodSettings = <WFMDemodSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: WFMDemodSettings = <WFMDemodSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: WFMDemodSettings = <WFMDemodSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: WFMDemodSettings = <WFMDemodSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
+    this.setDeviceSettings(newSettings);
+  }
 }

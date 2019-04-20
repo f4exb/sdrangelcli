@@ -59,6 +59,7 @@ export class DsdDemodComponent implements OnInit {
   slot2: boolean;
   tdmaStereo: boolean;
   fmDevKhz: number;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -149,6 +150,7 @@ export class DsdDemodComponent implements OnInit {
           this.slot2 = this.settings.slot2On !== 0;
           this.tdmaStereo = this.settings.tdmaStereo !== 0;
           this.fmDevKhz = this.settings.fmDeviation / 1000;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a DSDDemod channel';
           this.statusError = true;
@@ -322,4 +324,33 @@ export class DsdDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setUseReverseAPI() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
+    this.setDeviceSettings(newSettings);
+  }
 }

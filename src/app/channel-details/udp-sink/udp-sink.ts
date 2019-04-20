@@ -18,6 +18,11 @@ export interface UDPSinkSettings {
     udpAddress: string;
     udpPort: number;
     volume: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
+    reverseAPIChannelIndex?: number;
 }
 
 export const UDP_SINK_SETTINGS_DEFAULT = {
@@ -39,7 +44,12 @@ export const UDP_SINK_SETTINGS_DEFAULT = {
     title: 'UDP Sample Source',
     udpAddress: '127.0.0.1',
     udpPort: 9998,
-    volume: 20
+    volume: 20,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIChannelIndex: 0
 };
 
 export interface UDPSinkReport {

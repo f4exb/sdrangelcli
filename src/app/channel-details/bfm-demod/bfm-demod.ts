@@ -11,21 +11,31 @@ export interface BFMDemodSettings {
     squelch: number;
     title: string;
     volume: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
+    reverseAPIChannelIndex?: number;
 }
 
 export const BFMDEMOD_SETTINGS_DEFAULT = {
-    'afBandwidth': 15000,
-    'audioDeviceName': 'System default device',
-    'audioStereo': 1,
-    'inputFrequencyOffset': 0,
-    'lsbStereo': 0,
-    'rdsActive': 0,
-    'rfBandwidth': 250000,
-    'rgbColor': -11503388,
-    'showPilot': 0,
-    'squelch': -50,
-    'title': 'Broadcast FM Demod',
-    'volume': 2
+    afBandwidth: 15000,
+    audioDeviceName: 'System default device',
+    audioStereo: 1,
+    inputFrequencyOffset: 0,
+    lsbStereo: 0,
+    rdsActive: 0,
+    rfBandwidth: 250000,
+    rgbColor: -11503388,
+    showPilot: 0,
+    squelch: -50,
+    title: 'Broadcast FM Demod',
+    volume: 2,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIChannelIndex: 0
 };
 
 export interface BFMDemodReportRDSAltFrequencies {

@@ -104,6 +104,7 @@ export class NfmDemodComponent implements OnInit {
   squelchGate: number;
   deltaSquelch: boolean;
   ctcss: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -148,6 +149,7 @@ export class NfmDemodComponent implements OnInit {
           this.squelchGate = this.settings.squelchGate * 10;
           this.deltaSquelch = this.settings.deltaSquelch !== 0;
           this.ctcss = this.settings.ctcssOn !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a NFMDemod channel';
           this.statusError = true;
@@ -313,6 +315,36 @@ export class NfmDemodComponent implements OnInit {
   setCTCSSIndex() {
     const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
     newSettings.ctcssIndex = this.settings.ctcssIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: NFMDemodSettings = <NFMDemodSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 

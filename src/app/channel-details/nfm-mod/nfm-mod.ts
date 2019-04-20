@@ -16,6 +16,11 @@ export interface NFMModSettings {
     title: string;
     toneFrequency: number;
     volumeFactor: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
+    reverseAPIChannelIndex?: number;
 }
 
 export const NFMMOD_SETTINGS_DEFAULT = {
@@ -33,7 +38,12 @@ export const NFMMOD_SETTINGS_DEFAULT = {
     rgbColor: -65536,
     title: 'NFM Modulator',
     toneFrequency: 1000,
-    volumeFactor: 1
+    volumeFactor: 1,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIChannelIndex: 0
 };
 
 export interface NFMModReport {

@@ -54,6 +54,7 @@ export class UdpSourceComponent implements OnInit {
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr = 'rgb(0,0,0)';
   monitor: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -125,6 +126,7 @@ export class UdpSourceComponent implements OnInit {
           this.settings.gainIn = +this.settings.gainIn.toFixed(1);
           this.settings.gainOut = +this.settings.gainOut.toFixed(1);
           this.squelchGateMs = +(this.settings.squelchGate * 1000).toFixed(0);
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a UDPSource channel';
           this.statusError = true;
@@ -317,6 +319,36 @@ export class UdpSourceComponent implements OnInit {
   setAutoRWBalance() {
     const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
     newSettings.autoRWBalance = this.autoRWBalance ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: UDPSourceSettings = <UDPSourceSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 }

@@ -51,6 +51,10 @@
     width: 6ch;
 }
 
+.index-input {
+  width: 6ch;
+}
+
 .source-input {
     width: 10ch;
     background-color: white;

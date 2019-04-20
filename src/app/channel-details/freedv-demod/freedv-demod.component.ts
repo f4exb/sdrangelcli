@@ -65,6 +65,7 @@ export class FreeDVDemodComponent implements OnInit {
     {value: 4, viewValue: 16},
     {value: 5, viewValue: 32},
   ];
+  useReverseAPI: boolean;
   report: FreeDVDemodReport = FREEDVDEMOD_REPORT_DEFAULT;
 
   constructor(private route: ActivatedRoute,
@@ -105,6 +106,7 @@ export class FreeDVDemodComponent implements OnInit {
           this.settings.volume = +this.settings.volume.toFixed(1);
           this.audioMute = this.settings.audioMute !== 0;
           this.agc = this.settings.agc !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a FreeDVDemod channel';
           this.statusError = true;
@@ -280,6 +282,36 @@ export class FreeDVDemodComponent implements OnInit {
   setSpan() {
     const newSettings: FreeDVDemodSettings = <FreeDVDemodSettings>{};
     newSettings.spanLog2 = this.settings.spanLog2;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: FreeDVDemodSettings = <FreeDVDemodSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: FreeDVDemodSettings = <FreeDVDemodSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: FreeDVDemodSettings = <FreeDVDemodSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: FreeDVDemodSettings = <FreeDVDemodSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: FreeDVDemodSettings = <FreeDVDemodSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 

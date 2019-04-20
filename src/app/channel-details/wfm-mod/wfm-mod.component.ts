@@ -78,6 +78,7 @@ export class WfmModComponent implements OnInit {
     {value: 220000, viewValue: 220},
     {value: 250000, viewValue: 250},
   ];
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -119,6 +120,7 @@ export class WfmModComponent implements OnInit {
           this.channelMute = this.settings.channelMute !== 0;
           this.fmDeviationKhz = +this.settings.fmDeviation / 1000;
           this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a WFMMod channel';
           this.statusError = true;
@@ -306,6 +308,36 @@ export class WfmModComponent implements OnInit {
   setAudioDevice() {
     const newSettings: WFMModSettings = <WFMModSettings>{};
     newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: WFMModSettings = <WFMModSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: WFMModSettings = <WFMModSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: WFMModSettings = <WFMModSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: WFMModSettings = <WFMModSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: WFMModSettings = <WFMModSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 }

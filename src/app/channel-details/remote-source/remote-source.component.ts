@@ -37,6 +37,7 @@ export class RemoteSourceComponent implements OnInit {
   deltaCorrectableCount: number;
   deltaUncorrectableCount: number;
   deltaSampleCount: number;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -101,6 +102,7 @@ export class RemoteSourceComponent implements OnInit {
           this.settings = channelSettings.RemoteSourceSettings;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a RemoteSource channel';
           this.statusError = true;
@@ -207,6 +209,36 @@ export class RemoteSourceComponent implements OnInit {
   setDataPort() {
     const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
     newSettings.dataPort = this.settings.dataPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 

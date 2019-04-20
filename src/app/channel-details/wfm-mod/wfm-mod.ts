@@ -14,6 +14,11 @@ export interface WFMModSettings {
     title: string;
     toneFrequency: number;
     volumeFactor: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
+    reverseAPIChannelIndex?: number;
 }
 
 export const WFMMOD_SETTINGS_DEFAULT = {
@@ -29,7 +34,12 @@ export const WFMMOD_SETTINGS_DEFAULT = {
     rgbColor: -16776961,
     title: 'WFM Modulator',
     toneFrequency: 1000,
-    volumeFactor: 1
+    volumeFactor: 1,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIChannelIndex: 0
 };
 
 export interface WFMModReport {

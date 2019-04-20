@@ -78,6 +78,7 @@ export class FreeDVModComponent implements OnInit {
     {value: 4, viewValue: 16},
     {value: 5, viewValue: 32},
   ];
+  useReverseAPI: boolean;
   report: FreeDVModReport = FREEDVMOD_REPORT_DEFAULT;
 
   constructor(private route: ActivatedRoute,
@@ -120,6 +121,7 @@ export class FreeDVModComponent implements OnInit {
           this.playLoop = this.settings.playLoop !== 0;
           this.gaugeInputElseModem = this.settings.gaugeInputElseModem !== 0;
           this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a FreeDVMod channel';
           this.statusError = true;
@@ -295,6 +297,36 @@ export class FreeDVModComponent implements OnInit {
   setSpan() {
     const newSettings: FreeDVModSettings = <FreeDVModSettings>{};
     newSettings.spanLog2 = this.settings.spanLog2;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: FreeDVModSettings = <FreeDVModSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: FreeDVModSettings = <FreeDVModSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: FreeDVModSettings = <FreeDVModSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: FreeDVModSettings = <FreeDVModSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: FreeDVModSettings = <FreeDVModSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 

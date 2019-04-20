@@ -25,6 +25,7 @@ export class RemoteSinkComponent implements OnInit {
   statusError = false;
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr = 'rgb(0,0,0)';
+  useReverseAPI: boolean;
   deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
 
@@ -82,6 +83,7 @@ export class RemoteSinkComponent implements OnInit {
           this.settings = channelSettings.RemoteSinkSettings;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a RemoteSink channel';
           this.statusError = true;
@@ -152,6 +154,36 @@ export class RemoteSinkComponent implements OnInit {
   setTxDelay() {
     const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.txDelay = this.settings.txDelay;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 }

@@ -81,6 +81,7 @@ export class SsbDemodComponent implements OnInit {
   dsb: boolean;
   binaural: boolean;
   lrFlip: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -155,6 +156,7 @@ export class SsbDemodComponent implements OnInit {
           this.dsb = this.settings.dsb !== 0;
           this.binaural = this.settings.audioBinaural !== 0;
           this.lrFlip = this.settings.audioFlipChannels !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a SSBDemod channel';
           this.statusError = true;
@@ -399,4 +401,33 @@ export class SsbDemodComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setUseReverseAPI() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: SSBDemodSettings = <SSBDemodSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
+    this.setDeviceSettings(newSettings);
+  }
 }

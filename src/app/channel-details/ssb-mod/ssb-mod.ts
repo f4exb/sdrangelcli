@@ -25,6 +25,11 @@ export interface SSBModSettings {
     toneFrequency: number;
     usb: number;
     volumeFactor: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
+    reverseAPIChannelIndex?: number;
 }
 
 export const SSBMOD_SETTINGS_DEFAULT = {
@@ -51,7 +56,12 @@ export const SSBMOD_SETTINGS_DEFAULT = {
     title: 'SSB Modulator',
     toneFrequency: 1000,
     usb: 1,
-    volumeFactor: 1
+    volumeFactor: 1,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIChannelIndex: 0
 };
 
 export interface SSBModReport {

@@ -60,6 +60,7 @@ export class BfmDemodComponent implements OnInit {
     {value: 250000, viewValue: 250},
   ];
   afBandwidthKhz: number;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -145,6 +146,7 @@ export class BfmDemodComponent implements OnInit {
           this.audioStereo = this.settings.audioStereo !== 0;
           this.rds = this.settings.rdsActive !== 0;
           this.afBandwidthKhz = this.settings.afBandwidth / 1000;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a BFMDemod channel';
           this.statusError = true;
@@ -289,6 +291,36 @@ export class BfmDemodComponent implements OnInit {
   setSquelch() {
     const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
     newSettings.squelch = this.settings.squelch;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: BFMDemodSettings = <BFMDemodSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 }

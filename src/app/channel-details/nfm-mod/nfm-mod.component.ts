@@ -115,6 +115,7 @@ export class NfmModComponent implements OnInit {
     {value: 40000, viewValue: 40},
   ];
   ctcss: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -157,6 +158,7 @@ export class NfmModComponent implements OnInit {
           this.fmDeviationKhz = +this.settings.fmDeviation / 1000;
           this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
           this.ctcss = this.settings.ctcssOn !== 0;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a NFMMod channel';
           this.statusError = true;
@@ -356,6 +358,36 @@ export class NfmModComponent implements OnInit {
   setAudioDevice() {
     const newSettings: NFMModSettings = <NFMModSettings>{};
     newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: NFMModSettings = <NFMModSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: NFMModSettings = <NFMModSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: NFMModSettings = <NFMModSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: NFMModSettings = <NFMModSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: NFMModSettings = <NFMModSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 }

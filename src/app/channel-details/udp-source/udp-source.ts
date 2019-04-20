@@ -18,6 +18,11 @@ export interface UDPSourceSettings {
     title: string;
     udpAddress: string;
     udpPort: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
+    reverseAPIChannelIndex?: number;
 }
 
 export const UDP_SOURCE_SETTINGS_DEFAULT = {
@@ -39,7 +44,12 @@ export const UDP_SOURCE_SETTINGS_DEFAULT = {
     stereoInput: 0,
     title: 'UDP Sample Sink',
     udpAddress: '192.168.1.3',
-    udpPort: 9998
+    udpPort: 9998,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIChannelIndex: 0
 };
 
 export interface UDPSourceReport {

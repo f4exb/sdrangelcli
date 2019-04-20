@@ -28,7 +28,12 @@ export const AMDEMOD_SETTINGS_DEFAULT = {
     title: 'AM Demodulator',
     volume: 2,
     pll: 0,
-    syncAMOperation: 0
+    syncAMOperation: 0,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIChannelIndex: 0
 };
 
 export interface AMDemodReport {

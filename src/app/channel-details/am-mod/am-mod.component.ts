@@ -56,6 +56,7 @@ export class AmModComponent implements OnInit {
   monitor: boolean;
   channelMute: boolean;
   toneFrequencyKhz: number;
+  useReverseAPI: boolean;
   report: AMModReport = AMMOD_REPORT_DEFAULT;
 
   constructor(private route: ActivatedRoute,
@@ -98,6 +99,7 @@ export class AmModComponent implements OnInit {
           this.channelMute = this.settings.channelMute !== 0;
           this.modulationPercent = +this.settings.modFactor.toFixed(2) * 100;
           this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not an AMMod channel';
           this.statusError = true;
@@ -279,6 +281,36 @@ export class AmModComponent implements OnInit {
   setAudioDevice() {
     const newSettings: AMModSettings = <AMModSettings>{};
     newSettings.audioDeviceName = this.settings.audioDeviceName;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: AMModSettings = <AMModSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 }

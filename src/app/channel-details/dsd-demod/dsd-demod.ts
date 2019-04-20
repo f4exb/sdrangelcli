@@ -21,6 +21,11 @@ export interface DSDDemodSettings {
     traceLengthMutliplier: number;
     traceStroke: number;
     volume: number;
+    useReverseAPI?: number; // bool
+    reverseAPIAddress?: string;
+    reverseAPIPort?: number;
+    reverseAPIDeviceIndex?: number;
+    reverseAPIChannelIndex?: number;
 }
 
 export const DSDDEMOD_SETTINGS_DEFAULT = {
@@ -45,7 +50,12 @@ export const DSDDEMOD_SETTINGS_DEFAULT = {
     traceDecay: 200,
     traceLengthMutliplier: 6,
     traceStroke: 100,
-    volume: 3.2
+    volume: 3.2,
+    useReverseAPI: 0,
+    reverseAPIAddress: '127.0.0.1',
+    reverseAPIPort: 8888,
+    reverseAPIDeviceIndex: 0,
+    reverseAPIChannelIndex: 0
 };
 
 export interface DSDDemodReport {

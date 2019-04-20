@@ -59,6 +59,7 @@ export class UdpSinkComponent implements OnInit {
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr = 'rgb(0,0,0)';
   monitor: boolean;
+  useReverseAPI: boolean;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -129,6 +130,7 @@ export class UdpSinkComponent implements OnInit {
           this.squelchEnabled = this.settings.squelchEnabled !== 0;
           this.settings.gain = +this.settings.gain.toFixed(1);
           this.squelchGateMs = this.settings.squelchGate * 10;
+          this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
           this.statusMessage = 'Not a UDPSink channel';
           this.statusError = true;
@@ -311,6 +313,36 @@ export class UdpSinkComponent implements OnInit {
   setAudioStereo() {
     const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
     newSettings.audioStereo = this.audioStereo ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setUseReverseAPI() {
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIAddress() {
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIPort() {
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    newSettings.reverseAPIPort = this.settings.reverseAPIPort;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIDeviceIndex() {
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setReverseAPIChannelIndex() {
+    const newSettings: UDPSinkSettings = <UDPSinkSettings>{};
+    newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
 }
