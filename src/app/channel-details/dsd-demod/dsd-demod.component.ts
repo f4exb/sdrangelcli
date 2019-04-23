@@ -126,7 +126,7 @@ export class DsdDemodComponent implements OnInit {
     );
   }
 
-  private getChannelSettings() {
+  getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
         if (channelSettings.channelType === 'DSDDemod') {
@@ -351,6 +351,12 @@ export class DsdDemodComponent implements OnInit {
   setReverseAPIChannelIndex() {
     const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
     newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setBaudRate() {
+    const newSettings: DSDDemodSettings = <DSDDemodSettings>{};
+    newSettings.baudRate = this.settings.baudRate;
     this.setDeviceSettings(newSettings);
   }
 }

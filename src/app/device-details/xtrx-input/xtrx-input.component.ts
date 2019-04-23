@@ -104,7 +104,7 @@ export class XtrxInputComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if ((deviceSettings.deviceHwType === 'XTRX') && (deviceSettings.tx === 0)) {

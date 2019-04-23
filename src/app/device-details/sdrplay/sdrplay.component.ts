@@ -95,7 +95,7 @@ export class SdrplayComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if (deviceSettings.deviceHwType === 'SDRplay1') {

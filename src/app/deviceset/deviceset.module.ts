@@ -9,10 +9,22 @@ import { RemoveChannelDialogComponent } from './remove-channel-dialog/remove-cha
 import { LoadPresetDialogComponent } from './load-preset-dialog/load-preset-dialog.component';
 import { SavePresetDialogComponent } from './save-preset-dialog/save-preset-dialog.component';
 import { NewPresetDialogComponent } from './new-preset-dialog/new-preset-dialog.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule, MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule, MatDividerModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatSnackBarModule,
+    MatDividerModule,
+    FormsModule
   ],
   declarations: [
     DevicesetComponent,
@@ -24,6 +36,17 @@ import { NewPresetDialogComponent } from './new-preset-dialog/new-preset-dialog.
     LoadPresetDialogComponent,
     SavePresetDialogComponent,
     NewPresetDialogComponent
+  ],
+  entryComponents: [
+    AddChannelDialogComponent,
+    ChangeDeviceDialogComponent,
+    RemoveChannelDialogComponent,
+    LoadPresetDialogComponent,
+    SavePresetDialogComponent,
+    NewPresetDialogComponent
+  ],
+  exports: [
+    DevicesetComponent
   ]
 })
 export class DevicesetModule { }

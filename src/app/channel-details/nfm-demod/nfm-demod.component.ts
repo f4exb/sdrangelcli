@@ -128,7 +128,7 @@ export class NfmDemodComponent implements OnInit {
     this.getAudioDevicesInfo();
   }
 
-  private getChannelSettings() {
+  getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
         if (channelSettings.channelType === 'NFMDemod') {

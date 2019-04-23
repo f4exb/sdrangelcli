@@ -34,7 +34,7 @@ export class ChannelDetailsComponent implements OnInit {
     });
   }
 
-  private getChannelSettings() {
+  getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
         this.isTx = channelSettings.tx !== 0;

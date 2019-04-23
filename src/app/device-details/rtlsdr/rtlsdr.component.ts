@@ -75,7 +75,7 @@ export class RtlsdrComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if (deviceSettings.deviceHwType === 'RTLSDR') {
@@ -244,6 +244,12 @@ export class RtlsdrComponent implements OnInit {
     newSettings.noModMode = this.noModMode ? 1 : 0;
     this.validateCenterFrequencyKhz();
     newSettings.centerFrequency = this.centerFreqKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFileRecordName() {
+    const newSettings: RTLSDRSettings = <RTLSDRSettings>{};
+    newSettings.fileRecordName = this.settings.fileRecordName;
     this.setDeviceSettings(newSettings);
   }
 

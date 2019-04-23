@@ -94,7 +94,7 @@ export class FcdproplusComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if (deviceSettings.deviceHwType === 'FCDPro+') {
@@ -265,6 +265,12 @@ export class FcdproplusComponent implements OnInit {
   setIFFilterIndex() {
     const newSettings: FCDProPlusSettings = <FCDProPlusSettings>{};
     newSettings.ifFilterIndex = this.settings.ifFilterIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFileRecordName() {
+    const newSettings: FCDProPlusSettings = <FCDProPlusSettings>{};
+    newSettings.fileRecordName = this.settings.fileRecordName;
     this.setDeviceSettings(newSettings);
   }
 }

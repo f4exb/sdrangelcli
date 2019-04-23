@@ -97,7 +97,7 @@ export class LimesdrInputComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if ((deviceSettings.deviceHwType === 'LimeSDR') && (deviceSettings.tx === 0)) {

@@ -75,7 +75,7 @@ export class AirspyComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if (deviceSettings.deviceHwType === 'Airspy') {
@@ -281,6 +281,12 @@ export class AirspyComponent implements OnInit {
   setReverseAPIDeviceIndex() {
     const newSettings: AirspySettings = <AirspySettings>{};
     newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFileRecordName() {
+    const newSettings: AirspySettings = <AirspySettings>{};
+    newSettings.fileRecordName = this.settings.fileRecordName;
     this.setDeviceSettings(newSettings);
   }
 }

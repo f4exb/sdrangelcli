@@ -77,7 +77,7 @@ export class Bladerf2InputComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.tx === 0)) {

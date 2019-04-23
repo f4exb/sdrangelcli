@@ -74,7 +74,7 @@ export class RemoteSinkComponent implements OnInit {
     );
   }
 
-  private getChannelSettings() {
+  getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
         if (channelSettings.channelType === 'RemoteSink') {

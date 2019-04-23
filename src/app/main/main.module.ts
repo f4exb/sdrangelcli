@@ -17,10 +17,24 @@ import { PresetsComponent } from './presets/presets.component';
 import { RemovePresetDialogComponent } from './remove-preset-dialog/remove-preset-dialog.component';
 import { ImportPresetDialogComponent } from './import-preset-dialog/import-preset-dialog.component';
 import { ExportPresetDialogComponent } from './export-preset-dialog/export-preset-dialog.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule, MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule, MatDividerModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { DevicesetModule } from '../deviceset/deviceset.module';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatSnackBarModule,
+    MatDividerModule,
+    FormsModule,
+    DevicesetModule
   ],
   declarations: [
     InstanceSummaryComponent,
@@ -37,6 +51,17 @@ import { ExportPresetDialogComponent } from './export-preset-dialog/export-prese
     PresetComponent,
     PresetGroupComponent,
     PresetsComponent,
+    RemovePresetDialogComponent,
+    ImportPresetDialogComponent,
+    ExportPresetDialogComponent
+  ],
+  entryComponents: [
+    LocationDialogComponent,
+    LoggingDialogComponent,
+    RemoveDevicesetDialogComponent,
+    AddDevicesetDialogComponent,
+    AudioOutDialogComponent,
+    AudioOutDialogComponent,
     RemovePresetDialogComponent,
     ImportPresetDialogComponent,
     ExportPresetDialogComponent

@@ -3,7 +3,6 @@ import { InstanceSummary, INSTANCE_SUMMARY_DEFAULT } from './instance-summary';
 import { InstanceSummaryService } from './instance-summary.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { DeviceStoreService } from '../../device-store.service';
-import { DevicesetComponent } from '../../deviceset/deviceset/deviceset.component';
 
 @Component({
   selector: 'app-instance-summary',
@@ -29,7 +28,7 @@ export class InstanceSummaryComponent implements OnInit {
     });
   }
 
-  private fetchInstanceSummary() {
+  fetchInstanceSummary() {
     this.instanceSummaryService.getInfo(this.sdrangelURL).subscribe(
       instanceSummary => {
         this.instanceSummary = instanceSummary;

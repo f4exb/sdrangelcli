@@ -32,7 +32,7 @@ export class DeviceDetailsComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSet => {
         this.isTx = deviceSet.samplingDevice.tx !== 0;

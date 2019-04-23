@@ -25,7 +25,7 @@ export class AudioOutComponent implements OnInit {
     });
   }
 
-  private fetchAudioInformation() {
+  fetchAudioInformation() {
     this.audioService.getInfo(this.sdrangelURL + '/audio').subscribe(
       audioDevicesInfo => {
         this.audioDevicesInfo = audioDevicesInfo;

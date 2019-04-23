@@ -65,7 +65,7 @@
           <input type="number" class="log2-input"
             [(ngModel)]="settings.gain"
             (change)="setGain()"
-            [disabled]="settings.gainMode === 1"
+            [disabled]="settings.gain === 1"
             matTooltip="Global gain"
             min=0,
             max=70>

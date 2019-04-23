@@ -84,7 +84,7 @@ export class PlutosdrOutputComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if ((deviceSettings.deviceHwType === 'PlutoSDR') && (deviceSettings.tx === 1)) {

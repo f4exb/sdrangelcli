@@ -88,7 +88,7 @@ export class HackrfInputComponent implements OnInit {
     });
   }
 
-  private getDeviceSettings() {
+  getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
         if ((deviceSettings.deviceHwType === 'HackRF') && (deviceSettings.tx === 0)) {
