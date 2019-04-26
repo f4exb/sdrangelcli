@@ -13,6 +13,16 @@
   </mat-card-header>
   <mat-card-content>
     <table>
+      <!-- Freq, delta -->
+      <tr>
+        <td>
+          fc {{getCenterFrequency()}} kHz
+        </td>
+        <td style="width:15ch">
+          &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+        <td></td>
+      </tr>
       <!-- address, port -->
       <tr>
         <td>
@@ -50,6 +60,30 @@
             matTooltip="Delay btw UDP blocks in % of frame period"
             min=0 max=70>
           %
+        </td>
+        <td></td>
+      </tr>
+      <!--- Decim, Position, Filter chien (ouah ouah!) display -->
+      <tr>
+        <td>
+          Decim
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setLog2Decim()"
+              matTooltip="Decimation factor">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Pos
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.filterChainHash"
+            (change)="setFilterChainHash()"
+            matTooltip="Filter chain center position code"
+            min=0 max="maxFilterChainHash"
+          >
         </td>
         <td></td>
       </tr>

@@ -9,6 +9,11 @@ import { DeviceStoreService } from '../../device-store.service';
 import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 
+export interface Log2Decim {
+  value: number;
+  viewValue: number;
+}
+
 @Component({
   selector: 'app-remote-sink',
   templateUrl: './remote-sink.component.html',
@@ -25,6 +30,19 @@ export class RemoteSinkComponent implements OnInit {
   statusError = false;
   rgbTitle: number[] = [0, 0, 0];
   rgbTitleStr = 'rgb(0,0,0)';
+  log2Decims: Log2Decim[] = [
+    {value: 0, viewValue: 1},
+    {value: 1, viewValue: 2},
+    {value: 2, viewValue: 4},
+    {value: 3, viewValue: 8},
+    {value: 4, viewValue: 16},
+    {value: 5, viewValue: 32},
+    {value: 6, viewValue: 64},
+  ];
+  maxFilterChainHash: number;
+  filterChainCode: string;
+  shift: number;
+  channelDeltaFrequency: number;
   useReverseAPI: boolean;
   deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
@@ -84,6 +102,8 @@ export class RemoteSinkComponent implements OnInit {
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
+          this.setFiterChainHashMax();
+          this.calcuateFilterChain();
         } else {
           this.statusMessage = 'Not a RemoteSink channel';
           this.statusError = true;
@@ -127,6 +147,16 @@ export class RemoteSinkComponent implements OnInit {
     this.setTitle();
   }
 
+  getDeltaFrequency(): number {
+    const frequency = (this.shift * this.deviceBasebandRate) / 1000;
+    return +frequency.toFixed(3);
+  }
+
+  getCenterFrequency(): number {
+    const frequency = ((this.shift * this.deviceBasebandRate) + this.deviceCenterFrequency) / 1000;
+    return +frequency.toFixed(3);
+  }
+
   setTitle() {
     const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.title = this.settings.title;
@@ -154,6 +184,20 @@ export class RemoteSinkComponent implements OnInit {
   setTxDelay() {
     const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.txDelay = this.settings.txDelay;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setLog2Decim() {
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
+    newSettings.log2Decim = this.settings.log2Decim;
+    this.setFiterChainHashMax();
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFilterChainHash() {
+    const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
+    newSettings.filterChainHash = this.settings.filterChainHash;
+    this.calcuateFilterChain();
     this.setDeviceSettings(newSettings);
   }
 
@@ -185,5 +229,49 @@ export class RemoteSinkComponent implements OnInit {
     const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
+  }
+
+  private setFiterChainHashMax() {
+    this.maxFilterChainHash = Math.pow(3, this.settings.log2Decim) - 1;
+  }
+
+  private calcuateFilterChain() {
+    if (this.settings.log2Decim === 0) {
+      this.filterChainCode = 'C';
+      this.shift = 0.0;
+    }
+
+    const u = this.settings.filterChainHash;
+    const s = u.toString(3);
+    let ix = this.settings.log2Decim;
+    this.filterChainCode = '';
+    this.shift = 0.0;
+    const d = Math.pow(2, this.settings.log2Decim);
+    let shift_stage = 0.5 / d;
+
+    for (let i = 0; i < s.length; i++) {
+      const c = s.charAt(i);
+      let r: number;
+      if (c === '0') {
+        this.filterChainCode += 'L';
+        r = -1;
+      } else if (c === '1') {
+        this.filterChainCode += 'C';
+        r = 0;
+      } else if (c === '2') {
+        this.filterChainCode += 'H';
+        r = 1;
+      }
+      this.shift += r * shift_stage;
+      shift_stage *= 2;
+      ix--;
+    }
+
+    // continue shift with leading zeroes. ix has the number of leading zeroes.
+    for (let i = 0; i < ix; i++) {
+      this.filterChainCode = 'L' + this.filterChainCode;
+      this.shift -= shift_stage;
+      shift_stage *= 2;
+    }
   }
 }
