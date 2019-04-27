@@ -157,6 +157,15 @@ export class RemoteSinkComponent implements OnInit {
     return +frequency.toFixed(3);
   }
 
+  getFilterChainCode(): string {
+    return this.filterChainCode;
+  }
+
+  getBandwidth(): number {
+    const bw = (this.deviceBasebandRate / Math.pow(2, this.settings.log2Decim)) / 1000;
+    return +bw.toFixed(3);
+  }
+
   setTitle() {
     const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
     newSettings.title = this.settings.title;
@@ -242,12 +251,16 @@ export class RemoteSinkComponent implements OnInit {
     }
 
     const u = this.settings.filterChainHash;
-    const s = u.toString(3);
-    let ix = this.settings.log2Decim;
+    let s = u.toString(3);
     this.filterChainCode = '';
     this.shift = 0.0;
     const d = Math.pow(2, this.settings.log2Decim);
-    let shift_stage = 0.5 / d;
+    let shift_stage = 0.25;
+
+    // Set leading zeros
+    while (s.length < this.settings.log2Decim) {
+      s = '0' + s;
+    }
 
     for (let i = 0; i < s.length; i++) {
       const c = s.charAt(i);
@@ -263,15 +276,7 @@ export class RemoteSinkComponent implements OnInit {
         r = 1;
       }
       this.shift += r * shift_stage;
-      shift_stage *= 2;
-      ix--;
-    }
-
-    // continue shift with leading zeroes. ix has the number of leading zeroes.
-    for (let i = 0; i < ix; i++) {
-      this.filterChainCode = 'L' + this.filterChainCode;
-      this.shift -= shift_stage;
-      shift_stage *= 2;
+      shift_stage /= 2;
     }
   }
 }

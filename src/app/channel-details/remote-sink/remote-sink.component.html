@@ -13,15 +13,17 @@
   </mat-card-header>
   <mat-card-content>
     <table>
-      <!-- Freq, delta -->
+      <!-- Freq, delta, bandwidth -->
       <tr>
         <td>
-          fc {{getCenterFrequency()}} kHz
+          <span matTooltip="Center absolute frequency">fc {{getCenterFrequency()}} kHz</span>
         </td>
         <td style="width:15ch">
-          &#x394;f {{getDeltaFrequency()}} kHz
+          <span matTooltip="Center frequency shift">&#x394;f {{getDeltaFrequency()}} kHz</span>
         </td>
-        <td></td>
+        <td>
+            <span matTooltip="Bandwidth (kHz)">BW {{getBandwidth()}} kHz</span>
+        </td>
       </tr>
       <!-- address, port -->
       <tr>
@@ -53,8 +55,8 @@
             min=0 max=32>
         </td>
         <td>
-          UDP delay
-          <input type="number" class="port-input"
+          UDP dly
+          <input type="number" class="index-input"
             [(ngModel)]="settings.txDelay"
             (change)="setTxDelay()"
             matTooltip="Delay btw UDP blocks in % of frame period"
@@ -85,7 +87,9 @@
             min=0 max="maxFilterChainHash"
           >
         </td>
-        <td></td>
+        <td>
+          <span matTooltip="Half-band filter chain code">HBF {{getFilterChainCode()}}</span>
+        </td>
       </tr>
       <!--- Use reverse API, reverse API device index, reverse API channel index -->
       <tr>
