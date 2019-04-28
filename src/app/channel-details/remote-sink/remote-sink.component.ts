@@ -248,6 +248,7 @@ export class RemoteSinkComponent implements OnInit {
     if (this.settings.log2Decim === 0) {
       this.filterChainCode = 'C';
       this.shift = 0.0;
+      return;
     }
 
     const u = this.settings.filterChainHash;
