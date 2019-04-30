@@ -13,7 +13,7 @@
             <app-frequency-dial
             [frequency]="centerFreqKhz"
             [min]="noModMode ? 0 : 24000"
-            [max]="lowSampleRate ? 275000 : 1900000"
+            [max]="noModMode ? 275000 : 1900000"
             tooltip="Center frequency"
             [steps]="frequencySteps"
             (frequencyChanged)="onFrequencyUpdate($event)">
