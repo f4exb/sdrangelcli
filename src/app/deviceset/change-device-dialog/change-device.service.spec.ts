@@ -27,7 +27,7 @@ describe('ChangeDeviceService', () => {
           expect(data.devices[0].hwType).toBe('AirspyHF');
         });
         // We set the expectations for the HttpClient mock
-        const req = httpMock.expectOne(reqx => reqx.method === 'GET' && reqx.url === (sdrangelURL + '/devices?tx=0'));
+        const req = httpMock.expectOne(reqx => reqx.method === 'GET' && reqx.url === (sdrangelURL + '/devices?direction=0'));
         // Then we set the fake data to be returned by the mock
         req.flush(AVAILABLE_DEVICES_MOCK);
   }));

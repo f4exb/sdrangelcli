@@ -125,7 +125,7 @@ export class PerseusComponent implements OnInit {
   private setDeviceSettings(perseusSettings: PerseusSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'Perseus';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.perseusSettings = perseusSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

@@ -89,7 +89,7 @@ export class HackrfOutputComponent implements OnInit {
   getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'HackRF') && (deviceSettings.tx !== 0)) {
+        if ((deviceSettings.deviceHwType === 'HackRF') && (deviceSettings.direction === 1)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.hackRFOutputSettings;
@@ -118,7 +118,7 @@ export class HackrfOutputComponent implements OnInit {
   private setDeviceSettings(hackrfSettings: HackRFOutputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'HackRF';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.hackRFOutputSettings = hackrfSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

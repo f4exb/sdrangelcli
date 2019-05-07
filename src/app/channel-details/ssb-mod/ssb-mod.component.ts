@@ -217,7 +217,7 @@ export class SsbModComponent implements OnInit {
   private setDeviceSettings(ssbModSettings: SSBModSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'SSBMod';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.SSBModSettings = ssbModSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

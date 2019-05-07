@@ -131,7 +131,7 @@ export class RtlsdrComponent implements OnInit {
   private setDeviceSettings(rtlsdrSettings: RTLSDRSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'RTLSDR';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.rtlSdrSettings = rtlsdrSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

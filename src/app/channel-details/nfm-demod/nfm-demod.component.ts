@@ -204,7 +204,7 @@ export class NfmDemodComponent implements OnInit {
   private setDeviceSettings(nfmDemodSettings: NFMDemodSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'NFMDemod';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.NFMDemodSettings = nfmDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

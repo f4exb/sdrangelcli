@@ -32,7 +32,7 @@ export class DevicesetComponent implements OnInit {
   }
 
   getLabel(): string {
-    if (this.deviceSet.samplingDevice.tx === 0) {
+    if (this.deviceSet.samplingDevice.direction === 0) {
       return 'Rx' + this.deviceSet.samplingDevice.index;
     } else {
       return 'Tx' + this.deviceSet.samplingDevice.index;
@@ -53,7 +53,7 @@ export class DevicesetComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       deviceSetIndex: this.deviceSet.samplingDevice.index,
-      isTx: this.deviceSet.samplingDevice.tx !== 0
+      isTx: this.deviceSet.samplingDevice.direction !== 0
     };
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';

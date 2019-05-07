@@ -134,7 +134,7 @@ export class FcdproplusComponent implements OnInit {
   private setDeviceSettings(fcdProPlusSettings: FCDProPlusSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'FCDPro+';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.fcdProPlusSettings = fcdProPlusSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

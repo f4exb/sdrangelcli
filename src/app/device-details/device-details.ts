@@ -22,7 +22,7 @@ import { RemoteInputSettings, RemoteInputReport } from './remote-input/remote-in
 
 export interface DeviceSettings {
     deviceHwType: string;
-    tx: number;
+    direction: number;
     airspySettings?: AirspySettings;
     airspyHFSettings?: AirspyHFSettings;
     bladeRF1InputSettings?: BladeRF1InputSettings;
@@ -48,7 +48,7 @@ export interface DeviceSettings {
 
 export interface DeviceReport {
     deviceHwType: string;
-    tx: number;
+    direction: number;
     airspyReport?: AirspyReport;
     bladeRF2InputReport?: any;
     limeSdrInputReport?: LimeSDRInputReport;

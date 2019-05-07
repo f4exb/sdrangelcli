@@ -62,7 +62,7 @@ export class ChangeDeviceDialogComponent implements OnInit {
   save() {
     const device = this.availableDevices[this.selectedDeviceTypeIndex]; // selected device full data
     const newDevice: NewDevice = <NewDevice>{};
-    newDevice.tx = device.tx;
+    newDevice.direction = device.direction;
     newDevice.hwType = device.hwType;
     if (device.serial) {
       newDevice.serial = device.serial;

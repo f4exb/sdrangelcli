@@ -13,14 +13,14 @@ export class AddChannelService {
   }
 
   getAvailableChannels(url: string, forTx: boolean): Observable<AvailableChannels> {
-    const newurl = url + '/channels' + (forTx ? '?tx=1' : '?tx=0');
+    const newurl = url + '/channels' + (forTx ? '?direction=1' : '?direction=0');
     return this.http.get<AvailableChannels>(newurl);
   }
 
   addChannel(url: string, deviceSetIndex: number, isTx: boolean, channelId: string): Observable<any> {
     const newChannel = <NewChannel>{};
     newChannel.channelType = channelId;
-    newChannel.tx = isTx ? 1 : 0;
+    newChannel.direction = isTx ? 1 : 0;
     const newurl = url + '/deviceset/' + deviceSetIndex + '/channel';
     const httpOptions = {
       headers: new HttpHeaders({

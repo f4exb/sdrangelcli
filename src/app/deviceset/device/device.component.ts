@@ -49,7 +49,7 @@ export class DeviceComponent implements OnInit {
 
   getSerial(): string {
     if (this.device && this.device.serial) {
-      return '[' + String(this.device.sequence) + ':' + String(this.device.streamIndex) + '] ' + this.device.serial;
+      return '[' + String(this.device.sequence) + ':' + String(this.device.deviceStreamIndex) + '] ' + this.device.serial;
     } else {
       return '';
     }
@@ -81,7 +81,7 @@ export class DeviceComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       deviceSetIndex: this.device.index,
-      isTx: this.device.tx !== 0
+      isTx: this.device.direction !== 0
     };
     dialogConfig.height = '230px';
     dialogConfig.width = '400px';

@@ -138,7 +138,7 @@ export class AirspyComponent implements OnInit {
   private setDeviceSettings(airspySettings: AirspySettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'Airspy';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.airspySettings = airspySettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

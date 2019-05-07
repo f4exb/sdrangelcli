@@ -142,7 +142,7 @@ export class UdpSinkComponent implements OnInit {
   private setDeviceSettings(udpSrcSettings: UDPSinkSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'UDPSink';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.UDPSinkSettings = udpSrcSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

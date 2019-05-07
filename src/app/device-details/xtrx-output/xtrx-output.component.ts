@@ -95,7 +95,7 @@ export class XtrxOutputComponent implements OnInit {
   getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'XTRX') && (deviceSettings.tx !== 0)) {
+        if ((deviceSettings.deviceHwType === 'XTRX') && (deviceSettings.direction === 1)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.xtrxOutputSettings;
@@ -129,7 +129,7 @@ export class XtrxOutputComponent implements OnInit {
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
             deviceReport => {
-              if ((deviceReport.deviceHwType === 'XTRX') && (deviceReport.tx !== 0)) {
+              if ((deviceReport.deviceHwType === 'XTRX') && (deviceReport.direction !== 0)) {
                 this.report = deviceReport.xtrxOutputReport;
               }
             }
@@ -150,7 +150,7 @@ export class XtrxOutputComponent implements OnInit {
   private setDeviceSettings(xtrxOutputSettings: XTRXOutputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'XTRX';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.xtrxOutputSettings = xtrxOutputSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

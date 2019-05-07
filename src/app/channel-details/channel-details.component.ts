@@ -37,7 +37,7 @@ export class ChannelDetailsComponent implements OnInit {
   getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        this.isTx = channelSettings.tx !== 0;
+        this.isTx = channelSettings.direction !== 0;
         if (channelSettings.channelType === 'AMDemod') {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'BFMDemod') {

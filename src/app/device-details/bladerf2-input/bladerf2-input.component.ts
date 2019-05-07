@@ -80,7 +80,7 @@ export class Bladerf2InputComponent implements OnInit {
   getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.tx === 0)) {
+        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.direction === 0)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.bladeRF2InputSettings;
@@ -104,7 +104,7 @@ export class Bladerf2InputComponent implements OnInit {
   private getDeviceReport() {
     this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.tx === 0)) {
+        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.direction === 0)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           const reportedGainModes = deviceSettings.bladeRF2InputReport['gainModes'];
@@ -133,7 +133,7 @@ export class Bladerf2InputComponent implements OnInit {
   private setDeviceSettings(bladeRF2Settings: BladeRF2InputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'BladeRF2';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.bladeRF2InputSettings = bladeRF2Settings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

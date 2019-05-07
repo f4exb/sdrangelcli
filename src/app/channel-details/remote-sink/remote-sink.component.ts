@@ -115,7 +115,7 @@ export class RemoteSinkComponent implements OnInit {
   private setDeviceSettings(remoteSinkSettings: RemoteSinkSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'RemoteSink';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.RemoteSinkSettings = remoteSinkSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

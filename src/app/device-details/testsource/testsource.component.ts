@@ -132,7 +132,7 @@ export class TestsourceComponent implements OnInit {
   private setDeviceSettings(testSourceSettings: TestSourceSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'TestSource';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.testSourceSettings = testSourceSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

@@ -158,7 +158,7 @@ export class AmModComponent implements OnInit {
   private setDeviceSettings(amModSettings: AMModSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'AMMod';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.AMModSettings = amModSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

@@ -114,7 +114,7 @@ export class RemoteSourceComponent implements OnInit {
   private setDeviceSettings(daemonSourceSettings: RemoteSourceSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'RemoteSource';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.RemoteSourceSettings = daemonSourceSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

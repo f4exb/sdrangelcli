@@ -3,7 +3,7 @@ export interface AvailableChannel {
     idURI: string;
     index: number;
     name: string;
-    tx: number;
+    direction: number;
     version: string;
 }
 
@@ -14,7 +14,7 @@ export interface AvailableChannels {
 
 export interface NewChannel {
     channelType: string;
-    tx: number;
+    direction: number;
 }
 
 export const AVAILABLE_CHANNELS_MOCK = {
@@ -25,7 +25,7 @@ export const AVAILABLE_CHANNELS_MOCK = {
         idURI: 'sdrangel.channel.amdemod',
         index: 0,
         name: 'AM Demodulator',
-        tx: 0,
+        direction: 0,
         version: '3.14.7'
       },
       {
@@ -33,7 +33,7 @@ export const AVAILABLE_CHANNELS_MOCK = {
         idURI: 'sdrangel.channel.bfm',
         index: 1,
         name: 'Broadcast FM Demodulator',
-        tx: 0,
+        direction: 0,
         version: '4.0.2'
       },
       {
@@ -41,7 +41,7 @@ export const AVAILABLE_CHANNELS_MOCK = {
         idURI: 'sdrangel.channel.dsddemod',
         index: 2,
         name: 'DSD Demodulator',
-        tx: 0,
+        direction: 0,
         version: '4.0.1'
       },
       {
@@ -49,7 +49,7 @@ export const AVAILABLE_CHANNELS_MOCK = {
         idURI: 'sdrangel.channel.nfmdemod',
         index: 3,
         name: 'NFM Demodulator',
-        tx: 0,
+        direction: 0,
         version: '3.14.6'
       },
       {
@@ -57,7 +57,7 @@ export const AVAILABLE_CHANNELS_MOCK = {
         idURI: 'sdrangel.channel.ssbdemod',
         index: 4,
         name: 'SSB Demodulator',
-        tx: 0,
+        direction: 0,
         version: '4.0.2'
       },
       {
@@ -65,7 +65,7 @@ export const AVAILABLE_CHANNELS_MOCK = {
         idURI: 'sdrangel.channel.udpsrc',
         index: 5,
         name: 'UDP Channel Source',
-        tx: 0,
+        direction: 0,
         version: '4.0.2'
       },
       {
@@ -73,7 +73,7 @@ export const AVAILABLE_CHANNELS_MOCK = {
         idURI: 'sdrangel.channel.wfmdemod',
         index: 6,
         name: 'WFM Demodulator',
-        tx: 0,
+        direction: 0,
         version: '4.0.0'
       }
     ]

@@ -1,4 +1,4 @@
-<mat-card [ngClass]="{'device-card':true, 'device-tx': device.tx !== 0, 'device-rx': device.tx === 0}">
+<mat-card [ngClass]="{'device-card':true, 'device-tx': device.direction === 1, 'device-rx': device.direction === 0}">
   <mat-card-header class="device-card-header">
     <button mat-button class="button-card"  matTooltip="Device settings" (click)="editDevice()">
       <img src="./assets/icons/edit_icon.svg" style="height:16px; width:16px"/>
@@ -17,7 +17,7 @@
     &nbsp;
     <span class="label-card">{{device.hwType}}</span>
     &nbsp;
-    <span *ngIf="hasSerial()" [ngClass]="{'serial':true, 'serial-tx': device.tx !== 0, 'serial-rx': device.tx === 0}">
+    <span *ngIf="hasSerial()" [ngClass]="{'serial':true, 'serial-tx': device.direction === 1, 'serial-rx': device.direction === 0}">
       {{getSerial()}}
     </span>
   </mat-card-header>

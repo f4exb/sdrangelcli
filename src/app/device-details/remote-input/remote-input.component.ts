@@ -42,7 +42,7 @@ export class RemoteInputComponent implements OnInit {
   getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'RemoteInput') && (deviceSettings.tx === 0)) {
+        if ((deviceSettings.deviceHwType === 'RemoteInput') && (deviceSettings.direction === 0)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.remoteInputSettings;
@@ -72,7 +72,7 @@ export class RemoteInputComponent implements OnInit {
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
             devicelReport => {
-              if ((devicelReport.deviceHwType === 'RemoteInput') && (devicelReport.tx === 0)) {
+              if ((devicelReport.deviceHwType === 'RemoteInput') && (devicelReport.direction === 0)) {
                 this.report = devicelReport.remoteInputReport;
               }
             }
@@ -93,7 +93,7 @@ export class RemoteInputComponent implements OnInit {
   private setDeviceSettings(remoteInputSettings: RemoteInputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'RemoteInput';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.remoteInputSettings = remoteInputSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

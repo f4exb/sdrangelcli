@@ -162,7 +162,7 @@ export class DsdDemodComponent implements OnInit {
   private setDeviceSettings(dsdDemodSettings: DSDDemodSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'DSDDemod';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.DSDDemodSettings = dsdDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

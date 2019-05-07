@@ -186,7 +186,7 @@ export class SsbDemodComponent implements OnInit {
   private setDeviceSettings(ssbDemodSettings: SSBDemodSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'SSBDemod';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.SSBDemodSettings = ssbDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

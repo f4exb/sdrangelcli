@@ -160,7 +160,7 @@ export class WfmDemodComponent implements OnInit {
   private setDeviceSettings(wfmDemodSettings: WFMDemodSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'WFMDemod';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.WFMDemodSettings = wfmDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

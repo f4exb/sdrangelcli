@@ -35,19 +35,19 @@ export class DeviceDetailsComponent implements OnInit {
   getDeviceSettings() {
     this.deviceSetService.getInfo(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSet => {
-        this.isTx = deviceSet.samplingDevice.tx !== 0;
+        this.isTx = deviceSet.samplingDevice.direction === 1;
         if (deviceSet.samplingDevice.hwType === 'Airspy') {
           this.router.navigate(['airspy'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'AirspyHF') {
           this.router.navigate(['airspyhf'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'BladeRF1') {
-          if (deviceSet.samplingDevice.tx === 0) {
+          if (deviceSet.samplingDevice.direction === 0) {
             this.router.navigate(['bladerf1in'], { relativeTo: this.route});
           } else {
             this.router.navigate(['bladerf1out'], { relativeTo: this.route});
           }
         } else if (deviceSet.samplingDevice.hwType === 'BladeRF2') {
-          if (deviceSet.samplingDevice.tx === 0) {
+          if (deviceSet.samplingDevice.direction === 0) {
             this.router.navigate(['bladerf2in'], { relativeTo: this.route});
           } else {
             this.router.navigate(['bladerf2out'], { relativeTo: this.route});
@@ -57,13 +57,13 @@ export class DeviceDetailsComponent implements OnInit {
         } else if (deviceSet.samplingDevice.hwType === 'FCDPro+') {
           this.router.navigate(['fcdproplus'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'HackRF') {
-          if (deviceSet.samplingDevice.tx === 0) {
+          if (deviceSet.samplingDevice.direction === 0) {
             this.router.navigate(['hackrfin'], { relativeTo: this.route});
           } else {
             this.router.navigate(['hackrfout'], { relativeTo: this.route});
           }
         } else if (deviceSet.samplingDevice.hwType === 'LimeSDR') {
-          if (deviceSet.samplingDevice.tx === 0) {
+          if (deviceSet.samplingDevice.direction === 0) {
             this.router.navigate(['limesdrin'], { relativeTo: this.route});
           } else {
             this.router.navigate(['limesdrout'], { relativeTo: this.route});
@@ -71,7 +71,7 @@ export class DeviceDetailsComponent implements OnInit {
         } else if (deviceSet.samplingDevice.hwType === 'Perseus') {
           this.router.navigate(['perseus'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'PlutoSDR') {
-          if (deviceSet.samplingDevice.tx === 0) {
+          if (deviceSet.samplingDevice.direction === 0) {
             this.router.navigate(['plutosdrin'], { relativeTo: this.route});
           } else {
             this.router.navigate(['plutosdrout'], { relativeTo: this.route});
@@ -83,7 +83,7 @@ export class DeviceDetailsComponent implements OnInit {
         } else if (deviceSet.samplingDevice.hwType === 'TestSource') {
           this.router.navigate(['testsource'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'XTRX') {
-          if (deviceSet.samplingDevice.tx === 0) {
+          if (deviceSet.samplingDevice.direction === 0) {
             this.router.navigate(['xtrxin'], { relativeTo: this.route});
           } else {
             this.router.navigate(['xtrxout'], { relativeTo: this.route});

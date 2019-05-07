@@ -182,7 +182,7 @@ export class SdrplayComponent implements OnInit {
   private setDeviceSettings(sdrPlaySettings: SDRplaySettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'SDRplay1';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.sdrPlaySettings = sdrPlaySettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

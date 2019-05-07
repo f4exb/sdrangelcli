@@ -61,7 +61,7 @@ export class Bladerf2OutputComponent implements OnInit {
   getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.tx !== 0)) {
+        if ((deviceSettings.deviceHwType === 'BladeRF2') && (deviceSettings.direction === 1)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.bladeRF2OutputSettings;
@@ -91,7 +91,7 @@ export class Bladerf2OutputComponent implements OnInit {
   private setDeviceSettings(bladeRF2Settings: BladeRF2OutputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'BladeRF2';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.bladeRF2OutputSettings = bladeRF2Settings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

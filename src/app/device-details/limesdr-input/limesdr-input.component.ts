@@ -100,7 +100,7 @@ export class LimesdrInputComponent implements OnInit {
   getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'LimeSDR') && (deviceSettings.tx === 0)) {
+        if ((deviceSettings.deviceHwType === 'LimeSDR') && (deviceSettings.direction === 0)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.limeSdrInputSettings;
@@ -132,7 +132,7 @@ export class LimesdrInputComponent implements OnInit {
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
             devicelReport => {
-              if ((devicelReport.deviceHwType === 'LimeSDR') && (devicelReport.tx === 0)) {
+              if ((devicelReport.deviceHwType === 'LimeSDR') && (devicelReport.direction === 0)) {
                 this.report = devicelReport.limeSdrInputReport;
               }
             }
@@ -161,7 +161,7 @@ export class LimesdrInputComponent implements OnInit {
   private setDeviceSettings(limeSDRSettings: LimeSDRInputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'LimeSDR';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.limeSdrInputSettings = limeSDRSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

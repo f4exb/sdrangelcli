@@ -180,7 +180,7 @@ export class FreeDVModComponent implements OnInit {
   private setDeviceSettings(freeDVModSettings: FreeDVModSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'FreeDVMod';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.FreeDVModSettings = freeDVModSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

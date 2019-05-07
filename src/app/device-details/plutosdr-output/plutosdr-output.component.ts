@@ -87,7 +87,7 @@ export class PlutosdrOutputComponent implements OnInit {
   getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'PlutoSDR') && (deviceSettings.tx === 1)) {
+        if ((deviceSettings.deviceHwType === 'PlutoSDR') && (deviceSettings.direction === 1)) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.plutoSdrOutputSettings;
@@ -114,7 +114,7 @@ export class PlutosdrOutputComponent implements OnInit {
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
             devicelReport => {
-              if ((devicelReport.deviceHwType === 'PlutoSDR') && (devicelReport.tx === 1)) {
+              if ((devicelReport.deviceHwType === 'PlutoSDR') && (devicelReport.direction === 1)) {
                 this.report = devicelReport.plutoSdrOutputReport;
               }
             }
@@ -143,7 +143,7 @@ export class PlutosdrOutputComponent implements OnInit {
   private setDeviceSettings(plutoSDRSettings: PlutoSDROutputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'PlutoSDR';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.plutoSdrOutputSettings = plutoSDRSettings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

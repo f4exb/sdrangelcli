@@ -17,7 +17,7 @@ import { FreeDVDemodSettings, FreeDVDemodReport } from './freedv-demod/freedv-de
 
 export interface ChannelSettings {
     channelType: string;
-    tx: number;
+    direction: number;
     AMDemodSettings?: AMDemodSettings;
     BFMDemodSettings?: BFMDemodSettings;
     FreeDVDemodSettings?: FreeDVDemodSettings;
@@ -53,5 +53,5 @@ export interface ChannelReport {
     UDPSinkReport?: UDPSinkReport;
     WFMModReport?: WFMModReport;
     channelType: string;
-    tx: number;
+    direction: number;
 }

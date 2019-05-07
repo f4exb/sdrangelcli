@@ -158,7 +158,7 @@ export class BfmDemodComponent implements OnInit {
   private setDeviceSettings(bfmDemodSettings: BFMDemodSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'BFMDemod';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.BFMDemodSettings = bfmDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

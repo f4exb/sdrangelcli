@@ -165,7 +165,7 @@ export class FreeDVDemodComponent implements OnInit {
   private setDeviceSettings(freeDVDemodSettings: FreeDVDemodSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
     settings.channelType = 'FreeDVDemod';
-    settings.tx = 0,
+    settings.direction = 0,
     settings.FreeDVDemodSettings = freeDVDemodSettings;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {

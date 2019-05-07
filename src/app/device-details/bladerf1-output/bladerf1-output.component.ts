@@ -101,7 +101,7 @@ export class Bladerf1OutputComponent implements OnInit {
   getDeviceSettings() {
     this.devicedetailsService.getSettings(this.sdrangelURL, this.deviceIndex).subscribe(
       deviceSettings => {
-        if ((deviceSettings.deviceHwType === 'BladeRF1') && deviceSettings.tx !== 0) {
+        if ((deviceSettings.deviceHwType === 'BladeRF1') && deviceSettings.direction === 1) {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.bladeRF1OutputSettings;
@@ -140,7 +140,7 @@ export class Bladerf1OutputComponent implements OnInit {
   private setDeviceSettings(bladeRF1Settings: BladeRF1OutputSettings) {
     const settings: DeviceSettings = <DeviceSettings>{};
     settings.deviceHwType = 'BladeRF1';
-    settings.tx = 1,
+    settings.direction = 1,
     settings.bladeRF1OutputSettings = bladeRF1Settings;
     this.devicedetailsService.setSettings(this.sdrangelURL, this.deviceIndex, settings).subscribe(
       res => {

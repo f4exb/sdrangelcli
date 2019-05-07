@@ -27,7 +27,7 @@ describe('AddChannelService', () => {
           expect(data.channels[0].id).toBe('AMDemod');
         });
         // We set the expectations for the HttpClient mock
-        const req = httpMock.expectOne(reqx => reqx.method === 'GET' && reqx.url === (sdrangelURL + '/channels?tx=0'));
+        const req = httpMock.expectOne(reqx => reqx.method === 'GET' && reqx.url === (sdrangelURL + '/channels?direction=0'));
         // Then we set the fake data to be returned by the mock
         req.flush(AVAILABLE_CHANNELS_MOCK);
   }));
