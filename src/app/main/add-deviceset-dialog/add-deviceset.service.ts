@@ -17,7 +17,7 @@ export class AddDevicesetService {
         'Content-Type':  'application/json'
       })
     };
-    const newurl = url + (isTx ? '?tx=1' : '?tx=0');
+    const newurl = url + (isTx ? '?direction=1' : '?direction=0');
     return this.http.post(newurl, httpOptions);
   }
 }
