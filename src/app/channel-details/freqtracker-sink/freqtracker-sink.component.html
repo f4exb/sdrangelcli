@@ -1,0 +1,201 @@
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-rx">
+    <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <app-channel-header class="channel-header-comp" channelType="FreqTracker"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
+    </app-channel-header>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Row 1: channel monitor (optional) -->
+      <tr *ngIf="monitor">
+        <td colspan="4">
+          <app-channel-monitor [value]=this.report.channelPowerDB
+            [min]="-120"
+            [max]="0"
+            [squelch]="this.report.squelch !== 0">
+          </app-channel-monitor>
+        </td>
+      </tr>
+      <!-- Row 2: Frequency dial -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+      </tr>
+      <!-- Row 3: Decimation, rf bandwidth, squelch, squelch gate -->
+      <tr>
+        <td>
+          &#xf7;
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Decim"
+              (selectionChange)="setDecim()"
+              matTooltip="Channel decimation">
+            <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+              {{log2Decim.viewValue}}
+            </mat-option>
+          </mat-select>
+          <span matTooltip="Channel bandwidth">
+              {{getChannelBaseband()}} kHz
+          </span>
+        </td>
+        <td>
+            RFBW
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="rfBandwidthKhz"
+                (change)="setRFBandwidth()"
+                matTooltip="RF Bandwidth"
+                min=1 [max]=rfMaxBandwidthKhz step=0.1>
+            kHz
+        </td>
+        <td>
+          Squelch
+          <input type="number" class="squelch-input"
+              [(ngModel)]="settings.squelch"
+              (change)="setSquelch()"
+              matTooltip="Squelch level (dB)"
+              min=-100 max=0>
+          dB
+        </td>
+        <td>
+          Gate
+          <input type="number" class="squelch-input"
+              [(ngModel)]="squelchGateMs"
+              (change)="setSquelchGate()"
+              matTooltip="Squelch gate (ms)"
+              min=0 max=990 step=10>
+          ms
+        </td>
+      </tr>
+      <!-- Row 4: Tracking, Tracking type, PLL order, alpha factor -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="tracking" (change)="setTracking()" matTooltip="Tracking on/off">
+            Track
+          </mat-checkbox>
+        </td>
+        <td>
+          Type
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+              [(value)]="settings.trackerType"
+              (selectionChange)="setTrackerType()"
+              matTooltip="Tracker type">
+            <mat-option *ngFor="let trackerType of trackerTypes" [value]="trackerType.value">
+              {{trackerType.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          PLL
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+              [(value)]="settings.pllPskOrder"
+              (selectionChange)="setPSKOrder()"
+              matTooltip="PLL PSK order">
+            <mat-option *ngFor="let pskOrder of pskOrders" [value]="pskOrder.value">
+              {{pskOrder.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          &alpha;
+          <input type="number" class="alpha-input"
+              [(ngModel)]="alphaEMARounded"
+              (change)="setAlpha()"
+              matTooltip="Alpha factor for delta frequency Exponential Moving Average (EMA)"
+              min=0.01 max=1 step=0.01>
+        </td>
+      </tr>
+      <!-- Row 5: RRC, RRC rolloff -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="rrc" (change)="setRRC()" matTooltip="RRC filter on/off">
+            RRC Filter
+          </mat-checkbox>
+        </td>
+        <td>
+          Rolloff
+          <input type="number" class="squelch-input"
+              [(ngModel)]="settings.rrcRolloff"
+              (change)="setRRCRolloff()"
+              matTooltip="Roll-off factor for RRC filter (%)"
+              min=0 max=100 step=1>
+          %
+        </td>
+        <td colspan="2">
+        </td>
+      </tr>
+      <!--- Use reverse API, reverse API device index, reverse API channel index -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+            Reverse API
+          </mat-checkbox>
+        </td>
+        <td>
+          Device
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.reverseAPIDeviceIndex"
+            (change)="setReverseAPIDeviceIndex()"
+            matTooltip="Reverse API device index"
+            min=0>
+        </td>
+        <td>
+          Channel
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.reverseAPIChannelIndex"
+            (change)="setReverseAPIChannelIndex()"
+            matTooltip="Reverse API channel index"
+            min=0>
+        </td>
+        <td></td>
+      </tr>
+      <!--- reverse API address, reverse API port -->
+      <tr>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.reverseAPIAddress"
+            (change)="setReverseAPIAddress()"
+            matTooltip="Reverse API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.reverseAPIPort"
+            (change)="setReverseAPIPort()"
+            matTooltip="Reverse API port"
+            min=1024 max=65535>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- Row 6: empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>
