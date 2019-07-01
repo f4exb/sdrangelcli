@@ -46,6 +46,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['freedvdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'FreqTracker') {
           this.router.navigate(['freqtracker'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'LocalSink') {
+          this.router.navigate(['localsink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'RemoteSink') {
           this.router.navigate(['remotesink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'RemoteSource') {

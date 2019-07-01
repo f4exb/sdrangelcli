@@ -15,6 +15,7 @@ import { RemoteSinkSettings } from './remote-sink/remote-sink';
 import { FreeDVModSettings, FreeDVModReport } from './freedv-mod/freedv-mod';
 import { FreeDVDemodSettings, FreeDVDemodReport } from './freedv-demod/freedv-demod';
 import { FreqTrackerSettings, FreqTrackerReport } from './freqtracker-sink/freqtracker-sink';
+import { LocalSinkSettings } from './local-sink/local-sink';
 
 export interface ChannelSettings {
     channelType: string;
@@ -24,6 +25,7 @@ export interface ChannelSettings {
     FreeDVDemodSettings?: FreeDVDemodSettings;
     FreeDVModSettings?: FreeDVModSettings;
     FreqTrackerSettings?: FreqTrackerSettings;
+    LocalSinkSettings?: LocalSinkSettings;
     NFMDemodSettings?: NFMDemodSettings;
     SSBDemodSettings?: SSBDemodSettings;
     DSDDemodSettings?: DSDDemodSettings;

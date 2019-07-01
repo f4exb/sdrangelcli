@@ -19,6 +19,7 @@ import { RemoteSinkComponent } from './remote-sink/remote-sink.component';
 import { FreeDVModComponent } from './freedv-mod/freedv-mod.component';
 import { FreeDVDemodComponent } from './freedv-demod/freedv-demod.component';
 import { FreqtrackerSinkComponent } from './freqtracker-sink/freqtracker-sink.component';
+import { LocalSinkComponent } from './local-sink/local-sink.component';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,10 @@ export const routes: Routes = [
       {
         path: 'freqtracker',
         component: FreqtrackerSinkComponent
+      },
+      {
+        path: 'localsink',
+        component: LocalSinkComponent
       },
       {
         path: 'remotesink',

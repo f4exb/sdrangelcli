@@ -27,6 +27,7 @@ import { RemoteSinkComponent } from './remote-sink/remote-sink.component';
 import { FreeDVModComponent } from './freedv-mod/freedv-mod.component';
 import { FreeDVDemodComponent } from './freedv-demod/freedv-demod.component';
 import { FreqtrackerSinkComponent } from './freqtracker-sink/freqtracker-sink.component';
+import { LocalSinkComponent } from './local-sink/local-sink.component';
 
 @NgModule({
   imports: [
@@ -64,7 +65,8 @@ import { FreqtrackerSinkComponent } from './freqtracker-sink/freqtracker-sink.co
     RemoteSinkComponent,
     FreeDVModComponent,
     FreeDVDemodComponent,
-    FreqtrackerSinkComponent
+    FreqtrackerSinkComponent,
+    LocalSinkComponent
   ]
 })
 export class ChannelDetailsModule { }
