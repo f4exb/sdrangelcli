@@ -1,0 +1,116 @@
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-tx">
+    <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <app-channel-header class="channel-header-comp" channelType="LocalSource"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
+    </app-channel-header>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Row 1: Center frequency, shift, local device -->
+      <tr>
+        <td>
+          Fc
+          <span matTooltip="Center frequency">
+            {{channelCenterFrequencyKhz}} kHz
+          </span>
+        </td>
+        <td style="width:15ch">
+            &#x394;f {{calculateFrequencyOffset()}} kHz
+        </td>
+        <td>
+          Local device
+          <input type="number" class="index-input"
+          [(ngModel)]="settings.localDeviceIndex"
+          (change)="setLocalDeviceIndex()"
+          matTooltip="Local device deviceset index"
+          min=0 max=9 step=1>
+        </td>
+      </tr>
+      <!-- Row 3: Interpolation, filter stages -->
+      <tr>
+        <td>
+          &#xf7;
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+            [(value)]="settings.log2Interp"
+            (selectionChange)="setInterp()"
+            matTooltip="Channel interpolation">
+            <mat-option *ngFor="let log2Interp of log2Interps" [value]="log2Interp.value">
+              {{log2Interp.viewValue}}
+            </mat-option>
+          </mat-select>
+          <span matTooltip="Channel bandwidth">
+            {{getChannelBaseband()}} kHz
+          </span>
+        </td>
+        <td colspan="2">
+          Filter hash
+          <input type="number" class="filter-input"
+              [(ngModel)]="settings.filterChainHash"
+              (change)="setFilterChainHash()"
+              matTooltip="Filter chain hash number"
+              min=0 [max]="getMaxFilterChainHash()" step=1>
+          <span matTooltip="Filter chain stages left to right (L: low, C: center, H: high)">
+            {{getFilterChainString()}}
+          </span>
+        </td>
+      </tr>
+      <!--- Use reverse API, reverse API device index, reverse API channel index -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+            Reverse API
+          </mat-checkbox>
+        </td>
+        <td>
+          Device
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.reverseAPIDeviceIndex"
+            (change)="setReverseAPIDeviceIndex()"
+            matTooltip="Reverse API device index"
+            min=0>
+        </td>
+        <td>
+          Channel
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.reverseAPIChannelIndex"
+            (change)="setReverseAPIChannelIndex()"
+            matTooltip="Reverse API channel index"
+            min=0>
+        </td>
+      </tr>
+      <!--- reverse API address, reverse API port -->
+      <tr>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.reverseAPIAddress"
+            (change)="setReverseAPIAddress()"
+            matTooltip="Reverse API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.reverseAPIPort"
+            (change)="setReverseAPIPort()"
+            matTooltip="Reverse API port"
+            min=1024 max=65535>
+        </td>
+        <td></td>
+      </tr>
+      <!-- Row 6: empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

@@ -40,4 +40,68 @@ export class Utils {
     static delayObservable(ms: number): Observable<any> {
         return of({}).pipe(delay(ms));
     }
+
+    static getHBFilterChainShiftFactor(log2: number, chainHash: number): number {
+      if (log2 === 0) {
+        return 0;
+      }
+
+      const s = 3 ** log2;
+      let u = chainHash % s; // scale
+
+      let ix = log2;
+      let shift = 0;
+      let shift_stage = 1 / (2 ** (log2 + 1));
+
+      // base3 conversion
+      do {
+          const r = u % 3;
+          shift += (r - 1) * shift_stage;
+          shift_stage *= 2;
+          u = Math.floor(u / 3); // Euclidean division
+          ix--;
+      } while (u);
+
+      // continue shift with leading zeroes. ix has the number of leading zeroes.
+      for (let i = 0; i < ix; i++) {
+          shift -= shift_stage;
+          shift_stage *= 2;
+      }
+
+      return shift;
+    }
+
+    static convertHBFilterChainToString(log2: number, chainHash: number): string {
+      if (log2 === 0) {
+          return 'C';
+      }
+
+      const s = 3 ** log2;
+      let u = chainHash % s; // scale
+      let chainString = '';
+      let ix = log2;
+
+      // base3 conversion
+      do {
+          const r = u % 3;
+
+          if (r === 0) {
+              chainString = 'L' + chainString;
+          } else if (r === 1) {
+              chainString = 'C' + chainString;
+          } else if (r === 2) {
+              chainString = 'H' + chainString;
+          }
+
+          u = Math.floor(u / 3); // Euclidean division
+          ix--;
+      } while (u);
+
+      // continue shift with leading zeroes. ix has the number of leading zeroes.
+      for (let i = 0; i < ix; i++) {
+          chainString = 'L' + chainString;
+      }
+
+      return chainString;
+    }
 }
