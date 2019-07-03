@@ -23,6 +23,7 @@ import { Bladerf1OutputComponent } from './bladerf1-output/bladerf1-output.compo
 import { Bladerf2OutputComponent } from './bladerf2-output/bladerf2-output.component';
 import { SdrplayComponent } from './sdrplay/sdrplay.component';
 import { RemoteInputComponent } from './remote-input/remote-input.component';
+import { KiwisdrComponent } from './kiwisdr/kiwisdr.component';
 
 export const routes: Routes = [
   {
@@ -68,6 +69,10 @@ export const routes: Routes = [
       {
         path: 'hackrfout',
         component: HackrfOutputComponent
+      },
+      {
+        path: 'kiwisdr',
+        component: KiwisdrComponent
       },
       {
         path: 'limesdrin',

@@ -1,0 +1,98 @@
+.device-card-header {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  border: solid;
+  border-color: gray;
+  border-width: 1px;
+  margin-bottom: 5px;
+  padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.device-header-rx {
+  background-color: rgb(170,255,200);
+}
+
+.device-header-tx {
+  background-color: rgb(255, 134, 110);
+}
+
+.device-label {
+  margin-top: 5px;
+}
+
+.button-card {
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  width: 22px;
+  height: 22px;
+}
+
+.frequency-input {
+  width: 8ch;
+  margin: 1px;
+}
+
+.xfrequency-input {
+  width: 12ch;
+}
+
+.sample-rate-input {
+  width: 10ch;
+}
+
+.log2-input {
+  width: 4ch;
+}
+
+.record-file-input {
+  width: 29ch;
+  margin: 1px;
+}
+
+.address-input {
+  width: 15ch;
+}
+
+.port-input {
+  width: 7ch;
+}
+
+.gain-input {
+  width: 6ch;
+}
+
+td {
+  background-color: rgb(230, 230, 210);
+}
+
+.status-ok-card {
+  border: outset;
+  border-color: rgb(134, 255, 110);
+  border-width: 2px;
+  margin-bottom: 5px;
+  padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.status-ko-card {
+  border: solid;
+  border-color: rgb(255, 134, 110);
+  border-width: 2px;
+  padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+::ng-deep .mat-card {
+  /* CSS styles go here */
+  padding: 0px; /* for example to remove the margin */
+}
+
+::ng-deep  .mat-checkbox-inner-container {
+  height: 14px!important;
+  width: 14px!important;
+  background-color: white;
+}
+
+::ng-deep  .mat-checkbox-label {
+  line-height: 16px!important;
+}

@@ -62,6 +62,8 @@ export class DeviceDetailsComponent implements OnInit {
           } else {
             this.router.navigate(['hackrfout'], { relativeTo: this.route});
           }
+        } else if (deviceSet.samplingDevice.hwType === 'KiwiSDR') {
+          this.router.navigate(['kiwisdr'], { relativeTo: this.route});
         } else if (deviceSet.samplingDevice.hwType === 'LimeSDR') {
           if (deviceSet.samplingDevice.direction === 0) {
             this.router.navigate(['limesdrin'], { relativeTo: this.route});

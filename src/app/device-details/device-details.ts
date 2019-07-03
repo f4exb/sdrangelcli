@@ -19,6 +19,7 @@ import { BladeRF1OutputSettings } from './bladerf1-output/bladerf1-output';
 import { BladeRF2OutputSettings } from './bladerf2-output/bladerf2-output';
 import { SDRplaySettings } from './sdrplay/sdrplay';
 import { RemoteInputSettings, RemoteInputReport } from './remote-input/remote-input';
+import { KiwiSDRSettings, KiwiSDRReport } from './kiwisdr/kiwisdr';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -33,6 +34,7 @@ export interface DeviceSettings {
     fcdProPlusSettings?: FCDProPlusSettings;
     hackRFInputSettings?: HackRFInputSettings;
     hackRFOutputSettings?: HackRFOutputSettings;
+    kiwiSDRSettings?: KiwiSDRSettings;
     limeSdrInputSettings?: LimeSDRInputSettings;
     limeSdrOutputSettings?: LimeSDROutputSettings;
     perseusSettings?: PerseusSettings;
@@ -51,6 +53,7 @@ export interface DeviceReport {
     direction: number;
     airspyReport?: AirspyReport;
     bladeRF2InputReport?: any;
+    kiwiSDRReport?: KiwiSDRReport;
     limeSdrInputReport?: LimeSDRInputReport;
     limeSdrOutputReport?: LimeSDROutputReport;
     perseusReport?: PerseusReport;
