@@ -6,6 +6,7 @@ import { DeviceDetailsService } from '../device-details.service';
 import { SdrangelUrlService } from 'src/app/sdrangel-url.service';
 import { DeviceStoreService, DeviceStorage } from 'src/app/device-store.service';
 import { DeviceSettings } from '../device-details';
+import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from 'src/app/common-components/frequency-dial/frequency-dial.component';
 
 @Component({
   selector: 'app-remote-output',
@@ -15,10 +16,13 @@ import { DeviceSettings } from '../device-details';
 export class RemoteOutputComponent implements OnInit {
   statusMessage: string;
   statusError = false;
+  frequencySteps: FrequencyStep[] = FREQUENCY_STEP_DEVICE_DEFAULTS;
   deviceIndex: number;
   sdrangelURL: string;
   report: RemoteOutputReport = REMOTE_OUTPUT_REPORT_DEFAULT;
   settings: RemoteOutputSettings = REMOTE_OUTPUT_SETTINGS_DEFAULT;
+  centerFreqKhz: number;
+  txDelayPercent: number;
   useReverseAPI: boolean;
   deviceReportSubscription: Subscription;
   monitor: boolean;
@@ -43,7 +47,9 @@ export class RemoteOutputComponent implements OnInit {
         if ((deviceSettings.deviceHwType === 'RemoteOutput') && (deviceSettings.direction === 1)) {
           this.statusMessage = 'OK';
           this.statusError = false;
-          this.settings = deviceSettings.remoteInputSettings;
+          this.settings = deviceSettings.remoteOutputSettings;
+          this.centerFreqKhz = this.settings.centerFrequency / 1000;
+          this.txDelayPercent = Math.round(this.settings.txDelay * 100);
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
           this.feedDeviceStore();
         } else {
@@ -68,7 +74,7 @@ export class RemoteOutputComponent implements OnInit {
         _ => {
           this.devicedetailsService.getReport(this.sdrangelURL, this.deviceIndex).subscribe(
             devicelReport => {
-              if ((devicelReport.deviceHwType === 'RemoteInput') && (devicelReport.direction === 0)) {
+              if ((devicelReport.deviceHwType === 'RemoteOutput') && (devicelReport.direction === 1)) {
                 this.report = devicelReport.remoteOutputReport;
               }
             }
@@ -107,6 +113,29 @@ export class RemoteOutputComponent implements OnInit {
 
   getSampleRate(): number {
     return this.settings.sampleRate;
+  }
+
+  setSampleRate() {
+    const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
+    newSettings.sampleRate = this.settings.sampleRate;
+    this.setDeviceSettings(newSettings);
+  }
+
+  onFrequencyUpdate(frequency: number) {
+    this.centerFreqKhz = frequency;
+    this.setCenterFrequency();
+  }
+
+  setCenterFrequency() {
+    const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
+    newSettings.centerFrequency = this.centerFreqKhz * 1000;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setTxDelay() {
+    const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
+    newSettings.txDelay = this.txDelayPercent / 100;
+    this.setDeviceSettings(newSettings);
   }
 
   setRemoteAPIAddress() {

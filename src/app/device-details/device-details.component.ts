@@ -92,6 +92,8 @@ export class DeviceDetailsComponent implements OnInit {
           }
         } else if (deviceSet.samplingDevice.hwType === 'RemoteInput') {
           this.router.navigate(['remotein'], { relativeTo: this.route});
+        } else if (deviceSet.samplingDevice.hwType === 'RemoteOutput') {
+          this.router.navigate(['remoteout'], { relativeTo: this.route});
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});
         }

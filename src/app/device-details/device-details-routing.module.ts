@@ -24,6 +24,7 @@ import { Bladerf2OutputComponent } from './bladerf2-output/bladerf2-output.compo
 import { SdrplayComponent } from './sdrplay/sdrplay.component';
 import { RemoteInputComponent } from './remote-input/remote-input.component';
 import { KiwisdrComponent } from './kiwisdr/kiwisdr.component';
+import { RemoteOutputComponent } from './remote-output/remote-output.component';
 
 export const routes: Routes = [
   {
@@ -117,6 +118,10 @@ export const routes: Routes = [
       {
         path: 'remotein',
         component: RemoteInputComponent
+      },
+      {
+        path: 'remoteout',
+        component: RemoteOutputComponent
       },
       {
         path: 'notsupported',
