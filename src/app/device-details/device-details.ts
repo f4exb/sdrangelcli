@@ -20,6 +20,7 @@ import { BladeRF2OutputSettings } from './bladerf2-output/bladerf2-output';
 import { SDRplaySettings } from './sdrplay/sdrplay';
 import { RemoteInputSettings, RemoteInputReport } from './remote-input/remote-input';
 import { KiwiSDRSettings, KiwiSDRReport } from './kiwisdr/kiwisdr';
+import { RemoteOutputSettings, RemoteOutputReport } from './remote-output/remote-output';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -41,6 +42,7 @@ export interface DeviceSettings {
     plutoSdrInputSettings?: PlutoSDRInputSettings;
     plutoSdrOutputSettings?: PlutoSDROutputSettings;
     remoteInputSettings?: RemoteInputSettings;
+    remoteOutputSettings?: RemoteOutputSettings;
     rtlSdrSettings?: RTLSDRSettings;
     sdrPlaySettings?: SDRplaySettings;
     testSourceSettings?: TestSourceSettings;
@@ -60,6 +62,7 @@ export interface DeviceReport {
     plutoSdrInputReport?: PlutoSDRInputReport;
     plutoSdrOutputReport?: PlutoSDROutputReport;
     remoteInputReport?: RemoteInputReport;
+    remoteOutputReport?: RemoteOutputReport;
     rtlSdrReport?: any;
     sdrPlayReport?: any;
     xtrxInputReport?: XTRXInputReport;

@@ -28,6 +28,7 @@ import { Bladerf2OutputComponent } from './bladerf2-output/bladerf2-output.compo
 import { SdrplayComponent } from './sdrplay/sdrplay.component';
 import { RemoteInputComponent } from './remote-input/remote-input.component';
 import { KiwisdrComponent } from './kiwisdr/kiwisdr.component';
+import { RemoteOutputComponent } from './remote-output/remote-output.component';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { KiwisdrComponent } from './kiwisdr/kiwisdr.component';
     Bladerf2OutputComponent,
     SdrplayComponent,
     RemoteInputComponent,
-    KiwisdrComponent
+    KiwisdrComponent,
+    RemoteOutputComponent
   ]
 })
 export class DeviceDetailsModule { }
