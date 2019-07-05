@@ -169,6 +169,12 @@ export class LocalSinkComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setLocalDeviceIndex() {
+    const newSettings: LocalSinkSettings = <LocalSinkSettings>{};
+    newSettings.localDeviceIndex = this.settings.localDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
   setUseReverseAPI() {
     const newSettings: LocalSinkSettings = <LocalSinkSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;

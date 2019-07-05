@@ -169,6 +169,12 @@ export class LocalSourceComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setLocalDeviceIndex() {
+    const newSettings: LocalSourceSettings = <LocalSourceSettings>{};
+    newSettings.localDeviceIndex = this.settings.localDeviceIndex;
+    this.setDeviceSettings(newSettings);
+  }
+
   setUseReverseAPI() {
     const newSettings: LocalSourceSettings = <LocalSourceSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
