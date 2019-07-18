@@ -112,78 +112,9 @@
           </mat-checkbox>
         </td>
       </tr>
-      <!-- Row 5: Mute, AGC, AGC Order, AttacK  -->
+      <!-- Source, Tone, Mute, AGC  -->
       <tr>
         <td>
-          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Channel mute">
-            Mute
-          </mat-checkbox>
-        </td>
-        <td>
-          <mat-checkbox color="primary" [(ngModel)]="agc" (change)="setAGC()" matTooltip="AGC on/off">
-            AGC
-          </mat-checkbox>
-        </td>
-        <td>
-          Order
-          <input type="number" class="volume-input"
-            [(ngModel)]="settings.agcOrder"
-            (change)="setAGCOrder()"
-            matTooltip="AGC volume order in fraction of maximum amplitude"
-            min=0 max=1
-            step="0.01">
-        </td>
-        <td>
-          Att
-          <mat-select style="width:7ch; background-color: white; margin: 1px;"
-              [(value)]="agcTimeMs"
-              (selectionChange)="setAGCTime()"
-              matTooltip="Compressor time constant (attack) in ms">
-            <mat-option *ngFor="let agcTimeMs of agcTimeMss" [value]="agcTimeMs.value">
-              {{agcTimeMs.viewValue}}
-            </mat-option>
-          </mat-select>
-          ms
-        </td>
-      </tr>
-      <!-- Row 5: Squalch, Threhold, Gate, Delay, xxx  -->
-      <tr>
-        <td>
-          <mat-checkbox color="primary" [(ngModel)]="agcThreshold" (change)="setSquelch()" matTooltip="Squelch on/off">
-            Squelch
-          </mat-checkbox>
-        </td>
-        <td>
-          Thr
-          <input type="number" class="volume-input"
-            [(ngModel)]="settings.agcThreshold"
-            (change)="setSquelchThreshold()"
-            matTooltip="Audio squelch threshold"
-            min=-100 max=0>
-          dB
-        </td>
-        <td>
-          Gate
-          <input type="number" class="volume-input"
-            [(ngModel)]="squelchGateMs"
-            (change)="setSquelchGate()"
-            matTooltip="Audio squelch gate"
-            min=0 max=99>
-          ms
-        </td>
-        <td>
-          Delay
-          <input type="number" class="volume-input"
-            [(ngModel)]="squelchDelayMs"
-            (change)="setSquelchDelay()"
-            matTooltip="Audio squelch delay (release)"
-            min=0 max=990 step=10>
-          ms
-        </td>
-      </tr>
-      <!-- -->
-      <tr>
-        <td colspan="2">
           Source
           <mat-select style="width:10ch; background-color: white; margin: 1px;"
               [(value)]="settings.modAFInput"
@@ -203,7 +134,16 @@
               min=0.1 max=2.5 step=0.01>
           kHz
         </td>
-        <td></td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Channel mute">
+            Mute
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="agc" (change)="setAGC()" matTooltip="AGC on/off">
+            AGC
+          </mat-checkbox>
+        </td>
       </tr>
       <!-- Audio options -->
       <tr>

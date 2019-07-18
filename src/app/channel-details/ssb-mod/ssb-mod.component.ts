@@ -82,22 +82,6 @@ export class SsbModComponent implements OnInit {
   usb: boolean;
   binaural: boolean;
   lrFlip: boolean;
-  squelchGateMs: number;
-  squelchDelayMs: number;
-  agcTimeMss: AGCTimeMs[] = [
-    { value: 1, viewValue: 1},
-    { value: 2, viewValue: 2},
-    { value: 5, viewValue: 5},
-    { value: 10, viewValue: 10},
-    { value: 20, viewValue: 20},
-    { value: 50, viewValue: 50},
-    { value: 100, viewValue: 100},
-    { value: 200, viewValue: 200},
-    { value: 500, viewValue: 500},
-    { value: 990, viewValue: 990},
-  ];
-  agcTimeMs: number;
-  agcThreshold: boolean;
   afInputs: AFInput[] = [
     { value: 0, viewValue: 'None' },
     { value: 1, viewValue: 'Tone' },
@@ -181,11 +165,6 @@ export class SsbModComponent implements OnInit {
           this.usb = this.settings.usb !== 0;
           this.binaural = this.settings.audioBinaural !== 0;
           this.lrFlip = this.settings.audioFlipChannels !== 0;
-          this.settings.agcOrder = +this.settings.agcOrder.toFixed(2);
-          this.agcTimeMs = (1000 * this.settings.agcTime) / this.getAudioSampleRate();
-          this.squelchGateMs = (1000 * this.settings.agcThresholdGate) / this.getAudioSampleRate();
-          this.squelchDelayMs = (1000 * this.settings.agcThresholdDelay) / this.getAudioSampleRate();
-          this.agcThreshold = this.settings.agcThreshold !== 0;
           this.toneFrequencyKhz = this.settings.toneFrequency / 1000;
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
         } else {
@@ -401,42 +380,6 @@ export class SsbModComponent implements OnInit {
   setAGC() {
     const newSettings: SSBModSettings = <SSBModSettings>{};
     newSettings.agc = this.agc ? 1 : 0;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setAGCOrder() {
-    const newSettings: SSBModSettings = <SSBModSettings>{};
-    newSettings.agcOrder = this.settings.agcOrder;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setAGCTime() {
-    const newSettings: SSBModSettings = <SSBModSettings>{};
-    newSettings.agcTime = (this.agcTimeMs * this.getAudioSampleRate()) / 1000;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setSquelch() {
-    const newSettings: SSBModSettings = <SSBModSettings>{};
-    newSettings.agcThresholdEnable = this.agcThreshold ? 1 : 0;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setSquelchThreshold() {
-    const newSettings: SSBModSettings = <SSBModSettings>{};
-    newSettings.agcThreshold = this.settings.agcThreshold;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setSquelchGate() {
-    const newSettings: SSBModSettings = <SSBModSettings>{};
-    newSettings.agcThresholdGate = (this.squelchGateMs * this.getAudioSampleRate()) / 1000;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setSquelchDelay() {
-    const newSettings: SSBModSettings = <SSBModSettings>{};
-    newSettings.agcThresholdDelay = (this.squelchDelayMs * this.getAudioSampleRate()) / 1000;
     this.setDeviceSettings(newSettings);
   }
 

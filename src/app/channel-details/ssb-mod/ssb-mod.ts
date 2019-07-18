@@ -2,12 +2,6 @@ import { CWKEYER_SETTINGS_DEFAULT, CWKeyerSettings } from '../cw-keyer/cw-keyer'
 
 export interface SSBModSettings {
     agc: number;
-    agcOrder: number;
-    agcThreshold: number;
-    agcThresholdDelay: number;
-    agcThresholdEnable: number;
-    agcThresholdGate: number;
-    agcTime: number;
     audioBinaural: number;
     audioDeviceName: string;
     audioFlipChannels: number;
@@ -34,12 +28,6 @@ export interface SSBModSettings {
 
 export const SSBMOD_SETTINGS_DEFAULT = {
     agc: 0,
-    agcOrder: 0.2,
-    agcThreshold: -40,
-    agcThresholdDelay: 2400,
-    agcThresholdEnable: 1,
-    agcThresholdGate: 192,
-    agcTime: 9600,
     audioBinaural: 0,
     audioDeviceName: 'System default device',
     audioFlipChannels: 0,
