@@ -8,6 +8,9 @@ export interface PlutoSDRInputSettings {
     gain: number;
     gainMode: number;
     iqCorrection: number;
+    hwBBDCBlock: number;
+    hwRFDCBlock: number;
+    hwIQCorrection: number;
     log2Decim: number;
     lpfBW: number;
     lpfFIRBW: number;
@@ -32,6 +35,9 @@ export const PLUTOSDR_INPUT_SETTINGS_DEFAULT = {
     gain: 40,
     gainMode: 0,
     iqCorrection: 0,
+    hwBBDCBlock: 1,
+    hwRFDCBlock: 1,
+    hwIQCorrection: 1,
     log2Decim: 0,
     lpfBW: 1500000,
     lpfFIRBW: 500000,

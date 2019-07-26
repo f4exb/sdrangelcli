@@ -95,6 +95,9 @@ export class PlutosdrInputComponent implements OnInit {
   loPPMCorrection: number;
   dcBlock: boolean;
   iqCorrection: boolean;
+  hwBBDCBlock: boolean;
+  hwRFDCBlock: boolean;
+  hwIQCorrection: boolean;
   lpfFIREnable: boolean;
   transverterMode: boolean;
   monitor: boolean;
@@ -132,6 +135,9 @@ export class PlutosdrInputComponent implements OnInit {
           this.loPPMCorrection = this.settings.LOppmTenths / 10;
           this.dcBlock = this.settings.dcBlock !== 0;
           this.iqCorrection = this.settings.iqCorrection !== 0;
+          this.hwBBDCBlock = this.settings.hwBBDCBlock !== 0;
+          this.hwRFDCBlock = this.settings.hwRFDCBlock !== 0;
+          this.hwIQCorrection = this.settings.hwIQCorrection !== 0;
           this.lpfFIREnable = this.settings.lpfFIREnable !== 0;
           this.transverterMode = this.settings.transverterMode !== 0;
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
@@ -208,6 +214,24 @@ export class PlutosdrInputComponent implements OnInit {
   setIQCorrection() {
     const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
     newSettings.iqCorrection = this.iqCorrection ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setHWBBDCBlock() {
+    const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
+    newSettings.hwBBDCBlock = this.hwBBDCBlock ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setHWRFDCBlock() {
+    const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
+    newSettings.hwRFDCBlock = this.hwRFDCBlock ? 1 : 0;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setHWIQCorrection() {
+    const newSettings: PlutoSDRInputSettings = <PlutoSDRInputSettings>{};
+    newSettings.hwIQCorrection = this.hwIQCorrection ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 

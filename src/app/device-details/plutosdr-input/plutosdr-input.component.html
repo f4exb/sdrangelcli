@@ -48,6 +48,24 @@
           </mat-checkbox>
         </td>
       </tr>
+      <!-- HW DC, IQ corrections -->
+      <tr>
+        <td style="width: 15ch">
+          <mat-checkbox color="primary" [(ngModel)]="hwBBDCBlock" (change)="setHWBBDCBlock()" matTooltip="Hardware baseband DC correction">
+            HW BB DC block
+          </mat-checkbox>
+        </td>
+        <td style="width: 15ch">
+          <mat-checkbox color="primary" [(ngModel)]="hwRFDCBlock" (change)="setHWRFDCBlock()" matTooltip="Hardware RF DC correction">
+            HW RF DC block
+          </mat-checkbox>
+        </td>
+        <td style="width: 15ch">
+          <mat-checkbox color="primary" [(ngModel)]="hwIQCorrection" (change)="setHWIQCorrection()" matTooltip="Hardware IQ correction">
+            IQ correction
+          </mat-checkbox>
+        </td>
+      </tr>
       <!-- SR, Hard decimation, Soft decimation, Fc position -->
       <tr>
         <td>
