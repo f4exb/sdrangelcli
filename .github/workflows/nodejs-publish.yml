@@ -15,7 +15,6 @@ jobs:
         node-version: 12
     - run: npm install
     - run: npm run build --if-present
-    - run: npm test
     - run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_SECRET}}
