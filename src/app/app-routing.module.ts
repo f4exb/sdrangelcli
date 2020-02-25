@@ -29,11 +29,11 @@ const routes: Routes = [
     },
     {
         path: 'device/:dix',
-        loadChildren: './device-details/device-details.module#DeviceDetailsModule'
+        loadChildren: () => import('./device-details/device-details.module').then(m => m.DeviceDetailsModule)
     },
     {
         path: 'device/:dix/channel/:cix',
-        loadChildren: './channel-details/channel-details.module#ChannelDetailsModule'
+        loadChildren: () => import('./channel-details/channel-details.module').then(m => m.ChannelDetailsModule)
     },
 ];
 

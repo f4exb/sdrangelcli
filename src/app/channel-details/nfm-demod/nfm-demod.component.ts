@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NFMDemodSettings, NFMDEMOD_SETTINGS_DEFAULT, NFMDemodReport, NFMDEMOD_REPORT_DEFAULT } from './nfm-demod';
-import { AudioDeviceInfo } from '../am-demod/am-demod.component';
 import { Subscription, interval } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDetailsService } from '../channel-details.service';
