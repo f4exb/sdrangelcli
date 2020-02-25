@@ -2,7 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RemoveChannelDialogComponent } from './remove-channel-dialog.component';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatOptionModule, MatSelectModule, MatSnackBarModule, MatDividerModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CHANNEL1_MOCK } from '../channel/channel';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { DeviceSet } from './deviceset';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddChannelDialogComponent } from '../add-channel-dialog/add-channel-dialog.component';
 import { LoadPresetDialogComponent } from '../load-preset-dialog/load-preset-dialog.component';
 import { SavePresetDialogComponent } from '../save-preset-dialog/save-preset-dialog.component';

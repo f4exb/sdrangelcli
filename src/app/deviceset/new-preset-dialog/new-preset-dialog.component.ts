@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PresetService } from '../../main/preset/preset.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
 import { PresetLoad } from '../../main/preset/preset';

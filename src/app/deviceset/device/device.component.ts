@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { Device } from './device';
-import { MatDialogConfig, MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChangeDeviceDialogComponent } from '../change-device-dialog/change-device-dialog.component';
 import { DeviceService } from './device.service';
 import { SdrangelUrlService } from '../../sdrangel-url.service';

@@ -8,7 +8,9 @@ import { MatCardModule } from '@angular/material/card';
 import { DevicesetComponent } from '../../deviceset/deviceset/deviceset.component';
 import { DeviceComponent } from '../../deviceset/device/device.component';
 import { ChannelComponent } from '../../deviceset/channel/channel.component';
-import { MatDialogModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 

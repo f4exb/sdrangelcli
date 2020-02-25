@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { Channel } from './channel';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { RemoveChannelDialogComponent } from '../remove-channel-dialog/remove-channel-dialog.component';
 import { Router } from '@angular/router';
 

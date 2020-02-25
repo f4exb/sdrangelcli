@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SdrangelUrlService } from '../../sdrangel-url.service';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RemoveDevicesetService } from './remove-deviceset.service';
 
 @Component({

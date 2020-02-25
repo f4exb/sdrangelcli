@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddDevicesetDialogComponent } from './add-deviceset-dialog.component';
-import { MatDialogModule, MatSnackBarModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AddDevicesetDialogComponent', () => {

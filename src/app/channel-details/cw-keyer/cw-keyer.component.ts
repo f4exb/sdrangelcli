@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CWKeyerSettings, CWKEYER_SETTINGS_DEFAULT } from './cw-keyer';
-import { MatCheckboxChange } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 interface CWMode {
   value: number;

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AudioOutputDevice } from '../audio/audio';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AudioOutDialogComponent } from '../audio-out-dialog/audio-out-dialog.component';
 
 @Component({

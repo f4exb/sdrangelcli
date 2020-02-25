@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AudioOutComponent } from './audio-out.component';
-import { MatCardModule, MatDialogModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { AudioOutDeviceComponent } from '../audio-out-device/audio-out-device.component';
 import { AUDIO_DEVICES_MOCK } from '../audio/audio';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

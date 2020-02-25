@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { ChannelComponent } from './channel.component';
 import { CHANNEL0_MOCK } from './channel';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule, Router } from '@angular/router';
 
 describe('ChannelComponent', () => {

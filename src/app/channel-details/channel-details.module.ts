@@ -4,7 +4,12 @@ import { ChannelNotSupportedComponent } from './channel-not-supported/channel-no
 import { AmDemodComponent } from './am-demod/am-demod.component';
 import { ChannelDetailsComponent } from './channel-details.component';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatTooltipModule, MatProgressBarModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChannelDetailsRoutingModule } from './channel-details-routing.module';
 import { CommonComponentsModule } from '../common-components/common-components.module';
 import { ColorPickerModule } from 'ngx-color-picker';

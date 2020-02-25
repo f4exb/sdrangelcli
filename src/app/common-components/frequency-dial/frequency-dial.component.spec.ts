@@ -2,7 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FrequencyDialComponent } from './frequency-dial.component';
 import { FormsModule } from '@angular/forms';
-import { MatSelectModule, MatTooltipModule } from '@angular/material';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('FrequencyDialComponent', () => {
   let component: FrequencyDialComponent;

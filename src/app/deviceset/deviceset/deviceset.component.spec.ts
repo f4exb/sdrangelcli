@@ -5,7 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { DEVICESET_MOCK_WITH_CHANNELS, DEVICESET_MOCK_WITHOUT_CHANNELS, DEVICESET_TX_MOCK } from './deviceset';
 import { DeviceComponent } from '../device/device.component';
 import { ChannelComponent } from '../channel/channel.component';
-import { MatDialogModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 

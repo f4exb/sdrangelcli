@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { Preset } from './preset';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { RemovePresetDialogComponent } from '../remove-preset-dialog/remove-preset-dialog.component';
 import { ExportPresetDialogComponent } from '../export-preset-dialog/export-preset-dialog.component';
 

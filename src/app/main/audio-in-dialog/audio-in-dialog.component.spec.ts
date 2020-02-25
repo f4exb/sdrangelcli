@@ -2,7 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AudioInDialogComponent } from './audio-in-dialog.component';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule, MatDialogRef, MAT_DIALOG_DATA, MatDividerModule } from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AUDIO_IN_DEVICE_MOCK } from '../audio/audio';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 

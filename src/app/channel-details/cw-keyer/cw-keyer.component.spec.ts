@@ -2,7 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CwKeyerComponent } from './cw-keyer.component';
 import { FormsModule } from '@angular/forms';
-import { MatSelectModule, MatCheckboxModule, MatOptionModule } from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 describe('CwKeyerComponent', () => {
   let component: CwKeyerComponent;

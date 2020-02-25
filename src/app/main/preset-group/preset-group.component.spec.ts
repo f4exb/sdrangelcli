@@ -2,7 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PresetGroupComponent } from './preset-group.component';
 import { PresetComponent } from '../preset/preset.component';
-import { MatCardModule, MatDialogModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PRESET_GROUP_MOCK } from '../preset/preset';
 

@@ -18,7 +18,13 @@ import { RemovePresetDialogComponent } from './remove-preset-dialog/remove-prese
 import { ImportPresetDialogComponent } from './import-preset-dialog/import-preset-dialog.component';
 import { ExportPresetDialogComponent } from './export-preset-dialog/export-preset-dialog.component';
 import { MatCardModule } from '@angular/material/card';
-import { MatTooltipModule, MatDialogModule, MatOptionModule, MatSelectModule, MatCheckboxModule, MatSnackBarModule, MatDividerModule } from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 import { DevicesetModule } from '../deviceset/deviceset.module';
 

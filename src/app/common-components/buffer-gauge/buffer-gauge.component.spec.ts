@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BufferGaugeComponent } from './buffer-gauge.component';
-import { MatProgressBarModule, MatTooltipModule } from '@angular/material';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('BufferGaugeComponent', () => {
   let component: BufferGaugeComponent;

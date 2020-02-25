@@ -1,7 +1,7 @@
 import { Component, ElementRef } from '@angular/core';
 import { SdrangelUrlService } from './sdrangel-url.service';
 import { LocationDialogComponent } from './main/location-dialog/location-dialog.component';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.component';
 import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/remove-deviceset-dialog.component';
 import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-deviceset-dialog.component';
@@ -14,7 +14,7 @@ import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-dev
 export class AppComponent {
 
   title = 'SDRangelCli';
-  version = '1.1.5';
+  version = '1.2.0';
   sdrangelURL = 'http://127.0.0.1:8091/sdrangel'; // the default URL
 
   constructor(private sdrangelUrlService: SdrangelUrlService,
