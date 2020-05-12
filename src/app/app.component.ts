@@ -14,7 +14,7 @@ import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-dev
 export class AppComponent {
 
   title = 'SDRangelCli';
-  version = '1.2.0';
+  version = '1.2.1';
   sdrangelURL = 'http://127.0.0.1:8091/sdrangel'; // the default URL
 
   constructor(private sdrangelUrlService: SdrangelUrlService,

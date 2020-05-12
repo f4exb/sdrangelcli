@@ -26,7 +26,9 @@ export class AudioOutDialogComponent implements OnInit {
     {value: 0, viewValue: 'L16'},
     {value: 1, viewValue: 'L8'},
     {value: 2, viewValue: 'PCMA'},
-    {value: 3, viewValue: 'PCMU'}
+    {value: 3, viewValue: 'PCMU'},
+    {value: 4, viewValue: 'G722'},
+    {value: 5, viewValue: 'Opus'}
   ];
   sdrangelURL: string;
   audioDevice: AudioOutputDevice;
