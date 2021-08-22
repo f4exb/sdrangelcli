@@ -84,7 +84,7 @@ Be patient `npm install` can be very long depending on your hardware.
 ```bash
 # build
 cd sdrangelcli
-ng build
+npm run build
 
 # This will create a dist/sdrangelcli directory that will contain the application
 # You can copy or move sdrangelcli directory wherever you like
