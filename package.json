@@ -1,6 +1,6 @@
 {
   "name": "sdrangelcli",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/f4exb/sdrangelcli.git"
@@ -17,12 +17,12 @@
   "private": false,
   "dependencies": {
     "@angular/animations": "^12.2.2",
-    "@angular/cdk": "^11.2.13",
+    "@angular/cdk": "^12.2.2",
     "@angular/common": "^12.2.2",
     "@angular/compiler": "^12.2.2",
     "@angular/core": "^12.2.2",
     "@angular/forms": "^12.2.2",
-    "@angular/material": "^11.2.13",
+    "@angular/material": "^12.2.2",
     "@angular/platform-browser": "^12.2.2",
     "@angular/platform-browser-dynamic": "^12.2.2",
     "@angular/router": "^12.2.2",
