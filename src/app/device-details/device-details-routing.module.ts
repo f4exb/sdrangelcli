@@ -25,6 +25,7 @@ import { SdrplayComponent } from './sdrplay/sdrplay.component';
 import { RemoteInputComponent } from './remote-input/remote-input.component';
 import { KiwisdrComponent } from './kiwisdr/kiwisdr.component';
 import { RemoteOutputComponent } from './remote-output/remote-output.component';
+import { Sdrplayv3Component } from './sdrplayv3/sdrplayv3.component';
 
 export const routes: Routes = [
   {
@@ -102,6 +103,10 @@ export const routes: Routes = [
       {
         path: 'sdrplay1',
         component: SdrplayComponent
+      },
+      {
+        path: 'sdrplayv3',
+        component: Sdrplayv3Component
       },
       {
         path: 'testsource',

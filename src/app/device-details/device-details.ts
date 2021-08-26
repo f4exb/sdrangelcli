@@ -21,6 +21,7 @@ import { SDRplaySettings } from './sdrplay/sdrplay';
 import { RemoteInputSettings, RemoteInputReport } from './remote-input/remote-input';
 import { KiwiSDRSettings, KiwiSDRReport } from './kiwisdr/kiwisdr';
 import { RemoteOutputSettings, RemoteOutputReport } from './remote-output/remote-output';
+import { SDRplayV3Settings } from './sdrplayv3/sdrplayv3';
 
 export interface DeviceSettings {
     deviceHwType: string;
@@ -45,6 +46,7 @@ export interface DeviceSettings {
     remoteOutputSettings?: RemoteOutputSettings;
     rtlSdrSettings?: RTLSDRSettings;
     sdrPlaySettings?: SDRplaySettings;
+    sdrPlayV3Settings?: SDRplayV3Settings;
     testSourceSettings?: TestSourceSettings;
     xtrxInputSettings?: XTRXInputSettings;
     xtrxOutputSettings?: XTRXOutputSettings;
@@ -65,6 +67,7 @@ export interface DeviceReport {
     remoteOutputReport?: RemoteOutputReport;
     rtlSdrReport?: any;
     sdrPlayReport?: any;
+    sdrPlayV3Report?: any;
     xtrxInputReport?: XTRXInputReport;
     xtrxOutputReport?: XTRXOutputReport;
 }

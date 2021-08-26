@@ -1,0 +1,239 @@
+<mat-card class="deviceset-card">
+    <mat-card-header class="device-card-header device-header-rx">
+      <button mat-button class="button-card" (click)="getDeviceSettings()" matTooltip="Refresh">
+        <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <span class="device-label">SDRplay V3 {{deviceType}} {{getSampleRate()/1000}} kS/s</span>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- Center frequency -->
+        <tr>
+          <td colspan="3">
+            <app-frequency-dial
+            [frequency]="centerFreqKhz"
+            [min]="getMinFrequency()"
+            [max]="getMaxFrequency()"
+            tooltip="Center frequency"
+            [steps]="frequencySteps"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+          </td>
+        </tr>
+        <!-- LO correction, DC correction, IQ correction -->
+        <tr>
+          <td>
+            LO
+            <input type="number" class="loppm-input"
+              [(ngModel)]="loPPM"
+              (change)="setLoPPM()"
+              matTooltip="LO correction"
+              min=-20 max=20 step=0.1>
+            ppm
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="dcBlock" (change)="setDCBlock()" matTooltip="DC correction">
+              DC block
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="iqCorrection" (change)="setIQCorrection()" matTooltip="IQ correction">
+              IQ corr
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- AM, FM, DAB notch -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="amNotch" (change)="setAMNotch()" matTooltip="AM notch" [disabled]="isAMNotchDisabled()">
+              AM notch
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="fmNotch" (change)="setFMNotch()" matTooltip="FM notch">
+              FM notch
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="dabNotch" (change)="setDABNotch()" matTooltip="DAB notch">
+              DAB notch
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- BiasT, Ref Clock -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="biasTee" (change)="setBiasTee()" matTooltip="Bias tee" [disabled]="isBiasTeeDisabled()">
+              BiasT
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="extRef" (change)="setExtRef()" matTooltip="External reference clock" [disabled]="isExtRefDisabled()">
+              Ext Ref
+            </mat-checkbox>
+          </td>
+          <td></td>
+        </tr>
+        <!-- Bandwidth, IF -->
+        <tr>
+          <td>
+            BW
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.bandwidthIndex"
+                (selectionChange)="setBandwidthIndex()"
+                matTooltip="RF Bandwidth">
+              <mat-option *ngFor="let bandwidth of bandwidths" [value]="bandwidth.value">
+                {{bandwidth.viewValue}}
+              </mat-option>
+            </mat-select>
+            kHz
+          </td>
+          <td>
+            IF
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.ifFrequencyIndex"
+                (selectionChange)="setIntermediateFrequencyIndex()"
+                matTooltip="IF Bandwidth">
+              <mat-option *ngFor="let intermediateFrequency of intermediateFrequencies" [value]="intermediateFrequency.value">
+                {{intermediateFrequency.viewValue}}
+              </mat-option>
+            </mat-select>
+            kHz
+          </td>
+          <td></td>
+        </tr>
+        <!-- Sample rate, Decimation, Fc position -->
+        <tr>
+
+          <td>
+            SR
+            <input type="number" class="sample-rate-input"
+              [(ngModel)]="settings.devSampleRate"
+              (change)="setSampleRate()"
+              matTooltip="Sample rate">
+            S/s
+          </td>
+          <td>
+            Decim
+            <mat-select style="width:6ch; background-color: white; margin: 1px;"
+                [(value)]="settings.log2Decim"
+                (selectionChange)="setLog2Decim()"
+                matTooltip="Decimation factor">
+              <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+                {{log2Decim.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            Fc pos
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.fcPos"
+                (selectionChange)="setFcPos()"
+                matTooltip="Center frequency position">
+              <mat-option *ngFor="let fcPos of fcPositions" [value]="fcPos.value">
+                {{fcPos.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <!-- Tuner, Antenna, -->
+        <tr>
+          <td>
+            Tuner
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.tuner"
+                (selectionChange)="setTunerIndex()"
+                matTooltip="Tuner">
+              <mat-option *ngFor="let tuner of tuners" [value]="tuner.value">
+                {{tuner.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            Ant
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+                [(value)]="settings.antenna"
+                (selectionChange)="setAntennaIndex()"
+                matTooltip="Antenna">
+              <mat-option *ngFor="let antenna of antennas" [value]="antenna.value">
+                {{antenna.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td></td>
+        </tr>
+        <!-- LNA, IF AGC, IF gain, -->
+        <tr>
+          <td>
+            LNA
+            <mat-select style="width:8ch; background-color: white; margin: 1px;"
+              [(value)]="settings.lnaIndex"
+              (selectionChange)="setLNAIndex()"
+              matTooltip="LNA gain">
+              <mat-option *ngFor="let lnaValue of lnaValues" [value]="lnaValue.value">
+                {{lnaValue.viewValue}}
+              </mat-option>
+            </mat-select>
+            dB
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="ifAGC" (change)="setIFAGC()" matTooltip="IF automatic gain setting">
+              IF AFC
+            </mat-checkbox>
+          </td>
+          <td>
+            Gain
+            <input type="number" class="gain-input"
+              [(ngModel)]="settings.ifGain"
+              (change)="setIFGain()"
+              matTooltip="IF gain"
+              min=-59 max=0
+            >
+            dB
+          </td>
+        </tr>
+        <!--- Use reverse API, reverse API device index,  -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+              Reverse API
+            </mat-checkbox>
+          </td>
+          <td>
+            Device
+            <input type="number" class="gain-input"
+              [(ngModel)]="settings.reverseAPIDeviceIndex"
+              (change)="setReverseAPIDeviceIndex()"
+              matTooltip="Reverse API device index"
+              min=0>
+          </td>
+          <td></td>
+        </tr>
+        <!--- reverse API address, reverse API port -->
+        <tr>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+              [(ngModel)]="settings.reverseAPIAddress"
+              (change)="setReverseAPIAddress()"
+              matTooltip="Reverse API IPv4 address"
+            >
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.reverseAPIPort"
+              (change)="setReverseAPIPort()"
+              matTooltip="Reverse API port"
+              min=1024 max=65535>
+          </td>
+          <td></td>
+        </tr>
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+    {{ statusMessage }}
+  </mat-card>

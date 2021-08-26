@@ -33,6 +33,7 @@ import { SdrplayComponent } from './sdrplay/sdrplay.component';
 import { RemoteInputComponent } from './remote-input/remote-input.component';
 import { KiwisdrComponent } from './kiwisdr/kiwisdr.component';
 import { RemoteOutputComponent } from './remote-output/remote-output.component';
+import { Sdrplayv3Component } from './sdrplayv3/sdrplayv3.component';
 
 @NgModule({
   imports: [
@@ -71,7 +72,8 @@ import { RemoteOutputComponent } from './remote-output/remote-output.component';
     SdrplayComponent,
     RemoteInputComponent,
     KiwisdrComponent,
-    RemoteOutputComponent
+    RemoteOutputComponent,
+    Sdrplayv3Component
   ]
 })
 export class DeviceDetailsModule { }
