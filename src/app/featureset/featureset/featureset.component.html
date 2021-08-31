@@ -1,0 +1,32 @@
+<mat-card class="featureset-card">
+    <mat-card-header class="featureset-card-header">
+      <span class="label-card">{{getLabel()}}</span>
+      &nbsp;
+      <button mat-button class="button-card" (click)="refresh()" matTooltip="Refresh">
+        <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>
+      &nbsp;
+      <button mat-button class="button-card"  matTooltip="Add feature" (click)="openAddFeatureDialog()">
+        <img src="./assets/icons/add_circle.svg" style="height:16px; width:16px"/>
+      </button>
+      &nbsp;
+      <button mat-button class="button-card"  matTooltip="Load from preset" (click)="openLoadPresetDialog()">
+        <img src="./assets/icons/open_icon.svg" style="height:16px; width:16px"/>
+      </button>
+      <button mat-button class="button-card button-margin"  matTooltip="Save to preset" (click)="openSavePresetDialog()">
+          <img src="./assets/icons/save_icon.svg" style="height:16px; width:16px"/>
+      </button>
+      <button mat-button class="button-card button-margin"  matTooltip="Create new preset" (click)="openNewPresetDialog()">
+          <img src="./assets/icons/add-new-file.svg" style="height:16px; width:16px"/>
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="featureSet.featurecount !== 0">
+        <app-feature *ngFor="let feature of featureSet.features"
+          [feature]="feature"
+          [featuresetIndex]="featureSet.index"
+          (featureRemoved)="featureRemoved()">
+        </app-feature>
+      </div>
+    </mat-card-content>
+  </mat-card>
