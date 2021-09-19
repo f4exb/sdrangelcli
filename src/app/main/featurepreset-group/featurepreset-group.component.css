@@ -1,0 +1,42 @@
+.preset-group-card {
+    background-color: rgb(200, 200, 170);
+    border: outset;
+    border-color: whitesmoke;
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.preset-group-card-header {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    background-color: rgb(150,180,255);
+    border: none;
+    border-color: whitesmoke;
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0em 0.2em;
+}
+
+::ng-deep .mat-card-header-text {
+    /* CSS styles go here */
+    margin: 0px; /* for example to remove the margin */
+}
+
+.button-card {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    width: 22px;
+    height: 22px;
+    margin-bottom: 2px;
+}
+
+.button-margin {
+    margin-left: 1px;
+}
+
+.label-card {
+    margin-top: 5px;
+}

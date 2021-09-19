@@ -1,0 +1,19 @@
+<mat-card class="presets-card">
+  <mat-card-header class="presets-card-header">
+    <button mat-button class="button-card" (click)="fetchPresetsInformation()" matTooltip="Refresh">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <span class="presets-title">Presets</span>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="presets.nbGroups !== 0">
+      <app-featurepreset-group *ngFor="let presetGroup of presets.groups"
+        [presetGroup]="presetGroup"
+        (presetGroupChanged)="fetchPresetsInformation()">
+      </app-featurepreset-group>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

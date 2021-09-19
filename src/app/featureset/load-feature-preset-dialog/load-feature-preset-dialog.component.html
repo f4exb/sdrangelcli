@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Load preset</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+  <mat-select class="presets-input" [(value)]="selectedPreset">
+    <mat-optgroup *ngFor="let group of presetGroups" [label]="group.name">
+        <mat-option *ngFor="let preset of group.presets" [value]="preset.value">
+          {{preset.viewValue}}
+        </mat-option>
+    </mat-optgroup>
+  </mat-select>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary"(click)="load()">OK</button>
+</mat-dialog-actions>

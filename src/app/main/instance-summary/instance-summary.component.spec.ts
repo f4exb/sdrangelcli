@@ -13,6 +13,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
+import { FeaturesetComponent } from 'src/app/featureset/featureset/featureset.component';
+import { FeatureComponent } from 'src/app/featureset/feature/feature.component';
 
 describe('InstanceSummaryComponent one device set', () => {
   let component: InstanceSummaryComponent;
@@ -25,7 +27,9 @@ describe('InstanceSummaryComponent one device set', () => {
         InstanceSummaryComponent,
         DevicesetComponent ,
         DeviceComponent,
-        ChannelComponent
+        ChannelComponent,
+        FeaturesetComponent,
+        FeatureComponent
       ],
       imports: [
         HttpClientTestingModule,
@@ -71,7 +75,9 @@ describe('InstanceSummaryComponent empty', () => {
         InstanceSummaryComponent,
         DevicesetComponent,
         DeviceComponent,
-        ChannelComponent
+        ChannelComponent,
+        FeaturesetComponent,
+        FeatureComponent
       ],
       imports: [
         HttpClientTestingModule,
@@ -117,7 +123,9 @@ describe('InstanceSummaryComponent many device sets', () => {
         InstanceSummaryComponent,
         DevicesetComponent,
         DeviceComponent,
-        ChannelComponent
+        ChannelComponent,
+        FeaturesetComponent,
+        FeatureComponent
       ],
       imports: [
         HttpClientTestingModule,

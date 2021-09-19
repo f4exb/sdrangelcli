@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content>
+  <span class="label">Confirm?</span>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Dismiss</button>
+    <button class="mat-raised-button mat-primary"(click)="delete()">Confirm</button>
+</mat-dialog-actions>

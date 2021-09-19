@@ -13,6 +13,9 @@ import { FeaturesetComponent } from './featureset/featureset.component';
 import { FeatureComponent } from './feature/feature.component';
 import { RemoveFeatureDialogComponent } from './remove-feature-dialog/remove-feature-dialog.component';
 import { AddFeatureDialogComponent } from './add-feature-dialog/add-feature-dialog.component';
+import { LoadFeaturePresetDialogComponent } from './load-feature-preset-dialog/load-feature-preset-dialog.component';
+import { SaveFeaturePresetDialogComponent } from './save-feature-preset-dialog/save-feature-preset-dialog.component';
+import { NewFeaturePresetDialogComponent } from './new-feature-preset-dialog/new-feature-preset-dialog.component';
 
 
 @NgModule({
@@ -20,7 +23,10 @@ import { AddFeatureDialogComponent } from './add-feature-dialog/add-feature-dial
     FeaturesetComponent,
     FeatureComponent,
     RemoveFeatureDialogComponent,
-    AddFeatureDialogComponent
+    AddFeatureDialogComponent,
+    LoadFeaturePresetDialogComponent,
+    SaveFeaturePresetDialogComponent,
+    NewFeaturePresetDialogComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +39,16 @@ import { AddFeatureDialogComponent } from './add-feature-dialog/add-feature-dial
     MatSnackBarModule,
     MatDividerModule,
     FormsModule
+  ],
+  entryComponents: [
+    AddFeatureDialogComponent,
+    RemoveFeatureDialogComponent,
+    LoadFeaturePresetDialogComponent,
+    SaveFeaturePresetDialogComponent,
+    NewFeaturePresetDialogComponent
+  ],
+  exports: [
+    FeaturesetComponent
   ]
 })
 export class FeaturesetModule { }

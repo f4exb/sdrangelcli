@@ -32,7 +32,7 @@ export class FeatureComponent implements OnInit {
   }
 
   editFeature() {
-    this.router.navigate(['../feature/' + this.featuresetIndex + '/feature/' + this.feature.index]);
+    this.router.navigate(['../featureset/' + this.featuresetIndex + '/feature/' + this.feature.index]);
   }
 
   openRemoveFeatureDialog() {

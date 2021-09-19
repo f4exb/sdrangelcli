@@ -1,0 +1,53 @@
+.presets-card {
+    background-color: rgb(200, 200, 170);
+    border: outset;
+    border-color: whitesmoke;
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.presets-card-header {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    background-color: whitesmoke;
+    border: none;
+    border-color: whitesmoke;
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0em 0.2em;
+}
+
+.presets-title {
+    position: relative;
+    top: 4px;
+}
+
+.button-card {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    width: 22px;
+    height: 22px;
+}
+
+.status-ok-card {
+    border: outset;
+    border-color: rgb(134, 255, 110);
+    border-width: 2px;
+    margin-bottom: 5px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.status-ko-card {
+    border: solid;
+    border-color: rgb(255, 134, 110);
+    border-width: 2px;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+::ng-deep .mat-card-header-text {
+    /* CSS styles go here */
+    margin: 0px; /* for example to remove the margin */
+}

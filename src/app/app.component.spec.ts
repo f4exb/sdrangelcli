@@ -23,9 +23,13 @@ import { PresetsComponent } from './main/presets/presets.component';
 import { PresetGroupComponent } from './main/preset-group/preset-group.component';
 import { PresetComponent } from './main/preset/preset.component';
 import { DeviceDetailsComponent } from './device-details/device-details.component';
-import { AirspyhfComponent } from './device-details/airspyhf/airspyhf.component';
 import { DeviceNotSupportedComponent } from './device-details/device-not-supported/device-not-supported.component';
 import { CommonComponentsModule } from './common-components/common-components.module';
+import { FeaturesetComponent } from './featureset/featureset/featureset.component';
+import { FeatureComponent } from './featureset/feature/feature.component';
+import { FeaturepresetsComponent } from './main/featurepresets/featurepresets.component';
+import { FeaturepresetGroupComponent } from './main/featurepreset-group/featurepreset-group.component';
+import { FeaturepresetComponent } from './main/featurepreset/featurepreset.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -36,6 +40,8 @@ describe('AppComponent', () => {
         DevicesetComponent,
         DeviceComponent,
         ChannelComponent,
+        FeaturesetComponent,
+        FeatureComponent,
         AudioOutComponent,
         AudioOutDeviceComponent,
         AudioInComponent,
@@ -43,8 +49,10 @@ describe('AppComponent', () => {
         PresetsComponent,
         PresetGroupComponent,
         PresetComponent,
+        FeaturepresetsComponent,
+        FeaturepresetGroupComponent,
+        FeaturepresetComponent,
         DeviceDetailsComponent,
-        AirspyhfComponent,
         DeviceNotSupportedComponent
       ],
       imports: [

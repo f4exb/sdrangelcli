@@ -1,0 +1,67 @@
+<mat-card>
+    <mat-card-header class="feature-card-header feature-header-generic">
+        <button mat-button class="button-card" matTooltip="Refresh" (click)="getFeatureSettings()">
+          <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+        </button>&nbsp;
+        <app-feature-header class="feature-header-comp" featureType="AIS"
+            [title]="settings.title"
+            [color]="rgbTitleStr"
+            (titleChanged)="onTitleChanged($event)"
+            (colorChanged)="onTitleColorChanged($event)" >
+        </app-feature-header>
+    </mat-card-header>
+    <mat-card-content>
+        <table>
+            <!--- Use reverse API, reverse API device index, reverse API channel index -->
+            <tr>
+                <td>
+                <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+                    Reverse API
+                </mat-checkbox>
+                </td>
+                <td>
+                FeatureSet
+                <input type="number" class="index-input"
+                    [(ngModel)]="settings.reverseAPIFeatureSetIndex"
+                    (change)="setReverseAPIFeatureSetIndex()"
+                    matTooltip="Reverse API feature set index"
+                    min=0>
+                </td>
+                <td>
+                Feature
+                <input type="number" class="index-input"
+                    [(ngModel)]="settings.reverseAPIFeatureIndex"
+                    (change)="setReverseAPIFeatureIndex()"
+                    matTooltip="Reverse API feature index"
+                    min=0>
+                </td>
+            </tr>
+            <!--- reverse API address, reverse API port -->
+            <tr>
+                <td>
+                Addr
+                <input type="text" class="address-input"
+                    [(ngModel)]="settings.reverseAPIAddress"
+                    (change)="setReverseAPIAddress()"
+                    matTooltip="Reverse API IPv4 address"
+                >
+                </td>
+                <td>
+                Port
+                <input type="number" class="port-input"
+                    [(ngModel)]="settings.reverseAPIPort"
+                    (change)="setReverseAPIPort()"
+                    matTooltip="Reverse API port"
+                    min=1024 max=65535>
+                </td>
+                <td></td>
+            </tr>
+            <!-- Row 6: empty footer -->
+            <tr style="height: 3px;">
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

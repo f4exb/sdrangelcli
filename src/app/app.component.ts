@@ -5,6 +5,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { LoggingDialogComponent } from './main/logging-dialog/logging-dialog.component';
 import { RemoveDevicesetDialogComponent } from './main/remove-deviceset-dialog/remove-deviceset-dialog.component';
 import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-deviceset-dialog.component';
+import { AddFeaturesetDialogComponent } from './main/add-featureset-dialog/add-featureset-dialog.component';
+import { RemoveFeaturesetDialogComponent } from './main/remove-featureset-dialog/remove-featureset-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,7 @@ import { AddDevicesetDialogComponent } from './main/add-deviceset-dialog/add-dev
 export class AppComponent {
 
   title = 'SDRangelCli';
-  version = '1.6.2';
+  version = '2.0.0';
   sdrangelURL = 'http://127.0.0.1:8091/sdrangel'; // the default URL
 
   constructor(private sdrangelUrlService: SdrangelUrlService,
@@ -99,6 +101,46 @@ export class AppComponent {
       left: dialogX + 'px'
     };
     const dialogRef = this.popupDialog.open(AddDevicesetDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'OK') {
+        this.validateURL(); // triggers refresh
+      }
+    });
+  }
+
+  addFeaturesetDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.height = '150px';
+    dialogConfig.width = '360px';
+    const dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    dialogConfig.position = {
+      top: dialogY + 'px',
+      left: dialogX + 'px'
+    };
+    const dialogRef = this.popupDialog.open(AddFeaturesetDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'OK') {
+        this.validateURL(); // triggers refresh
+      }
+    });
+  }
+
+  removeLastFeaturesetDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.height = '150px';
+    dialogConfig.width = '360px';
+    const dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
+    const dialogX = this.elementRef.nativeElement.getBoundingClientRect().x + 10;
+    dialogConfig.position = {
+      top: dialogY + 'px',
+      left: dialogX + 'px'
+    };
+    const dialogRef = this.popupDialog.open(RemoveFeaturesetDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'OK') {
         this.validateURL(); // triggers refresh

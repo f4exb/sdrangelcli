@@ -1,1 +1,14 @@
-<p>feature works!</p>
+<mat-card class="feature-card">
+    <mat-card-header class="feature-card-header">
+      <button mat-button class="button-card"  matTooltip="Feature settings" (click)="editFeature()">
+          <img src="./assets/icons/edit_icon.svg" style="height:16px; width:16px"/>
+      </button>
+      <button mat-button class="button-card button-margin"  matTooltip="Remove feature" (click)="openRemoveFeatureDialog()">
+          <img src="./assets/icons/delete_icon.svg" style="height:16px; width:16px"/>
+      </button>
+      &nbsp;
+      <span class="label-card">{{feature.id}} {{feature.title}}</span><br/>
+    </mat-card-header>
+    <mat-card-content>
+    </mat-card-content>
+  </mat-card>
