@@ -14,6 +14,8 @@ import { FeatureNotSupportedComponent } from './feature-not-supported/feature-no
 import { FeatureDetailsComponent } from './feature-details.component';
 import { AisComponent } from './ais/ais.component';
 import { FeatureHeaderComponent } from './feature-header/feature-header.component';
+import { SatelliteTrackerComponent } from './satellite-tracker/satellite-tracker.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   imports: [
@@ -25,6 +27,7 @@ import { FeatureHeaderComponent } from './feature-header/feature-header.componen
     MatCheckboxModule,
     MatTooltipModule,
     MatProgressBarModule,
+    MatChipsModule,
     FeatureDetailsRoutingModule,
     CommonComponentsModule,
     ColorPickerModule
@@ -33,6 +36,7 @@ import { FeatureHeaderComponent } from './feature-header/feature-header.componen
     FeatureDetailsComponent,
     FeatureNotSupportedComponent,
     AisComponent,
+    SatelliteTrackerComponent,
     FeatureHeaderComponent,
   ]
 })

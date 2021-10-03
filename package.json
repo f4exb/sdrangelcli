@@ -28,7 +28,7 @@
     "@angular/router": "^12.2.2",
     "core-js": "^3.6.4",
     "font-awesome": "^4.7.0",
-    "ngx-color-picker": "^6.8.0",
+    "ngx-color-picker": "^11.8.0",
     "reinstall": "^2.0.0",
     "rxjs": "^6.5.4",
     "tslib": "^2.3.1",

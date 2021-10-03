@@ -11,7 +11,7 @@ export class AddFeatureService {
   constructor(private http: HttpClient) {
   }
 
-  getAvailableFeatures(url: string, forTx: boolean): Observable<AvailableFeatures> {
+  getAvailableFeatures(url: string): Observable<AvailableFeatures> {
     const newurl = url + '/features';
     return this.http.get<AvailableFeatures>(newurl);
   }

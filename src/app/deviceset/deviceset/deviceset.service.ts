@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DeviceSet } from './deviceset';
+import { DeviceSet, DeviceSets } from './deviceset';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,5 +13,10 @@ export class DevicesetService {
   getInfo(url: string, devicesetIndex: number): Observable<DeviceSet> {
     const newurl = url + '/deviceset/' + devicesetIndex;
     return this.http.get<DeviceSet>(newurl);
+  }
+
+  getDevicesets(url: string): Observable<DeviceSets> {
+    const newurl = url + '/devicesets';
+    return this.http.get<DeviceSets>(newurl);
   }
 }

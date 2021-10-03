@@ -34,6 +34,7 @@ import { RemoveFeaturePresetDialogComponent } from './remove-feature-preset-dial
 import { FeaturesetModule } from '../featureset/featureset.module';
 import { FeaturepresetsComponent } from './featurepresets/featurepresets.component';
 import { FeaturepresetGroupComponent } from './featurepreset-group/featurepreset-group.component';
+import { SelectPresetDialogComponent } from './select-preset-dialog/select-preset-dialog.component';
 
 @NgModule({
   imports: [
@@ -73,7 +74,8 @@ import { FeaturepresetGroupComponent } from './featurepreset-group/featurepreset
     RemoveFeaturePresetDialogComponent,
     FeaturepresetsComponent,
     FeaturepresetGroupComponent,
-    FeaturepresetComponent
+    FeaturepresetComponent,
+    SelectPresetDialogComponent
   ],
   entryComponents: [
     LocationDialogComponent,

@@ -1,0 +1,486 @@
+<mat-card>
+    <mat-card-header class="feature-card-header feature-header-generic">
+        <button mat-button class="button-card" matTooltip="Refresh" (click)="getFeatureSettings()">
+          <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+        </button>&nbsp;
+        <app-feature-header class="feature-header-comp" featureType="SatelliteTracker"
+            [title]="settings.title"
+            [color]="rgbTitleStr"
+            (titleChanged)="onTitleChanged($event)"
+            (colorChanged)="onTitleColorChanged($event)" >
+        </app-feature-header>
+    </mat-card-header>
+    <mat-card-content>
+        <table>
+            <!-- Lat, Lon, ASL -->
+            <tr>
+                <td>
+                    Lat
+                    <input class="lat-lon-input" type="number"
+                    [(ngModel)]="settings.latitude"
+                    (change)="setLatitude()"
+                    matTooltip="Latitude in decimal degrees positive North">
+                </td>
+                <td>
+                    Lon
+                    <input class="lat-lon-input" type="number"
+                    [(ngModel)]="settings.longitude"
+                    (change)="setLongitude()"
+                    matTooltip="Longitude in decimal degrees positive East">
+                </td>
+                <td>
+                    ASL
+                    <input class="asl-input" type="number"
+                    [(ngModel)]="settings.heightAboveSeaLevel"
+                    (change)="setASL()"
+                    matTooltip="Height above sea level">
+                </td>
+                <td></td>
+            </tr>
+            <!-- Date format, Date time -->
+            <tr>
+                <td colspan="2">
+                    Sat date time
+                    <input type="datetime-local" class="address-input"
+                    [(ngModel)]="settings.dateTime"
+                    (change)="setDateTime()"
+                    matTooltip="Custom date and time for sat position - clear for current">
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- sats -->
+            <tr>
+                <td colspan="4">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Satellites to track</mat-label>
+                        <mat-chip-list #chipListSat>
+                            <mat-chip *ngFor="let sat of sats"
+                                [selectable]="satSelectable"
+                                [removable]="satRemovable"
+                                (removed)="removeSat(sat)">
+                                {{sat}}
+                                <mat-icon matChipRemove *ngIf="satRemovable">&#x274C;</mat-icon>
+                            </mat-chip>
+                            <input placeholder="New sat..."
+                                [matChipInputFor]="chipListSat"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                [matChipInputAddOnBlur]="satAddOnBlur"
+                                (matChipInputTokenEnd)="addSat($event)">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <!-- TLEs -->
+            <tr>
+                <td colspan="4">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>TLE source URLs</mat-label>
+                        <mat-chip-list #chipListTle>
+                            <mat-chip *ngFor="let tle of tles"
+                                [selectable]="tleSelectable"
+                                [removable]="tleRemovable"
+                                (removed)="removeTLE(tle)">
+                                {{tle}}
+                                <mat-icon matChipRemove *ngIf="tleRemovable">&#x274C;</mat-icon>
+                            </mat-chip>
+                            <input placeholder="New TLE URL..."
+                                [matChipInputFor]="chipListTle"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                [matChipInputAddOnBlur]="tleAddOnBlur"
+                                (matChipInputTokenEnd)="addTLE($event)">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <!--- Use reverse API, reverse API device index, reverse API channel index -->
+            <tr>
+                <td>
+                <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+                    Reverse API
+                </mat-checkbox>
+                </td>
+                <td>
+                FeatureSet
+                <input type="number" class="index-input"
+                    [(ngModel)]="settings.reverseAPIFeatureSetIndex"
+                    (change)="setReverseAPIFeatureSetIndex()"
+                    matTooltip="Reverse API feature set index"
+                    min=0>
+                </td>
+                <td>
+                Feature
+                <input type="number" class="index-input"
+                    [(ngModel)]="settings.reverseAPIFeatureIndex"
+                    (change)="setReverseAPIFeatureIndex()"
+                    matTooltip="Reverse API feature index"
+                    min=0>
+                </td>
+                <td></td>
+            </tr>
+            <!--- reverse API address, reverse API port -->
+            <tr>
+                <td>
+                Addr
+                <input type="text" class="address-input"
+                    [(ngModel)]="settings.reverseAPIAddress"
+                    (change)="setReverseAPIAddress()"
+                    matTooltip="Reverse API IPv4 address"
+                >
+                </td>
+                <td>
+                Port
+                <input type="number" class="port-input"
+                    [(ngModel)]="settings.reverseAPIPort"
+                    (change)="setReverseAPIPort()"
+                    matTooltip="Reverse API port"
+                    min=1024 max=65535>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- Passes header -->
+            <tr>
+                <th colspan="4">
+                    Passes
+                </th>
+            </tr>
+            <!-- Dopple period.  Prediction period, Min elevation for AOS, Min elevation for pass -->
+            <tr>
+                <td>
+                    Doppler
+                    <input type="number" class="asl-input"
+                        [(ngModel)]="settings.dopplerPeriod"
+                        (change)="setDooplerPeriod()"
+                        matTooltip="Doppler refresh period in s">
+                    s
+                </td>
+                <td>
+                    Pred
+                    <input type="number" class="asl-input"
+                        [(ngModel)]="settings.updatePeriod"
+                        (change)="setUpdatePeriod()"
+                        matTooltip="Prediction period in days">
+                    days
+                </td>
+                <td>
+                    Min AOS
+                    <input type="number" class="asl-input"
+                        [(ngModel)]="settings.minAOSElevation"
+                        (change)="setMinAOSElevation()"
+                        matTooltip="Minimum elevation for AOS in degrees">
+                    &#176;
+                </td>
+                <td>
+                    Min pass
+                    <input type="number" class="asl-input"
+                        [(ngModel)]="settings.minPassElevation"
+                        (change)="setMinPassElevation()"
+                        matTooltip="Minimum elevation for pass in degrees">
+                    &#176;
+                </td>
+            </tr>
+            <!-- Passes start after, Passes finish before, Rotator max Az, Rotator max El -->
+            <tr>
+                <td>
+                    After
+                    <input type="time" class="time-input"
+                        [(ngModel)]="settings.passStartTime"
+                        (change)="setPasstartTime()"
+                        matTooltip="Passes must sart after">
+                </td>
+                <td>
+                    Before
+                    <input type="time" class="time-input"
+                        [(ngModel)]="settings.passFinishTime"
+                        (change)="setPassFinishTime()"
+                        matTooltip="Passes must finish before">
+                </td>
+                <td>
+                    Rot max Az
+                    <input type="number" class="asl-input"
+                        [(ngModel)]="settings.rotatorMaxAzimuth"
+                        (change)="setRotatorMaxAzimuth()"
+                        matTooltip="Rotator maximum azimuth in degrees">
+                    &#176;
+                </td>
+                <td>
+                    Rot max El
+                    <input type="number" class="asl-input"
+                        [(ngModel)]="settings.rotatorMaxElevation"
+                        (change)="setRotatorMaxElevation()"
+                        matTooltip="Rotator maximum elevation in degrees">
+                    &#176;
+                </td>
+            </tr>
+            <!-- AOS speech warning, LOS speech warning -->
+            <tr>
+                <td colspan="2">
+                    AOS speech
+                    <input type="text" class="speech-input"
+                        [(ngModel)]="settings.aosSpeech"
+                        (change)="setAOSSpeech()"
+                        matTooltip="AOS speech warning">
+                </td>
+                <td colspan="2">
+                    LOS speech
+                    <input type="text" class="speech-input"
+                        [(ngModel)]="settings.losSpeech"
+                        (change)="setLOSSpeech()"
+                        matTooltip="LOS speech warning">
+                </td>
+            </tr>
+            <!-- AOS command, LOS command -->
+            <tr>
+                <td colspan="2">
+                    AOS cmd
+                    <input type="text" class="speech-input"
+                        [(ngModel)]="settings.aosCommand"
+                        (change)="setAOSCommand()"
+                        matTooltip="Command to execute at AOS">
+                </td>
+                <td colspan="2">
+                    LOS cmd
+                    <input type="text" class="speech-input"
+                        [(ngModel)]="settings.losCommand"
+                        (change)="setLOSCommand()"
+                        matTooltip="Command to execute at LOS">
+                </td>
+            </tr>
+            <!-- Display header -->
+            <tr>
+                <th colspan="4">
+                    Display
+                </th>
+            </tr>
+            <!-- Update period, Default frequency, AzEl units, Gnd track points -->
+            <tr>
+                <td>
+                    Upd period
+                    <input type="number" class="asl-input"
+                        [(ngModel)]="settings.updatePeriod"
+                        (change)="setUpdatePeriod()"
+                        matTooltip="Update period in seconds">
+                </td>
+                <td>
+                    F (Hz)
+                    <input type="number" class="lat-lon-input"
+                        [(ngModel)]="settings.defaultFrequency"
+                        (change)="setDefaultFrequency()"
+                        matTooltip="Default frequency in Hz">
+                </td>
+                <td>
+                    AzEl units
+                    <mat-select style="width:7ch; background-color: white; margin: 1px;"
+                        [(value)]="settings.azElUnits"
+                        (selectionChange)="setAzElUnits()"
+                        matTooltip="Azimuth and elevation units">
+                        <mat-option *ngFor="let azElUnit of azElUnits" [value]="azElUnit.value">
+                        {{azElUnit.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </td>
+                <td>
+                    Gnd points
+                    <input type="number" class="asl-input"
+                        [(ngModel)]="settings.groundTrackPoints"
+                        (change)="setGroundTrackPoints()"
+                        matTooltip="Number of ground track points">
+                </td>
+            </tr>
+            <!-- Date format, Display times in UTC, Draw satellites on map -->
+            <tr>
+                <td colspan="2">
+                    Date fmt
+                    <input type="text" class="address-input"
+                    [(ngModel)]="settings.dateFormat"
+                    (change)="setDateFormat()"
+                    matTooltip="Date format">
+                </td>
+                <td>
+                    <mat-checkbox color="primary" [(ngModel)]="utc" (change)="setUTC()" matTooltip="Display times in UTC">
+                        UTC
+                    </mat-checkbox>
+                </td>
+                <td>
+                    <mat-checkbox color="primary" [(ngModel)]="drawOnMap" (change)="setDrawOnMap()" matTooltip="Draw satellites on map">
+                        Draw sats
+                    </mat-checkbox>
+                </td>
+            </tr>
+            <!-- Devices header -->
+            <tr>
+                <th colspan="4">
+                    Deviceset control
+                </th>
+            </tr>
+            <!-- Satellite -->
+            <tr>
+                <td>
+                    Sat
+                    <mat-select style="width:20ch; background-color: white; margin: 1px;"
+                        [(value)]="ctlSat"
+                        (selectionChange)="setCtlSat()"
+                        matTooltip="Satellite name for device control">
+                        <mat-option *ngFor="let sat of sats" [value]="sat">
+                        {{sat}}
+                        </mat-option>
+                    </mat-select>
+                    <button mat-button
+                        class="button-card"
+                        matTooltip="Add satellite for device control"
+                        (click)="addSatControl()" >
+                        <em class="fa fa-plus" style="height:16px; width:16px; margin-top: 1px; margin-bottom: 1px;"></em>
+                    </button>
+                </td>
+                <td colspan="3">
+                </td>
+            </tr>
+            <!-- Devices connections -->
+            <tr>
+                <td colspan="4">
+                    <table *ngFor="let deviceSat of settings.deviceSettings; let indexOfSat=index;" style="border: 1px solid black; background-color: rgb(240,240,255)">
+                        <tr>
+                            <td style="background-color: rgb(240,240,255)">
+                                Sat {{ indexOfSat }} - {{ deviceSat.satellite }}
+                            </td>
+                            <td>
+                                <button mat-button
+                                    class="button-card"
+                                    matTooltip="Add device set to control"
+                                    (click)="devCtlAddDeviceset(indexOfSat)">
+                                    <em class="fa fa-plus" style="height:16px; width:16px; margin-top: 1px; margin-bottom: 1px;"></em>
+                                </button>
+                            </td>
+                            <td>
+                                <button mat-button
+                                    class="button-card"
+                                    matTooltip="Remove satellite"
+                                    (click)="devCtlRemoveSat(indexOfSat)">
+                                    <em class="fa fa-times" style="height:16px; width:16px; margin-top: 1px; margin-bottom: 1px;"></em>
+                                </button>
+                            </td>
+                        </tr>
+                        <table *ngFor="let deviceSetting of deviceSat.deviceSettings; let indexOfDevice=index;" style="border: 1px solid black;">
+                            <tr>
+                                <td>
+                                    Device {{ indexOfDevice }}
+                                    <mat-select style="width:7ch; background-color: white; margin: 1px;"
+                                        [(value)]="deviceSetting.deviceSetIndex"
+                                        (selectionChange)="devCtlSetDevice(indexOfSat, indexOfDevice)"
+                                        matTooltip="Deviceset to control">
+                                        <mat-option *ngFor="let deviceset of devicesetsSelect" [value]="deviceset.value">
+                                        {{deviceset.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </td>
+                                <td>
+                                    F (Hz)
+                                    <input type="number" class="lat-lon-input"
+                                    [(ngModel)]="deviceSetting.frequency"
+                                    (change)="setDeviceSettings()"
+                                    matTooltip="Override preset frequency in Hz">
+                                </td>
+                                <td>
+                                    <button mat-button
+                                        class="button-card"
+                                        matTooltip="Remove deviceset control"
+                                        (click)="devCtlRemoveDevice(indexOfSat, indexOfDevice)">
+                                        <em class="fa fa-times" style="height:12px; width:12px; margin-top: 1px; margin-bottom: 1px;"></em>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <button mat-button
+                                    class="button-card"
+                                    matTooltip="Select preset"
+                                    [id]="getPresetSelectButtonId(indexOfSat, indexOfDevice)"
+                                    (click)="openSelectPresetDialog(indexOfSat, indexOfDevice)">
+                                        <img src="./assets/icons/star.svg" style="height:16px; width:16px"/>
+                                    </button>
+                                    [{{ deviceSetting.presetGroup }}] {{ deviceSetting.presetDescription }} - {{ deviceSetting.presetFrequency }} Hz
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <mat-form-field style="width: 100%;">
+                                        <mat-label>Channel indices with Doppler control</mat-label>
+                                        <mat-chip-list #dopplerListChannel>
+                                            <mat-chip *ngFor="let channel of deviceSetting.doppler"
+                                                [selectable]="dopplerChannelSelectable"
+                                                [removable]="dopplerChannelRemovable"
+                                                (removed)="removeDopplerChannel(indexOfSat, indexOfDevice, channel)">
+                                                {{channel}}
+                                                <mat-icon matChipRemove *ngIf="dopplerChannelRemovable">&#x274C;</mat-icon>
+                                            </mat-chip>
+                                            <input placeholder="New channel index..."
+                                                [matChipInputFor]="dopplerListChannel"
+                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                [matChipInputAddOnBlur]="dopplerChannelAddOnBlur"
+                                                (matChipInputTokenEnd)="addDopplerChannel(indexOfSat, indexOfDevice, $event)">
+                                        </mat-chip-list>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <mat-checkbox color="primary"
+                                    [(ngModel)]="deviceSetting.startOnAOS"
+                                    (change)="setDeviceSettings()"
+                                    matTooltip="Start on AOS">
+                                        Start on AOS
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <mat-checkbox color="primary"
+                                    [(ngModel)]="deviceSetting.stopOnLOS"
+                                    (change)="setDeviceSettings()"
+                                    matTooltip="Stop on LOS">
+                                        Stop on LOS
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <mat-checkbox color="primary"
+                                    [(ngModel)]="deviceSetting.startStopFileSinks"
+                                    (change)="setDeviceSettings()"
+                                    matTooltip="Start/stop file sinks">
+                                        Start/stop file sinks
+                                    </mat-checkbox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    AOS cmd
+                                </td>
+                                <td colspan="2">
+                                    <input type="text" class="speech-input"
+                                        [(ngModel)]="deviceSetting.aosCommand"
+                                        (change)="setAOSCommand()"
+                                        matTooltip="Command to execute at AOS">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    LOS cmd
+                                </td>
+                                <td colspan="2">
+                                    <input type="text" class="speech-input"
+                                        [(ngModel)]="settings.losCommand"
+                                        (change)="setLOSCommand()"
+                                        matTooltip="Command to execute at LOS">
+                                </td>
+                            </tr>
+                        </table>
+                    </table>
+                </td>
+            </tr>
+            <!-- Row 6: empty footer -->
+            <tr style="height: 3px;">
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

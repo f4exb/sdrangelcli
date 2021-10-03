@@ -5,7 +5,13 @@ export interface DeviceSet {
     channelcount: number;
     channels?: Channel[];
     samplingDevice: Device;
-  }
+}
+
+export interface DeviceSets {
+  devicesetcount: number;
+  devicesetfocus?: number;
+  deviceSets: DeviceSet[];
+}
 
 export const DEVICESET_MOCK_WITH_CHANNELS = {
   channelcount: 2,

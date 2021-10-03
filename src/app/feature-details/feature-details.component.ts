@@ -38,6 +38,8 @@ export class FeatureDetailsComponent implements OnInit {
       featureSettings => {
         if (featureSettings.featureType === 'AIS') {
           this.router.navigate(['ais'], {relativeTo: this.route});
+        } else if (featureSettings.featureType === 'SatelliteTracker') {
+          this.router.navigate(['satellitetracker'], {relativeTo: this.route});
         } else {
           this.router.navigate(['notsupported'], { relativeTo: this.route});
         }

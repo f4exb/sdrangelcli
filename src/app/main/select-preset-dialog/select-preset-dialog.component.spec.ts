@@ -6,19 +6,18 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { Presets, PRESETS_DEFAULT } from '../preset/preset';
 
-import { AddFeatureDialogComponent } from './add-feature-dialog.component';
+import { SelectPresetDialogComponent } from './select-preset-dialog.component';
 
-describe('AddFeatureDialogComponent', () => {
-  let component: AddFeatureDialogComponent;
-  let fixture: ComponentFixture<AddFeatureDialogComponent>;
-  const data = {
-    featureSetIndex: 0
-  };
+describe('SelectPresetDialogComponent', () => {
+  let component: SelectPresetDialogComponent;
+  let fixture: ComponentFixture<SelectPresetDialogComponent>;
+  const data: Presets = PRESETS_DEFAULT;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddFeatureDialogComponent ],
+      declarations: [ SelectPresetDialogComponent ],
       imports: [
         FormsModule,
         MatDialogModule,
@@ -37,7 +36,7 @@ describe('AddFeatureDialogComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddFeatureDialogComponent);
+    fixture = TestBed.createComponent(SelectPresetDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

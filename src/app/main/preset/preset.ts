@@ -35,6 +35,13 @@ export interface PresetLoad {
   };
 }
 
+export interface PresetGet {
+  groupName: string;
+  centerFrequency: number;
+  name: string;
+  type: string;
+}
+
 export interface PresetDelete {
   groupName: string;
   centerFrequency: number;

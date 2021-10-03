@@ -1,1 +1,14 @@
-<p>add-feature-dialog works!</p>
+<h2 mat-dialog-title>Add new feature</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+  <mat-select class="available-features-input" [(value)]="selectedFeatureId">
+    <mat-option *ngFor="let featureType of featureTypes" [value]="featureType.value">
+      {{featureType.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary"(click)="save()">OK</button>
+</mat-dialog-actions>
