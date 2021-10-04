@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { FeatureSettings } from './feature-details';
+import { FeatureReport, FeatureSettings } from './feature-details';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +25,10 @@ export class FeatureDetailsService {
       })
     };
     return this.http.patch(newurl, JSON.stringify(settings), httpOptions).pipe(delay(500));
+  }
+
+  getReport(url: string, featuresetIndex: number, featureIndex: number): Observable<FeatureReport> {
+    const newurl = url + '/featureset/' + featuresetIndex + '/feature/' + featureIndex + '/report';
+    return this.http.get<FeatureReport>(newurl);
   }
 }

@@ -1,11 +1,11 @@
 import { Time } from '@angular/common';
-import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Utils } from 'src/app/common-components/utils';
 import { SdrangelUrlService } from 'src/app/sdrangel-url.service';
 import { FeatureSettings } from '../feature-details';
 import { FeatureDetailsService } from '../feature-details.service';
-import { SatelliteDeviceSettings, SatelliteTrackerSettings, SATELLITE_TRACKER_SETTINGS_MOCK } from './satellite-tracker';
+import { SatelliteTrackerSettings, SATELLITE_TRACKER_SETTINGS_MOCK } from './satellite-tracker';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { PresetService } from 'src/app/main/preset/preset.service';
@@ -75,8 +75,7 @@ export class SatelliteTrackerComponent implements OnInit {
     private presetService: PresetService,
     private devicesetService: DevicesetService,
     private sdrangelUrlService: SdrangelUrlService,
-    private popupDialog: MatDialog,
-    private elementRef: ElementRef) {
+    private popupDialog: MatDialog) {
       this.sdrangelUrlService.currentUrlSource.subscribe(url => {
         this.sdrangelURL = url;
       });
@@ -145,7 +144,7 @@ export class SatelliteTrackerComponent implements OnInit {
           this.sats = this.settings.satellites;
           this.tles = this.settings.tles;
         } else {
-          this.statusMessage = 'Not an AIS feature';
+          this.statusMessage = 'Not a SatelliteTracker feature';
           this.statusError = true;
         }
       }

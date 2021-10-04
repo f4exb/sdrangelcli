@@ -1,0 +1,212 @@
+<mat-card>
+    <mat-card-header class="feature-card-header feature-header-generic">
+        <button mat-button class="button-card" matTooltip="Refresh" (click)="getFeatureSettings()">
+          <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+        </button>&nbsp;
+        <app-feature-header class="feature-header-comp" featureType="GS232Controller"
+            [title]="settings.title"
+            [color]="rgbTitleStr"
+            (titleChanged)="onTitleChanged($event)"
+            (colorChanged)="onTitleColorChanged($event)" >
+        </app-feature-header>
+    </mat-card-header>
+    <mat-card-content>
+        <table>
+            <!--- Az, El-->
+            <tr>
+                <td>
+                    Az
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.azimuth"
+                        (change)="setAzimuth()"
+                        matTooltip="Target azimuth in degrees"
+                        min=0,
+                        max=450>
+                </td>
+                <td>
+                    El
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.elevation"
+                        (change)="setElevation()"
+                        matTooltip="Target elevation in degrees"
+                        min=0,
+                        max=180>
+                </td>
+                <td></td>
+            </tr>
+            <!--- Track, source -->
+            <tr>
+                <td>
+                    <mat-checkbox color="primary" [(ngModel)]="track" (change)="setTracking()" matTooltip="Enable automatic tracking of azimuth and elevation from the specified channel">
+                        Track
+                    </mat-checkbox>
+                </td>
+                <td colspan="2">
+                    Source
+                    <mat-select style="width:25ch; background-color: white; margin: 1px;"
+                        [(value)]="settings.source"
+                        (selectionChange)="setSource()"
+                        matTooltip="Source of tracking">
+                    <mat-option *ngFor="let source of sources" [value]="source.value">
+                        {{source.viewValue}}
+                    </mat-option>
+                    </mat-select>
+                </td>
+            </tr>
+            <!-- Protocol, Tolerance -->
+            <tr>
+                <td>
+                    Protocol
+                    <mat-select style="width:15ch; background-color: white; margin: 1px;"
+                        [(value)]="settings.protocol"
+                        (selectionChange)="setProtocol()"
+                        matTooltip="Command protocol">
+                        <mat-option *ngFor="let protocol of protocols" [value]="protocol.value">
+                        {{protocol.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </td>
+                <td>
+                    Tol
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.tolerance"
+                        (change)="setTolerance()"
+                        matTooltip="Tolerance in degrees"
+                        min=0,
+                        max=99>
+                </td>
+                <td></td>
+            </tr>
+            <!-- Serial port, Baud rate -->
+            <tr>
+                <td>
+                    Port
+                    <mat-select style="width:15ch; background-color: white; margin: 1px;"
+                        [(value)]="settings.serialPort"
+                        (selectionChange)="setSerialPort()"
+                        matTooltip="Serial port connected to the GS-232 controller">
+                        <mat-option *ngFor="let serialPort of serialPorts" [value]="serialPort.value">
+                        {{serialPort.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </td>
+                <td>
+                    Baud
+                    <mat-select style="width:15ch; background-color: white; margin: 1px;"
+                        [(value)]="settings.baudRate"
+                        (selectionChange)="setBaudRate()"
+                        matTooltip="Serial port baud rate for the GS-232 controller">
+                        <mat-option *ngFor="let baudRate of baudRates" [value]="baudRate.value">
+                        {{baudRate.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </td>
+                <td></td>
+            </tr>
+            <!-- Az offset, Az min, Az max-->
+            <tr>
+                <td>
+                    Az ofs
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.azimuthOffset"
+                        (change)="setAzimuthOffset()"
+                        matTooltip="Angle in degrees that will be added to the target azimuth to correct for misalignment"
+                        min=-360,
+                        max=360>
+                </td>
+                <td>
+                    Az min
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.azimuthMin"
+                        (change)="setAzimuthMin()"
+                        matTooltip="Minimum azimuth angle in degrees"
+                        min=0,
+                        max=450>
+                </td>
+                <td>
+                    Az max
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.azimuthMax"
+                        (change)="setAzimuthMax()"
+                        matTooltip="Maximum azimuth angle in degrees"
+                        min=0,
+                        max=450>
+                </td>
+            </tr>
+            <!-- El offset, El min, El max-->
+            <tr>
+                <td>
+                    El ofs
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.elevationOffset"
+                        (change)="setElevationOffset()"
+                        matTooltip="Angle in degrees that will be added to the target elevation to correct for misalignment"
+                        min=-180,
+                        max=180>
+                </td>
+                <td>
+                    El min
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.elevationMin"
+                        (change)="setElevationMin()"
+                        matTooltip="Minimum elevation angle in degrees"
+                        min=0,
+                        max=180>
+                </td>
+                <td>
+                    El max
+                    <input type="number" class="angle-input"
+                        [(ngModel)]="settings.elevationMax"
+                        (change)="setElevationMax()"
+                        matTooltip="Maximum elevation angle in degrees"
+                        min=0,
+                        max=180>
+                </td>
+            </tr>
+            <!--- Use reverse API, reverse API device index, reverse API feature index -->
+            <tr>
+                <td>
+                <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+                    Reverse API
+                </mat-checkbox>
+                </td>
+                <td>
+                FeatureSet
+                <input type="number" class="index-input"
+                    [(ngModel)]="settings.reverseAPIFeatureSetIndex"
+                    (change)="setReverseAPIFeatureSetIndex()"
+                    matTooltip="Reverse API feature set index"
+                    min=0>
+                </td>
+                <td>
+                Feature
+                <input type="number" class="index-input"
+                    [(ngModel)]="settings.reverseAPIFeatureIndex"
+                    (change)="setReverseAPIFeatureIndex()"
+                    matTooltip="Reverse API feature index"
+                    min=0>
+                </td>
+            </tr>
+            <!--- reverse API address, reverse API port -->
+            <tr>
+                <td>
+                Addr
+                <input type="text" class="address-input"
+                    [(ngModel)]="settings.reverseAPIAddress"
+                    (change)="setReverseAPIAddress()"
+                    matTooltip="Reverse API IPv4 address"
+                >
+                </td>
+                <td>
+                Port
+                <input type="number" class="port-input"
+                    [(ngModel)]="settings.reverseAPIPort"
+                    (change)="setReverseAPIPort()"
+                    matTooltip="Reverse API port"
+                    min=1024 max=65535>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>

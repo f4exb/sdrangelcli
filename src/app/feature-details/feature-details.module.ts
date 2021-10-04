@@ -16,6 +16,7 @@ import { AisComponent } from './ais/ais.component';
 import { FeatureHeaderComponent } from './feature-header/feature-header.component';
 import { SatelliteTrackerComponent } from './satellite-tracker/satellite-tracker.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { Gs232ControllerComponent } from './gs232-controller/gs232-controller.component';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { MatChipsModule } from '@angular/material/chips';
     AisComponent,
     SatelliteTrackerComponent,
     FeatureHeaderComponent,
+    Gs232ControllerComponent,
   ]
 })
 
