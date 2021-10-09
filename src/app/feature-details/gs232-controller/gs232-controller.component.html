@@ -3,6 +3,12 @@
         <button mat-button class="button-card" matTooltip="Refresh" (click)="getFeatureSettings()">
           <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
         </button>&nbsp;
+        <button mat-button mat-raised-button
+            [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+            matTooltip="Monitor on/off"
+            (click)="toggleMonitor()">
+        <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+        </button>&nbsp;
         <app-feature-header class="feature-header-comp" featureType="GS232Controller"
             [title]="settings.title"
             [color]="rgbTitleStr"
@@ -12,6 +18,29 @@
     </mat-card-header>
     <mat-card-content>
         <table>
+            <!-- Row 1: channel monitor (optional) -->
+            <tr *ngIf="monitor">
+                <td>
+                    Tgt Az: {{ this.featureReport.targetAzimuth }}
+                </td>
+                <td>
+                    Tgt El: {{ this.featureReport.targetElevation }}
+                </td>
+                <td></td>
+            </tr>
+            <!-- Row 2: channel monitor (optional) -->
+            <tr *ngIf="monitor">
+                <td>
+                    Cur Az: {{ this.featureReport.currentAzimuth }}
+                </td>
+                <td>
+                    Cur El: {{ this.featureReport.currentElevation }}
+                </td>
+                <td>
+                    On target
+                    <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getOnTargetStatusColor()}" [matTooltip]="getOnTargetStatusText()"></i>
+                </td>
+            </tr>
             <!--- Az, El-->
             <tr>
                 <td>

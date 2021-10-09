@@ -1,10 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
 import { Utils } from 'src/app/common-components/utils';
 import { SdrangelUrlService } from 'src/app/sdrangel-url.service';
 import { FeatureSettings } from '../feature-details';
 import { FeatureDetailsService } from '../feature-details.service';
-import { GS232ControllerSettings, GS232_CONTROLLER_SETTINGS_MOCK } from './gs232-controller';
+import { GS232ControllerReport, GS232ControllerSettings, GS232_CONTROLLER_SETTINGS_MOCK } from './gs232-controller';
 
 export interface Source {
   value: string;
@@ -61,10 +62,14 @@ export class Gs232ControllerComponent implements OnInit {
     {value: 230400, viewValue: '230400'},
     {value: 460800, viewValue: '460800'}
   ];
+  monitor: boolean;
+  featureReportSubscription: Subscription;
+  featureReport: GS232ControllerReport;
 
   constructor(private route: ActivatedRoute,
     private featuredetailsService: FeatureDetailsService,
     private sdrangelUrlService: SdrangelUrlService) {
+      this.monitor = false;
       this.sdrangelUrlService.currentUrlSource.subscribe(url => {
         this.sdrangelURL = url;
       });
@@ -144,6 +149,46 @@ export class Gs232ControllerComponent implements OnInit {
 
   getRGBTitleStr(): string {
     return 'rgb(' + this.rgbTitle[0].toString() + ',' + this.rgbTitle[1].toString() + ',' + this.rgbTitle[2].toString() + ')';
+  }
+
+  enableReporting(enable: boolean) {
+    if (enable) {
+      this.featureReportSubscription = interval(1000).subscribe(
+        _ => {
+          this.featuredetailsService.getReport(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+            featureReport => {
+              if (featureReport.featureType === 'GS232Controller') {
+                this.featureReport = featureReport.GS232ControllerReport;
+              }
+            }
+          );
+        }
+      );
+    } else {
+      this.featureReportSubscription.unsubscribe();
+      this.featureReportSubscription = null;
+    }
+  }
+
+  toggleMonitor() {
+    this.monitor = !this.monitor;
+    this.enableReporting(this.monitor);
+  }
+
+  getOnTargetStatusColor(): string {
+    if (this.featureReport.onTarget) {
+      return 'rgb(50,180,50)';
+    } else {
+      return 'grey';
+    }
+  }
+
+  getOnTargetStatusText(): string {
+    if (this.featureReport.onTarget) {
+      return 'On target';
+    } else {
+      return 'Off target';
+    }
   }
 
   onTitleColorChanged(colorStr: string) {

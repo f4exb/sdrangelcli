@@ -49,6 +49,11 @@ export const GS232_CONTROLLER_SETTINGS_MOCK = {
 export interface GS232ControllerReport {
     sources: string[];
     serialPorts: string[];
+    targetAzimuth: number;
+    targetElevation: number;
+    currentAzimuth: number;
+    currentElevation: number;
+    onTarget: number; // boolean
 }
 
 export const GS232_CONTROLLER_REPORT_MOCK = {
@@ -59,5 +64,10 @@ export const GS232_CONTROLLER_REPORT_MOCK = {
     serialPorts: [
         'ttyUSB0',
         'ttyUSB1'
-    ]
+    ],
+    targetAzimuth: 0,
+    targetElevation: 0,
+    currentAzimuth: 0,
+    currentElevation: 0,
+    onTarget: 1
 };
