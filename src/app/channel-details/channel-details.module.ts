@@ -35,6 +35,7 @@ import { FreqtrackerSinkComponent } from './freqtracker-sink/freqtracker-sink.co
 import { LocalSinkComponent } from './local-sink/local-sink.component';
 import { LocalSourceComponent } from './local-source/local-source.component';
 import { FileSinkComponent } from './file-sink/file-sink.component';
+import { SigmfFileSinkComponent } from './sigmf-file-sink/sigmf-file-sink.component';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { FileSinkComponent } from './file-sink/file-sink.component';
     FreqtrackerSinkComponent,
     LocalSinkComponent,
     LocalSourceComponent,
-    FileSinkComponent
+    FileSinkComponent,
+    SigmfFileSinkComponent
   ]
 })
 export class ChannelDetailsModule { }

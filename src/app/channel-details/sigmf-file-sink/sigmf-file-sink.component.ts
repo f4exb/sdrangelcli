@@ -7,7 +7,7 @@ import { DevicesetService } from 'src/app/deviceset/deviceset/deviceset.service'
 import { SdrangelUrlService } from 'src/app/sdrangel-url.service';
 import { ChannelActions, ChannelSettings } from '../channel-details';
 import { ChannelDetailsService } from '../channel-details.service';
-import { FileSinkActions, FileSinkReport, FileSinkSettings, FILESINK_ACTIONS_DEFAULT, FILESINK_REPORT_DEFAULT, FILESINK_SETTINGS_DEFAULT } from './file-sink';
+import { SigMFFileSinkActions, SigMFFileSinkReport, SigMFFileSinkSettings, SIGMF_FILESINK_ACTIONS_DEFAULT, SIGMF_FILESINK_REPORT_DEFAULT, SIGMF_FILESINK_SETTINGS_DEFAULT } from './sigmf-file-sink';
 
 export interface Log2Decim {
   value: number;
@@ -15,17 +15,17 @@ export interface Log2Decim {
 }
 
 @Component({
-  selector: 'app-file-sink',
-  templateUrl: './file-sink.component.html',
-  styleUrls: ['./file-sink.component.css']
+  selector: 'app-sigmf-file-sink',
+  templateUrl: './sigmf-file-sink.component.html',
+  styleUrls: ['./sigmf-file-sink.component.css']
 })
-export class FileSinkComponent implements OnInit {
+export class SigmfFileSinkComponent implements OnInit {
   deviceIndex: number;
   channelIndex: number;
   sdrangelURL: string;
-  settings: FileSinkSettings = FILESINK_SETTINGS_DEFAULT;
-  report: FileSinkReport = FILESINK_REPORT_DEFAULT;
-  actions: FileSinkActions = FILESINK_ACTIONS_DEFAULT;
+  settings: SigMFFileSinkSettings = SIGMF_FILESINK_SETTINGS_DEFAULT;
+  report: SigMFFileSinkReport = SIGMF_FILESINK_REPORT_DEFAULT;
+  actions: SigMFFileSinkActions = SIGMF_FILESINK_ACTIONS_DEFAULT;
   deviceStoreSubscription: Subscription;
   channelReportSubscription: Subscription;
   deviceCenterFrequency: number;
@@ -106,10 +106,10 @@ export class FileSinkComponent implements OnInit {
   getChannelSettings() {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
-        if (channelSettings.channelType === 'FileSink') {
+        if (channelSettings.channelType === 'SigMFFileSink') {
           this.statusMessage = 'OK';
           this.statusError = false;
-          this.settings = channelSettings.FileSinkSettings;
+          this.settings = channelSettings.SigMFFileSinkSettings;
           this.channelDeltaFrequency = this.settings.inputFrequencyOffset;
           this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
           this.channelMaxFrequencyKhz = (this.deviceCenterFrequency + (this.deviceBasebandRate / 2)) / 1000;
@@ -122,18 +122,18 @@ export class FileSinkComponent implements OnInit {
           this.maxFixedShiftIndex = this.getNbFixedShiftIndexes(this.settings.log2Decim);
           this.setPosFromFrequency();
         } else {
-          this.statusMessage = 'Not a FileSink channel';
+          this.statusMessage = 'Not a SigMFFileSink channel';
           this.statusError = true;
         }
       }
     );
   }
 
-  private postChannelActions(fileSinkActions: FileSinkActions) {
+  private postChannelActions(fileSinkActions: SigMFFileSinkActions) {
     const actions: ChannelActions = <ChannelActions>{};
-    actions.channelType = 'FileSink';
+    actions.channelType = 'SigMFFileSink';
     actions.direction = 0,
-    actions.FileSinkActions = fileSinkActions;
+    actions.SigMFFileSinkActions = fileSinkActions;
     this.channeldetailsService.postAction(this.sdrangelURL, this.deviceIndex, this.channelIndex, actions).subscribe(
       res => {
         this.statusMessage = 'OK';
@@ -146,11 +146,11 @@ export class FileSinkComponent implements OnInit {
     );
   }
 
-  private setDeviceSettings(fileSinkSettibgs: FileSinkSettings) {
+  private setDeviceSettings(fileSinkSettibgs: SigMFFileSinkSettings) {
     const settings: ChannelSettings = <ChannelSettings>{};
-    settings.channelType = 'FileSink';
+    settings.channelType = 'SigMFFileSink';
     settings.direction = 0,
-    settings.FileSinkSettings = fileSinkSettibgs;
+    settings.SigMFFileSinkSettings = fileSinkSettibgs;
     this.channeldetailsService.setSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex, settings).subscribe(
       res => {
         console.log('Set settings OK', res);
@@ -171,8 +171,8 @@ export class FileSinkComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === 'FileSink') {
-                this.report = channelReport.FileSinkReport;
+              if (channelReport.channelType === 'SigMFFileSink') {
+                this.report = channelReport.SigMFFileSinkReport;
               }
             }
           );
@@ -235,7 +235,7 @@ export class FileSinkComponent implements OnInit {
   }
 
   setCenterFrequency() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.inputFrequencyOffset = this.channelCenterFrequencyKhz * 1000 - this.deviceCenterFrequency;
     this.setDeviceSettings(newSettings);
     this.setPosFromFrequency();
@@ -256,7 +256,7 @@ export class FileSinkComponent implements OnInit {
   }
 
   setTitleColor() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.rgbColor = Utils.rgbToInt(this.rgbTitleStr);
     this.setDeviceSettings(newSettings);
   }
@@ -267,13 +267,13 @@ export class FileSinkComponent implements OnInit {
   }
 
   setTitle() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.title = this.settings.title;
     this.setDeviceSettings(newSettings);
   }
 
   setLog2Decim() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.log2Decim = this.settings.log2Decim;
     this.setDeviceSettings(newSettings);
     this.maxFixedShiftIndex = this.getNbFixedShiftIndexes(this.settings.log2Decim);
@@ -281,61 +281,61 @@ export class FileSinkComponent implements OnInit {
   }
 
   setSpectrumSquelchMode() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.spectrumSquelchMode = this.spectrumSquelchMode ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setSpectrumSquelch() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.spectrumSquelch = this.settings.spectrumSquelch;
     this.setDeviceSettings(newSettings);
   }
 
   setSquelchRecordingEnable() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.squelchRecordingEnable = this.squelchRecordingEnable ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setPreRecordTime() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.preRecordTime = this.settings.preRecordTime;
     this.setDeviceSettings(newSettings);
   }
 
   setSquelchPostRecordTime() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.squelchPostRecordTime = this.settings.squelchPostRecordTime;
     this.setDeviceSettings(newSettings);
   }
 
   setUseReverseAPI() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIAddress() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.reverseAPIAddress = this.settings.reverseAPIAddress;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIPort() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.reverseAPIPort = this.settings.reverseAPIPort;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIDeviceIndex() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
   }
 
   setReverseAPIChannelIndex() {
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.reverseAPIChannelIndex = this.settings.reverseAPIChannelIndex;
     this.setDeviceSettings(newSettings);
   }
@@ -344,7 +344,7 @@ export class FileSinkComponent implements OnInit {
     const inputFrequencyOffset = this.getOffsetFromFixedShiftIndex(this.deviceBasebandRate,
       this.settings.log2Decim,
       this.fixedShiftIndex);
-    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    const newSettings: SigMFFileSinkSettings = <SigMFFileSinkSettings>{};
     newSettings.inputFrequencyOffset = inputFrequencyOffset;
     this.setDeviceSettings(newSettings);
   }
@@ -408,7 +408,7 @@ export class FileSinkComponent implements OnInit {
 
   toggleRecording() {
     this.recording = !this.recording;
-    const newActions: FileSinkActions = <FileSinkActions>{};
+    const newActions: SigMFFileSinkActions = <SigMFFileSinkActions>{};
     newActions.record = this.recording ? 1 : 0;
     this.postChannelActions(newActions);
   }

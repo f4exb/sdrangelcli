@@ -19,6 +19,7 @@ import { LocalSinkSettings } from './local-sink/local-sink';
 import { LocalSourceSettings } from './local-source/local-source';
 import { FileSinkActions, FileSinkReport, FileSinkSettings } from './file-sink/file-sink';
 import { FileSinkComponent } from './file-sink/file-sink.component';
+import { SigMFFileSinkActions, SigMFFileSinkReport, SigMFFileSinkSettings } from './sigmf-file-sink/sigmf-file-sink';
 
 export interface ChannelSettings {
     channelType: string;
@@ -39,6 +40,7 @@ export interface ChannelSettings {
     NFMModSettings?: NFMModSettings;
     RemoteSourceSettings?: RemoteSourceSettings;
     RemoteSinkSettings?: RemoteSinkSettings;
+    SigMFFileSinkSettings?: SigMFFileSinkSettings;
     SSBModSettings?: SSBModSettings;
     UDPSourceSettings?: UDPSourceSettings;
     UDPSinkSettings?: UDPSinkSettings;
@@ -59,6 +61,7 @@ export interface ChannelReport {
     AMModReport?: AMModReport;
     NFMModReport?: NFMModReport;
     RemoteSourceReport?: RemoteSourceReport;
+    SigMFFileSinkReport?: SigMFFileSinkReport;
     SSBModReport?: SSBModReport;
     UDPSourceReport?: UDPSourceReport;
     UDPSinkReport?: UDPSinkReport;
@@ -69,6 +72,7 @@ export interface ChannelReport {
 
 export interface ChannelActions {
     FileSinkActions?: FileSinkActions;
+    SigMFFileSinkActions?: SigMFFileSinkActions;
     channelType: string;
     direction: number;
 }
