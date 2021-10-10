@@ -42,6 +42,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'BFMDemod') {
           this.router.navigate(['bfmdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'FileSink') {
+          this.router.navigate(['filesink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'FreeDVDemod') {
           this.router.navigate(['freedvdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'FreqTracker') {

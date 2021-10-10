@@ -21,6 +21,7 @@ import { FreeDVDemodComponent } from './freedv-demod/freedv-demod.component';
 import { FreqtrackerSinkComponent } from './freqtracker-sink/freqtracker-sink.component';
 import { LocalSinkComponent } from './local-sink/local-sink.component';
 import { LocalSourceComponent } from './local-source/local-source.component';
+import { FileSinkComponent } from './file-sink/file-sink.component';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,10 @@ export const routes: Routes = [
       {
         path: 'bfmdemod',
         component: BfmDemodComponent
+      },
+      {
+        path: 'filesink',
+        component: FileSinkComponent
       },
       {
         path: 'freedvdemod',

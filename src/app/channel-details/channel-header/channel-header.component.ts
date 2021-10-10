@@ -10,7 +10,9 @@ export class ChannelHeaderComponent implements OnInit {
   @Input('basebandRate') basebandRate: number;
   @Input('title') title: string;
   @Input('color') colorStr: string;
+  // tslint:disable-next-line:no-output-rename
   @Output('titleChanged') titleChanged = new EventEmitter<string>();
+  // tslint:disable-next-line:no-output-rename
   @Output('colorChanged') colorChanged = new EventEmitter<string>();
 
   constructor() { }

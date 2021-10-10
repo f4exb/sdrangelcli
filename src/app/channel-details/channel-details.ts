@@ -17,12 +17,15 @@ import { FreeDVDemodSettings, FreeDVDemodReport } from './freedv-demod/freedv-de
 import { FreqTrackerSettings, FreqTrackerReport } from './freqtracker-sink/freqtracker-sink';
 import { LocalSinkSettings } from './local-sink/local-sink';
 import { LocalSourceSettings } from './local-source/local-source';
+import { FileSinkActions, FileSinkReport, FileSinkSettings } from './file-sink/file-sink';
+import { FileSinkComponent } from './file-sink/file-sink.component';
 
 export interface ChannelSettings {
     channelType: string;
     direction: number;
     AMDemodSettings?: AMDemodSettings;
     BFMDemodSettings?: BFMDemodSettings;
+    FileSinkSettings?: FileSinkSettings;
     FreeDVDemodSettings?: FreeDVDemodSettings;
     FreeDVModSettings?: FreeDVModSettings;
     FreqTrackerSettings?: FreqTrackerSettings;
@@ -45,6 +48,7 @@ export interface ChannelSettings {
 export interface ChannelReport {
     AMDemodReport?: AMDemodReport;
     BFMDemodReport?: BFMDemodReport;
+    FileSinkReport?: FileSinkReport;
     FreeDVDemodReport?: FreeDVDemodReport;
     FreeDVModReport?: FreeDVModReport;
     FreqTrackerReport?: FreqTrackerReport;
@@ -59,6 +63,12 @@ export interface ChannelReport {
     UDPSourceReport?: UDPSourceReport;
     UDPSinkReport?: UDPSinkReport;
     WFMModReport?: WFMModReport;
+    channelType: string;
+    direction: number;
+}
+
+export interface ChannelActions {
+    FileSinkActions?: FileSinkActions;
     channelType: string;
     direction: number;
 }

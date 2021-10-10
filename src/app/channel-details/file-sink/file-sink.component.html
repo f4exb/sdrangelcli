@@ -1,0 +1,217 @@
+<mat-card>
+    <mat-card-header class="channel-card-header channel-header-rx">
+        <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+            <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+        </button>&nbsp;
+        <button mat-button mat-raised-button
+            [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+            matTooltip="Monitor on/off"
+            (click)="toggleMonitor()">
+        <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+        </button>&nbsp;
+        <app-channel-header class="channel-header-comp" channelType="FileSink"
+            [basebandRate]="deviceBasebandRate"
+            [title]="settings.title"
+            [color]="rgbTitleStr"
+            (titleChanged)="onTitleChanged($event)"
+            (colorChanged)="onTitleColorChanged($event)" >
+        </app-channel-header>
+    </mat-card-header>
+    <mat-card-content>
+        <table>
+            <!-- Row 1: channel monitor (optional) -->
+            <tr *ngIf="monitor">
+                <td>
+                    Spectrum squelch
+                    <i class="fa fa-circle"
+                    style="font-size:14px;"
+                    [ngStyle]="{'color': getSpectrumSquelchStatusColor()}"
+                    [matTooltip]="getSpectrumSquelchStatusText()"></i>
+                </td>
+                <td>
+                    Max {{ getSpectrumMaxdB().toFixed(1) }} dB
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- Row 2: channel monitor (optional) -->
+            <tr *ngIf="monitor">
+                <td>
+                    Recording
+                    <i class="fa fa-circle"
+                    style="font-size:14px;"
+                    [ngStyle]="{'color': getRecordingColor()}"
+                    [matTooltip]="getRecordingText()"></i>
+                </td>
+                <td>
+                    {{ report.recordTimeMs | number }} ms
+                </td>
+                <td>
+                    {{ report.recordSize | number }} b
+                </td>
+                <td>
+                    {{ report.recordCaptures }} captures
+                </td>
+            </tr>
+            <!-- Frequency dial -->
+            <tr>
+                <td colspan="3">
+                    <app-frequency-dial
+                    [frequency]="channelCenterFrequencyKhz"
+                    [min]="channelMinFrequencyKhz"
+                    [max]="channelMaxFrequencyKhz"
+                    (frequencyChanged)="onFrequencyUpdate($event)">
+                    </app-frequency-dial>
+                </td>
+                <td style="width:15ch">
+                    &#x394;f {{getDeltaFrequency()}} kHz
+                </td>
+            </tr>
+            <!--- Fixed frequency, fixed frequency posiion index, decimation, recording -->
+            <tr>
+                <td>
+                    <mat-checkbox color="primary" [(ngModel)]="fixedFreqPosition" (change)="setFixedFreqPosition()" matTooltip="Activate fixed frequency mode">
+                        Fixed frequency
+                    </mat-checkbox>
+                </td>
+                <td>
+                    Pos index
+                    <input type="number" class="squelch-input"
+                        [(ngModel)]="fixedShiftIndex"
+                        (change)="setFixedFreqPosition()"
+                        matTooltip="Fixed frequency position index"
+                        min=0>
+                </td>
+                <td>
+                    Decim
+                    <mat-select style="width:6ch; background-color: white; margin: 1px;"
+                        [(value)]="settings.log2Decim"
+                        (selectionChange)="setLog2Decim()"
+                        matTooltip="Decimation factor">
+                        <mat-option *ngFor="let log2Decim of log2Decims" [value]="log2Decim.value">
+                        {{log2Decim.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </td>
+                <td>
+                    Record
+                    <button mat-button class="fa fa-circle"
+                        matTooltip="Toggle recording"
+                        (click)="toggleRecording()"
+                        [ngStyle]="{'color': getRecordActionColor()}">
+                    </button>
+                </td>
+            </tr>
+            <!--  Record file name -->
+            <tr>
+                <td colspan="4">
+                    File:
+                    <input type="text" class="file-input"
+                        [(ngModel)]="settings.fileRecordName"
+                        (change)="setReverseAPIAddress()"
+                        matTooltip="Record file name"
+                    >
+                </td>
+            </tr>
+            <!--- Spectrum squelch mode, Spectrum squelch -->
+            <tr>
+                <td>
+                    <mat-checkbox color="primary" [(ngModel)]="spectrumSquelchMode" (change)="setSpectrumSquelchMode()" matTooltip="Activate spectrum squelch mode">
+                        Spectrum squelch
+                    </mat-checkbox>
+                </td>
+                <td>
+                    Squelch
+                    <input type="number" class="squelch-input"
+                        [(ngModel)]="settings.spectrumSquelch"
+                        (change)="setSpectrumSquelch()"
+                        matTooltip="Squelch level (dB)"
+                        min=-100 max=0>
+                    dB
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!--- Squelch recording enable, Pre-record time, Squelch post-record time -->
+            <tr>
+                <td>
+                <mat-checkbox color="primary" [(ngModel)]="squelchRecordingEnable" (change)="setSquelchRecordingEnable()" matTooltip="Activate squelch recording">
+                    Squelch recording
+                </mat-checkbox>
+                </td>
+                <td>
+                    Pre
+                    <input type="number" class="time-input"
+                        [(ngModel)]="settings.preRecordTime"
+                        (change)="setPreRecordTime()"
+                        matTooltip="Squelch pre-record time (s)"
+                        min=0 max=60>
+                    s
+                </td>
+                <td>
+                    Post
+                    <input type="number" class="time-input"
+                        [(ngModel)]="settings.squelchPostRecordTime"
+                        (change)="setSquelchPostRecordTime()"
+                        matTooltip="Squelch post-record time (s)"
+                        min=0 max=60>
+                    s
+                </td>
+                <td></td>
+            </tr>
+            <!--- Use reverse API, reverse API device index, reverse API channel index -->
+            <tr>
+                <td>
+                <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+                    Reverse API
+                </mat-checkbox>
+                </td>
+                <td>
+                Device
+                <input type="number" class="index-input"
+                    [(ngModel)]="settings.reverseAPIDeviceIndex"
+                    (change)="setReverseAPIDeviceIndex()"
+                    matTooltip="Reverse API device index"
+                    min=0>
+                </td>
+                <td>
+                Channel
+                <input type="number" class="index-input"
+                    [(ngModel)]="settings.reverseAPIChannelIndex"
+                    (change)="setReverseAPIChannelIndex()"
+                    matTooltip="Reverse API channel index"
+                    min=0>
+                </td>
+                <td></td>
+            </tr>
+            <!--- reverse API address, reverse API port -->
+            <tr>
+                <td>
+                Addr
+                <input type="text" class="address-input"
+                    [(ngModel)]="settings.reverseAPIAddress"
+                    (change)="setReverseAPIAddress()"
+                    matTooltip="Reverse API IPv4 address"
+                >
+                </td>
+                <td>
+                Port
+                <input type="number" class="port-input"
+                    [(ngModel)]="settings.reverseAPIPort"
+                    (change)="setReverseAPIPort()"
+                    matTooltip="Reverse API port"
+                    min=1024 max=65535>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- Row 6: empty footer -->
+            <tr style="height: 3px;">
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>
+

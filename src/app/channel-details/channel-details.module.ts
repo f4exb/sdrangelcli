@@ -34,6 +34,7 @@ import { FreeDVDemodComponent } from './freedv-demod/freedv-demod.component';
 import { FreqtrackerSinkComponent } from './freqtracker-sink/freqtracker-sink.component';
 import { LocalSinkComponent } from './local-sink/local-sink.component';
 import { LocalSourceComponent } from './local-source/local-source.component';
+import { FileSinkComponent } from './file-sink/file-sink.component';
 
 @NgModule({
   imports: [
@@ -73,7 +74,8 @@ import { LocalSourceComponent } from './local-source/local-source.component';
     FreeDVDemodComponent,
     FreqtrackerSinkComponent,
     LocalSinkComponent,
-    LocalSourceComponent
+    LocalSourceComponent,
+    FileSinkComponent
   ]
 })
 export class ChannelDetailsModule { }
