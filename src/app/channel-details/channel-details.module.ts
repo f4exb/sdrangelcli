@@ -36,6 +36,7 @@ import { LocalSinkComponent } from './local-sink/local-sink.component';
 import { LocalSourceComponent } from './local-source/local-source.component';
 import { FileSinkComponent } from './file-sink/file-sink.component';
 import { SigmfFileSinkComponent } from './sigmf-file-sink/sigmf-file-sink.component';
+import { FileSourceComponent } from './file-source/file-source.component';
 
 @NgModule({
   imports: [
@@ -77,7 +78,8 @@ import { SigmfFileSinkComponent } from './sigmf-file-sink/sigmf-file-sink.compon
     LocalSinkComponent,
     LocalSourceComponent,
     FileSinkComponent,
-    SigmfFileSinkComponent
+    SigmfFileSinkComponent,
+    FileSourceComponent
   ]
 })
 export class ChannelDetailsModule { }

@@ -20,6 +20,7 @@ import { LocalSourceSettings } from './local-source/local-source';
 import { FileSinkActions, FileSinkReport, FileSinkSettings } from './file-sink/file-sink';
 import { FileSinkComponent } from './file-sink/file-sink.component';
 import { SigMFFileSinkActions, SigMFFileSinkReport, SigMFFileSinkSettings } from './sigmf-file-sink/sigmf-file-sink';
+import { FileSourceActions, FileSourceReport, FileSourceSettings } from './file-source/file-source';
 
 export interface ChannelSettings {
     channelType: string;
@@ -27,6 +28,7 @@ export interface ChannelSettings {
     AMDemodSettings?: AMDemodSettings;
     BFMDemodSettings?: BFMDemodSettings;
     FileSinkSettings?: FileSinkSettings;
+    FileSourceSettings?: FileSourceSettings;
     FreeDVDemodSettings?: FreeDVDemodSettings;
     FreeDVModSettings?: FreeDVModSettings;
     FreqTrackerSettings?: FreqTrackerSettings;
@@ -51,6 +53,7 @@ export interface ChannelReport {
     AMDemodReport?: AMDemodReport;
     BFMDemodReport?: BFMDemodReport;
     FileSinkReport?: FileSinkReport;
+    FileSourceReport?: FileSourceReport;
     FreeDVDemodReport?: FreeDVDemodReport;
     FreeDVModReport?: FreeDVModReport;
     FreqTrackerReport?: FreqTrackerReport;
@@ -72,6 +75,7 @@ export interface ChannelReport {
 
 export interface ChannelActions {
     FileSinkActions?: FileSinkActions;
+    FileSourceActions?: FileSourceActions;
     SigMFFileSinkActions?: SigMFFileSinkActions;
     channelType: string;
     direction: number;

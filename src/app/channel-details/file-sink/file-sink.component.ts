@@ -272,6 +272,12 @@ export class FileSinkComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setFileName() {
+    const newSettings: FileSinkSettings = <FileSinkSettings>{};
+    newSettings.fileRecordName = this.settings.fileRecordName;
+    this.setDeviceSettings(newSettings);
+  }
+
   setLog2Decim() {
     const newSettings: FileSinkSettings = <FileSinkSettings>{};
     newSettings.log2Decim = this.settings.log2Decim;

@@ -44,6 +44,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['bfmdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'FileSink') {
           this.router.navigate(['filesink'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'FileSource') {
+          this.router.navigate(['filesource'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'SigMFFileSink') {
           this.router.navigate(['sigmffilesink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'FreeDVDemod') {
