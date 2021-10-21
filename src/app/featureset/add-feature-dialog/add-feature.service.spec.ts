@@ -22,7 +22,7 @@ describe('AddFeatureService', () => {
     inject([HttpTestingController, AddFeatureService],
       (httpMock: HttpTestingController, service: AddFeatureService) => {
         // We call the service
-        service.getAvailableFeatures(sdrangelURL, false).subscribe(data => {
+        service.getAvailableFeatures(sdrangelURL).subscribe(data => {
           expect(data.featurecount).toBe(6);
           expect(data.features[0].id).toBe('AFC');
         });

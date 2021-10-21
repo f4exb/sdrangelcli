@@ -21,6 +21,7 @@ import { FileSinkActions, FileSinkReport, FileSinkSettings } from './file-sink/f
 import { FileSinkComponent } from './file-sink/file-sink.component';
 import { SigMFFileSinkActions, SigMFFileSinkReport, SigMFFileSinkSettings } from './sigmf-file-sink/sigmf-file-sink';
 import { FileSourceActions, FileSourceReport, FileSourceSettings } from './file-source/file-source';
+import { DATVModReport, DATVModSettings } from './datv-mod/datv-mod';
 
 export interface ChannelSettings {
     channelType: string;
@@ -47,6 +48,7 @@ export interface ChannelSettings {
     UDPSourceSettings?: UDPSourceSettings;
     UDPSinkSettings?: UDPSinkSettings;
     WFMModSettings?: WFMModSettings;
+    DATVModSettings?: DATVModSettings;
 }
 
 export interface ChannelReport {
@@ -69,6 +71,7 @@ export interface ChannelReport {
     UDPSourceReport?: UDPSourceReport;
     UDPSinkReport?: UDPSinkReport;
     WFMModReport?: WFMModReport;
+    DATVModReport?: DATVModReport;
     channelType: string;
     direction: number;
 }

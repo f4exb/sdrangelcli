@@ -24,6 +24,7 @@ import { LocalSourceComponent } from './local-source/local-source.component';
 import { FileSinkComponent } from './file-sink/file-sink.component';
 import { SigmfFileSinkComponent } from './sigmf-file-sink/sigmf-file-sink.component';
 import { FileSourceComponent } from './file-source/file-source.component';
+import { DatvModComponent } from './datv-mod/datv-mod.component';
 
 export const routes: Routes = [
   {
@@ -73,6 +74,10 @@ export const routes: Routes = [
       {
         path: 'remotesource',
         component: RemoteSourceComponent
+      },
+      {
+        path: 'datvmod',
+        component: DatvModComponent
       },
       {
         path: 'dsddemod',

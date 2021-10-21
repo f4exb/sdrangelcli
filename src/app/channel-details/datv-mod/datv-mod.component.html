@@ -1,0 +1,240 @@
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-tx">
+    <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <app-channel-header class="channel-header-comp" channelType="DATVMod"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
+    </app-channel-header>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!-- Row 1: channel monitor (optional) -->
+      <tr *ngIf="monitor">
+        <td colspan="3">
+          <app-channel-monitor [value]=this.report.channelPowerDB
+            [min]="-120"
+            [max]="0"
+            [squelch]="!this.channelMute">
+          </app-channel-monitor>
+        </td>
+      </tr>
+      <!-- Row 2: channel monitor (optionsl) -->
+      <tr *ngIf="monitor">
+        <td>
+            TS {{ this.report.tsFileBitrate }} S/s
+        </td>
+        <td>
+            TS {{ this.report.tsFileLength }} b
+        </td>
+        <td>
+            UDP {{ this.report.udpByteCount }} b
+        </td>
+      </tr>
+      <!-- Row 3: Frequency dial -->
+      <tr>
+        <td colspan="2">
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td style="width:15ch">
+          &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+      </tr>
+      <!-- Row 4: Source, Channel sample rate, data rate -->
+      <tr>
+        <td>
+          Src
+          <mat-select class="source-input"
+            [(value)]="settings.tsSource"
+            (selectionChange)="setSource()"
+            matTooltip="TS source">
+            <mat-option *ngFor="let source of sources" [value]="source.value">
+                {{source.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+            Chan {{ this.report.channelSampleRate }} S/s
+        </td>
+        <td>
+            Data {{ this.report.dataRate }} S/s
+        </td>
+      </tr>
+      <!-- Standard, Symbol rate, RFBW -->
+      <tr>
+        <td>
+          Std
+          <mat-select class="source-input"
+            [(value)]="settings.standard"
+            (selectionChange)="setStandard()"
+            matTooltip="DVB standard">
+            <mat-option *ngFor="let standard of standards" [value]="standard.value">
+              {{standard.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          SRate
+          <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.symbolRate"
+              (change)="setSymbolRate()"
+              matTooltip="Symbol rate"
+              min=20000 max=3000000>
+          S/s
+        </td>
+        <td style="width: 140px">
+          RFBW
+          <input type="number" class="rfbw-input"
+              [(ngModel)]="rfBandwidthMhz"
+              (change)="setRFBandwidth()"
+              matTooltip="RF Bandwidth"
+              min=0.1 max=40 step=0.1>
+          MHz
+        </td>
+      </tr>
+      <!-- FEC, Modulation, RollOff -->
+      <tr>
+        <td>
+          Mod
+          <mat-select class="source-input"
+            [(value)]="settings.modulation"
+            (selectionChange)="setModulation()"
+            matTooltip="Modulation type">
+            <mat-option *ngFor="let modulation of modulations" [value]="modulation.value">
+                {{modulation.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          FEC
+          <mat-select class="source-input"
+            [(value)]="settings.fec"
+            (selectionChange)="setFEC()"
+            matTooltip="FEC rate">
+            <mat-option *ngFor="let fec of fecs" [value]="fec.value">
+                {{fec.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          RollOff
+          <mat-select class="source-input"
+            [(value)]="rollOffIndex"
+            (selectionChange)="setRollOff()"
+            matTooltip="Roll off factor">
+            <mat-option *ngFor="let rollOff of rollOffs" [value]="rollOff.value">
+                {{rollOff.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <!-- Play Loop, Play/Pause -->
+      <tr>
+        <td>
+            <mat-checkbox color="primary" [(ngModel)]="playLoop" (change)="setPlayLoop()" matTooltip="Play file in a loop">
+                Loop
+            </mat-checkbox>
+        </td>
+        <td>
+            <mat-checkbox color="primary" [(ngModel)]="play" (change)="setPlay()" matTooltip="Play or pause file">
+                Play
+            </mat-checkbox>
+        </td>
+        <td></td>
+      </tr>
+      <!--- File name -->
+      <tr>
+        <td colspan="3">
+          File:
+          <input type="text" class="file-input"
+            [(ngModel)]="settings.tsFileName"
+            (change)="setFileName()"
+            matTooltip="TS record file name"
+          >
+        </td>
+      </tr>
+      <!-- UDP address and port -->
+      <tr>
+        <td>
+          TS Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.udpAddress"
+            (change)="setUDPAddress()"
+            matTooltip="Input TS API IPv4 address (listen)"
+          >
+        </td>
+        <td>
+          TS Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.udpPort"
+            (change)="setUDPPort()"
+            matTooltip="Input TS API IPv4 port (listen)"
+            min=1024 max=65535>
+        </td>
+        <td></td>
+      </tr>
+      <!--- Use reverse API, reverse API device index, reverse API channel index -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+            Reverse API
+          </mat-checkbox>
+        </td>
+        <td>
+          Device
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.reverseAPIDeviceIndex"
+            (change)="setReverseAPIDeviceIndex()"
+            matTooltip="Reverse API device index"
+            min=0>
+        </td>
+        <td>
+          Channel
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.reverseAPIChannelIndex"
+            (change)="setReverseAPIChannelIndex()"
+            matTooltip="Reverse API channel index"
+            min=0>
+        </td>
+      </tr>
+      <!--- reverse API address, reverse API port -->
+      <tr>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.reverseAPIAddress"
+            (change)="setReverseAPIAddress()"
+            matTooltip="Reverse API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.reverseAPIPort"
+            (change)="setReverseAPIPort()"
+            matTooltip="Reverse API port"
+            min=1024 max=65535>
+        </td>
+        <td></td>
+      </tr>
+      <!-- Row 6: empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
