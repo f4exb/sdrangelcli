@@ -3,9 +3,9 @@ import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/
 import { ActivatedRoute } from '@angular/router';
 import { Utils } from 'src/app/common-components/utils';
 import { SdrangelUrlService } from 'src/app/sdrangel-url.service';
-import { FeatureSettings } from '../feature-details';
+import { FeatureActions, FeatureSettings } from '../feature-details';
 import { FeatureDetailsService } from '../feature-details.service';
-import { SatelliteTrackerSettings, SATELLITE_TRACKER_SETTINGS_MOCK } from './satellite-tracker';
+import { SatelliteTrackerActions, SatelliteTrackerReport, SatelliteTrackerSettings, SATELLITE_TRACKER_REPORT_MOCK, SATELLITE_TRACKER_SETTINGS_MOCK } from './satellite-tracker';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { PresetService } from 'src/app/main/preset/preset.service';
@@ -14,6 +14,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectPresetDialogComponent } from 'src/app/main/select-preset-dialog/select-preset-dialog.component';
 import { DeviceSet } from 'src/app/deviceset/deviceset/deviceset';
 import { DevicesetService } from 'src/app/deviceset/deviceset/deviceset.service';
+import { interval, Subscription } from 'rxjs';
 
 export interface AzElUnits {
   value: number;
@@ -69,6 +70,9 @@ export class SatelliteTrackerComponent implements OnInit {
   dopplerChannelAddOnBlur = true;
   width: number;
   height: number;
+  monitor = false;
+  featureReportSubscription: Subscription;
+  featureReport: SatelliteTrackerReport = SATELLITE_TRACKER_REPORT_MOCK;
 
   constructor(private route: ActivatedRoute,
     private featuredetailsService: FeatureDetailsService,
@@ -85,6 +89,7 @@ export class SatelliteTrackerComponent implements OnInit {
     this.featuresetIndex = +this.route.snapshot.parent.params['dix'];
     this.featureIndex = +this.route.snapshot.parent.params['cix'];
     this.getFeatureSettings();
+    this.getFeatureReport();
     this.fetchPresetInformation();
     this.fetchDeviceSetsInformation();
   }
@@ -169,8 +174,91 @@ export class SatelliteTrackerComponent implements OnInit {
     );
   }
 
+  private getFeatureReport() {
+    this.featuredetailsService.getReport(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+      featureReport => {
+        if (featureReport.featureType === 'SatelliteTracker') {
+          this.statusMessage = 'OK';
+          this.statusError = false;
+          this.featureReport = featureReport.SatelliteTrackerReport;
+        } else {
+          this.statusMessage = 'Not a RTLSDR device';
+          this.statusError = true;
+        }
+      }
+    );
+  }
+
+  private postFeatureActions(satelliteTrackerActions: SatelliteTrackerActions) {
+    const actions: FeatureActions = <FeatureActions>{};
+    actions.featureType = 'SatelliteTracker';
+    actions.SatelliteTrackerActions = satelliteTrackerActions;
+    this.featuredetailsService.postAction(this.sdrangelURL, this.featuresetIndex, this.featureIndex, actions).subscribe(
+      res => {
+        this.statusMessage = 'OK';
+        this.statusError = false;
+      },
+      error => {
+        this.statusMessage = 'Cannot post run action';
+        this.statusError = true;
+      }
+    );
+  }
+
+  enableReporting(enable: boolean) {
+    if (enable) {
+      this.featureReportSubscription = interval(1000).subscribe(
+        _ => {
+          this.featuredetailsService.getReport(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+            featureReport => {
+              if (featureReport.featureType === 'SatelliteTracker') {
+                this.featureReport = featureReport.SatelliteTrackerReport;
+              }
+            }
+          );
+        }
+      );
+    } else {
+      this.featureReportSubscription.unsubscribe();
+      this.featureReportSubscription = null;
+    }
+  }
+
+  toggleMonitor() {
+    this.monitor = !this.monitor;
+    this.enableReporting(this.monitor);
+  }
+
   getRGBTitleStr(): string {
     return 'rgb(' + this.rgbTitle[0].toString() + ',' + this.rgbTitle[1].toString() + ',' + this.rgbTitle[2].toString() + ')';
+  }
+
+  getRunningStateColor() {
+    if (this.featureReport.runningState === 0) {
+      return 'grey';
+    } else if (this.featureReport.runningState === 1) {
+      return 'blue';
+    } else if (this.featureReport.runningState === 2) {
+      return 'rgb(50,180,50)';
+    } else if (this.featureReport.runningState === 3) {
+      return 'red';
+    } else {
+      return 'grey';
+    }
+  }
+
+  getRunningStateStatusText() {
+    if (this.featureReport.runningState === 0) {
+      return 'Not running';
+    } else if (this.featureReport.runningState === 1) {
+      return 'Idle';
+    } else if (this.featureReport.runningState === 2) {
+      return 'Running';
+    } else if (this.featureReport.runningState === 3) {
+      return 'Error';
+    } else {
+      return 'Unknown';
+    }
   }
 
   onTitleColorChanged(colorStr: string) {
@@ -595,5 +683,19 @@ export class SatelliteTrackerComponent implements OnInit {
 
   getPresetSelectButtonId(satIndex: number, deviceIndex: number) {
     return 'btn-select-preset-${satIndex}-${deviceIndex}';
+  }
+
+  startFeature() {
+    const newActions: SatelliteTrackerActions = <SatelliteTrackerActions>{};
+    newActions.run = 1;
+    this.postFeatureActions(newActions);
+    this.getFeatureReport();
+  }
+
+  stopFeature() {
+    const newActions: SatelliteTrackerActions = <SatelliteTrackerActions>{};
+    newActions.run = 0;
+    this.postFeatureActions(newActions);
+    this.getFeatureReport();
   }
 }

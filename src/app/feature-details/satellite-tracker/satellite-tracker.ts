@@ -121,3 +121,19 @@ export const SATELLITE_TRACKER_SETTINGS_MOCK = {
     reverseAPIFeatureIndex: 0,
     reverseAPIFeatureSetIndex: 0,
 };
+
+export interface SatelliteTrackerReport {
+    runningState: number; // Feature::FeatureState
+}
+
+export const SATELLITE_TRACKER_REPORT_MOCK = {
+    runningState: 1
+};
+
+export interface SatelliteTrackerActions {
+    run: number; // boolean
+}
+
+export const SATELLITE_TRACKER_ACTIONS_MOCK = {
+    run: 0
+};

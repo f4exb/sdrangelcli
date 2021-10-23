@@ -54,6 +54,7 @@ export interface GS232ControllerReport {
     currentAzimuth: number;
     currentElevation: number;
     onTarget: number; // boolean
+    runningState: number; // Feature::FeatureState
 }
 
 export const GS232_CONTROLLER_REPORT_MOCK = {
@@ -69,5 +70,14 @@ export const GS232_CONTROLLER_REPORT_MOCK = {
     targetElevation: 0,
     currentAzimuth: 0,
     currentElevation: 0,
-    onTarget: 1
+    onTarget: 1,
+    runningState: 1
+};
+
+export interface GS232ControllerActions {
+    run: number; // boolean
+}
+
+export const GS232_CONTROLLER_ACTIONS_MOCK = {
+    run: 0
 };

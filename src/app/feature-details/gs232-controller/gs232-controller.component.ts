@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { Utils } from 'src/app/common-components/utils';
 import { SdrangelUrlService } from 'src/app/sdrangel-url.service';
-import { FeatureSettings } from '../feature-details';
+import { FeatureActions, FeatureSettings } from '../feature-details';
 import { FeatureDetailsService } from '../feature-details.service';
-import { GS232ControllerReport, GS232ControllerSettings, GS232_CONTROLLER_SETTINGS_MOCK } from './gs232-controller';
+import { GS232ControllerActions, GS232ControllerReport, GS232ControllerSettings, GS232_CONTROLLER_SETTINGS_MOCK } from './gs232-controller';
 
 export interface Source {
   value: string;
@@ -65,6 +65,7 @@ export class Gs232ControllerComponent implements OnInit {
   monitor: boolean;
   featureReportSubscription: Subscription;
   featureReport: GS232ControllerReport;
+  onOff = false;
 
   constructor(private route: ActivatedRoute,
     private featuredetailsService: FeatureDetailsService,
@@ -125,6 +126,7 @@ export class Gs232ControllerComponent implements OnInit {
         if (featureReport.featureType === 'GS232Controller') {
           this.statusMessage = 'OK';
           this.statusError = false;
+          this.featureReport = featureReport.GS232ControllerReport;
           const reportedSources = featureReport.GS232ControllerReport.sources;
           reportedSources.forEach((element, index) => {
             this.sources.push({
@@ -139,10 +141,28 @@ export class Gs232ControllerComponent implements OnInit {
               viewValue: element
             });
           });
+          this.onOff = (featureReport.GS232ControllerReport.runningState === 2)
+          || (featureReport.GS232ControllerReport.runningState === 3);
         } else {
           this.statusMessage = 'Not a RTLSDR device';
           this.statusError = true;
         }
+      }
+    );
+  }
+
+  private postFeatureActions(gs232ControllerActions: GS232ControllerActions) {
+    const actions: FeatureActions = <FeatureActions>{};
+    actions.featureType = 'GS232Controller';
+    actions.GS232ControllerActions = gs232ControllerActions;
+    this.featuredetailsService.postAction(this.sdrangelURL, this.featuresetIndex, this.featureIndex, actions).subscribe(
+      res => {
+        this.statusMessage = 'OK';
+        this.statusError = false;
+      },
+      error => {
+        this.statusMessage = 'Cannot post run action';
+        this.statusError = true;
       }
     );
   }
@@ -188,6 +208,34 @@ export class Gs232ControllerComponent implements OnInit {
       return 'On target';
     } else {
       return 'Off target';
+    }
+  }
+
+  getRunningStateColor() {
+    if (this.featureReport.runningState === 0) {
+      return 'grey';
+    } else if (this.featureReport.runningState === 1) {
+      return 'blue';
+    } else if (this.featureReport.runningState === 2) {
+      return 'rgb(50,180,50)';
+    } else if (this.featureReport.runningState === 3) {
+      return 'red';
+    } else {
+      return 'grey';
+    }
+  }
+
+  getRunningStateStatusText() {
+    if (this.featureReport.runningState === 0) {
+      return 'Not running';
+    } else if (this.featureReport.runningState === 1) {
+      return 'Idle';
+    } else if (this.featureReport.runningState === 2) {
+      return 'Running';
+    } else if (this.featureReport.runningState === 3) {
+      return 'Error';
+    } else {
+      return 'Unknown';
     }
   }
 
@@ -325,5 +373,19 @@ export class Gs232ControllerComponent implements OnInit {
     const newSettings: GS232ControllerSettings = <GS232ControllerSettings>{};
     newSettings.elevationMax = this.settings.elevationMax;
     this.setFeatureSettings(newSettings);
+  }
+
+  startFeature() {
+    const newActions: GS232ControllerActions = <GS232ControllerActions>{};
+    newActions.run = 1;
+    this.postFeatureActions(newActions);
+    this.getFeatureReport();
+  }
+
+  stopFeature() {
+    const newActions: GS232ControllerActions = <GS232ControllerActions>{};
+    newActions.run = 0;
+    this.postFeatureActions(newActions);
+    this.getFeatureReport();
   }
 }

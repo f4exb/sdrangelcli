@@ -26,7 +26,10 @@
                 <td>
                     Tgt El: {{ this.featureReport.targetElevation }}
                 </td>
-                <td></td>
+                <td>
+                    Running
+                    <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getRunningStateColor()}" [matTooltip]="getRunningStateStatusText()"></i>
+                </td>
             </tr>
             <!-- Row 2: channel monitor (optional) -->
             <tr *ngIf="monitor">
@@ -61,7 +64,18 @@
                         min=0,
                         max=180>
                 </td>
-                <td></td>
+                <td>
+                    On
+                    <button mat-button class="fa fa-play"
+                    matTooltip="Start feature"
+                    (click)="startFeature()">
+                    </button>
+                    Off
+                    <button mat-button class="fa fa-stop"
+                    matTooltip="Stop feature"
+                    (click)="stopFeature()">
+                    </button>
+                </td>
             </tr>
             <!--- Track, source -->
             <tr>

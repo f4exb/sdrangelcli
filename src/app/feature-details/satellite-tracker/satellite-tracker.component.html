@@ -3,6 +3,12 @@
         <button mat-button class="button-card" matTooltip="Refresh" (click)="getFeatureSettings()">
           <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
         </button>&nbsp;
+        <button mat-button mat-raised-button
+            [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+            matTooltip="Monitor on/off"
+            (click)="toggleMonitor()">
+        <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+        </button>&nbsp;
         <app-feature-header class="feature-header-comp" featureType="SatelliteTracker"
             [title]="settings.title"
             [color]="rgbTitleStr"
@@ -12,6 +18,14 @@
     </mat-card-header>
     <mat-card-content>
         <table>
+            <!-- Monitoring (opional) Running state-->
+            <tr *ngIf="monitor">
+                <td>
+                    Running
+                    <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getRunningStateColor()}" [matTooltip]="getRunningStateStatusText()"></i>
+                </td>
+                <td colspan="3"></td>
+            </tr>
             <!-- Lat, Lon, ASL -->
             <tr>
                 <td>
@@ -35,7 +49,18 @@
                     (change)="setASL()"
                     matTooltip="Height above sea level">
                 </td>
-                <td></td>
+                <td>
+                    On
+                    <button mat-button class="fa fa-play"
+                    matTooltip="Start feature"
+                    (click)="startFeature()">
+                    </button>
+                    Off
+                    <button mat-button class="fa fa-stop"
+                    matTooltip="Stop feature"
+                    (click)="stopFeature()">
+                    </button>
+                </td>
             </tr>
             <!-- Date format, Date time -->
             <tr>
