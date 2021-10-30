@@ -7,6 +7,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BufferGaugeComponent } from './buffer-gauge/buffer-gauge.component';
+import { SimpleGaugeComponent } from './simple-gauge/simple-gauge.component';
 
 @NgModule({
   imports: [
@@ -17,10 +18,15 @@ import { BufferGaugeComponent } from './buffer-gauge/buffer-gauge.component';
     MatProgressBarModule,
     MatTooltipModule
   ],
-  declarations: [FrequencyDialComponent, BufferGaugeComponent],
+  declarations: [
+    FrequencyDialComponent,
+    BufferGaugeComponent,
+    SimpleGaugeComponent
+  ],
   exports: [
     FrequencyDialComponent,
-    BufferGaugeComponent
+    BufferGaugeComponent,
+    SimpleGaugeComponent
   ]
 })
 export class CommonComponentsModule { }

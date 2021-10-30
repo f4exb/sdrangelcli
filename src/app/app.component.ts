@@ -16,7 +16,7 @@ import { RemoveFeaturesetDialogComponent } from './main/remove-featureset-dialog
 export class AppComponent {
 
   title = 'SDRangelCli';
-  version = '2.1.1';
+  version = '2.2.0';
   sdrangelURL = 'http://127.0.0.1:8091/sdrangel'; // the default URL
 
   constructor(private sdrangelUrlService: SdrangelUrlService,

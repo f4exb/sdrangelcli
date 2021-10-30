@@ -38,6 +38,7 @@ import { FileSinkComponent } from './file-sink/file-sink.component';
 import { SigmfFileSinkComponent } from './sigmf-file-sink/sigmf-file-sink.component';
 import { FileSourceComponent } from './file-source/file-source.component';
 import { DatvModComponent } from './datv-mod/datv-mod.component';
+import { DatvDemodComponent } from './datv-demod/datv-demod.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { DatvModComponent } from './datv-mod/datv-mod.component';
     FileSinkComponent,
     SigmfFileSinkComponent,
     FileSourceComponent,
-    DatvModComponent
+    DatvModComponent,
+    DatvDemodComponent
   ]
 })
 export class ChannelDetailsModule { }

@@ -1,0 +1,357 @@
+<mat-card>
+  <mat-card-header class="channel-card-header channel-header-rx">
+    <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+      <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+    </button>&nbsp;
+    <button mat-button mat-raised-button
+        [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+        matTooltip="Monitor on/off"
+        (click)="toggleMonitor()">
+      <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+    </button>&nbsp;
+    <app-channel-header class="channel-header-comp" channelType="DATVDemod"
+        [basebandRate]="deviceBasebandRate"
+        [title]="settings.title"
+        [color]="rgbTitleStr"
+        (titleChanged)="onTitleChanged($event)"
+        (colorChanged)="onTitleColorChanged($event)" >
+    </app-channel-header>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <!--- (optional) Channel power -->
+      <tr *ngIf="monitor">
+        <td colspan="4">
+          <app-channel-monitor [value]=this.report.channelPowerDB
+            [min]="-120"
+            [max]="0"
+            [squelch]="this.report.videoDecodeOK !== 0">
+          </app-channel-monitor>
+        </td>
+      </tr>
+      <!--- (optional) MER -->
+      <tr *ngIf="monitor">
+        <td>MER</td>
+        <td colspan="3">
+          <app-simple-gauge
+            [value]=this.report.mer
+            [min]=0
+            [max]=30
+            [valueText]="getMERText()"
+            tooltip="MER estimate">
+          </app-simple-gauge>
+        </td>
+      </tr>
+      <!--- (optional) CNR -->
+      <tr *ngIf="monitor">
+        <td>CNR</td>
+        <td colspan="3">
+          <app-simple-gauge
+            [value]=this.report.cnr
+            [min]=0
+            [max]=30
+            [valueText]="getCNRText()"
+            tooltip="CNR estimate">
+          </app-simple-gauge>
+        </td>
+      </tr>
+      <!--- (optional) MODCOD data, UDP status -->
+      <tr *ngIf="monitor">
+        <td>
+          MODCOD
+          <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getModcodStatusColor()}" [matTooltip]="getModcodStatusText()"></i>
+        </td>
+        <td>
+          Modulation {{ getModcodModulation() }}
+        </td>
+        <td>
+          FEC {{ getModcodCodeRate() }}
+        </td>
+        <td>
+          UDP
+          <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getUdpRunningStatusColor()}" [matTooltip]="getUdpRunningStatusText()"></i>
+        </td>
+      </tr>
+      <!--- (optional) Audio stream status, video stream status-->
+      <tr *ngIf="monitor">
+        <td>
+          Audio decode
+          <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getAudioDecodeStatusColor()}" [matTooltip]="getAudioDecodeStatusText()"></i>
+        </td>
+        <td>
+          Audio active
+          <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getAudioActiveStatusColor()}" [matTooltip]="getAudioActiveStatusText()"></i>
+        </td>
+        <td>
+          Video decode
+          <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getVideoDecodeStatusColor()}" [matTooltip]="getVideoDecodeStatusText()"></i>
+        </td>
+        <td>
+          Video active
+          <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getVideoActiveStatusColor()}" [matTooltip]="getVideoActiveStatusText()"></i>
+        </td>
+      </tr>
+      <!--- Frequency dial -->
+      <tr>
+        <td colspan="3">
+          <app-frequency-dial
+          [frequency]="channelCenterFrequencyKhz"
+          [min]="channelMinFrequencyKhz"
+          [max]="channelMaxFrequencyKhz"
+          (frequencyChanged)="onFrequencyUpdate($event)">
+          </app-frequency-dial>
+        </td>
+        <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+        </td>
+      </tr>
+      <!--- RF bandwidth, Audio volume, Video mute -->
+      <tr>
+        <td>
+          RFBW
+          <input type="number" class="rfbw-input"
+              [(ngModel)]="rfBandwidthKhz"
+              (change)="setRFBandwidth()"
+              matTooltip="RF Bandwidth"
+              min=1 max=40 step=0.1>
+          kHz
+        </td>
+        <td>
+          Vol
+          <input type="number" class="volume-input"
+              [(ngModel)]="settings.audioVolume"
+              (change)="setVolume()"
+              matTooltip="Audio volume"
+              min=0 max=10
+              step="0.1">
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="audioMute" (change)="setAudioMute()" matTooltip="Audio mute">
+            Audio mute
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="videoMute" (change)="setVideoMute()" matTooltip="Video mute">
+            Video mute
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- Audio options -->
+      <tr>
+        <td colspan="3">
+          Audio:
+          <mat-select style="width:40ch; background-color: white; margin: 1px;"
+              [(value)]="settings.audioDeviceName"
+              (selectionChange)="setAudioDevice()"
+              matTooltip="Audio output device and sample rate (Hz)">
+            <mat-option *ngFor="let audioDevice of audioDevices" [value]="audioDevice.value">
+              {{audioDevice.value}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td></td>
+      </tr>
+      <!--- DVB standard, modulation, fec, symbol rate -->
+      <tr>
+        <td>
+          Std
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+            [(value)]="settings.standard"
+            (selectionChange)="setStandard()"
+            matTooltip="DVB standard">
+            <mat-option *ngFor="let standard of standards" [value]="standard.value">
+              {{standard.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Mod
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+            [(value)]="settings.modulation"
+            (selectionChange)="setModulation()"
+            matTooltip="DVB modulation">
+            <mat-option *ngFor="let modulation of modulations" [value]="modulation.value">
+              {{modulation.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          FEC
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+            [(value)]="settings.fec"
+            (selectionChange)="setFEC()"
+            matTooltip="DVB FEC">
+            <mat-option *ngFor="let fec of fecs" [value]="fec.value">
+              {{fec.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          SR
+          <input type="number" class="sr-input"
+              [(ngModel)]="settings.symbolRate"
+              (change)="setSymbolRate()"
+              matTooltip="DVB symbol rate"
+              min=20000 max=5000000
+              step="1000">
+        </td>
+      </tr>
+      <!--- Fast lock, allow drift, Hard metric, Viterbi (DVB-S) -->
+      <tr *ngIf="settings.standard === 0">
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="fastLock" (change)="setFastLock()" matTooltip="Fast signal decode">
+            Fast lock
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="allowDrift" (change)="setAllowDrift()" matTooltip="Small frequency drift compensation">
+            Allow drift
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="hardMetric" (change)="setHardMetric()" matTooltip="Constellation hardening">
+            Hard metric
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="viterbi" (change)="setViterbi()" matTooltip="Viterbi algorithm (CPU intensive)">
+            Viterbi
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- Soft LDPC, Max bitflips (DVB-S2) -->
+      <tr *ngIf="settings.standard === 1">
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="softLDPC" (change)="setSoftLDPC()" matTooltip="Soft LDPC decoder (LDPC tool)">
+            Soft LDPC
+          </mat-checkbox>
+        </td>
+        <td>
+          Max Bitflips
+          <input type="number" class="volume-input"
+              [(ngModel)]="settings.maxBitflips"
+              (change)="setMaxBitflips()"
+              matTooltip="LDPC maximum bitflips (hard decoder)"
+              min=0 max=1000
+              step="1">
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!--- Filter, RollOff, RRC envelope excursion-->
+      <tr>
+        <td>
+          Filter
+          <mat-select style="width:10ch; background-color: white; margin: 1px;"
+            [(value)]="settings.filter"
+            (selectionChange)="setFilter()"
+            matTooltip="Filter">
+            <mat-option *ngFor="let filter of filters" [value]="filter.value">
+              {{filter.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          Roll off
+          <input type="number" class="volume-input"
+              [(ngModel)]="settings.rollOff"
+              (change)="setRollOff()"
+              matTooltip="RRC roll off factor"
+              min=0.1 max=1
+              step="0.01">
+        </td>
+        <td>
+          RRC exc
+          <input type="number" class="volume-input"
+              [(ngModel)]="settings.excursion"
+              (change)="setExcursion()"
+              matTooltip="RRC envelope excursion (dB)"
+              min=10 max=32
+              step="1">
+        </td>
+        <td></td>
+      </tr>
+      <!--- UDP TS, UDP TS address, UDP TS port -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="udpTS" (change)="setUdpTS()" matTooltip="Copy transport stream to UDP">
+            UDP TS
+          </mat-checkbox>
+        </td>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.udpTSAddress"
+            (change)="setUdpTSAddress()"
+            matTooltip="Transport stream UDP destination address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.udpTSPort"
+            (change)="setUdpTSPort()"
+            matTooltip="Transport stream UDP destination port"
+            min=1024 max=65535>
+        </td>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="playerEnable" (change)="setPlayerEnable()" matTooltip="Enable internal video player (GUI)">
+            TS Player
+          </mat-checkbox>
+        </td>
+      </tr>
+      <!--- Use reverse API, reverse API device index, reverse API channel index -->
+      <tr>
+        <td>
+          <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+            Reverse API
+          </mat-checkbox>
+        </td>
+        <td>
+          Device
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.reverseAPIDeviceIndex"
+            (change)="setReverseAPIDeviceIndex()"
+            matTooltip="Reverse API device index"
+            min=0>
+        </td>
+        <td>
+          Channel
+          <input type="number" class="index-input"
+            [(ngModel)]="settings.reverseAPIChannelIndex"
+            (change)="setReverseAPIChannelIndex()"
+            matTooltip="Reverse API channel index"
+            min=0>
+        </td>
+        <td></td>
+      </tr>
+      <!--- reverse API address, reverse API port -->
+      <tr>
+        <td>
+          Addr
+          <input type="text" class="address-input"
+            [(ngModel)]="settings.reverseAPIAddress"
+            (change)="setReverseAPIAddress()"
+            matTooltip="Reverse API IPv4 address"
+          >
+        </td>
+        <td>
+          Port
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.reverseAPIPort"
+            (change)="setReverseAPIPort()"
+            matTooltip="Reverse API port"
+            min=1024 max=65535>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!-- Empty footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+  {{ statusMessage }}
+</mat-card>

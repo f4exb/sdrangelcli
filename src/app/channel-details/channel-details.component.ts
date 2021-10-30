@@ -60,6 +60,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['remotesink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'RemoteSource') {
           this.router.navigate(['remotesource'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'DATVDemod') {
+          this.router.navigate(['datvdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'DATVMod') {
           this.router.navigate(['datvmod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'DSDDemod') {
