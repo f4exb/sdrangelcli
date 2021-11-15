@@ -23,10 +23,19 @@ import { SigMFFileSinkActions, SigMFFileSinkReport, SigMFFileSinkSettings } from
 import { FileSourceActions, FileSourceReport, FileSourceSettings } from './file-source/file-source';
 import { DATVModReport, DATVModSettings } from './datv-mod/datv-mod';
 import { DATVDemodReport, DATVDemodSettings } from './datv-demod/datv-demod';
+import { AISDemodReport, AISDemodSettings } from './ais-demod/ais-demod';
+import { ADSBDemodReport, ADSBDemodSettings } from './adsb-demod/adsb-demod';
+import { PacketDemodReport, PacketDemodSettings } from './packet-demod/packet-demod';
+import { PagerDemodReport, PagerDemodSettings } from './pager-demod/pager-demod';
+import { AISModActions, AISModReport, AISModSettings } from './ais-mod/ais-mod';
+import { PacketModActions, PacketModReport, PacketModSettings } from './packet-mod/packet-mod';
 
 export interface ChannelSettings {
     channelType: string;
     direction: number;
+    ADSBDemodSettings?: ADSBDemodSettings;
+    AISDemodSettings?: AISDemodSettings;
+    AISModSettings?: AISModSettings;
     AMDemodSettings?: AMDemodSettings;
     BFMDemodSettings?: BFMDemodSettings;
     FileSinkSettings?: FileSinkSettings;
@@ -42,6 +51,9 @@ export interface ChannelSettings {
     WFMDemodSettings?: WFMDemodSettings;
     AMModSettings?: AMModSettings;
     NFMModSettings?: NFMModSettings;
+    PacketDemodSettings?: PacketDemodSettings;
+    PacketModSettings?: PacketModSettings;
+    PagerDemodSettings?: PagerDemodSettings;
     RemoteSourceSettings?: RemoteSourceSettings;
     RemoteSinkSettings?: RemoteSinkSettings;
     SigMFFileSinkSettings?: SigMFFileSinkSettings;
@@ -54,6 +66,9 @@ export interface ChannelSettings {
 }
 
 export interface ChannelReport {
+    ADSBDemodReport?: ADSBDemodReport;
+    AISDemodReport?: AISDemodReport;
+    AISModReport?: AISModReport;
     AMDemodReport?: AMDemodReport;
     BFMDemodReport?: BFMDemodReport;
     FileSinkReport?: FileSinkReport;
@@ -67,6 +82,9 @@ export interface ChannelReport {
     WFMDemodReport?: WFMDemodReport;
     AMModReport?: AMModReport;
     NFMModReport?: NFMModReport;
+    PacketDemodReport?: PacketDemodReport;
+    PacketModReport?: PacketModReport;
+    PagerDemodReport?: PagerDemodReport;
     RemoteSourceReport?: RemoteSourceReport;
     SigMFFileSinkReport?: SigMFFileSinkReport;
     SSBModReport?: SSBModReport;
@@ -80,8 +98,10 @@ export interface ChannelReport {
 }
 
 export interface ChannelActions {
+    AISModActions?: AISModActions;
     FileSinkActions?: FileSinkActions;
     FileSourceActions?: FileSourceActions;
+    PacketModActions?: PacketModActions;
     SigMFFileSinkActions?: SigMFFileSinkActions;
     channelType: string;
     direction: number;

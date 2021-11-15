@@ -38,7 +38,13 @@ export class ChannelDetailsComponent implements OnInit {
     this.channeldetailsService.getSettings(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
       channelSettings => {
         this.isTx = channelSettings.direction !== 0;
-        if (channelSettings.channelType === 'AMDemod') {
+        if (channelSettings.channelType === 'ADSBDemod') {
+          this.router.navigate(['adsbdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'AISDemod') {
+          this.router.navigate(['aisdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'AISMod') {
+          this.router.navigate(['aismod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'AMDemod') {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'BFMDemod') {
           this.router.navigate(['bfmdemod'], { relativeTo: this.route});
@@ -56,6 +62,12 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['localsink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'LocalSource') {
           this.router.navigate(['localsource'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'PacketDemod') {
+          this.router.navigate(['packetdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'PacketMod') {
+          this.router.navigate(['packetmod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'PagerDemod') {
+          this.router.navigate(['pagerdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'RemoteSink') {
           this.router.navigate(['remotesink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'RemoteSource') {

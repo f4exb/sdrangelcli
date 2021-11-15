@@ -1,0 +1,233 @@
+<mat-card>
+    <mat-card-header class="channel-card-header channel-header-rx">
+      <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+        <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <button mat-button mat-raised-button
+          [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+          matTooltip="Monitor on/off"
+          (click)="toggleMonitor()">
+        <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      </button>&nbsp;
+      <app-channel-header class="channel-header-comp" channelType="ADSBDemod"
+          [basebandRate]="deviceBasebandRate"
+          [title]="settings.title"
+          [color]="rgbTitleStr"
+          (titleChanged)="onTitleChanged($event)"
+          (colorChanged)="onTitleColorChanged($event)" >
+      </app-channel-header>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- Row 1: channel monitor (optional) -->
+        <tr *ngIf="monitor">
+          <td colspan="4">
+            <app-channel-monitor [value]=this.report.channelPowerDB
+              [min]="-120"
+              [max]="0"
+              [squelch]="true">
+            </app-channel-monitor>
+          </td>
+        </tr>
+        <!-- Target Name, Az, El, Range -->
+        <tr *ngIf="monitor">
+          <td>
+            Target {{ report.targetName }}
+          </td>
+          <td>
+            Azimuth {{ report.targetAzimuth.toFixed(1) }} &deg;
+          </td>
+          <td>
+            Elevation {{ report.targetElevation.toFixed(2) }} &deg;
+          </td>
+          <td>
+            Range {{ getTargetRange() }} km
+          </td>
+        </tr>
+        <!-- Row 2: Frequency dial -->
+        <tr>
+          <td colspan="3">
+            <app-frequency-dial
+            [frequency]="channelCenterFrequencyKhz"
+            [min]="channelMinFrequencyKhz"
+            [max]="channelMaxFrequencyKhz"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+          </td>
+          <td style="width:15ch">
+              &#x394;f {{getDeltaFrequency()}} kHz
+          </td>
+        </tr>
+        <!--- BW, demod SR, threshold, dev features -->
+        <tr>
+          <td>
+              RFBW
+              <input type="number" class="rfbw-input"
+                  [(ngModel)]="rfBandwidthKhz"
+                  (change)="setRFBandwidth()"
+                  matTooltip="RF Bandwidth"
+                  min=1 max=40 step=0.1>
+              kHz
+          </td>
+          <td>
+            Demod SR
+            <mat-select style="width:9ch; background-color: white; margin: 1px;"
+                [(value)]="settings.samplesPerBit"
+                (selectionChange)="setSamplesPerBit()"
+                matTooltip="Demodulator sample rate. This should ideally be matched to baseband sample rate">
+              <mat-option *ngFor="let demodSR of demodSRs" [value]="demodSR.value">
+                {{demodSR.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+              Corr
+              <input type="number" class="rfbw-input"
+                  [(ngModel)]="settings.correlationThreshold"
+                  (change)="setCorrelationThreshold()"
+                  matTooltip="Correlation threshold"
+                  min=0 max=60 step=1>
+              dB
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="devFeatures" matTooltip="Enable/disable developper features control">
+              Dev
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!--- Demod mode S, Full Preamble correlation, interpolator steps, interpolator taps per phase -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="demodModeS" (change)="setDemodModeS()" matTooltip="Demodulate all Mode-S frames, not just ADS-B">
+              Demod mode S
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="correlateFullPreamble" (change)="setCorrelateFullPreamble()" matTooltip="Correlate against full preamble.">
+              Corr FP
+            </mat-checkbox>
+          </td>
+          <td>
+            Interp steps
+            <input type="number" class="port-input"
+              [disabled]="!devFeatures"
+              [(ngModel)]="settings.interpolatorPhaseSteps"
+              (change)="setInterpolatorPhaseSteps()"
+              matTooltip="Channel interpolator phase steps"
+              min=1 max=16 step=1>
+          </td>
+          <td>
+            taps
+            <input type="number" class="port-input"
+              [disabled]="!devFeatures"
+              [(ngModel)]="settings.interpolatorTapsPerPhase"
+              (change)="setInterpolatorTapsPerPhase()"
+              matTooltip="Channel interpolator taps per phase"
+              min=1 max=6 step=0.1>
+          </td>
+        </tr>
+        <!--- Send to beast, Beast address, Beast port, Data type -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="beastEnabled" (change)="setBeastEnabled()" matTooltip="Enable feeding of received ADS-B messages to the specified server">
+              Send ADSB
+            </mat-checkbox>
+          </td>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+                [(ngModel)]="settings.beastHost"
+                (change)="setBeastHost()"
+                matTooltip="Destination host or address">
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.beastPort"
+              (change)="setBeastPort()"
+              matTooltip="Destination port"
+              min=1024 max=65535>
+          </td>
+          <td style="width:20ch">
+            Type
+            <mat-select style="width:14ch; background-color: white; margin: 1px;"
+                [(value)]="settings.feedFormat"
+                (selectionChange)="setFeedFormat()"
+                matTooltip="Format used to for data">
+              <mat-option *ngFor="let feedFormat of feedFormats" [value]="feedFormat.value">
+                {{feedFormat.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <!--- Log messages, CSV log file-->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="logEnabled" (change)="setLogEnabled()" matTooltip="Record messages in CSV file">
+              Log messages
+            </mat-checkbox>
+          </td>
+          <td colspan="3">
+              File
+              <input type="text" class="file-input"
+                  [(ngModel)]="settings.logFilename"
+                  (change)="setLogFilename()"
+                  matTooltip="Record file name"
+              >
+          </td>
+        </tr>
+        <!--- Use reverse API, reverse API device index, reverse API channel index -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+              Reverse API
+            </mat-checkbox>
+          </td>
+          <td>
+            Device
+            <input type="number" class="index-input"
+              [(ngModel)]="settings.reverseAPIDeviceIndex"
+              (change)="setReverseAPIDeviceIndex()"
+              matTooltip="Reverse API device index"
+              min=0>
+          </td>
+          <td>
+            Channel
+            <input type="number" class="index-input"
+              [(ngModel)]="settings.reverseAPIChannelIndex"
+              (change)="setReverseAPIChannelIndex()"
+              matTooltip="Reverse API channel index"
+              min=0>
+          </td>
+          <td></td>
+        </tr>
+        <!--- reverse API address, reverse API port -->
+        <tr>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+              [(ngModel)]="settings.reverseAPIAddress"
+              (change)="setReverseAPIAddress()"
+              matTooltip="Reverse API IPv4 address"
+            >
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.reverseAPIPort"
+              (change)="setReverseAPIPort()"
+              matTooltip="Reverse API port"
+              min=1024 max=65535>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+        <!-- Row 6: empty footer -->
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+    {{ statusMessage }}
+  </mat-card>

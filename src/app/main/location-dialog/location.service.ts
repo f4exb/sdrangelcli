@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Location } from './location';
+import { MyLocation } from './location';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,11 @@ export class LocationService {
   constructor(private http: HttpClient) {
   }
 
-  get(url: string): Observable<Location> {
-    return this.http.get<Location>(url);
+  get(url: string): Observable<MyLocation> {
+    return this.http.get<MyLocation>(url);
   }
 
-  put(url: string, location: Location): Observable<any> {
+  put(url: string, location: MyLocation): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',

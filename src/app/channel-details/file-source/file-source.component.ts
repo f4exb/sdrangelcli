@@ -5,7 +5,7 @@ import { Utils } from 'src/app/common-components/utils';
 import { DeviceStoreService } from 'src/app/device-store.service';
 import { DevicesetService } from 'src/app/deviceset/deviceset/deviceset.service';
 import { SdrangelUrlService } from 'src/app/sdrangel-url.service';
-import { ChannelSettings } from '../channel-details';
+import { ChannelActions, ChannelSettings } from '../channel-details';
 import { ChannelDetailsService } from '../channel-details.service';
 import { FileSourceActions, FileSourceReport, FileSourceSettings, FILESOURCE_ACTIONS_DEFAULT, FILESOURCE_REPORT_DEFAULT, FILESOURCE_SETTINGS_DEFAULT } from './file-source';
 
@@ -129,6 +129,23 @@ export class FileSourceComponent implements OnInit {
       },
       error => {
         this.statusMessage = error.message;
+        this.statusError = true;
+      }
+    );
+  }
+
+  private postChannelActions(fileSourceActions: FileSourceActions) {
+    const actions: ChannelActions = <ChannelActions>{};
+    actions.channelType = 'FileSource';
+    actions.direction = 1,
+    actions.FileSourceActions = fileSourceActions;
+    this.channeldetailsService.postAction(this.sdrangelURL, this.deviceIndex, this.channelIndex, actions).subscribe(
+      res => {
+        this.statusMessage = 'OK';
+        this.statusError = false;
+      },
+      error => {
+        this.statusMessage = 'Cannot post record action';
         this.statusError = true;
       }
     );

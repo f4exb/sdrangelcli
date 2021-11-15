@@ -39,6 +39,12 @@ import { SigmfFileSinkComponent } from './sigmf-file-sink/sigmf-file-sink.compon
 import { FileSourceComponent } from './file-source/file-source.component';
 import { DatvModComponent } from './datv-mod/datv-mod.component';
 import { DatvDemodComponent } from './datv-demod/datv-demod.component';
+import { AisDemodComponent } from './ais-demod/ais-demod.component';
+import { AdsbDemodComponent } from './adsb-demod/adsb-demod.component';
+import { PacketDemodComponent } from './packet-demod/packet-demod.component';
+import { PagerDemodComponent } from './pager-demod/pager-demod.component';
+import { AisModComponent } from './ais-mod/ais-mod.component';
+import { PacketModComponent } from './packet-mod/packet-mod.component';
 
 @NgModule({
   imports: [
@@ -83,7 +89,13 @@ import { DatvDemodComponent } from './datv-demod/datv-demod.component';
     SigmfFileSinkComponent,
     FileSourceComponent,
     DatvModComponent,
-    DatvDemodComponent
+    DatvDemodComponent,
+    AisDemodComponent,
+    AdsbDemodComponent,
+    PacketDemodComponent,
+    PagerDemodComponent,
+    AisModComponent,
+    PacketModComponent
   ]
 })
 export class ChannelDetailsModule { }

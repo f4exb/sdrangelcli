@@ -1,0 +1,551 @@
+<mat-card>
+    <mat-card-header class="channel-card-header channel-header-tx">
+      <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+        <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <button mat-button mat-raised-button
+          [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+          matTooltip="Monitor on/off"
+          (click)="toggleMonitor()">
+        <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      </button>&nbsp;
+      <app-channel-header class="channel-header-comp" channelType="PacketMod"
+          [basebandRate]="deviceBasebandRate"
+          [title]="settings.title"
+          [color]="rgbTitleStr"
+          (titleChanged)="onTitleChanged($event)"
+          (colorChanged)="onTitleColorChanged($event)" >
+      </app-channel-header>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- Row 1: channel monitor (optional) -->
+        <tr *ngIf="monitor">
+          <td colspan="3">
+            <app-channel-monitor [value]=this.report.channelPowerDB
+              [min]="-120"
+              [max]="0"
+              [squelch]="!this.channelMute">
+            </app-channel-monitor>
+          </td>
+        </tr>
+        <!-- Row 2: Frequency dial -->
+        <tr>
+          <td colspan="2">
+            <app-frequency-dial
+            [frequency]="channelCenterFrequencyKhz"
+            [min]="channelMinFrequencyKhz"
+            [max]="channelMaxFrequencyKhz"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+          </td>
+          <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+          </td>
+        </tr>
+        <!-- Row 3: RF bandwidth, FM dev, Gain -->
+        <tr>
+          <td>
+            RFBW
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="rfBandwidthKhz"
+                (change)="setRFBandwidth()"
+                matTooltip="RF Bandwidth"
+                min=1 max=40 step=0.1>
+            kHz
+          </td>
+          <td>
+            FM dev
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="fmDevKhz"
+                (change)="setFMDeviation()"
+                matTooltip="FM deviation"
+                min=1 max=5 step=0.1>
+            kHz
+          </td>
+          <td>
+            Gain
+            <input type="number" class="volume-input"
+                [(ngModel)]="settings.gain"
+                (change)="setGain()"
+                matTooltip="Tx gain (attemuation)"
+                min=-60 max=0 step="1">
+            dB
+          </td>
+        </tr>
+        <!-- Standard, Transmision mode, Baud rate -->
+        <tr>
+          <td>
+            <span>
+              Standard
+              <mat-select style="width:12ch; background-color: white; margin: 1px;"
+                [(value)]="txStandard"
+                (selectionChange)="setTxStandard()"
+                matTooltip="Transmission standard">
+                <mat-option *ngFor="let txStandard of txStandards" [value]="txStandard.value">
+                  {{txStandard.viewValue}}
+                </mat-option>
+              </mat-select>
+              &nbsp;
+              <button mat-button class="button-card" matTooltip="Reapply standard" (click)="setTxStandard()">
+                <img src="./assets/icons/if_checkmark.svg" style="height:12px; width:12px"/>
+              </button>
+            </span>
+          </td>
+          <td>
+            Mode
+            <mat-select style="width:12ch; background-color: white; margin: 1px;"
+                [(value)]="settings.modulation"
+                (selectionChange)="setTxModulation()"
+                matTooltip="Transmission mode">
+                <mat-option *ngFor="let txModulation of txModulations" [value]="txModulation.value">
+                  {{txModulation.viewValue}}
+                </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            Baud
+            <mat-select style="width:12ch; background-color: white; margin: 1px;"
+                [(value)]="settings.baud"
+                (selectionChange)="setTxBaud()"
+                matTooltip="Transmission baud rate">
+                <mat-option *ngFor="let txBaud of txBauds" [value]="txBaud.value">
+                  {{txBaud.viewValue}}
+                </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <!-- Call, To, Via-->
+        <tr>
+          <td>
+            Call
+            <input type="text" class="call-input"
+            [(ngModel)]="settings.callsign"
+            (change)="setCallsign()"
+            matTooltip="Message to transmit as a hex encoded string.">
+          </td>
+          <td>
+            <span>
+              To
+              <input type="text" class="call-input"
+              [(ngModel)]="settings.to"
+              (change)="setTo()"
+              matTooltip="Message to transmit as a hex encoded string.">
+              &nbsp;
+              <mat-select style="width:10ch; background-color: white; margin: 1px;"
+                [(value)]="presetTo"
+                (openedChange)="setPresetTo()"
+                matTooltip="Predefined TO">
+                <mat-option *ngFor="let presetTo of presetTos" [value]="presetTo.value">
+                  {{presetTo.viewValue}}
+                </mat-option>
+              </mat-select>
+            </span>
+          </td>
+          <td style="width: 26ch;">
+            <span>
+              Via
+              <input type="text" class="call-input"
+              [(ngModel)]="settings.via"
+              (change)="setVia()"
+              matTooltip="Message to transmit as a hex encoded string.">
+              &nbsp;
+              <mat-select style="width:10ch; background-color: white; margin: 1px;"
+                [(value)]="presetVia"
+                (openedChange)="setPresetVia()"
+                matTooltip="Predefined VIA">
+                <mat-option *ngFor="let presetVia of presetVias" [value]="presetVia.value">
+                  {{presetVia.viewValue}}
+                </mat-option>
+              </mat-select>
+            </span>
+          </td>
+        </tr>
+        <!-- Data -->
+        <tr>
+          <td colspan="3">
+            Data
+            <input type="text" class="data-input"
+            [(ngModel)]="settings.data"
+            (change)="setData()"
+            matTooltip="Message to transmit as a hex encoded string.">
+          </td>
+        </tr>
+        <!-- Assembled message -->
+        <tr>
+          <td colspan="3">
+            {{ settings.callsign }}>{{ settings.to}}.{{ settings.via}}{{ settings.data}}
+          </td>
+        </tr>
+        <!-- Tx, channel mute, location -->
+        <tr>
+          <td>
+            <button mat-button class="button-card" (click)="tx()" matTooltip="Transmit message" style="width: 3ch;">
+              Tx
+            </button>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="channelMute" (change)="setChannelMute()" matTooltip="Channel mute">
+              Mute
+            </mat-checkbox>
+          </td>
+          <td>
+            <button mat-button class="button-card" (click)="insertLocation()" matTooltip="Append location to data" style="width: 9ch;">
+              Location
+            </button>
+          </td>
+        </tr>
+        <!-- Repeat, repeat delay, repeat count -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="repeat" (change)="setRepeat()" matTooltip="Repeat message">
+              Repeat
+            </mat-checkbox>
+          </td>
+          <td>
+            Delay
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.repeatDelay"
+                (change)="setRepeatDelay()"
+                matTooltip="Delay between repeating messages"
+                min=-0 max=3600 step="1">
+            s
+          </td>
+          <td>
+            Number
+            <mat-select style="width:10ch; background-color: white; margin: 1px;"
+                [(value)]="settings.repeatCount"
+                (selectionChange)="setRepeatCount()"
+                matTooltip="Number of repetitions">
+                <mat-option *ngFor="let txNbMessage of txNbMessages" [value]="txNbMessage.value">
+                  {{txNbMessage.viewValue}}
+                </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <!-- Pre-emphasis settings -->
+        <tr>
+          <td>
+            <span>
+              <mat-checkbox color="primary" [(ngModel)]="preEmphasis" (change)="setPreEmphasis()" matTooltip="Preemphasis">
+                Preemp
+              </mat-checkbox>
+              &nbsp;
+              <mat-select style="width:10ch; background-color: white; margin: 1px;"
+                  [(value)]="preEmphasisStandard"
+                  (selectionChange)="setPreemphasisStandard()"
+                  matTooltip="Preemphasis standard">
+                  <mat-option *ngFor="let preEmphasisStandard of preEmphasisStandards" [value]="preEmphasisStandard.value">
+                    {{preEmphasisStandard.viewValue}}
+                  </mat-option>
+              </mat-select>
+              &nbsp;
+              <button mat-button class="button-card" matTooltip="Reapply preemphasis standard" (click)="setPreemphasisStandard()">
+                <img src="./assets/icons/if_checkmark.svg" style="height:12px; width:12px"/>
+              </button>
+            </span>
+          </td>
+          <td>
+            Tau
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="tauMicro"
+                (change)="setTau()"
+                matTooltip="Preemphasis tau"
+                min=0 max=5000 step="1">
+            &micro;s
+          </td>
+          <td>
+             High corner
+             <input type="number" class="rfbw-input"
+               [(ngModel)]="settings.preEmphasisHighFreq"
+               (change)="setPreEmphasisHighFreq()"
+               matTooltip="High frequency corner"
+               min=0 max=100000 step="1">
+            Hz
+          </td>
+        </tr>
+        <!-- BPF settings -->
+        <tr>
+          <td>
+            <span>
+              <mat-checkbox color="primary" [(ngModel)]="bpf" (change)="setBpf()" matTooltip="Bandpass filter">
+                BPF
+              </mat-checkbox>
+              &nbsp;
+              Taps
+              <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.bpfTaps"
+                (change)="setBpfTaps()"
+                matTooltip="Bandpass filter number of taps"
+                min=0 max=500 step="1">
+            </span>
+          </td>
+          <td>
+            Low
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.bpfLowCutoff"
+              (change)="setBpfLowCutoff()"
+              matTooltip="Bandpass filter low frequency cutoff"
+              min=0 max=10000 step="1">
+            Hz
+          </td>
+          <td>
+            High
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.bpfHighCutoff"
+              (change)="setBpfHighCutoff()"
+              matTooltip="Bandpass filter high frequency cutoff"
+              min=0 max=1000000 step="1">
+            Hz
+          </td>
+        </tr>
+        <!-- AX25 setings -->
+        <tr>
+          <td>
+            AX25 pre flags
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.ax25PreFlags"
+              (change)="setAx25PreFlags()"
+              matTooltip="Number of flags to be transmitted before the frame. This gives more time for a receiver to unmute"
+              min=1 max=1024 step="1">
+          </td>
+          <td>
+            AX25 post flags
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.ax25PostFlags"
+              (change)="setAx25PostFlags()"
+              matTooltip="Number of flags to be transmitted after the frame"
+              min=1 max=1024 step="1">
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            AX25 control
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.ax25Control"
+              (change)="setAx25Control()"
+              matTooltip="Value of control field in AX.25 frame"
+              min=0 max=255 step="1">
+          </td>
+          <td>
+            AX25 PID
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.ax25PID"
+              (change)="setAx25PID()"
+              matTooltip="Value of PID field in AX.25 frame. Use 0xf0 for no L3"
+              min=0 max=255 step="1">
+          </td>
+          <td></td>
+        </tr>
+        <!-- AFSK settings -->
+        <tr>
+          <td>
+            AFSK Mark
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.markFrequency"
+              (change)="setMarkFrequency()"
+              matTooltip="Frequency of tone to generate for a mark (1)"
+              min=0 max=24000 step="100">
+            Hz
+          </td>
+          <td>
+            AFSK Space
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.spaceFrequency"
+              (change)="setSpaceFrequency()"
+              matTooltip="Frequency of tone to generate for a space (0)"
+              min=0 max=24000 step="100">
+            Hz
+          </td>
+          <td></td>
+        </tr>
+        <!-- FSK settings -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="pulseShaping" (change)="setPulseShaping()" matTooltip="Root cisine pukse shaping for FSK">
+              FSK pulse shaping
+            </mat-checkbox>
+          </td>
+          <td>
+            Roll off
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.beta"
+              (change)="setBeta()"
+              matTooltip="Roll-off of the filter (beta)"
+              min=0 max=1 step="0.01">
+          </td>
+          <td>
+            Symbol span
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.symbolSpan"
+              (change)="setSymbolSpan()"
+              matTooltip="Number of symbols over which filter is applied"
+              min=1 max=20 step="1">
+          </td>
+        </tr>
+        <!-- Scrambling, Polynomial -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="scramble" (change)="setScramble()" matTooltip="Scrambling">
+              Scrambling
+            </mat-checkbox>
+          </td>
+          <td>
+            <span>
+              Standard
+              <mat-select style="width:10ch; background-color: white; margin: 1px;"
+                [(value)]="polynomialStandard"
+                (selectionChange)="setPolynomialStandard()"
+                matTooltip="Scrambling Polynomial standard">
+                <mat-option *ngFor="let polynomialStandard of polynomialStandards" [value]="polynomialStandard.value">
+                  {{polynomialStandard.viewValue}}
+                </mat-option>
+              </mat-select>
+              &nbsp;
+              <button mat-button class="button-card" matTooltip="Reapply polynomial standard" (click)="setPolynomialStandard()">
+                <img src="./assets/icons/if_checkmark.svg" style="height:12px; width:12px"/>
+              </button>
+            </span>
+          </td>
+          <td>
+            Polynomial
+            <input type="number" class="call-input"
+              [(ngModel)]="settings.polynomial"
+              (change)="setPolynomial()"
+              matTooltip="Scrambling polynomial"
+              min=0 max=1048576 step="1">
+          </td>
+        </tr>
+        <!-- Ramp up, ramp down, ramp range, Modulate -->
+        <tr>
+          <td>
+            <span>
+              <mat-checkbox color="primary" [(ngModel)]="modulateWhileRamping" (change)="setModulateWhileRamping()" matTooltip="Modulate while ramping">
+                Modulate
+              </mat-checkbox>
+              Ramp up
+              <input type="number" class="rfbw-input"
+                  [(ngModel)]="settings.rampUpBits"
+                  (change)="setRampUpBits()"
+                  matTooltip="Number of bits at start of frame during which output power is ramped up"
+                  min=0 max=99 step="1">
+            </span>
+          </td>
+          <td>
+            Ramp down
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.rampDownBits"
+                (change)="setRampDownBits()"
+                matTooltip="Number of bits at end of frame during which output power is ramped down"
+                min=0 max=99 step="1">
+          </td>
+          <td>
+            Ramp range
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.rampRange"
+                (change)="setRampRange()"
+                matTooltip="Range in dB over which power is ramped up or down. E.g. a value of 60 causes power to be ramped from -60dB to 0dB"
+                min=0 max=120 step="1">
+            dB
+          </td>
+        </tr>
+        <!-- Gen noise, write csv -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="bbNoise" (change)="setBbNoise()" matTooltip="Generate white noise as baseband signal">
+              BB Noise
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="rfNoise" (change)="setRfNoise()" matTooltip="Generate white noise as RF signal">
+              RF Noise
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="writeToFile" (change)="setWriteToFile()" matTooltip="Write baseband signal to a CSV file named aismod.csv">
+              Write to csv
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- UDP enabled, UDP address, UDP port -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="udpEnabled" (change)="setUdpEnabled()" matTooltip="Send AIS data via UDP">
+              Bytes from UDP
+            </mat-checkbox>
+          </td>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+                [(ngModel)]="settings.udpAddress"
+                (change)="setUDpAddress()"
+                matTooltip="Destination UDP IPv4 address">
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.udpPort"
+              (change)="setUdpPort()"
+              matTooltip="Destination UDP port"
+              min=1024 max=65535>
+          </td>
+        </tr>
+        <!-- Use reverse API, reverse API device index, reverse API channel index -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+              Reverse API
+            </mat-checkbox>
+          </td>
+          <td>
+            Device
+            <input type="number" class="index-input"
+              [(ngModel)]="settings.reverseAPIDeviceIndex"
+              (change)="setReverseAPIDeviceIndex()"
+              matTooltip="Reverse API device index"
+              min=0>
+          </td>
+          <td>
+            Channel
+            <input type="number" class="index-input"
+              [(ngModel)]="settings.reverseAPIChannelIndex"
+              (change)="setReverseAPIChannelIndex()"
+              matTooltip="Reverse API channel index"
+              min=0>
+          </td>
+        </tr>
+        <!--- reverse API address, reverse API port -->
+        <tr>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+              [(ngModel)]="settings.reverseAPIAddress"
+              (change)="setReverseAPIAddress()"
+              matTooltip="Reverse API IPv4 address"
+            >
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.reverseAPIPort"
+              (change)="setReverseAPIPort()"
+              matTooltip="Reverse API port"
+              min=1024 max=65535>
+          </td>
+          <td></td>
+        </tr>
+        <!-- Row 6: empty footer -->
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+      <!-- empty footer -->
+      <table>
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+    {{ statusMessage }}
+  </mat-card>

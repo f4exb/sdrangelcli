@@ -26,12 +26,30 @@ import { SigmfFileSinkComponent } from './sigmf-file-sink/sigmf-file-sink.compon
 import { FileSourceComponent } from './file-source/file-source.component';
 import { DatvModComponent } from './datv-mod/datv-mod.component';
 import { DatvDemodComponent } from './datv-demod/datv-demod.component';
+import { AisDemodComponent } from './ais-demod/ais-demod.component';
+import { AdsbDemodComponent } from './adsb-demod/adsb-demod.component';
+import { PacketDemodComponent } from './packet-demod/packet-demod.component';
+import { PagerDemodComponent } from './pager-demod/pager-demod.component';
+import { AisModComponent } from './ais-mod/ais-mod.component';
+import { PacketModComponent } from './packet-mod/packet-mod.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: ChannelDetailsComponent,
     children: [
+      {
+        path: 'adsbdemod',
+        component: AdsbDemodComponent
+      },
+      {
+        path: 'aisdemod',
+        component: AisDemodComponent
+      },
+      {
+        path: 'aismod',
+        component: AisModComponent
+      },
       {
         path: 'amdemod',
         component: AmDemodComponent
@@ -67,6 +85,18 @@ export const routes: Routes = [
       {
         path: 'localsource',
         component: LocalSourceComponent
+      },
+      {
+        path: 'packetdemod',
+        component: PacketDemodComponent
+      },
+      {
+        path: 'packetmod',
+        component: PacketModComponent
+      },
+      {
+        path: 'pagerdemod',
+        component: PagerDemodComponent
       },
       {
         path: 'remotesink',
