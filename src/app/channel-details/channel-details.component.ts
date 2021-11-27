@@ -48,6 +48,10 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['amdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'BFMDemod') {
           this.router.navigate(['bfmdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'ChirpChatDemod') {
+          this.router.navigate(['chirpchatdemod'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'ChirpChatMod') {
+          this.router.navigate(['chirpchatmod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'FileSink') {
           this.router.navigate(['filesink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'FileSource') {
@@ -58,6 +62,8 @@ export class ChannelDetailsComponent implements OnInit {
           this.router.navigate(['freedvdemod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'FreqTracker') {
           this.router.navigate(['freqtracker'], { relativeTo: this.route});
+        } else if (channelSettings.channelType === 'IEEE_802_15_4_Mod') {
+          this.router.navigate(['ieee802154mod'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'LocalSink') {
           this.router.navigate(['localsink'], { relativeTo: this.route});
         } else if (channelSettings.channelType === 'LocalSource') {

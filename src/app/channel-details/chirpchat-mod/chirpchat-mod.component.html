@@ -1,0 +1,328 @@
+<mat-card>
+    <mat-card-header class="channel-card-header channel-header-tx">
+      <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+        <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <button mat-button mat-raised-button
+          [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+          matTooltip="Monitor on/off"
+          (click)="toggleMonitor()">
+        <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      </button>&nbsp;
+      <app-channel-header class="channel-header-comp" channelType="ChirpChatMod"
+          [basebandRate]="deviceBasebandRate"
+          [title]="settings.title"
+          [color]="rgbTitleStr"
+          (titleChanged)="onTitleChanged($event)"
+          (colorChanged)="onTitleColorChanged($event)" >
+      </app-channel-header>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- Channel monitor (optional) -->
+        <tr *ngIf="monitor">
+          <td colspan="3">
+            <app-channel-monitor [value]=this.report.channelPowerDB
+              [min]="-120"
+              [max]="0"
+              [squelch]="this.report.playing !== 0">
+            </app-channel-monitor>
+          </td>
+        </tr>
+        <!-- payloadTime, symbolTime, totalTimeMs (optional) -->
+        <tr>
+          <td>
+            Tsym {{ report.symbolTimeMs.toFixed(1) }} ms
+          </td>
+          <td>
+            Tpay {{ report.payloadTimeMs.toFixed(1) }} ms
+          </td>
+          <td style="width: 20ch;">
+            Ttot {{ report.totalTimeMs.toFixed(1) }} ms
+          </td>
+        </tr>
+        <!-- Row 2: Frequency dial -->
+        <tr>
+          <td colspan="2">
+            <app-frequency-dial
+            [frequency]="channelCenterFrequencyKhz"
+            [min]="channelMinFrequencyKhz"
+            [max]="channelMaxFrequencyKhz"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+          </td>
+          <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+          </td>
+        </tr>
+        <!-- Row 3: RF bandwidth, Spread Factor, Distance Enhancement bits -->
+        <tr>
+          <td>
+            BW
+            <mat-select style="width:12ch; background-color: white; margin: 1px;"
+                [(value)]="settings.bandwidthIndex"
+                (selectionChange)="setBandwidth()"
+                matTooltip="Bandwidth standard">
+                <mat-option *ngFor="let bandwidth of bandwidths" [value]="bandwidth.index">
+                  {{bandwidth.viewValue}}
+                </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            SF
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.spreadFactor"
+                (change)="setSpreadFactor()"
+                matTooltip="Spread factor"
+                min=7 max=12 step=1>
+          </td>
+          <td>
+            DE
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.deBits"
+                (change)="setDEBits()"
+                matTooltip="Distance Enhancement bits"
+                min=0 max=4 step="1">
+          </td>
+        </tr>
+        <!-- Scheme, Preamble chirps, Idle time -->
+        <tr>
+          <td>
+            <span>
+              Scheme
+              <mat-select style="width:12ch; background-color: white; margin: 1px;"
+                [(value)]="settings.codingScheme"
+                (selectionChange)="setCodingScheme()"
+                matTooltip="Coding scheme">
+                <mat-option *ngFor="let codingScheme of codingSchemes" [value]="codingScheme.value">
+                  {{codingScheme.viewValue}}
+                </mat-option>
+              </mat-select>
+              &nbsp;
+              <button mat-button class="button-card" matTooltip="Reapply coding scheme" (click)="setCodingScheme()">
+                <img src="./assets/icons/if_checkmark.svg" style="height:12px; width:12px"/>
+              </button>
+            </span>
+          </td>
+          <td>
+            Pre
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.preambleChirps"
+              (change)="setPreambleChirps()"
+              matTooltip="Number of chirps in preamble"
+              min=4 max=20 step="1">
+          </td>
+          <td>
+            Idle
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="quietSeconds"
+              (change)="setQuietSeconds()"
+              matTooltip="Idle time betweem message repetitions"
+              min=0.1 max=90 step=0.1>
+            s
+          </td>
+        </tr>
+        <!-- Msg Type, FEC CRC HDR, Sync-->
+        <tr>
+          <td>
+              Msg
+              <mat-select style="width:12ch; background-color: white; margin: 1px;"
+                [(value)]="settings.messageType"
+                (selectionChange)="setMessageType()"
+                matTooltip="Message type to send">
+                <mat-option *ngFor="let messageType of messageTypes" [value]="messageType.value">
+                  {{messageType.viewValue}}
+                </mat-option>
+              </mat-select>
+          </td>
+          <td>
+            <span>
+              FEC
+              <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.nbParityBits"
+                (change)="setNbParityBits()"
+                [disabled]="settings.codingScheme !== 0"
+                matTooltip="Number of parity bits in Hamming code (LoRa only)"
+                min=4 max=20 step="1">
+              &nbsp;
+              <mat-checkbox color="primary" [(ngModel)]="hasCRC" (change)="setHasCRC()" matTooltip="Add CRC in message">
+                CRC
+              </mat-checkbox>
+              &nbsp;
+              <mat-checkbox color="primary" [(ngModel)]="hasHeader" (change)="setHasHeader()" matTooltip="Add header in message">
+                HDR
+              </mat-checkbox>
+            </span>
+          </td>
+          <td>
+            Sync
+            <input type="number" class="sync-input"
+              [(ngModel)]="settings.syncWord"
+              (change)="setSyncWord()"
+              matTooltip="Message sync word"
+              min=0 max=255 step="1">
+            0x{{ settings.syncWord.toString(16) }}
+          </td>
+        </tr>
+        <!-- My Call, Your call -->
+        <tr>
+          <td>
+            MyCall
+            <input type="text" class="call-input"
+            [(ngModel)]="settings.myCall"
+            (change)="setMyCall()"
+            matTooltip="Own station callsign">
+          </td>
+          <td>
+            UrCall
+            <input type="text" class="call-input"
+            [(ngModel)]="settings.urCall"
+            (change)="setUrCall()"
+            matTooltip="Distant station callsign">
+          </td>
+          <td></td>
+        </tr>
+        <!-- My Report, Locator -->
+        <tr>
+          <td>
+            MyRpt
+            <input type="text" class="call-input"
+            [(ngModel)]="settings.myRpt"
+            (change)="setMyRpt()"
+            matTooltip="Own station report to distant station">
+          </td>
+          <td>
+            MyLoc
+            <input type="text" class="call-input"
+            [(ngModel)]="settings.myLoc"
+            (change)="setMyLoc()"
+            matTooltip="Own station locator">
+          </td>
+          <td></td>
+        </tr>
+        <!-- Text message -->
+        <tr>
+          <td colspan="3">
+            Text
+            <input type="text" class="data-input"
+            [(ngModel)]="settings.textMessage"
+            (change)="setTextMessage()"
+            matTooltip="Freeflow message">
+          </td>
+        </tr>
+        <!-- Assembled message -->
+        <tr>
+          <td colspan="3">
+            Msg: {{ getCurrentMessage() }}
+          </td>
+        </tr>
+        <!-- Tx and repeat count, channel mute, Generate messages -->
+        <tr>
+          <td>
+            <span>
+              <td>
+                <button mat-button class="button-card" (click)="tx()" matTooltip="Transmit message" style="width: 3ch;">
+                  Tx
+                </button>
+              </td>
+              &nbsp;
+              Repeat
+              <input type="number" class="rfbw-input"
+                  [(ngModel)]="settings.messageRepeat"
+                  (change)="setMessageRepeat()"
+                  matTooltip="Number of times the message is repeated (0 for infinite)"
+                  min=-0 max=20 step="1">
+            </span>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="channelMute" (change)="setChannelMute()" matTooltip="Channel mute">
+              Mute
+            </mat-checkbox>
+          </td>
+          <td>
+            <button mat-button class="button-card" (click)="generateMessages()" matTooltip="Generate standard messages" style="width: 9ch;">
+              Generate
+            </button>
+          </td>
+        </tr>
+        <!-- UDP enabled, UDP address, UDP port -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="udpEnabled" (change)="setUdpEnabled()" matTooltip="Send AIS data via UDP">
+              Bytes from UDP
+            </mat-checkbox>
+          </td>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+                [(ngModel)]="settings.udpAddress"
+                (change)="setUDpAddress()"
+                matTooltip="Destination UDP IPv4 address">
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.udpPort"
+              (change)="setUdpPort()"
+              matTooltip="Destination UDP port"
+              min=1024 max=65535>
+          </td>
+        </tr>
+        <!-- Use reverse API, reverse API device index, reverse API channel index -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+              Reverse API
+            </mat-checkbox>
+          </td>
+          <td>
+            Device
+            <input type="number" class="index-input"
+              [(ngModel)]="settings.reverseAPIDeviceIndex"
+              (change)="setReverseAPIDeviceIndex()"
+              matTooltip="Reverse API device index"
+              min=0>
+          </td>
+          <td>
+            Channel
+            <input type="number" class="index-input"
+              [(ngModel)]="settings.reverseAPIChannelIndex"
+              (change)="setReverseAPIChannelIndex()"
+              matTooltip="Reverse API channel index"
+              min=0>
+          </td>
+        </tr>
+        <!--- reverse API address, reverse API port -->
+        <tr>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+              [(ngModel)]="settings.reverseAPIAddress"
+              (change)="setReverseAPIAddress()"
+              matTooltip="Reverse API IPv4 address"
+            >
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.reverseAPIPort"
+              (change)="setReverseAPIPort()"
+              matTooltip="Reverse API port"
+              min=1024 max=65535>
+          </td>
+          <td></td>
+        </tr>
+        <!-- Row 6: empty footer -->
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+      <!-- empty footer -->
+      <table>
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+    {{ statusMessage }}
+  </mat-card>

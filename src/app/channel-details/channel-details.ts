@@ -29,6 +29,9 @@ import { PacketDemodReport, PacketDemodSettings } from './packet-demod/packet-de
 import { PagerDemodReport, PagerDemodSettings } from './pager-demod/pager-demod';
 import { AISModActions, AISModReport, AISModSettings } from './ais-mod/ais-mod';
 import { PacketModActions, PacketModReport, PacketModSettings } from './packet-mod/packet-mod';
+import { IEEE_802_15_4_ModActions, IEEE_802_15_4_ModReport, IEEE_802_15_4_ModSettings } from './ieee802154-mod/ieee802154-mod';
+import { ChirpChatModReport, ChirpChatModSettings } from './chirpchat-mod/chirpchat-mod';
+import { ChirpChatDemodReport, ChirpChatDemodSettings } from './chirpchat-demod/chirpchat-demod';
 
 export interface ChannelSettings {
     channelType: string;
@@ -38,11 +41,14 @@ export interface ChannelSettings {
     AISModSettings?: AISModSettings;
     AMDemodSettings?: AMDemodSettings;
     BFMDemodSettings?: BFMDemodSettings;
+    ChirpChatDemodSettings?: ChirpChatDemodSettings;
+    ChirpChatModSettings?: ChirpChatModSettings;
     FileSinkSettings?: FileSinkSettings;
     FileSourceSettings?: FileSourceSettings;
     FreeDVDemodSettings?: FreeDVDemodSettings;
     FreeDVModSettings?: FreeDVModSettings;
     FreqTrackerSettings?: FreqTrackerSettings;
+    IEEE_802_15_4_ModSettings?: IEEE_802_15_4_ModSettings;
     LocalSinkSettings?: LocalSinkSettings;
     LocalSourceSettings?: LocalSourceSettings;
     NFMDemodSettings?: NFMDemodSettings;
@@ -71,11 +77,14 @@ export interface ChannelReport {
     AISModReport?: AISModReport;
     AMDemodReport?: AMDemodReport;
     BFMDemodReport?: BFMDemodReport;
+    ChirpChatDemodReport?: ChirpChatDemodReport;
+    ChirpChatModReport?: ChirpChatModReport;
     FileSinkReport?: FileSinkReport;
     FileSourceReport?: FileSourceReport;
     FreeDVDemodReport?: FreeDVDemodReport;
     FreeDVModReport?: FreeDVModReport;
     FreqTrackerReport?: FreqTrackerReport;
+    IEEE_802_15_4_ModReport?: IEEE_802_15_4_ModReport;
     NFMDemodReport?: NFMDemodReport;
     SSBDemodReport?: SSBDemodReport;
     DSDDemodReport?: DSDDemodReport;
@@ -101,6 +110,7 @@ export interface ChannelActions {
     AISModActions?: AISModActions;
     FileSinkActions?: FileSinkActions;
     FileSourceActions?: FileSourceActions;
+    IEEE_802_15_4_ModActions?: IEEE_802_15_4_ModActions;
     PacketModActions?: PacketModActions;
     SigMFFileSinkActions?: SigMFFileSinkActions;
     channelType: string;

@@ -1,0 +1,366 @@
+<mat-card>
+    <mat-card-header class="channel-card-header channel-header-tx">
+      <button mat-button class="button-card" matTooltip="Refresh" (click)="getChannelSettings()">
+        <img src="./assets/icons/if_refresh.svg" style="height:16px; width:16px"/>
+      </button>&nbsp;
+      <button mat-button mat-raised-button
+          [ngClass]="{'button-card': true, 'button-on': monitor, 'button-off': !monitor}"
+          matTooltip="Monitor on/off"
+          (click)="toggleMonitor()">
+        <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
+      </button>&nbsp;
+      <app-channel-header class="channel-header-comp" channelType="IEEE_802_15_4_Mod"
+          [basebandRate]="deviceBasebandRate"
+          [title]="settings.title"
+          [color]="rgbTitleStr"
+          (titleChanged)="onTitleChanged($event)"
+          (colorChanged)="onTitleColorChanged($event)" >
+      </app-channel-header>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <!-- Channel monitor (optional) -->
+        <tr *ngIf="monitor">
+          <td colspan="3">
+            <app-channel-monitor [value]=this.report.channelPowerDB
+              [min]="-120"
+              [max]="0"
+              [squelch]="!this.channelMute">
+            </app-channel-monitor>
+          </td>
+        </tr>
+        <!-- Frequency dial -->
+        <tr>
+          <td colspan="2">
+            <app-frequency-dial
+            [frequency]="channelCenterFrequencyKhz"
+            [min]="channelMinFrequencyKhz"
+            [max]="channelMaxFrequencyKhz"
+            (frequencyChanged)="onFrequencyUpdate($event)">
+            </app-frequency-dial>
+          </td>
+          <td style="width:15ch">
+            &#x394;f {{getDeltaFrequency()}} kHz
+          </td>
+        </tr>
+        <!-- Standard, Maodulaion -->
+        <tr>
+          <td colspan="2">
+            <span>
+              Standard
+              <mat-select style="width:28ch; background-color: white; margin: 1px;"
+                [(value)]="txStandard"
+                (selectionChange)="setTxStandard()"
+                matTooltip="Transmission standard">
+                <mat-option *ngFor="let txStandard of txStandards" [value]="txStandard.value">
+                  {{txStandard.viewValue}}
+                </mat-option>
+              </mat-select>
+              &nbsp;
+              <button mat-button class="button-card" matTooltip="Reapply standard" (click)="setTxStandard()">
+                <img src="./assets/icons/if_checkmark.svg" style="height:12px; width:12px"/>
+              </button>
+            </span>
+          </td>
+          <td>
+            Modulation
+            <mat-select style="width:10ch; background-color: white; margin: 1px;"
+              [(value)]="settings.modulation"
+              (selectionChange)="setModulation()"
+              matTooltip="Transmission modulation">
+              <mat-option *ngFor="let txModulation of txModulations" [value]="txModulation.value">
+                {{txModulation.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <!-- Rate, RF bandwidth, Gain -->
+        <tr>
+          <td>
+            Rate
+            <mat-select style="width:12ch; background-color: white; margin: 1px;"
+              [(value)]="settings.bitRate"
+              (selectionChange)="setBitRate()"
+              matTooltip="Transmission bit rate">
+              <mat-option *ngFor="let bps of txBPSs" [value]="bps.value">
+                {{bps.viewValue}}
+              </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            RFBW
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="rfBandwidthKhz"
+                (change)="setRFBandwidth()"
+                matTooltip="RF Bandwidth"
+                min=1 max=40 step=0.1>
+            kHz
+          </td>
+          <td>
+            Gain
+            <input type="number" class="volume-input"
+                [(ngModel)]="settings.gain"
+                (change)="setGain()"
+                matTooltip="Tx gain (attemuation)"
+                min=-60 max=0 step="1">
+            dB
+          </td>
+        </tr>
+        <!-- Data -->
+        <tr>
+          <td colspan="3">
+            Data
+            <input type="text" class="data-input"
+            [(ngModel)]="settings.data"
+            (change)="setData()"
+            matTooltip="Message to transmit as a hex encoded string.">
+          </td>
+        </tr>
+        <!-- Tx, channel mute , LPF taps -->
+        <tr>
+          <td>
+            <span>
+              <button mat-button class="button-card" (click)="tx()" matTooltip="Transmit message" style="width: 3ch;">
+                Tx
+              </button>
+              &nbsp;
+              Chip rate {{ getChipRate() }} S/s
+            </span>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="channelMute" (change)="setChannelMute()" matTooltip="Channel mute">
+              Mute
+            </mat-checkbox>
+          </td>
+          <td>
+            LPF taps
+            <input type="number" class="rfbw-input"
+              [(ngModel)]="settings.lpfTaps"
+              (change)="setLpfTaps()"
+              matTooltip="Lowpass filter number of taps"
+              min=0 max=500 step="1">
+          </td>
+        </tr>
+        <!-- Repeat, repeat delay, repeat count -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="repeat" (change)="setRepeat()" matTooltip="Repeat message">
+              Repeat
+            </mat-checkbox>
+          </td>
+          <td>
+            Delay
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.repeatDelay"
+                (change)="setRepeatDelay()"
+                matTooltip="Delay between repeating messages"
+                min=-0 max=3600 step="1">
+            s
+          </td>
+          <td>
+            Number
+            <mat-select style="width:10ch; background-color: white; margin: 1px;"
+                [(value)]="settings.repeatCount"
+                (selectionChange)="setRepeatCount()"
+                matTooltip="Number of repetitions">
+                <mat-option *ngFor="let txNbMessage of txNbMessages" [value]="txNbMessage.value">
+                  {{txNbMessage.viewValue}}
+                </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <!-- Pulse shaping -->
+        <tr>
+          <td>
+            Filter
+            <mat-select style="width:15ch; background-color: white; margin: 1px;"
+                [(value)]="settings.pulseShaping"
+                (selectionChange)="setPulseShaping()"
+                matTooltip="Pulse shaping filter type">
+                <mat-option *ngFor="let pulseShaping of pulseShapings" [value]="pulseShaping.value">
+                  {{pulseShaping.viewValue}}
+                </mat-option>
+            </mat-select>
+          </td>
+          <td>
+            Roll-off
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.beta"
+                (change)="setBeta()"
+                matTooltip="Roll-off factor (beta)"
+                min=-0 max=1 step="0.1">
+          </td>
+          <td>
+            Span
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.symbolSpan"
+                (change)="setSymbolSpan()"
+                matTooltip="Filter symbol span"
+                min=1 max=16 step="1">
+          </td>
+        </tr>
+        <!-- Scrambling, Polynomial -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="scramble" (change)="setScramble()" matTooltip="Scrambling">
+              Scrambling
+            </mat-checkbox>
+          </td>
+          <td>
+            <span>
+              Standard
+              <mat-select style="width:10ch; background-color: white; margin: 1px;"
+                [(value)]="polynomialStandard"
+                (selectionChange)="setPolynomialStandard()"
+                matTooltip="Scrambling Polynomial standard">
+                <mat-option *ngFor="let polynomialStandard of polynomialStandards" [value]="polynomialStandard.value">
+                  {{polynomialStandard.viewValue}}
+                </mat-option>
+              </mat-select>
+              &nbsp;
+              <button mat-button class="button-card" matTooltip="Reapply polynomial standard" (click)="setPolynomialStandard()">
+                <img src="./assets/icons/if_checkmark.svg" style="height:12px; width:12px"/>
+              </button>
+            </span>
+          </td>
+          <td>
+            Polynomial
+            <input type="number" class="call-input"
+              [(ngModel)]="settings.polynomial"
+              (change)="setPolynomial()"
+              matTooltip="Scrambling polynomial"
+              min=0 max=1048576 step="1">
+          </td>
+        </tr>
+        <!-- Ramp up, ramp down, ramp range, Modulate -->
+        <tr>
+          <td>
+            <span>
+              <mat-checkbox color="primary" [(ngModel)]="modulateWhileRamping" (change)="setModulateWhileRamping()" matTooltip="Modulate while ramping">
+                Modulate
+              </mat-checkbox>
+              Ramp up
+              <input type="number" class="rfbw-input"
+                  [(ngModel)]="settings.rampUpBits"
+                  (change)="setRampUpBits()"
+                  matTooltip="Number of bits at start of frame during which output power is ramped up"
+                  min=0 max=99 step="1">
+            </span>
+          </td>
+          <td>
+            Ramp down
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.rampDownBits"
+                (change)="setRampDownBits()"
+                matTooltip="Number of bits at end of frame during which output power is ramped down"
+                min=0 max=99 step="1">
+          </td>
+          <td style="width: 24ch;">
+            Ramp range
+            <input type="number" class="rfbw-input"
+                [(ngModel)]="settings.rampRange"
+                (change)="setRampRange()"
+                matTooltip="Range in dB over which power is ramped up or down. E.g. a value of 60 causes power to be ramped from -60dB to 0dB"
+                min=0 max=120 step="1">
+            dB
+          </td>
+        </tr>
+        <!-- Sub-GHz, Gen noise, write csv -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="subGHzBand" (change)="setSubGHzBand()" matTooltip="Sub GHz standard">
+              Sub GHz
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="bbNoise" (change)="setBbNoise()" matTooltip="Generate white noise as baseband signal">
+              BB Noise
+            </mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="writeToFile" (change)="setWriteToFile()" matTooltip="Write baseband signal to a CSV file named aismod.csv">
+              Write to csv
+            </mat-checkbox>
+          </td>
+        </tr>
+        <!-- UDP enabled, UDP address, UDP port -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="udpEnabled" (change)="setUdpEnabled()" matTooltip="Send AIS data via UDP">
+              Bytes from UDP
+            </mat-checkbox>
+          </td>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+                [(ngModel)]="settings.udpAddress"
+                (change)="setUDpAddress()"
+                matTooltip="Destination UDP IPv4 address">
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.udpPort"
+              (change)="setUdpPort()"
+              matTooltip="Destination UDP port"
+              min=1024 max=65535>
+          </td>
+        </tr>
+        <!-- Use reverse API, reverse API device index, reverse API channel index -->
+        <tr>
+          <td>
+            <mat-checkbox color="primary" [(ngModel)]="useReverseAPI" (change)="setUseReverseAPI()" matTooltip="Use reverse API">
+              Reverse API
+            </mat-checkbox>
+          </td>
+          <td>
+            Device
+            <input type="number" class="index-input"
+              [(ngModel)]="settings.reverseAPIDeviceIndex"
+              (change)="setReverseAPIDeviceIndex()"
+              matTooltip="Reverse API device index"
+              min=0>
+          </td>
+          <td>
+            Channel
+            <input type="number" class="index-input"
+              [(ngModel)]="settings.reverseAPIChannelIndex"
+              (change)="setReverseAPIChannelIndex()"
+              matTooltip="Reverse API channel index"
+              min=0>
+          </td>
+        </tr>
+        <!--- reverse API address, reverse API port -->
+        <tr>
+          <td>
+            Addr
+            <input type="text" class="address-input"
+              [(ngModel)]="settings.reverseAPIAddress"
+              (change)="setReverseAPIAddress()"
+              matTooltip="Reverse API IPv4 address"
+            >
+          </td>
+          <td>
+            Port
+            <input type="number" class="port-input"
+              [(ngModel)]="settings.reverseAPIPort"
+              (change)="setReverseAPIPort()"
+              matTooltip="Reverse API port"
+              min=1024 max=65535>
+          </td>
+          <td></td>
+        </tr>
+        <!-- Row 6: empty footer -->
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+      <!-- empty footer -->
+      <table>
+        <tr style="height: 3px;">
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">
+    {{ statusMessage }}
+  </mat-card>

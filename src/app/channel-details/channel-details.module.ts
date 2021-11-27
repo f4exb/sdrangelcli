@@ -45,6 +45,9 @@ import { PacketDemodComponent } from './packet-demod/packet-demod.component';
 import { PagerDemodComponent } from './pager-demod/pager-demod.component';
 import { AisModComponent } from './ais-mod/ais-mod.component';
 import { PacketModComponent } from './packet-mod/packet-mod.component';
+import { Ieee802154ModComponent } from './ieee802154-mod/ieee802154-mod.component';
+import { ChirpchatModComponent } from './chirpchat-mod/chirpchat-mod.component';
+import { ChirpchatDemodComponent } from './chirpchat-demod/chirpchat-demod.component';
 
 @NgModule({
   imports: [
@@ -95,7 +98,10 @@ import { PacketModComponent } from './packet-mod/packet-mod.component';
     PacketDemodComponent,
     PagerDemodComponent,
     AisModComponent,
-    PacketModComponent
+    PacketModComponent,
+    Ieee802154ModComponent,
+    ChirpchatModComponent,
+    ChirpchatDemodComponent
   ]
 })
 export class ChannelDetailsModule { }

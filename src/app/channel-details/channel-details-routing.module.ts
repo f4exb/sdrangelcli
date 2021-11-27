@@ -32,6 +32,9 @@ import { PacketDemodComponent } from './packet-demod/packet-demod.component';
 import { PagerDemodComponent } from './pager-demod/pager-demod.component';
 import { AisModComponent } from './ais-mod/ais-mod.component';
 import { PacketModComponent } from './packet-mod/packet-mod.component';
+import { Ieee802154ModComponent } from './ieee802154-mod/ieee802154-mod.component';
+import { ChirpchatModComponent } from './chirpchat-mod/chirpchat-mod.component';
+import { ChirpchatDemodComponent } from './chirpchat-demod/chirpchat-demod.component';
 
 export const routes: Routes = [
   {
@@ -59,6 +62,14 @@ export const routes: Routes = [
         component: BfmDemodComponent
       },
       {
+        path: 'chirpchatdemod',
+        component: ChirpchatDemodComponent
+      },
+      {
+        path: 'chirpchatmod',
+        component: ChirpchatModComponent
+      },
+      {
         path: 'filesink',
         component: FileSinkComponent
       },
@@ -77,6 +88,10 @@ export const routes: Routes = [
       {
         path: 'freqtracker',
         component: FreqtrackerSinkComponent
+      },
+      {
+        path: 'ieee802154mod',
+        component: Ieee802154ModComponent
       },
       {
         path: 'localsink',
