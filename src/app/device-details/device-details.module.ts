@@ -34,6 +34,7 @@ import { RemoteInputComponent } from './remote-input/remote-input.component';
 import { KiwisdrComponent } from './kiwisdr/kiwisdr.component';
 import { RemoteOutputComponent } from './remote-output/remote-output.component';
 import { Sdrplayv3Component } from './sdrplayv3/sdrplayv3.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { Sdrplayv3Component } from './sdrplayv3/sdrplayv3.component';
     MatOptionModule,
     MatCheckboxModule,
     MatTooltipModule,
+    MatProgressBarModule,
     CommonComponentsModule,
     DeviceDetailsRoutingModule
   ],

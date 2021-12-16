@@ -9,6 +9,10 @@ import { Subscription, interval } from 'rxjs';
 import { Utils } from '../../common-components/utils';
 import { ChannelSettings } from '../channel-details';
 
+interface Log2 {
+  value: number;
+  viewValue: number;
+}
 @Component({
   selector: 'app-remote-source',
   templateUrl: './remote-source.component.html',
@@ -38,6 +42,17 @@ export class RemoteSourceComponent implements OnInit {
   deltaUncorrectableCount: number;
   deltaSampleCount: number;
   useReverseAPI: boolean;
+  log2Interps: Log2[] = [
+    {value: 0, viewValue: 1},
+    {value: 1, viewValue: 2},
+    {value: 2, viewValue: 4},
+    {value: 3, viewValue: 8},
+    {value: 4, viewValue: 16},
+    {value: 5, viewValue: 32},
+    {value: 6, viewValue: 64},
+  ];
+  channelDeltaFrequency: number;
+  channelCenterFrequencyKhz: number;
 
   constructor(private route: ActivatedRoute,
     private channeldetailsService: ChannelDetailsService,
@@ -100,6 +115,8 @@ export class RemoteSourceComponent implements OnInit {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = channelSettings.RemoteSourceSettings;
+          this.channelDeltaFrequency = this.calculateFrequencyOffset();
+          this.channelCenterFrequencyKhz = (this.deviceCenterFrequency + this.channelDeltaFrequency) / 1000;
           this.rgbTitle = Utils.intToRGB(this.settings.rgbColor);
           this.rgbTitleStr = Utils.getRGBStr(this.rgbTitle);
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
@@ -136,7 +153,7 @@ export class RemoteSourceComponent implements OnInit {
         _ => {
           this.channeldetailsService.getReport(this.sdrangelURL, this.deviceIndex, this.channelIndex).subscribe(
             channelReport => {
-              if (channelReport.channelType === 'DaemonSource') {
+              if (channelReport.channelType === 'RemoteSource') {
                 this.report = channelReport.RemoteSourceReport;
                 const timestampUs = this.report.tvSec * 1000000 + this.report.tvUSec;
                 if (this.lastTimestampUs === 0) {
@@ -178,6 +195,11 @@ export class RemoteSourceComponent implements OnInit {
     this.enableReporting(this.monitor);
   }
 
+  getReportDateTime(): string {
+    const dateObj = new Date((this.report.tvSec * 1000000 + this.report.tvUSec) / 1000);
+    return dateObj.toISOString();
+  }
+
   onTitleColorChanged(colorStr: string) {
     this.rgbTitleStr = colorStr;
     this.setTitleColor();
@@ -197,6 +219,18 @@ export class RemoteSourceComponent implements OnInit {
   setTitle() {
     const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
     newSettings.title = this.settings.title;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setInterp() {
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
+    newSettings.log2Interp = this.settings.log2Interp;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setFilterChainHash() {
+    const newSettings: RemoteSourceSettings = <RemoteSourceSettings>{};
+    newSettings.filterChainHash = this.settings.filterChainHash;
     this.setDeviceSettings(newSettings);
   }
 
@@ -256,13 +290,13 @@ export class RemoteSourceComponent implements OnInit {
 
   getStreamStatusColor(): string {
     if (this.deltaSampleCount === 0) {
-      return 'blue';
+      return 'rgb(0, 0, 200, 1.0)';
     } else if (this.deltaUncorrectableCount !== 0) {
-      return 'red';
+      return 'rgb(200, 0, 0, 1.0)';
     } else if (this.deltaCorrectableCount !== 0) {
-      return 'grey';
+      return 'rgb(160, 160, 160, 1.0)';
     } else {
-      return 'green';
+      return 'rgb(0, 200, 0, 1.0)';
     }
   }
 
@@ -277,4 +311,21 @@ export class RemoteSourceComponent implements OnInit {
       return 'Streaming OK';
     }
   }
+
+  getChannelBaseband(): number {
+    return (this.deviceBasebandRate / 1000) / (1 << this.settings.log2Interp);
+  }
+
+  getMaxFilterChainHash(): number {
+    return 3 ** this.settings.log2Interp;
+  }
+
+  getFilterChainString(): string {
+    return Utils.convertHBFilterChainToString(this.settings.log2Interp, this.settings.filterChainHash);
+  }
+
+  calculateFrequencyOffset(): number {
+    return this.deviceBasebandRate * Utils.getHBFilterChainShiftFactor(this.settings.log2Interp, this.settings.filterChainHash);
+  }
+
 }

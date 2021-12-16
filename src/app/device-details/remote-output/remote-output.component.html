@@ -9,47 +9,51 @@
         (click)="toggleMonitor()">
       <img src="./assets/icons/eye-icon.svg" style="height:16px; width:16px; margin-top: 2px;"/>
     </button>&nbsp;
-    <span class="device-label">Remote output {{getSampleRate()/1000}} kS/s</span>
+    <span class="device-label">Remote output {{report.sampleRate/1000}} kS/s</span>
   </mat-card-header>
   <mat-card-content>
-    <table>
-      <!-- Center frequency -->
+    <table *ngIf="monitor">
       <tr>
         <td colspan="2">
-            <app-frequency-dial
-            [frequency]="centerFreqKhz"
-            min=70000
-            max=6000000
-            tooltip="Center frequency"
-            [steps]="frequencySteps"
-            (frequencyChanged)="onFrequencyUpdate($event)">
-            </app-frequency-dial>
+          <span matTooltip="Report timestamp">{{ getReportDateTime() }}</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <mat-progress-bar mode="determinate" [value]="getQueuePercentage()" class="fill-bar" matTooltip="Queue fill ratio"></mat-progress-bar>
+        </td>
+        <td>
+          <span matTooltip="Queue length/Queue size">{{report.queueLength}}/{{report.queueSize}} ({{((report.queueLength*100)/report.queueSize).toFixed(0)}}%)</span>
         </td>
       </tr>
-      <!-- SR, Tx delay -->
       <tr>
         <td>
-          SR
-          <input type="number" class="sample-rate-input"
-            [(ngModel)]="settings.sampleRate"
-            (change)="setSampleRate()"
-            matTooltip="Device to host sample rate"
-            min=32000,
-            max=9000000>
-          S/s
+          <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getStreamStatusColor()}" [matTooltip]="getStreamStatusText()"></i>
+          &nbsp;
+          <span matTooltip="Stream pumping rate and status">Pull SR {{ getStreamSampleRate().toFixed(0) }} S/s </span>
         </td>
-        <td>
-          UDP delay
-          <input type="number" class="sample-rate-input"
-            [(ngModel)]="txDelayPercent"
-            (change)="setTxDelay()"
-            matTooltip="Delay between consecutive UDP packets in percentage of nominal UDP packet process time"
-            min=10,
-            max=90,
-            step=1>
-          %
+        <td style="width: 15ch">
+          <span matTooltip="Correctable errors (current/total)">Corr {{ deltaCorrectableCount }} / {{ report.correctableErrorsCount }}</span>
+        </td>
+        <td style="width: 15ch">
+          <span matTooltip="Uncorrectable errors (current/total)">Uncorr {{ deltaUncorrectableCount }} / {{ report.uncorrectableErrorsCount }}</span>
         </td>
       </tr>
+      <tr>
+        <td>
+          Freq {{ report.centerFrequency.toLocaleString() }} Hz
+        </td>
+        <td>
+          SR {{ report.sampleRate.toLocaleString() }} S/s
+        </td>
+        <td></td>
+      </tr>
+      <!-- Footer -->
+      <tr style="height: 3px;">
+      </tr>
+    </table>
+    <table>
       <!--- Remote API address, Remote API port -->
       <tr>
         <td>
@@ -88,6 +92,19 @@
             min=1024 max=65535>
         </td>
       </tr>
+      <tr>
+        <td>
+          FEC
+          <input type="number" class="port-input"
+            [(ngModel)]="settings.nbFECBlocks"
+            (change)="setNbFECBlocks()"
+            matTooltip="Number of FEC blocks per frame"
+            min=0 max=32>
+          &nbsp;
+          {{ 128+settings.nbFECBlocks }} / {{ settings.nbFECBlocks }}
+        </td>
+        <td></td>
+      </tr>
       <!--- Use reverse API, reverse API device index -->
       <tr>
         <td>
@@ -121,23 +138,6 @@
             (change)="setReverseAPIPort()"
             matTooltip="Reverse API port"
             min=1024 max=65535>
-        </td>
-      </tr>
-      <!-- Footer -->
-      <tr style="height: 3px;">
-      </tr>
-    </table>
-    <table *ngIf="monitor">
-      <!-- min nb blocks, max blocks recovery, R/W balance -->
-      <tr>
-        <td>
-          Samples
-          <span matTooltip="Number of samples sent">{{report ? report.sampleCount : 0}}</span>
-        </td>
-        <td>
-          R/W bal
-          <span matTooltip="Main buffer R/W positions unbalance. Positive means read leads">{{report ? report.bufferRWBalance : 0}}</span>
-          %
         </td>
       </tr>
       <!-- Footer -->

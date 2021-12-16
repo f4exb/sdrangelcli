@@ -1,43 +1,51 @@
 export interface RemoteOutputSettings {
-  centerFrequency?: number;
-  sampleRate?: number;
-  txDelay?: number; // minimum delay in ms between two consecutive packets sending
-  nbFECBlocks?: number;
   apiAddress?: string;
   apiPort?: number;
+  channelIndex?: number; // remote SDRangel instance channel index
   dataAddress?: string;
   dataPort?: number;
   deviceIndex?: number; // remote SDRangel instance deviceset index
-  channelIndex?: number; // remote SDRangel instance channel index
-  useReverseAPI?: number; // bool
+  nbFECBlocks?: number;
   reverseAPIAddress?: string;
-  reverseAPIPort?: number;
   reverseAPIDeviceIndex?: number;
+  reverseAPIPort?: number;
+  useReverseAPI?: number; // bool
 }
 
 export const REMOTE_OUTPUT_SETTINGS_DEFAULT = {
-  centerFrequency: 435000000,
-  sampleRate: 48000,
-  txDelay: 0.35,
-  nbFECBlocks: 0,
   apiAddress: '127.0.0.1',
   apiPort: 9091,
+  channelIndex: 0,
   dataAddress: '127.0.0.1',
   dataPort: 9090,
   deviceIndex: 0,
-  channelIndex: 0,
-  useReverseAPI: 0,
+  nbFECBlocks: 0,
   reverseAPIAddress: '127.0.0.1',
+  reverseAPIDeviceIndex: 0,
   reverseAPIPort: 8888,
-  reverseAPIDeviceIndex: 0
+  useReverseAPI: 0
 };
 
 export interface RemoteOutputReport {
-  bufferRWBalance: number; // ratio off the mid buffer (positive read leads)
+  centerFrequency: number; // cener frequency of remote (in stream)
   sampleCount: number; // count of samples that have been sent
+  sampleRate: number; // sample rate in remote (in stream)
+  queueLength: number;
+  queueSize: number;
+  correctableErrorsCount: number;
+  uncorrectableErrorsCount: number;
+  tvSec: number;
+  tvUSec: number;
 }
 
 export const REMOTE_OUTPUT_REPORT_DEFAULT = {
-  bufferRWBalance: 0,
-  sampleCount: 0
+  centerFrequency: 435000000,
+  sampleCount: 0,
+  sampleRate: 48000,
+  queueLength: 2,
+  queueSize: 20,
+  correctableErrorsCount: 0,
+  uncorrectableErrorsCount: 0,
+  tvSec: 1535913707,
+  tvUSec: 667575
 };

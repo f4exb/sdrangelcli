@@ -21,16 +21,30 @@ export class RemoteOutputComponent implements OnInit {
   sdrangelURL: string;
   report: RemoteOutputReport = REMOTE_OUTPUT_REPORT_DEFAULT;
   settings: RemoteOutputSettings = REMOTE_OUTPUT_SETTINGS_DEFAULT;
-  centerFreqKhz: number;
-  txDelayPercent: number;
   useReverseAPI: boolean;
   deviceReportSubscription: Subscription;
   monitor: boolean;
+  lastTimestampUs: number;
+  deltaTimestampUs: number;
+  lastSampleCount: number;
+  deltaSampleCount: number;
+  lastCorrectableCount: number;
+  deltaCorrectableCount: number;
+  lastUncorrectableCount: number;
+  deltaUncorrectableCount: number;
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
     private sdrangelUrlService: SdrangelUrlService,
     private deviceStoreService: DeviceStoreService) {
+      this.lastSampleCount = 0;
+      this.deltaSampleCount = 0;
+      this.lastTimestampUs = 0;
+      this.deltaTimestampUs = 0;
+      this.lastCorrectableCount = 0;
+      this.deltaCorrectableCount = 0;
+      this.lastUncorrectableCount = 0;
+      this.deltaUncorrectableCount = 0;
   }
 
   ngOnInit() {
@@ -48,24 +62,13 @@ export class RemoteOutputComponent implements OnInit {
           this.statusMessage = 'OK';
           this.statusError = false;
           this.settings = deviceSettings.remoteOutputSettings;
-          this.centerFreqKhz = this.settings.centerFrequency / 1000;
-          this.txDelayPercent = Math.round(this.settings.txDelay * 100);
           this.useReverseAPI = this.settings.useReverseAPI !== 0;
-          this.feedDeviceStore();
         } else {
           this.statusMessage = 'Not a Remote output device';
           this.statusError = true;
         }
       }
     );
-  }
-
-  private feedDeviceStore() {
-    const deviceStorage = <DeviceStorage>{
-      centerFrequency: this.settings.centerFrequency,
-      basebandRate: this.settings.sampleRate
-    };
-    this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
   enableReporting(enable: boolean) {
@@ -76,6 +79,23 @@ export class RemoteOutputComponent implements OnInit {
             devicelReport => {
               if ((devicelReport.deviceHwType === 'RemoteOutput') && (devicelReport.direction === 1)) {
                 this.report = devicelReport.remoteOutputReport;
+                this.feedDeviceStore();
+                const timestampUs = this.report.tvSec * 1000000 + this.report.tvUSec;
+                if (this.lastTimestampUs === 0) {
+                  this.lastTimestampUs = timestampUs;
+                }
+                this.deltaTimestampUs = timestampUs - this.lastTimestampUs;
+                this.lastTimestampUs = timestampUs;
+                if (this.report.sampleCount < this.lastSampleCount) {
+                  this.deltaSampleCount = (0xFFFFFFFF - this.lastSampleCount) + this.report.sampleCount + 1;
+                } else {
+                  this.deltaSampleCount = this.report.sampleCount - this.lastSampleCount;
+                }
+                this.lastSampleCount = this.report.sampleCount;
+                this.deltaCorrectableCount = this.report.correctableErrorsCount - this.lastCorrectableCount;
+                this.deltaUncorrectableCount = this.report.uncorrectableErrorsCount - this.lastUncorrectableCount;
+                this.lastCorrectableCount = this.report.correctableErrorsCount;
+                this.lastUncorrectableCount = this.report.uncorrectableErrorsCount;
               }
             }
           );
@@ -90,6 +110,14 @@ export class RemoteOutputComponent implements OnInit {
   toggleMonitor() {
     this.monitor = !this.monitor;
     this.enableReporting(this.monitor);
+  }
+
+  private feedDeviceStore() {
+    const deviceStorage = <DeviceStorage>{
+      centerFrequency: this.report.centerFrequency,
+      basebandRate: this.report.sampleRate
+    };
+    this.deviceStoreService.change(this.deviceIndex, deviceStorage);
   }
 
   private setDeviceSettings(remoteOutputSettings: RemoteOutputSettings) {
@@ -109,33 +137,6 @@ export class RemoteOutputComponent implements OnInit {
         this.statusError = true;
       }
     );
-  }
-
-  getSampleRate(): number {
-    return this.settings.sampleRate;
-  }
-
-  setSampleRate() {
-    const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
-    newSettings.sampleRate = this.settings.sampleRate;
-    this.setDeviceSettings(newSettings);
-  }
-
-  onFrequencyUpdate(frequency: number) {
-    this.centerFreqKhz = frequency;
-    this.setCenterFrequency();
-  }
-
-  setCenterFrequency() {
-    const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
-    newSettings.centerFrequency = this.centerFreqKhz * 1000;
-    this.setDeviceSettings(newSettings);
-  }
-
-  setTxDelay() {
-    const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
-    newSettings.txDelay = this.txDelayPercent / 100;
-    this.setDeviceSettings(newSettings);
   }
 
   setRemoteAPIAddress() {
@@ -162,6 +163,12 @@ export class RemoteOutputComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
+  setNbFECBlocks() {
+    const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
+    newSettings.nbFECBlocks = this.settings.nbFECBlocks;
+    this.setDeviceSettings(newSettings);
+  }
+
   setUseReverseAPI() {
     const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
     newSettings.useReverseAPI = this.useReverseAPI ? 1 : 0;
@@ -184,5 +191,46 @@ export class RemoteOutputComponent implements OnInit {
     const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
     newSettings.reverseAPIDeviceIndex = this.settings.reverseAPIDeviceIndex;
     this.setDeviceSettings(newSettings);
+  }
+
+  getReportDateTime(): string {
+    const dateObj = new Date((this.report.tvSec * 1000000 + this.report.tvUSec) / 1000);
+    return dateObj.toISOString();
+  }
+
+  getQueuePercentage(): number {
+    return (this.report.queueLength * 100) / this.report.queueSize;
+  }
+
+  getStreamSampleRate(): number {
+    if (this.deltaTimestampUs === 0) {
+      return 0;
+    } else {
+      return (this.deltaSampleCount * 1e6) / this.deltaTimestampUs;
+    }
+  }
+
+  getStreamStatusColor(): string {
+    if (this.deltaSampleCount === 0) {
+      return 'rgb(0, 0, 200, 1.0)';
+    } else if (this.deltaUncorrectableCount !== 0) {
+      return 'rgb(200, 0, 0, 1.0)';
+    } else if (this.deltaCorrectableCount !== 0) {
+      return 'rgb(160, 160, 160, 1.0)';
+    } else {
+      return 'rgb(0, 200, 0, 1.0)';
+    }
+  }
+
+  getStreamStatusText(): string {
+    if (this.deltaSampleCount === 0) {
+      return 'Not streaming';
+    } else if (this.deltaUncorrectableCount !== 0) {
+      return 'Data lost';
+    } else if (this.deltaCorrectableCount !== 0) {
+      return 'Data corrected';
+    } else {
+      return 'Streaming OK';
+    }
   }
 }

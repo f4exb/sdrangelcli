@@ -21,11 +21,8 @@
       <!-- channel monitor (optional) -->
       <table *ngIf="monitor">
         <tr>
-          <td>
-            <span matTooltip="Stream center frequency setting">Freq {{report.centerFreq}} kHz</span>
-          </td>
-          <td>
-            <span matTooltip="Stream nominal sample rate">SR {{report.sampleRate}} S/s</span>
+          <td colspan="2">
+            <span matTooltip="Report timestamp">{{ getReportDateTime() }}</span>
           </td>
           <td>
             <span matTooltip="Nb total blocks/Nb FEC blocks per frame">FEC {{report.nbOriginalBlocks+report.nbFECBlocks}}/{{report.nbFECBlocks}}</span>
@@ -41,18 +38,63 @@
         </tr>
         <tr>
           <td>
-            <span matTooltip="Stream pumping rate and status">Pull SR {{getStreamSampleRate().toFixed(0)}} S/s </span>
             <i class="fa fa-circle" style="font-size:14px;" [ngStyle]="{'color': getStreamStatusColor()}" [matTooltip]="getStreamStatusText()"></i>
+            &nbsp;
+            <span matTooltip="Stream pumping rate and status">Pull SR {{ getStreamSampleRate().toFixed(0) }} S/s </span>
           </td>
           <td style="width: 15ch">
-            <span matTooltip="Correctable errors (current/total)">Corr {{deltaCorrectableCount}}/{{report.correctableErrorsCount}}</span>
+            <span matTooltip="Correctable errors (current/total)">Corr {{ deltaCorrectableCount }} / {{ report.correctableErrorsCount }}</span>
           </td>
           <td style="width: 15ch">
-            <span matTooltip="Uncorrectable errors (current/total)">Uncorr {{deltaUncorrectableCount}}/{{report.uncorrectableErrorsCount}}</span>
+            <span matTooltip="Uncorrectable errors (current/total)">Uncorr {{ deltaUncorrectableCount }} / {{ report.uncorrectableErrorsCount }}</span>
           </td>
+        </tr>
+        <!-- Footer -->
+        <tr style="height: 3px;">
         </tr>
       </table>
       <table>
+        <!-- Row 1: Center frequency, shift, local device -->
+        <tr>
+          <td>
+            Fc
+            <span matTooltip="Center frequency">
+              {{channelCenterFrequencyKhz}} kHz
+            </span>
+          </td>
+          <td style="width:15ch">
+            &#x394;f {{calculateFrequencyOffset()}} kHz
+          </td>
+          <td></td>
+        </tr>
+        <!-- Row 3: Interpolation, filter stages -->
+        <tr>
+          <td>
+            &#xf7;
+            <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.log2Interp"
+              (selectionChange)="setInterp()"
+              matTooltip="Channel interpolation">
+              <mat-option *ngFor="let log2Interp of log2Interps" [value]="log2Interp.value">
+                {{log2Interp.viewValue}}
+              </mat-option>
+            </mat-select>
+            <span matTooltip="Channel bandwidth">
+              {{getChannelBaseband()}} kHz
+            </span>
+          </td>
+          <td colspan="2">
+            Filter hash
+            <input type="number" class="filter-input"
+                [(ngModel)]="settings.filterChainHash"
+                (change)="setFilterChainHash()"
+                matTooltip="Filter chain hash number"
+                min=0 [max]="getMaxFilterChainHash()" step=1>
+            <span matTooltip="Filter chain stages left to right (L: low, C: center, H: high)">
+              {{getFilterChainString()}}
+            </span>
+          </td>
+        </tr>
         <!-- address, port -->
         <tr>
           <td>
