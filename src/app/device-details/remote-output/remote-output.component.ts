@@ -8,6 +8,10 @@ import { DeviceStoreService, DeviceStorage } from 'src/app/device-store.service'
 import { DeviceSettings } from '../device-details';
 import { FrequencyStep, FREQUENCY_STEP_DEVICE_DEFAULTS } from 'src/app/common-components/frequency-dial/frequency-dial.component';
 
+export interface NbTxBytes {
+  value: number;
+  viewValue: number;
+}
 @Component({
   selector: 'app-remote-output',
   templateUrl: './remote-output.component.html',
@@ -32,6 +36,11 @@ export class RemoteOutputComponent implements OnInit {
   deltaCorrectableCount: number;
   lastUncorrectableCount: number;
   deltaUncorrectableCount: number;
+  nbTxBytesList: NbTxBytes[] = [
+    {value: 1, viewValue: 1},
+    {value: 2, viewValue: 2},
+    {value: 4, viewValue: 4},
+  ];
 
   constructor(private route: ActivatedRoute,
     private devicedetailsService: DeviceDetailsService,
@@ -166,6 +175,12 @@ export class RemoteOutputComponent implements OnInit {
   setNbFECBlocks() {
     const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
     newSettings.nbFECBlocks = this.settings.nbFECBlocks;
+    this.setDeviceSettings(newSettings);
+  }
+
+  setNbTxBytes() {
+    const newSettings: RemoteOutputSettings = <RemoteOutputSettings>{};
+    newSettings.nbTxBytes = this.settings.nbTxBytes;
     this.setDeviceSettings(newSettings);
   }
 

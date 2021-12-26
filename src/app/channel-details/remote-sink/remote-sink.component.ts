@@ -14,6 +14,11 @@ export interface Log2Decim {
   viewValue: number;
 }
 
+export interface NbTxBytes {
+  value: number;
+  viewValue: number;
+}
+
 @Component({
   selector: 'app-remote-sink',
   templateUrl: './remote-sink.component.html',
@@ -38,6 +43,11 @@ export class RemoteSinkComponent implements OnInit {
     {value: 4, viewValue: 16},
     {value: 5, viewValue: 32},
     {value: 6, viewValue: 64},
+  ];
+  nbTxBytesList: NbTxBytes[] = [
+    {value: 1, viewValue: 1},
+    {value: 2, viewValue: 2},
+    {value: 4, viewValue: 4},
   ];
   maxFilterChainHash: number;
   filterChainCode: string;
@@ -190,9 +200,9 @@ export class RemoteSinkComponent implements OnInit {
     this.setDeviceSettings(newSettings);
   }
 
-  setTxDelay() {
+  setNbTxBytes() {
     const newSettings: RemoteSinkSettings = <RemoteSinkSettings>{};
-    newSettings.txDelay = this.settings.txDelay;
+    newSettings.nbTxBytes = this.settings.nbTxBytes;
     this.setDeviceSettings(newSettings);
   }
 

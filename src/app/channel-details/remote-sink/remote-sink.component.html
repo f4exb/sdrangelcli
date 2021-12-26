@@ -44,7 +44,7 @@
         </td>
         <td></td>
       </tr>
-      <!-- nb FEC, Tx delay -->
+      <!-- nb FEC, nb Tx bytes -->
       <tr>
         <td>
           FEC
@@ -55,13 +55,15 @@
             min=0 max=32>
         </td>
         <td>
-          UDP dly
-          <input type="number" class="index-input"
-            [(ngModel)]="settings.txDelay"
-            (change)="setTxDelay()"
-            matTooltip="Delay btw UDP blocks in % of frame period"
-            min=0 max=70>
-          %
+          Tx Bytes
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.nbTxBytes"
+              (selectionChange)="setNbTxBytes()"
+              matTooltip="Number of I or Q bytes in transmission">
+            <mat-option *ngFor="let nbTxBytes of nbTxBytesList" [value]="nbTxBytes.value">
+              {{nbTxBytes.viewValue}}
+            </mat-option>
+          </mat-select>
         </td>
         <td></td>
       </tr>

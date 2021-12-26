@@ -103,7 +103,17 @@
           &nbsp;
           {{ 128+settings.nbFECBlocks }} / {{ settings.nbFECBlocks }}
         </td>
-        <td></td>
+        <td>
+          Tx Bytes
+          <mat-select style="width:6ch; background-color: white; margin: 1px;"
+              [(value)]="settings.nbTxBytes"
+              (selectionChange)="setNbTxBytes()"
+              matTooltip="Number of I or Q bytes in transmission">
+            <mat-option *ngFor="let nbTxBytes of nbTxBytesList" [value]="nbTxBytes.value">
+              {{nbTxBytes.viewValue}}
+            </mat-option>
+          </mat-select>
+        </td>
       </tr>
       <!--- Use reverse API, reverse API device index -->
       <tr>

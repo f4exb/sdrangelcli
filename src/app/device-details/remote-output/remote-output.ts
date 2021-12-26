@@ -6,6 +6,7 @@ export interface RemoteOutputSettings {
   dataPort?: number;
   deviceIndex?: number; // remote SDRangel instance deviceset index
   nbFECBlocks?: number;
+  nbTxBytes?: number;
   reverseAPIAddress?: string;
   reverseAPIDeviceIndex?: number;
   reverseAPIPort?: number;
@@ -20,6 +21,7 @@ export const REMOTE_OUTPUT_SETTINGS_DEFAULT = {
   dataPort: 9090,
   deviceIndex: 0,
   nbFECBlocks: 0,
+  nbTxBytes: 2,
   reverseAPIAddress: '127.0.0.1',
   reverseAPIDeviceIndex: 0,
   reverseAPIPort: 8888,
