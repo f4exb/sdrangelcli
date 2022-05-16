@@ -49,7 +49,7 @@ describe('FeaturesetComponent without features', () => {
     expect(component.featureSet.features).toBeUndefined();
   });
 
-  it('label should be F0', () => {
-    expect(component.getLabel()).toBe('F0');
+  it('label should be Features', () => {
+    expect(component.getLabel()).toBe('Features');
   });
 });

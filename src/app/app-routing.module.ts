@@ -41,7 +41,7 @@ const routes: Routes = [
         loadChildren: () => import('./channel-details/channel-details.module').then(m => m.ChannelDetailsModule)
     },
     {
-        path: 'featureset/:dix/feature/:cix',
+        path: 'featureset/feature/:cix',
         loadChildren: () => import('./feature-details/feature-details.module').then(m => m.FeatureDetailsModule)
     },
 ];

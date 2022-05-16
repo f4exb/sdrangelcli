@@ -13,16 +13,36 @@ import { RemoveFeatureService } from './remove-feature.service';
 export class RemoveFeatureDialogComponent implements OnInit {
   sdrangelURL: string;
   feature: Feature;
-  featureeSetIndex: number;
-  featureIndex: number;
 
   constructor(private dialogRef: MatDialogRef<RemoveFeatureDialogComponent>,
-    private removeChannelService: RemoveFeatureService,
+    private removeFeatureService: RemoveFeatureService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar) { }
+    public snackBar: MatSnackBar) {
+        this.feature = data.feature;
+    }
 
   ngOnInit(): void {
+    this.sdrangelUrlService.currentUrlSource.subscribe(url => {
+        this.sdrangelURL = url;
+    });
   }
 
+  close() {
+    this.dialogRef.close('Dismiss');
+  }
+
+  remove() {
+    this.removeFeatureService.removeFeature(this.sdrangelURL, this.feature.index).subscribe(
+      res => {
+        console.log('Removed OK', res);
+        this.dialogRef.close('OK');
+      },
+      error => {
+        console.log(error);
+        this.snackBar.open(error.message, 'OK', {duration: 2000});
+        this.dialogRef.close('Error');
+      }
+    );
+  }
 }

@@ -1,1 +1,10 @@
-<p>remove-feature-dialog works!</p>
+<h2 mat-dialog-title>Remove feature</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+  <span class="label-card">F{{feature.index}} {{feature.id}} {{feature.title}}</span><br/>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary"(click)="remove()">OK</button>
+</mat-dialog-actions>

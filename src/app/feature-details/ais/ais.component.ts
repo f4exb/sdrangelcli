@@ -12,7 +12,6 @@ import { AISSettings, AIS_SETTINGS_DEFAULT } from './ais';
   styleUrls: ['./ais.component.css']
 })
 export class AisComponent implements OnInit {
-  featuresetIndex: number;
   featureIndex: number;
   sdrangelURL: string;
   settings: AISSettings = AIS_SETTINGS_DEFAULT;
@@ -31,13 +30,12 @@ export class AisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.featuresetIndex = +this.route.snapshot.parent.params['dix'];
     this.featureIndex = +this.route.snapshot.parent.params['cix'];
     this.getFeatureSettings();
   }
 
   getFeatureSettings() {
-    this.featuredetailsService.getSettings(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+    this.featuredetailsService.getSettings(this.sdrangelURL, this.featureIndex).subscribe(
       featureSettings => {
         if (featureSettings.featureType === 'AIS') {
           this.statusMessage = 'OK';
@@ -58,7 +56,7 @@ export class AisComponent implements OnInit {
     const settings: FeatureSettings = <FeatureSettings>{};
     settings.featureType = 'AIS';
     settings.AISSettings = aisSettings;
-    this.featuredetailsService.setSettings(this.sdrangelURL, this.featuresetIndex, this.featureIndex, settings).subscribe(
+    this.featuredetailsService.setSettings(this.sdrangelURL, this.featureIndex, settings).subscribe(
       res => {
         console.log('Set settings OK', res);
         this.statusMessage = 'OK';

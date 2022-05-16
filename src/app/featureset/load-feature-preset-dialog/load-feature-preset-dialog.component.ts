@@ -23,16 +23,13 @@ export interface PresetGroupSelect {
 export class LoadFeaturePresetDialogComponent implements OnInit {
   sdrangelURL: string;
   presetGroups: PresetGroupSelect[] = [];
-  featuresetIndex: number;
   selectedPreset: FeaturePresetIdentifier;
 
   constructor(private dialogRef: MatDialogRef<LoadFeaturePresetDialogComponent>,
     private presetService: FeaturepresetService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar) {
-      this.featuresetIndex = data.featuresetIndex;
-    }
+    public snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
@@ -78,7 +75,7 @@ export class LoadFeaturePresetDialogComponent implements OnInit {
   }
 
   load() {
-    this.presetService.loadPreset(this.sdrangelURL, this.featuresetIndex, this.selectedPreset).subscribe(
+    this.presetService.loadPreset(this.sdrangelURL, this.selectedPreset).subscribe(
       res => {
         console.log('Loaded OK', res);
         this.dialogRef.close('OK');

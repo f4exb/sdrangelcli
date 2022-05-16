@@ -1,0 +1,14 @@
+.label-card {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+::ng-deep .mat-divider {
+    /* CSS styles go here */
+    margin: 5px; /* for example to remove the margin */
+}
+
+::ng-deep .mat-dialog-title {
+    /* CSS styles go here */
+    margin: 0px; /* for example to remove the margin */
+}

@@ -17,16 +17,13 @@ export interface FeatureType {
 export class AddFeatureDialogComponent implements OnInit {
   featureTypes: FeatureType[] = [];
   selectedFeatureId: string;
-  featureSetIndex: number;
   sdrangelURL: string;
 
   constructor(private dialogRef: MatDialogRef<AddFeatureDialogComponent>,
     private addFeatureService: AddFeatureService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar) {
-      this.featureSetIndex = data.featureSetIndex;
-    }
+    public snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
@@ -56,7 +53,7 @@ export class AddFeatureDialogComponent implements OnInit {
   }
 
   save() {
-    this.addFeatureService.addFeature(this.sdrangelURL, this.featureSetIndex, this.selectedFeatureId).subscribe(
+    this.addFeatureService.addFeature(this.sdrangelURL, this.selectedFeatureId).subscribe(
       res => {
         console.log('Added OK', res);
         this.dialogRef.close('OK');

@@ -34,7 +34,6 @@ export interface BaudRate {
 })
 export class Gs232ControllerComponent implements OnInit {
   @Output() featuresetChanged = new EventEmitter();
-  featuresetIndex: number;
   featureIndex: number;
   sdrangelURL: string;
   settings: GS232ControllerSettings = GS232_CONTROLLER_SETTINGS_MOCK;
@@ -77,14 +76,13 @@ export class Gs232ControllerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.featuresetIndex = +this.route.snapshot.parent.params['dix'];
     this.featureIndex = +this.route.snapshot.parent.params['cix'];
     this.getFeatureSettings();
     this.getFeatureReport();
   }
 
   getFeatureSettings() {
-    this.featuredetailsService.getSettings(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+    this.featuredetailsService.getSettings(this.sdrangelURL, this.featureIndex).subscribe(
       featureSettings => {
         if (featureSettings.featureType === 'GS232Controller') {
           this.statusMessage = 'OK';
@@ -106,7 +104,7 @@ export class Gs232ControllerComponent implements OnInit {
     const settings: FeatureSettings = <FeatureSettings>{};
     settings.featureType = 'GS232Controller';
     settings.GS232ControllerSettings = gs232ControllerSettings;
-    this.featuredetailsService.setSettings(this.sdrangelURL, this.featuresetIndex, this.featureIndex, settings).subscribe(
+    this.featuredetailsService.setSettings(this.sdrangelURL, this.featureIndex, settings).subscribe(
       res => {
         console.log('Set settings OK', res);
         this.statusMessage = 'OK';
@@ -121,7 +119,7 @@ export class Gs232ControllerComponent implements OnInit {
   }
 
   private getFeatureReport() {
-    this.featuredetailsService.getReport(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+    this.featuredetailsService.getReport(this.sdrangelURL, this.featureIndex).subscribe(
       featureReport => {
         if (featureReport.featureType === 'GS232Controller') {
           this.statusMessage = 'OK';
@@ -155,7 +153,7 @@ export class Gs232ControllerComponent implements OnInit {
     const actions: FeatureActions = <FeatureActions>{};
     actions.featureType = 'GS232Controller';
     actions.GS232ControllerActions = gs232ControllerActions;
-    this.featuredetailsService.postAction(this.sdrangelURL, this.featuresetIndex, this.featureIndex, actions).subscribe(
+    this.featuredetailsService.postAction(this.sdrangelURL, this.featureIndex, actions).subscribe(
       res => {
         this.statusMessage = 'OK';
         this.statusError = false;
@@ -175,7 +173,7 @@ export class Gs232ControllerComponent implements OnInit {
     if (enable) {
       this.featureReportSubscription = interval(1000).subscribe(
         _ => {
-          this.featuredetailsService.getReport(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+          this.featuredetailsService.getReport(this.sdrangelURL, this.featureIndex).subscribe(
             featureReport => {
               if (featureReport.featureType === 'GS232Controller') {
                 this.featureReport = featureReport.GS232ControllerReport;

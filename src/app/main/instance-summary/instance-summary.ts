@@ -1,4 +1,4 @@
-import { FeatureSet, FEATURSET_MOCK_WITH_FEATURES } from '../../featureset/featureset/featureset';
+import { Feature, FEATURE0_MOCK } from '../../featureset/feature/feature';
 import { DeviceSet, DEVICESET_MOCK_WITH_CHANNELS, DEVICESET_MOCK1, DEVICESET_TX_MOCK } from '../../deviceset/deviceset/deviceset';
 
 export interface InstanceSummary {
@@ -15,9 +15,9 @@ export interface InstanceSummary {
         devicesetfocus?: number,
         deviceSets?: [DeviceSet]
     };
-    featuresetlist: {
-        featuresetcount: number,
-        featureSets?: [FeatureSet]
+    featureset: {
+        featurecount: number,
+        features?: [Feature]
     };
     logging: {
         consoleLevel: string,
@@ -33,8 +33,8 @@ export interface InstanceSummary {
     devicesetlist: {
       devicesetcount: 0
     },
-    featuresetlist: {
-      featuresetcount: 0
+    featureset: {
+      featurecount: 0
     },
     dspRxBits: 24,
     dspTxBits: 16,
@@ -58,8 +58,8 @@ export interface InstanceSummary {
       devicesetcount: 1,
       devicesetfocus: 0
     },
-    featuresetlist: {
-      featuresetcount: 0
+    featureset: {
+      featurecount: 0
     },
     dspRxBits: 24,
     dspTxBits: 16,
@@ -79,8 +79,8 @@ export interface InstanceSummary {
     devicesetlist: {
       devicesetcount: 0
     },
-    featuresetlist: {
-      featuresetcount: 0
+    featureset: {
+      featurecount: 0
     },
     dspRxBits: 24,
     dspTxBits: 16,
@@ -106,10 +106,10 @@ export interface InstanceSummary {
       devicesetcount: 3,
       devicesetfocus: 0
     },
-    featuresetlist: {
-      featuresetcount: 1,
-      featureSets: [
-        FEATURSET_MOCK_WITH_FEATURES
+    featureset: {
+      featurecount: 1,
+      features: [
+        FEATURE0_MOCK
       ]
     },
     dspRxBits: 24,

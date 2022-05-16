@@ -16,10 +16,10 @@ export class AddFeatureService {
     return this.http.get<AvailableFeatures>(newurl);
   }
 
-  addFeature(url: string, featureSetIndex: number, featureId: string): Observable<any> {
+  addFeature(url: string, featureId: string): Observable<any> {
     const newFeature = <NewFeature>{};
     newFeature.featureType = featureId;
-    const newurl = url + '/featureset/' + featureSetIndex + '/feature';
+    const newurl = url + '/featureset/feature';
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',

@@ -22,15 +22,12 @@ export class NewFeaturePresetDialogComponent implements OnInit {
   newGroupName: string;
   presetDescription: string;
   groupNames: GroupName[] = [];
-  featuresetIndex: number;
 
   constructor(private dialogRef: MatDialogRef<NewFeaturePresetDialogComponent>,
     private presetService: FeaturepresetService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar) {
-      this.featuresetIndex = data.featuresetIndex;
-    }
+    public snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
@@ -68,7 +65,7 @@ export class NewFeaturePresetDialogComponent implements OnInit {
         groupName: this.newGroup ? this.newGroupName : this.groupName,
         description: this.presetDescription
     };
-    this.presetService.newPreset(this.sdrangelURL, this.featuresetIndex, preset).subscribe(
+    this.presetService.newPreset(this.sdrangelURL, preset).subscribe(
       res => {
         console.log('Created OK', res);
         this.dialogRef.close('OK');

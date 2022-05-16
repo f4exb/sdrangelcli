@@ -24,16 +24,13 @@ export class SaveFeaturePresetDialogComponent implements OnInit {
   sdrangelURL: string;
   presets: FeaturePresets;
   presetGroups: PresetGroupSelect[] = [];
-  featuresetIndex: number;
   selectedPreset: FeaturePresetIdentifier;
 
   constructor(private dialogRef: MatDialogRef<SaveFeaturePresetDialogComponent>,
     private presetService: FeaturepresetService,
     private sdrangelUrlService: SdrangelUrlService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar) {
-      this.featuresetIndex = data.featuresetIndex;
-    }
+    public snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
@@ -80,7 +77,7 @@ export class SaveFeaturePresetDialogComponent implements OnInit {
   }
 
   save() {
-    this.presetService.savePreset(this.sdrangelURL, this.featuresetIndex, this.selectedPreset).subscribe(
+    this.presetService.savePreset(this.sdrangelURL, this.selectedPreset).subscribe(
       res => {
         console.log('Saved OK', res);
         this.dialogRef.close('OK');

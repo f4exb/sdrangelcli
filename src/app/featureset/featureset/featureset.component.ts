@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Utils } from 'src/app/common-components/utils';
 import { AddFeatureDialogComponent } from '../add-feature-dialog/add-feature-dialog.component';
 import { LoadFeaturePresetDialogComponent } from '../load-feature-preset-dialog/load-feature-preset-dialog.component';
 import { NewFeaturePresetDialogComponent } from '../new-feature-preset-dialog/new-feature-preset-dialog.component';
@@ -16,7 +17,6 @@ export class FeaturesetComponent implements OnInit {
   @Output() featuresetChanged = new EventEmitter();
   width: number;
   height: number;
-  index: number;
 
   constructor(private popupDialog: MatDialog,
     private elementRef: ElementRef) {
@@ -33,16 +33,13 @@ export class FeaturesetComponent implements OnInit {
   }
 
   getLabel(): string {
-   return 'F' + this.featureSet.index;
+   return 'Features';
   }
 
   openAddFeatureDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      featureSetIndex: this.featureSet.index
-    };
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
@@ -66,9 +63,6 @@ export class FeaturesetComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      devicesetIndex: this.featureSet.index
-    };
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
@@ -81,8 +75,9 @@ export class FeaturesetComponent implements OnInit {
       left: dialogX + 'px'
     };
     const dialogRef = this.popupDialog.open(LoadFeaturePresetDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
       if (result === 'OK') {
+        await Utils.delay(500);
         this.featuresetChanged.emit(); // triggers refresh
       }
     });
@@ -92,9 +87,6 @@ export class FeaturesetComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      devicesetIndex: this.featureSet.index
-    };
     dialogConfig.height = '180px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;
@@ -118,9 +110,6 @@ export class FeaturesetComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      devicesetIndex: this.featureSet.index
-    };
     dialogConfig.height = '260px';
     dialogConfig.width = '360px';
     let dialogY = this.elementRef.nativeElement.getBoundingClientRect().y;

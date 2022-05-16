@@ -33,7 +33,6 @@ export interface DeviceSetsSelect {
 })
 export class SatelliteTrackerComponent implements OnInit {
   @Output() featuresetChanged = new EventEmitter();
-  featuresetIndex: number;
   featureIndex: number;
   sdrangelURL: string;
   settings: SatelliteTrackerSettings = SATELLITE_TRACKER_SETTINGS_MOCK;
@@ -86,7 +85,6 @@ export class SatelliteTrackerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.featuresetIndex = +this.route.snapshot.parent.params['dix'];
     this.featureIndex = +this.route.snapshot.parent.params['cix'];
     this.getFeatureSettings();
     this.getFeatureReport();
@@ -135,7 +133,7 @@ export class SatelliteTrackerComponent implements OnInit {
   }
 
   getFeatureSettings() {
-    this.featuredetailsService.getSettings(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+    this.featuredetailsService.getSettings(this.sdrangelURL, this.featureIndex).subscribe(
       featureSettings => {
         if (featureSettings.featureType === 'SatelliteTracker') {
           this.statusMessage = 'OK';
@@ -160,7 +158,7 @@ export class SatelliteTrackerComponent implements OnInit {
     const settings: FeatureSettings = <FeatureSettings>{};
     settings.featureType = 'SatelliteTracker';
     settings.SatelliteTrackerSettings = satelliteTrackerSettings;
-    this.featuredetailsService.setSettings(this.sdrangelURL, this.featuresetIndex, this.featureIndex, settings).subscribe(
+    this.featuredetailsService.setSettings(this.sdrangelURL, this.featureIndex, settings).subscribe(
       res => {
         console.log('Set settings OK', res);
         this.statusMessage = 'OK';
@@ -175,7 +173,7 @@ export class SatelliteTrackerComponent implements OnInit {
   }
 
   private getFeatureReport() {
-    this.featuredetailsService.getReport(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+    this.featuredetailsService.getReport(this.sdrangelURL, this.featureIndex).subscribe(
       featureReport => {
         if (featureReport.featureType === 'SatelliteTracker') {
           this.statusMessage = 'OK';
@@ -193,7 +191,7 @@ export class SatelliteTrackerComponent implements OnInit {
     const actions: FeatureActions = <FeatureActions>{};
     actions.featureType = 'SatelliteTracker';
     actions.SatelliteTrackerActions = satelliteTrackerActions;
-    this.featuredetailsService.postAction(this.sdrangelURL, this.featuresetIndex, this.featureIndex, actions).subscribe(
+    this.featuredetailsService.postAction(this.sdrangelURL, this.featureIndex, actions).subscribe(
       res => {
         this.statusMessage = 'OK';
         this.statusError = false;
@@ -209,7 +207,7 @@ export class SatelliteTrackerComponent implements OnInit {
     if (enable) {
       this.featureReportSubscription = interval(1000).subscribe(
         _ => {
-          this.featuredetailsService.getReport(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+          this.featuredetailsService.getReport(this.sdrangelURL, this.featureIndex).subscribe(
             featureReport => {
               if (featureReport.featureType === 'SatelliteTracker') {
                 this.featureReport = featureReport.SatelliteTrackerReport;

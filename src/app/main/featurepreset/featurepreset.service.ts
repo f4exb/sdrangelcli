@@ -26,33 +26,33 @@ export class FeaturepresetService {
     return this.http.delete(url + '/featurepreset', httpOptions);
   }
 
-  savePreset(url: string, featuresetIndex: number, preset: FeaturePresetIdentifier): Observable<any> {
+  savePreset(url: string, preset: FeaturePresetIdentifier): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
         'Content-Type':  'application/json'
       })
     };
-    return this.http.put(url + '/featureset/' + featuresetIndex + '/preset', JSON.stringify(preset), httpOptions);
+    return this.http.put(url + '/featureset/preset', JSON.stringify(preset), httpOptions);
   }
 
-  loadPreset(url: string, featuresetIndex: number, preset: FeaturePresetIdentifier): Observable<any> {
+  loadPreset(url: string, preset: FeaturePresetIdentifier): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
         'Content-Type':  'application/json'
       })
     };
-    return this.http.patch(url + '/featureset/' + featuresetIndex + '/preset', JSON.stringify(preset), httpOptions).pipe(delay(500));
+    return this.http.patch(url + '/featureset/preset', JSON.stringify(preset), httpOptions).pipe(delay(500));
   }
 
-  newPreset(url: string, featuresetIndex: number, preset: FeaturePresetIdentifier): Observable<any> {
+  newPreset(url: string, preset: FeaturePresetIdentifier): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept':  'application/json',
         'Content-Type':  'application/json'
       })
     };
-    return this.http.post(url + '/featureset/' + featuresetIndex + '/preset', JSON.stringify(preset), httpOptions);
+    return this.http.post(url + '/featureset/preset', JSON.stringify(preset), httpOptions);
   }
 }

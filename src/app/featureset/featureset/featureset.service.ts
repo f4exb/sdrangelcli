@@ -10,8 +10,8 @@ export class FeaturesetService {
 
   constructor(private http: HttpClient) { }
 
-  getInfo(url: string, featuresetIndex: number): Observable<FeatureSet> {
-    const newurl = url + '/featureset/' + featuresetIndex;
+  getInfo(url: string): Observable<FeatureSet> {
+    const newurl = url + '/featureset';
     return this.http.get<FeatureSet>(newurl);
   }
 }

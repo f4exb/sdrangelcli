@@ -15,8 +15,8 @@
   <app-deviceset *ngFor="let deviceSet of instanceSummary.devicesetlist.deviceSets" [deviceSet]="deviceSet" (devicesetChanged)="fetchInstanceSummary()">
   </app-deviceset>
 </div>
-<div *ngIf="instanceSummary.featuresetlist.featuresetcount !== 0">
-  <app-featureset *ngFor="let featureSet of instanceSummary.featuresetlist.featureSets" [featureSet]="featureSet" (featuresetChanged)="fetchInstanceSummary()">
+<div *ngIf="instanceSummary.version !== '0.0.0'">
+  <app-featureset [featureSet]="instanceSummary.featureset" (featuresetChanged)="fetchInstanceSummary()">
   </app-featureset>
 </div>
 <mat-card [ngClass]="{'status-ko-card': statusError, 'status-ok-card': !statusError}">

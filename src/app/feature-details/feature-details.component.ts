@@ -10,7 +10,6 @@ import { FeatureDetailsService } from './feature-details.service';
   styleUrls: ['./feature-details.component.css']
 })
 export class FeatureDetailsComponent implements OnInit {
-  featuresetIndex: number;
   featureIndex: number;
   private sub: Subscription;
   sdrangelURL: string;
@@ -24,7 +23,6 @@ export class FeatureDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(params => {
-      this.featuresetIndex = +params['dix']; // (+) converts string 'dix' to a number
       this.featureIndex = +params['cix']; // (+) converts string 'cix' to a number
     });
     this.sdrangelUrlService.currentUrlSource.subscribe(url => {
@@ -34,7 +32,7 @@ export class FeatureDetailsComponent implements OnInit {
   }
 
   getFeatureSettings() {
-    this.featuredetailsService.getSettings(this.sdrangelURL, this.featuresetIndex, this.featureIndex).subscribe(
+    this.featuredetailsService.getSettings(this.sdrangelURL, this.featureIndex).subscribe(
       featureSettings => {
         if (featureSettings.featureType === 'AIS') {
           this.router.navigate(['ais'], {relativeTo: this.route});
@@ -50,6 +48,6 @@ export class FeatureDetailsComponent implements OnInit {
   }
 
   getFeaturesetLabel(): string {
-    return 'F' + this.featuresetIndex;
+    return 'Features';
   }
 }

@@ -27,8 +27,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 import { DevicesetModule } from '../deviceset/deviceset.module';
-import { AddFeaturesetDialogComponent } from './add-featureset-dialog/add-featureset-dialog.component';
-import { RemoveFeaturesetDialogComponent } from './remove-featureset-dialog/remove-featureset-dialog.component';
 import { FeaturepresetComponent } from './featurepreset/featurepreset.component';
 import { RemoveFeaturePresetDialogComponent } from './remove-feature-preset-dialog/remove-feature-preset-dialog.component';
 import { FeaturesetModule } from '../featureset/featureset.module';
@@ -69,8 +67,6 @@ import { SelectPresetDialogComponent } from './select-preset-dialog/select-prese
     RemovePresetDialogComponent,
     ImportPresetDialogComponent,
     ExportPresetDialogComponent,
-    AddFeaturesetDialogComponent,
-    RemoveFeaturesetDialogComponent,
     RemoveFeaturePresetDialogComponent,
     FeaturepresetsComponent,
     FeaturepresetGroupComponent,

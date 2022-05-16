@@ -10,8 +10,8 @@ export class RemoveFeatureService {
   constructor(private http: HttpClient) {
   }
 
-  removeChannel(url: string, featureSetIndex: number, featureIndex: number): Observable<any> {
-    const newurl = url + '/featureset/' + featureSetIndex + '/feature/' + featureIndex;
+  removeFeature(url: string, featureIndex: number): Observable<any> {
+    const newurl = url + '/featureset/feature/' + featureIndex;
     return this.http.delete(newurl);
   }
 }
