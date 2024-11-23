@@ -19,36 +19,29 @@ import { NewFeaturePresetDialogComponent } from './new-feature-preset-dialog/new
 
 
 @NgModule({
-  declarations: [
-    FeaturesetComponent,
-    FeatureComponent,
-    RemoveFeatureDialogComponent,
-    AddFeatureDialogComponent,
-    LoadFeaturePresetDialogComponent,
-    SaveFeaturePresetDialogComponent,
-    NewFeaturePresetDialogComponent
-  ],
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatSnackBarModule,
-    MatDividerModule,
-    FormsModule
-  ],
-  entryComponents: [
-    AddFeatureDialogComponent,
-    RemoveFeatureDialogComponent,
-    LoadFeaturePresetDialogComponent,
-    SaveFeaturePresetDialogComponent,
-    NewFeaturePresetDialogComponent
-  ],
-  exports: [
-    FeaturesetComponent
-  ]
+    declarations: [
+        FeaturesetComponent,
+        FeatureComponent,
+        RemoveFeatureDialogComponent,
+        AddFeatureDialogComponent,
+        LoadFeaturePresetDialogComponent,
+        SaveFeaturePresetDialogComponent,
+        NewFeaturePresetDialogComponent
+    ],
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatSnackBarModule,
+        MatDividerModule,
+        FormsModule
+    ],
+    exports: [
+        FeaturesetComponent
+    ]
 })
 export class FeaturesetModule { }

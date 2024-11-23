@@ -35,54 +35,43 @@ import { FeaturepresetGroupComponent } from './featurepreset-group/featurepreset
 import { SelectPresetDialogComponent } from './select-preset-dialog/select-preset-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatSnackBarModule,
-    MatDividerModule,
-    FormsModule,
-    DevicesetModule,
-    FeaturesetModule
-  ],
-  declarations: [
-    InstanceSummaryComponent,
-    LocationDialogComponent,
-    LoggingDialogComponent,
-    RemoveDevicesetDialogComponent,
-    AddDevicesetDialogComponent,
-    AudioOutComponent,
-    AudioOutDeviceComponent,
-    AudioInDeviceComponent,
-    AudioInComponent,
-    AudioOutDialogComponent,
-    AudioInDialogComponent,
-    PresetComponent,
-    PresetGroupComponent,
-    PresetsComponent,
-    RemovePresetDialogComponent,
-    ImportPresetDialogComponent,
-    ExportPresetDialogComponent,
-    RemoveFeaturePresetDialogComponent,
-    FeaturepresetsComponent,
-    FeaturepresetGroupComponent,
-    FeaturepresetComponent,
-    SelectPresetDialogComponent
-  ],
-  entryComponents: [
-    LocationDialogComponent,
-    LoggingDialogComponent,
-    RemoveDevicesetDialogComponent,
-    AddDevicesetDialogComponent,
-    AudioOutDialogComponent,
-    AudioOutDialogComponent,
-    RemovePresetDialogComponent,
-    ImportPresetDialogComponent,
-    ExportPresetDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatSnackBarModule,
+        MatDividerModule,
+        FormsModule,
+        DevicesetModule,
+        FeaturesetModule
+    ],
+    declarations: [
+        InstanceSummaryComponent,
+        LocationDialogComponent,
+        LoggingDialogComponent,
+        RemoveDevicesetDialogComponent,
+        AddDevicesetDialogComponent,
+        AudioOutComponent,
+        AudioOutDeviceComponent,
+        AudioInDeviceComponent,
+        AudioInComponent,
+        AudioOutDialogComponent,
+        AudioInDialogComponent,
+        PresetComponent,
+        PresetGroupComponent,
+        PresetsComponent,
+        RemovePresetDialogComponent,
+        ImportPresetDialogComponent,
+        ExportPresetDialogComponent,
+        RemoveFeaturePresetDialogComponent,
+        FeaturepresetsComponent,
+        FeaturepresetGroupComponent,
+        FeaturepresetComponent,
+        SelectPresetDialogComponent
+    ]
 })
 export class MainModule { }

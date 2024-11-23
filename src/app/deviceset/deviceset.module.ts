@@ -20,39 +20,31 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatSnackBarModule,
-    MatDividerModule,
-    FormsModule
-  ],
-  declarations: [
-    DevicesetComponent,
-    DeviceComponent,
-    ChannelComponent,
-    AddChannelDialogComponent,
-    ChangeDeviceDialogComponent,
-    RemoveChannelDialogComponent,
-    LoadPresetDialogComponent,
-    SavePresetDialogComponent,
-    NewPresetDialogComponent
-  ],
-  entryComponents: [
-    AddChannelDialogComponent,
-    ChangeDeviceDialogComponent,
-    RemoveChannelDialogComponent,
-    LoadPresetDialogComponent,
-    SavePresetDialogComponent,
-    NewPresetDialogComponent
-  ],
-  exports: [
-    DevicesetComponent
-  ]
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatSnackBarModule,
+        MatDividerModule,
+        FormsModule
+    ],
+    declarations: [
+        DevicesetComponent,
+        DeviceComponent,
+        ChannelComponent,
+        AddChannelDialogComponent,
+        ChangeDeviceDialogComponent,
+        RemoveChannelDialogComponent,
+        LoadPresetDialogComponent,
+        SavePresetDialogComponent,
+        NewPresetDialogComponent
+    ],
+    exports: [
+        DevicesetComponent
+    ]
 })
 export class DevicesetModule { }
